@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+  font-weight: 400;
+}
+
+.demo {
+  padding: 25px;
+}
+
+.demo-section {
+    margin-bottom: 45px;
+}
+
+.demo-header {
+  h2, h3, h4, h5 {
+    font-weight: 400;
+    color: #1f2f3d;
+  }
+
+  p {
+    font-size: 14px;
+    color: #5e6d82;
+    margin: 10px 0 20px;
+  }
+}
+
+.demo-content {
+  padding: 24px;
+  border: 1px solid #eaeefb;
+  border-radius: 4px;
+}
+
+.demo-alert  {
+  .el-alert {
+    margin-bottom: 20px;
+  }
+}

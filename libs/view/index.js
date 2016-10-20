@@ -3,7 +3,7 @@ import Component from '../component';
 
 export default class Element extends Component {
   render() {
-    if (this.props.if) {
+    if (!this.props.hasOwnProperty('if') || Boolean(this.props.if)) {
       const element = React.Children.only(this.props.children);
 
       return React.cloneElement(element, !this.props.show && {
@@ -12,7 +12,7 @@ export default class Element extends Component {
         })
       });
     } else {
-      return <span />
+      return false
     }
   }
 }
@@ -23,6 +23,5 @@ Element.propTypes = {
 };
 
 Element.defaultProps = {
-  show: true,
-  if: true
+  show: true
 };

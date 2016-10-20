@@ -7,7 +7,7 @@ new WebpackDevServer(webpack({
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    path.join(__dirname, 'src/index')
+    './js/index'
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -22,7 +22,7 @@ new WebpackDevServer(webpack({
         test: /\.js$/,
         loaders: ['react-hot', 'babel'],
         include: [
-          path.join(__dirname, 'src'),
+          path.join(__dirname, 'js'),
           path.join(__dirname, '../src'),
           path.join(__dirname, '../libs')
         ]
@@ -32,19 +32,23 @@ new WebpackDevServer(webpack({
         loaders: ['style-loader', 'css-loader']
       },
       {
+        test: /\.scss$/,
+        loaders: ["style", "css", "sass"]
+      },
+      {
         test: /\.(eot|svg|ttf|woff|woff2)(\?.+)?$/,
-        loader : 'file-loader'
+        loader : 'url-loader'
       }
     ]
   }
 }), {
-  publicPath: '/static/',
+  publicPath: '/',
   hot: true,
   historyApiFallback: true
-}).listen(3000, 'localhost', function (err, result) {
-  if (err) {
-    return console.log(err);
+}).listen(3000, 'localhost', (error, result) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Listening at http://localhost:3000/');
   }
-
-  console.log('Listening at http://localhost:3000/');
 });
