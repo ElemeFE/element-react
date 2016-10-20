@@ -1,3 +1,7 @@
+@import "alert.scss";
+@import "layout.scss";
+@import "button.scss";
+
 * {
   margin: 0;
   padding: 0;
@@ -78,33 +82,4 @@ body {
   margin-top: 20px;
   border: 1px solid #eaeefb;
   border-radius: 4px;
-}
-
-.demo-alert  {
-  .el-alert {
-    margin-bottom: 20px;
-  }
-}
-
-.demo-layout {
-  .el-row {
-    margin-bottom: 20px;
-  }
-  
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-  }
-
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
-
-  .bg-purple {
-    background: #d3dce6;
-  }
-
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
 }
