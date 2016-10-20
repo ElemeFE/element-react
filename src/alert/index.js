@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Component, View } from '../../libs';
-// import '../../libs/theme/default/alert.css';
 
 const TYPE_CLASSES_MAP = {
   'success': 'el-icon-circle-check',

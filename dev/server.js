@@ -17,18 +17,25 @@ new WebpackDevServer(webpack({
     new webpack.HotModuleReplacementPlugin()
   ],
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['react-hot', 'babel'],
-      include: [
-        path.join(__dirname, 'src'),
-        path.join(__dirname, '../src'),
-        path.join(__dirname, '../libs')
-      ]
-    }, {
-      test: /\.css$/,
-      loaders: ['style-loader', 'css-loader']
-    }]
+    loaders: [
+      {
+        test: /\.js$/,
+        loaders: ['react-hot', 'babel'],
+        include: [
+          path.join(__dirname, 'src'),
+          path.join(__dirname, '../src'),
+          path.join(__dirname, '../libs')
+        ]
+      },
+      {
+        test: /\.css$/,
+        loaders: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)(\?.+)?$/,
+        loader : 'file-loader'
+      }
+    ]
   }
 }), {
   publicPath: '/static/',
