@@ -9,7 +9,7 @@ html, body {
 }
 
 body {
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   font-weight: 400;
 }
 
@@ -75,6 +75,7 @@ body {
 
 .demo-content {
   padding: 24px;
+  margin-top: 20px;
   border: 1px solid #eaeefb;
   border-radius: 4px;
 }
@@ -82,5 +83,28 @@ body {
 .demo-alert  {
   .el-alert {
     margin-bottom: 20px;
+  }
+}
+
+.demo-layout {
+  .el-row {
+    margin-bottom: 20px;
+  }
+  
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+
+  .bg-purple {
+    background: #d3dce6;
+  }
+
+  .bg-purple-light {
+    background: #e5e9f2;
   }
 }

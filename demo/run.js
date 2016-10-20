@@ -48,7 +48,5 @@ new WebpackDevServer(webpack({
 }).listen(3000, 'localhost', (error, result) => {
   if (error) {
     console.log(error);
-  } else {
-    console.log('Listening at http://localhost:3000/');
   }
 });

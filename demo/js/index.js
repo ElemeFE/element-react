@@ -5,13 +5,14 @@ import '../css/style.scss';
 import '../../themes/default/index.css';
 
 import Alert from './alert';
+import Layout from './layout';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      type: 'alert'
+      type: 'layout'
     };
   }
 
@@ -25,6 +26,7 @@ class App extends React.Component {
           <nav className="menu">
             <ul>
               <li className="menu-item" onClick={this.onSelect.bind(this, 'alert')}>Alert 警告</li>
+              <li className="menu-item" onClick={this.onSelect.bind(this, 'layout')}>Layout 布局</li>
             </ul>
           </nav>
           <div className="demo">{this.getDemo()}</div>
@@ -37,6 +39,8 @@ class App extends React.Component {
     switch (this.state.type) {
       case 'alert':
         return <Alert />
+      case 'layout':
+        return <Layout />
       default:
         break;
     }
