@@ -13,7 +13,46 @@ body {
   font-weight: 400;
 }
 
+.app {
+  .header {
+    display: flex;
+    align-items: center;
+    background: rgb(32, 160, 255);
+    height: 80px;
+    color: #fff;
+    padding: 0 25px;
+
+    h1 {
+      font-size: 32px;
+      font-weight: 400;
+    }
+  }
+
+  .content {
+    display: flex;
+  }
+}
+
+.menu {
+  width: 200px;
+  padding: 25px;
+  border-right: 1px solid #f0f0f0;
+
+  ul {
+      list-style: none;
+  }
+}
+
+.menu-item {
+    font-size: 16px;
+    color: #5e6d82;
+    line-height: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
 .demo {
+  flex: 1;
   padding: 25px;
 }
 
