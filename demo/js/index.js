@@ -8,6 +8,7 @@ import Alert from './alert';
 import Layout from './layout';
 import Button from './button';
 import Radio from './radio';
+import Card from './card';
 
 class App extends React.Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class App extends React.Component {
               <li className="menu-item" onClick={this.onSelect.bind(this, 'layout')}>Layout 布局</li>
               <li className="menu-item" onClick={this.onSelect.bind(this, 'button')}>Button 按钮</li>
               <li className="menu-item" onClick={this.onSelect.bind(this, 'radio')}>Radio 单选框</li>
+              <li className="menu-item" onClick={this.onSelect.bind(this, 'card')}>Card 卡片</li>
             </ul>
           </nav>
           <div className="demo">{this.getDemo()}</div>
@@ -49,6 +51,8 @@ class App extends React.Component {
         return <Button />
       case 'radio':
         return <Radio />
+      case 'card':
+        return <Card />
       default:
         break;
     }
