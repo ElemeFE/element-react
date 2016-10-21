@@ -1,5 +1,7 @@
+import './style.scss';
+
 import React from 'react';
-import { Alert } from '../../src';
+import { Alert } from '../../../src';
 
 export default class Playground extends React.Component {
   render() {

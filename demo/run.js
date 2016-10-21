@@ -7,7 +7,7 @@ new WebpackDevServer(webpack({
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './js/index'
+    './pages/index'
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -22,7 +22,7 @@ new WebpackDevServer(webpack({
         test: /\.js$/,
         loaders: ['react-hot', 'babel'],
         include: [
-          path.join(__dirname, 'js'),
+          path.join(__dirname, 'pages'),
           path.join(__dirname, '../src'),
           path.join(__dirname, '../libs')
         ]
@@ -36,7 +36,7 @@ new WebpackDevServer(webpack({
         loaders: ["style", "css", "sass"]
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)(\?.+)?$/,
+        test: /\.(png|eot|svg|ttf|woff|woff2)(\?.+)?$/,
         loader : 'url-loader'
       }
     ]

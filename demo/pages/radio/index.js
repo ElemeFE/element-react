@@ -1,5 +1,7 @@
+import './style.scss';
+
 import React from 'react';
-import { Radio } from '../../src';
+import { Radio } from '../../../src';
 
 export default class Playground extends React.Component {
   constructor(props) {

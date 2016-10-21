@@ -2,8 +2,10 @@
  * Created by elemelyn on 16/10/21.
  */
 
+import './style.scss';
+
 import React from 'react';
-import { Button, Card, Layout } from '../../src';
+import { Button, Card, Layout } from '../../../src';
 
 const Row = Layout.Row;
 const Col = Layout.Col;
@@ -60,7 +62,7 @@ export default class Playground extends React.Component {
             <Row>
               <Col span={ 8 } offset={ 0 }>
                 <Card bodyStyle={{ padding: 0 }}>
-                  <img src="images/hamburger.png" className="image" />
+                  <img src={require('./hamburger.png')} className="image" />
                   <div style={{ padding: 14 }}>
                     <span>好吃的汉堡</span>
                     <div className="bottom clearfix">
@@ -73,7 +75,7 @@ export default class Playground extends React.Component {
 
               <Col span={ 8 } offset={ 2 }>
                 <Card bodyStyle={{ padding: 0 }}>
-                  <img src="images/hamburger.png" className="image" />
+                  <img src={require('./hamburger.png')} className="image" />
                   <div style={{ padding: 14 }}>
                     <span>好吃的汉堡</span>
                     <div className="bottom clearfix">
