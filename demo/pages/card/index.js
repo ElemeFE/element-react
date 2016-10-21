@@ -26,7 +26,9 @@ export default class Playground extends React.Component {
                   header={
                     <div className="clearfix">
                       <span style={{ "lineHeight": "36px" }}>卡片名称</span>
-                      <Button style={{ "float": "right" }} type="primary">操作按钮</Button>
+                      <span style={{ "float": "right" }}>
+                        <Button type="primary">操作按钮</Button>
+                      </span>
                     </div>
                   }
             >
