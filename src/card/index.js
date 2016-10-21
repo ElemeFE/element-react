@@ -23,3 +23,10 @@ Card.propTypes = {
   header: PropTypes.node,
   bodyStyle: PropTypes.object
 };
+
+// TODO: 该样式在 css 中有定义, 是否不应该统一由 default/themes 控制?
+Card.defaultProps = {
+  bodyStyle: {
+    padding: '20px'
+  }
+};
