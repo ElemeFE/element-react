@@ -44,5 +44,9 @@
   },
   "peerDependencies": {
     "react": "^15.3.2"
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "react-addons-css-transition-group": "^15.3.2"
   }
 }

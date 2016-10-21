@@ -1,20 +1,12 @@
 import React, { PropTypes } from 'react';
 import { Component, View } from '../../libs';
 
-class Group extends Component {
-  render() {
-    return (
-      <div className="el-button-group">
-        {this.props.children}
-      </div>
-    )
-  }
-}
+import Group from './group';
 
 export default class Button extends Component {
   render() {
     return (
-      <button className={this.computedClassName('el-button', this.props.type && `el-button-${this.props.type}`, this.props.size && `el-button-${this.props.size}`, this.props.disabled && 'is-disabled', this.props.loading && 'is-loading', this.props.plain && 'is-plain')} disabled={this.props.disabled} type={this.props.nativeType}>
+      <button className={this.classNames('el-button', this.props.type && `el-button-${this.props.type}`, this.props.size && `el-button-${this.props.size}`, {'is-disabled': this.props.disabled}, {'is-loading': this.props.loading}, {'is-plain': this.props.plain})} disabled={this.props.disabled} type={this.props.nativeType}>
         <View if={this.props.loading}>
           <i className="el-icon-loading"></i>
         </View>
