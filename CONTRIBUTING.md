@@ -21,9 +21,23 @@ npm i && npm start
 ## 基础组件
 为了方便的将Vue组件转变为React组件, 提供了一些类似的组件, 在移植Vue组件的时候可以考虑使用
 
+### Component
+
+* className [String] 会被传递到根元素的className属性上
+
+* style [Object] style
+
+* classNames [Function] 设置组件的多个className
+
+```js
+<div className={this.classNames('el-alert', `el-alert--${ this.props.type }`)}>
+...
+</div>
+```
+
 ### View
 
-* if <Boolean> 控制DOM的状态
+* if [Boolean] 控制DOM的状态
 
 ```js
 // Vue
@@ -37,7 +51,7 @@ npm i && npm start
 </View>
 ```
 
-* show <Boolean> 控制DOM的display样式
+* show [Boolean] 控制DOM的display样式
 
 ```js
 // Vue
@@ -51,7 +65,7 @@ npm i && npm start
 </View>
 ```
 
-* transition <String>
+* transition [String]
 
 ```js
 // Vue

@@ -4,7 +4,7 @@ import { Component, View } from '../../libs';
 export default class Card extends Component {
   render() {
     return (
-      <div className={ this.classNames("el-card", this.props.className) }>
+      <div className="el-card">
         <View if={ this.props.header }>
           <div className="el-card__header">
             { this.props.header }
