@@ -1,37 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
+import equal from 'is-equal';
 
 export default class Component extends React.Component {
   componentDidMount() {
-    if (this.shouldApplyProps()) {
-      this.element = ReactDOM.findDOMNode(this);
-
-      this.className = this.element.className;
-      this.style = this.element.style;
-
-      this.applyProps(this.props);
-    }
+    this.shouldApplyProps(this.props) && this.applyProps(this.props);
   }
 
   componentWillReceiveProps(props) {
-    this.shouldApplyProps() && this.applyProps(props);
+    this.shouldApplyProps(props, this.props) && this.applyProps(props);
   }
 
-  shouldApplyProps() {
-    return this.props.hasOwnProperty('className') || this.props.hasOwnProperty('style');
+  shouldApplyProps(newProps, oldProps = {}) {
+    const shouldApplyProps = !equal(newProps.className, oldProps.className) || !equal(newProps.style, oldProps.style);
+
+    if (shouldApplyProps && !this.element) {
+      this.element = ReactDOM.findDOMNode(this);
+
+      if (this.element) {
+        this.className = this.element.className;
+        this.style = this.element.style;
+      }
+    }
+
+    return shouldApplyProps;
   }
 
   applyProps(props) {
-    if ('className' in this.props) {
-      this.element.className = this.className + ' ' + props.className;
-    }
+    if (this.element) {
+      // apply new className
+      this.element.className = this.classNames(this.className, props.className);
 
-    if ('style' in this.props) {
-      const style = Object.assign({}, this.style, props.style);
+      // style reset
+      for (const key in this.style) {
+        this.element.style.setProperty(key, this.style.getPropertyValue(key));
+      }
 
-      for (const key in style) {
-        this.element.style[key] = style[key];
+      // apply new style
+      if (props.style) {
+        for (const key in props.style) {
+          this.element.style.setProperty(key, props.style[key]);
+        }
       }
     }
   }
