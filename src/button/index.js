@@ -6,7 +6,7 @@ import Group from './group';
 export default class Button extends Component {
   render() {
     return (
-      <button className={this.classNames('el-button', this.props.type && `el-button-${this.props.type}`, this.props.size && `el-button-${this.props.size}`, {'is-disabled': this.props.disabled}, {'is-loading': this.props.loading}, {'is-plain': this.props.plain})} disabled={this.props.disabled} type={this.props.nativeType}>
+      <button className={this.classNames('el-button', this.props.type && `el-button-${this.props.type}`, this.props.size && `el-button-${this.props.size}`, {'is-disabled': this.props.disabled}, {'is-loading': this.props.loading}, {'is-plain': this.props.plain})} disabled={this.props.disabled} type={this.props.nativeType} onClick={this.onClick.bind(this)}>
         <View if={this.props.loading}>
           <i className="el-icon-loading"></i>
         </View>
@@ -17,9 +17,16 @@ export default class Button extends Component {
       </button>
     )
   }
+
+  onClick(e) {
+    if (this.props.onClick) {
+      this.props.onClick(e);
+    }
+  }
 }
 
 Button.propTypes = {
+  onClick: PropTypes.func,
   type: PropTypes.string,
   size: PropTypes.string,
   icon: PropTypes.string,
