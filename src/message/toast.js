@@ -8,7 +8,7 @@ const icons = {
   warning: require('./assets/warning.svg')
 }
 
-export default class Notification extends Component {
+export default class Toast extends Component {
   constructor(props) {
     super(props);
 
@@ -60,7 +60,7 @@ export default class Notification extends Component {
   }
 }
 
-Notification.propTypes = {
+Toast.propTypes = {
   type: PropTypes.oneOf(['success', 'warning', 'info', 'error']),
   message: PropTypes.string.isRequired,
   duration: PropTypes.number,
@@ -68,7 +68,7 @@ Notification.propTypes = {
   onClose: PropTypes.func
 }
 
-Notification.defaultProps = {
+Toast.defaultProps = {
   type: 'info',
   duration: 3000,
   showClose: false

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Notification from './notification';
+import Toast from './Toast';
 
 export default function Message(props = {}, type) {
   const div = document.createElement('div');
@@ -16,7 +16,7 @@ export default function Message(props = {}, type) {
     props.type = type;
   }
 
-  ReactDOM.render(<Notification onClose={(...args) => {
+  ReactDOM.render(<Toast onClose={(...args) => {
     ReactDOM.unmountComponentAtNode(div);
     document.body.removeChild(div);
 
