@@ -10,6 +10,7 @@ import Button from './button';
 import Radio from './radio';
 import Card from './card';
 import Message from './message';
+import MessageBox from './message-box';
 import Loading from './loading';
 import Dialog from './dialog';
 
@@ -20,8 +21,9 @@ const pages = {
   alert: { title: 'Alert 警告', component: Alert },
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
-  card: { title: 'Card 卡片', component: Card },
-  dialog: { title: 'Dialog 对话框', component: Dialog }
+  messageBox: { title: 'Message Box 弹框', component: MessageBox },
+  dialog: { title: 'Dialog 对话框', component: Dialog },
+  card: { title: 'Card 卡片', component: Card }
 };
 
 class App extends React.Component {
@@ -29,7 +31,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: 'loading'
+      page: 'messageBox'
     };
   }
 
