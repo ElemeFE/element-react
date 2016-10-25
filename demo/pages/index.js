@@ -9,12 +9,14 @@ import Layout from './layout';
 import Button from './button';
 import Radio from './radio';
 import Card from './card';
+import Message from './message';
 
 const pages = {
   layout: { title: 'Layout 布局', component: Layout },
   button: { title: 'Button 按钮', component: Button },
   radio: { title: 'Radio 单选框', component: Radio },
   alert: { title: 'Alert 警告', component: Alert },
+  message: { title: 'Message 消息提示', component: Message },
   card: { title: 'Card 卡片', component: Card }
 };
 
@@ -23,7 +25,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: 'card'
+      page: 'message'
     };
   }
 
