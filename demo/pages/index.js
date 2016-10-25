@@ -11,6 +11,7 @@ import Radio from './radio';
 import Card from './card';
 import Message from './message';
 import Loading from './loading';
+import Dialog from './dialog';
 
 const pages = {
   layout: { title: 'Layout 布局', component: Layout },
@@ -19,7 +20,8 @@ const pages = {
   alert: { title: 'Alert 警告', component: Alert },
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
-  card: { title: 'Card 卡片', component: Card }
+  card: { title: 'Card 卡片', component: Card },
+  dialog: { title: 'Dialog 对话框', component: Dialog }
 };
 
 class App extends React.Component {
