@@ -10,6 +10,7 @@ import Button from './button';
 import Radio from './radio';
 import Card from './card';
 import Message from './message';
+import MessageBox from './message-box';
 import Loading from './loading';
 
 const pages = {
@@ -19,6 +20,7 @@ const pages = {
   alert: { title: 'Alert 警告', component: Alert },
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
+  messageBox: { title: 'Message Box 弹框', component: MessageBox },
   card: { title: 'Card 卡片', component: Card }
 };
 
@@ -27,7 +29,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: 'loading'
+      page: 'messageBox'
     };
   }
 

@@ -16,12 +16,12 @@ export default function Message(props = {}, type) {
     props.type = type;
   }
 
-  ReactDOM.render(<Notification onClose={() => {
+  ReactDOM.render(<Notification onClose={(...args) => {
     ReactDOM.unmountComponentAtNode(div);
     document.body.removeChild(div);
 
     if (props.onClose instanceof Function) {
-      props.onClose();
+      props.onClose.apply(this, args);
     }
   }} {...props} />, div);
 
