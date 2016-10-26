@@ -6,3 +6,4 @@ export { default as Loading } from './loading';
 export { default as Message } from './message';
 export { default as MessageBox } from './message-box';
 export { default as Radio } from './radio';
+export { default as Dialog } from './dialog';

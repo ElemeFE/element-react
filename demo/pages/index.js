@@ -12,6 +12,7 @@ import Card from './card';
 import Message from './message';
 import MessageBox from './message-box';
 import Loading from './loading';
+import Dialog from './dialog';
 
 const pages = {
   layout: { title: 'Layout 布局', component: Layout },
@@ -21,6 +22,7 @@ const pages = {
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
+  dialog: { title: 'Dialog 对话框', component: Dialog },
   card: { title: 'Card 卡片', component: Card }
 };
 
