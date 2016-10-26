@@ -4,7 +4,8 @@
   "description": "Element UI for React",
   "main": "index.js",
   "scripts": {
-    "start": "cd demo && node run.js"
+    "start": "cd demo && node run.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -33,10 +34,12 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.3.0",
     "file-loader": "^0.9.0",
+    "jest": "^16.0.2",
     "node-sass": "^3.10.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-hot-loader": "^1.3.0",
+    "react-test-renderer": "^15.3.2",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",

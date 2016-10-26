@@ -20,7 +20,7 @@ export default class Component extends React.Component {
 
       if (this.element) {
         this.className = this.element.className;
-        this.style = this.element.style;
+        this.style = this.element.style.cssText;
       }
     }
 
@@ -32,16 +32,16 @@ export default class Component extends React.Component {
       // apply new className
       this.element.className = this.classNames(this.className, props.className);
 
-      // style reset
-      for (const key in this.style) {
-        this.element.style.setProperty(key, this.style.getPropertyValue(key));
-      }
-
       // apply new style
       if (props.style) {
-        for (const key in props.style) {
-          this.element.style.setProperty(key, props.style[key]);
-        }
+        const div = document.createElement('div');
+        const dom = ReactDOM.render(<div style={props.style} />, div);
+
+        ReactDOM.unmountComponentAtNode(div);
+
+        this.element.style.cssText = this.style + dom.style.cssText;
+      } else {
+        this.element.style.cssText = this.style;
       }
     }
   }

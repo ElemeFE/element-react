@@ -15,7 +15,7 @@ export default class Playground extends React.Component {
             <p>页面中的非浮层元素，不会自动消失。</p>
           </div>
           <div className="demo-content demo-alert">
-            <Alert className="test" title="成功提示的文案" type="success" />
+            <Alert title="成功提示的文案" type="success" />
             <Alert title="消息提示的文案" type="info" />
             <Alert title="警告提示的文案" type="warning" />
             <Alert title="错误提示的文案" type="error" />

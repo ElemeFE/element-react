@@ -29,7 +29,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: 'messageBox'
+      page: 'loading'
     };
   }
 

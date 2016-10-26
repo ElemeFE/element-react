@@ -8,7 +8,10 @@ function next(props) {
     const div = document.createElement('div');
 
     document.body.appendChild(div);
-    document.body.style.setProperty('overflow', 'hidden');
+
+    if (props.lockScroll != false) {
+      document.body.style.setProperty('overflow', 'hidden');
+    }
 
     ReactDOM.render(<MessageBox onClose={() => {
       ReactDOM.unmountComponentAtNode(div);
@@ -49,7 +52,7 @@ function confirm(message, title, props) {
   return next(props);
 }
 
-function promot() {
+function prompt() {
 
 }
 
@@ -60,6 +63,6 @@ function msgbox(props) {
 export default {
   alert,
   confirm,
-  promot,
+  prompt,
   msgbox
 }

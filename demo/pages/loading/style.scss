@@ -1,8 +1,10 @@
 .demo-loading  {
   .el-loading-demo {
-    position: relative;
-    border: 1px solid #999;
     border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .el-loading-mask {
     height: 100px;
   }
 }

@@ -53,10 +53,10 @@ export default class MessageBox extends Component {
               </View>
               <div className="el-message-box__btns">
                 <View show={this.props.showCancelButton}>
-                  <Button className={this.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.props.cancelButtonText}</Button>
+                  <Button className={this.props.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.props.cancelButtonText}</Button>
                 </View>
                 <View show={this.props.showConfirmButton}>
-                  <Button className={this.classNames('el-button-primary', this.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.props.confirmButtonText}</Button>
+                  <Button className={this.classNames('el-button-primary', this.props.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.props.confirmButtonText}</Button>
                 </View>
               </div>
             </div>
@@ -82,7 +82,7 @@ export default class MessageBox extends Component {
         case 'confirm':
           this.props.promise.resolve();
           break;
-        case 'promot':
+        case 'prompt':
           break;
         default:
           break;
@@ -106,18 +106,21 @@ export default class MessageBox extends Component {
 }
 
 MessageBox.propTypes = {
-  modal: PropTypes.oneOf(['alert', 'confirm', 'promot']),
+  modal: PropTypes.oneOf(['alert', 'confirm', 'prompt']),
   type: PropTypes.oneOf(['success', 'warning', 'info', 'error']),
   title: PropTypes.string,
-  showClose: PropTypes.bool
+  showClose: PropTypes.bool,
+  showConfirmButton: PropTypes.bool,
+  confirmButtonPosition: PropTypes.oneOf(['left', 'right']),
+  confirmButtonText: PropTypes.string,
+  cancelButtonText: PropTypes.string,
+  cancelButtonClass: PropTypes.string,
+  confirmButtonClass: PropTypes.string
 }
 
 MessageBox.defaultProps = {
   title: '提示',
   showClose: true,
-  modalFade: true,
-  lockScroll: true,
-  closeOnClickModal: true,
   showConfirmButton: true,
   confirmButtonPosition: 'right',
   confirmButtonText: '确定',
