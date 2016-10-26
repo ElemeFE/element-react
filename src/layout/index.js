@@ -17,7 +17,7 @@ export class Row extends Component {
   }
 
   getStyle() {
-    var style = {};
+    const style = {};
 
     if (this.props.gutter) {
       style.marginLeft = `-${this.props.gutter / 2}px`;
@@ -50,7 +50,7 @@ export class Col extends Component {
   }
 
   getStyle() {
-    var style = {};
+    const style = {};
 
     if (this.props.gutter) {
       style.paddingLeft = `${this.props.gutter / 2}px`;
