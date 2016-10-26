@@ -7,3 +7,6 @@ indent_size = 2
 [README.md]
 indent_style = space
 indent_size = 4
+
+[Makefile]
+indent_style = tab

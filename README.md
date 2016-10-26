@@ -33,12 +33,17 @@ npm i && npm start
 
 ## 单元测试
 
-项目使用**jest**来做单元测试, 执行以下命令:
 
-```shell
-npm test
-```
 
+## Tasks
+* 项目使用**jest**来做单元测试, 执行以下命令:
+    ```shell
+    npm test
+    ```
+* lint:
+    ```shell
+    make lint
+    ```
 ## References
 1. https://github.com/JedWatson/classnames
 2. https://vuejs.org/guide/conditional.html#v-if
