@@ -16,6 +16,16 @@ export default class Alert extends Component {
     };
   }
 
+  close() {
+    this.setState({
+      visible: false
+    });
+
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  }
+
   render() {
     return (
       <View show={this.state.visible} transition="el-alert-fade">
@@ -37,16 +47,6 @@ export default class Alert extends Component {
         </div>
       </View>
     )
-  }
-
-  close() {
-    this.setState({
-      visible: false
-    });
-
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
   }
 }
 
