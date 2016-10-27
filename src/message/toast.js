@@ -65,7 +65,9 @@ Toast.propTypes = {
   message: PropTypes.string.isRequired,
   duration: PropTypes.number,
   showClose: PropTypes.bool,
+/* eslint-disable */
   onClose: PropTypes.func
+/* eslint-enable */
 }
 
 Toast.defaultProps = {

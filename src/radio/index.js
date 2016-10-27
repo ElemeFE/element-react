@@ -69,10 +69,12 @@ export default class Radio extends Component {
 
 Radio.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onChange: PropTypes.func,
   disabled: PropTypes.bool,
   focus: PropTypes.bool,
-  checked: PropTypes.bool,
-  onChange: PropTypes.func
+/* eslint-disable */
+  checked: PropTypes.bool
+/* eslint-enable */
 }
 
 class Button extends Radio {
