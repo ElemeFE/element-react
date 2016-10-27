@@ -15,17 +15,18 @@ import Loading from './loading';
 import Dialog from './dialog';
 import Progress from './progress';
 
+// pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
   layout: { title: 'Layout 布局', component: Layout },
   button: { title: 'Button 按钮', component: Button },
   radio: { title: 'Radio 单选框', component: Radio },
+  progress: { title: 'Progress 进度条', component: Progress },
   alert: { title: 'Alert 警告', component: Alert },
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
   dialog: { title: 'Dialog 对话框', component: Dialog },
   card: { title: 'Card 卡片', component: Card },
-  progress: { title: 'Progress 进度条', component: Progress },
 };
 
 class App extends React.Component {
