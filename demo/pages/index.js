@@ -13,6 +13,7 @@ import Message from './message';
 import MessageBox from './message-box';
 import Loading from './loading';
 import Dialog from './dialog';
+import Progress from './progress';
 
 const pages = {
   layout: { title: 'Layout 布局', component: Layout },
@@ -23,7 +24,8 @@ const pages = {
   message: { title: 'Message 消息提示', component: Message },
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
   dialog: { title: 'Dialog 对话框', component: Dialog },
-  card: { title: 'Card 卡片', component: Card }
+  card: { title: 'Card 卡片', component: Card },
+  progress: { title: 'Progress 进度条', component: Progress },
 };
 
 class App extends React.Component {
