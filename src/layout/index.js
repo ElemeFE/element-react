@@ -2,6 +2,17 @@ import React, { PropTypes } from 'react';
 import { Component } from '../../libs';
 
 export class Row extends Component {
+  getStyle() {
+    const style = {};
+
+    if (this.props.gutter) {
+      style.marginLeft = `-${this.props.gutter / 2}px`;
+      style.marginRight = style.marginLeft;
+    }
+
+    return style;
+  }
+
   render() {
     return (
       <div className={this.classNames('el-row', this.props.justify !== 'start' && `is-justify-${this.props.justify}`, this.props.align !== 'top' && `is-align-${this.props.align}`, {'el-row--flex': this.props.type === 'flex'})} style={this.getStyle()}>
@@ -16,16 +27,6 @@ export class Row extends Component {
     )
   }
 
-  getStyle() {
-    const style = {};
-
-    if (this.props.gutter) {
-      style.marginLeft = `-${this.props.gutter / 2}px`;
-      style.marginRight = style.marginLeft;
-    }
-
-    return style;
-  }
 }
 
 Row.propTypes = {

@@ -4,6 +4,12 @@ import { Component, View } from '../../libs';
 import Group from './group';
 
 export default class Button extends Component {
+  onClick(e) {
+    if (this.props.onClick) {
+      this.props.onClick(e);
+    }
+  }
+
   render() {
     return (
       <button className={this.classNames('el-button', this.props.type && `el-button-${this.props.type}`, this.props.size && `el-button-${this.props.size}`, {'is-disabled': this.props.disabled}, {'is-loading': this.props.loading}, {'is-plain': this.props.plain})} disabled={this.props.disabled} type={this.props.nativeType} onClick={this.onClick.bind(this)}>
@@ -16,12 +22,6 @@ export default class Button extends Component {
         {this.props.children}
       </button>
     )
-  }
-
-  onClick(e) {
-    if (this.props.onClick) {
-      this.props.onClick(e);
-    }
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Component } from '../../libs';
 
 export default class ButtonGroup extends Component {
