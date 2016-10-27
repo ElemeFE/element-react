@@ -16,7 +16,7 @@ npm i && npm start
 
 ## 组件接口
 
-目前提供了两个基础组件, Component和View.
+目前提供了3个基础组件, Component, PropTypes和View.
 
 ### Component
 
@@ -34,6 +34,11 @@ npm i && npm start
      ...
     </div>
     ```
+### PropTypes
+
+继承了React所有的PropTypes, 并提供了一些通用的自定义类型, 所有的自定义组件不再使用React.PropTypes.
+
+* range(min, max)
 
 ### View
 
@@ -95,10 +100,11 @@ npm test
 ## Tasks
 
 * es-lint
+
     ```shell
     npm run lint
     ```
-    
+
 ## 贡献代码
 
 代码规范请参考 [CONTRIBUTING.md](https://github.com/eleme/element-react/blob/master/CONTRIBUTING.md)
