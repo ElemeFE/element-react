@@ -20,14 +20,54 @@ npm i && npm start
  * style [Object], 可以将style附加到组件的根元素的style上.
 
 * 方法
- * classNames(className, ..., className), 参数类型参照[1], 返回类型为String.
+ * classNames(className, ..., className), 使用方法参照[1], 返回类型为String.
+
+    ```jsx
+    <div className={this.classNames('el-alert', `el-alert--${ this.props.type }`)}>
+     ...
+    </div>
+    ```
 
 ### View
 
 * 属性
  * if [any], Vue中的`v-if`的实现, 参考[2].
+
+     ```js
+     // Vue
+     <i class="el-alert__icon" :class="[ iconClass, isBigIcon ]" v-if="showIcon"></i>
+
+     // React
+     <View if={this.props.showIcon}>
+     <i className={this.classNames('el-alert__icon', TYPE_CLASSES_MAP[this.props.type] || 'el-icon-information', {'is-big': this.props.description})}></i>
+     </View>
+     ```
+
  * show [any], Vue的`v-show`的实现, 参考[3].
+
+     ```js
+     // Vue
+     <i class="el-alert__closebtn" :class="{ 'is-customed': closeText !== '', 'el-icon-close': closeText === '' }" v-show="closable" @click="close()">{{closeText}}</i>
+
+     // React
+     <View show={this.props.closable}>
+     <i className={this.classNames('el-alert__closebtn', this.props.closeText ? 'is-customed' : 'el-icon-close')} onClick={this.close.bind(this)}>{this.props.closeText}</i>
+     </View>
+     ```
+
  * transition [String], Vue的`transition`的实现, 参考[4].
+
+     ```js
+     // Vue
+     <transition name="el-alert-fade">
+     ...
+     </transition>
+
+     // React
+    <View transition="el-alert-fade">
+    ...
+    </View>
+     ```
 
 > 注意: React.Children.count(props.children) === 1
 
@@ -39,12 +79,22 @@ npm i && npm start
 npm test
 ```
 
+> 因为组件使用了react-dom, 但是react-dom只允许初始化一次, 所以目前jest还无法正常测试React组件, 待react升级到15.4.0, 参考issue: https://github.com/facebook/jest/issues/1353
+
+## UI自动化测试
+
+> TODO
+
 ## Tasks
 
-* es-lint:
+* es-lint
     ```shell
     npm run lint
     ```
+    
+## 贡献代码
+
+代码规范请参考 [CONTRIBUTING.md](https://github.com/eleme/element-react/blob/master/CONTRIBUTING.md)
 
 ## References
 1. https://github.com/JedWatson/classnames
