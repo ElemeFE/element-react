@@ -2,9 +2,16 @@
 
 ## 开发环境
 
+安装git hooks, 每次提交前会强制lint src下代码
+
+```shell
+npm run install:githooks
+```
+
 ```shell
 npm i && npm start
 ```
+
 浏览器打开http://localhost:3000, Bingo🍺
 
 ## 组件接口
