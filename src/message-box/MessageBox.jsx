@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import { Component, View } from '../../libs';
+import React from 'react';
+import { Component, PropTypes, View } from '../../libs';
 import Button from '../button';
 
 const typeMap = {
