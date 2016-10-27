@@ -14,6 +14,7 @@ import MessageBox from './message-box';
 import Loading from './loading';
 import Dialog from './dialog';
 import Progress from './progress';
+import Badge from './badge';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -27,6 +28,7 @@ const pages = {
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
   dialog: { title: 'Dialog 对话框', component: Dialog },
   card: { title: 'Card 卡片', component: Card },
+  badge: { title: 'Badge 标记', component: Badge },
 };
 
 class App extends React.Component {
