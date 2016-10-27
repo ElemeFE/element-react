@@ -25,6 +25,24 @@ export default class Toast extends Component {
     this.startTimer();
   }
 
+  onClose() {
+    this.stopTimer();
+
+    this.setState({
+      visible: false
+    });
+  }
+
+  startTimer() {
+    this.timeout = setTimeout(() => {
+      this.onClose();
+    }, this.props.duration)
+  }
+
+  stopTimer() {
+    clearTimeout(this.timeout);
+  }
+
   render() {
     return (
       <View show={this.state.visible} transition="el-message-fade">
@@ -39,24 +57,6 @@ export default class Toast extends Component {
         </div>
       </View>
     )
-  }
-
-  startTimer() {
-    this.timeout = setTimeout(() => {
-      this.onClose();
-    }, this.props.duration)
-  }
-
-  stopTimer() {
-    clearTimeout(this.timeout);
-  }
-
-  onClose() {
-    this.stopTimer();
-
-    this.setState({
-      visible: false
-    });
   }
 }
 

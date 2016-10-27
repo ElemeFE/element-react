@@ -24,6 +24,41 @@ export default class MessageBox extends Component {
     })
   }
 
+  typeClass() {
+    return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
+  }
+
+  handleAction(type) {
+    if (this.props.modal) {
+      switch (type) {
+        case 'cancel':
+          this.props.promise.reject();
+          break;
+        case 'confirm':
+          this.props.promise.resolve();
+          break;
+        case 'prompt':
+          break;
+        default:
+          break;
+      }
+    } else {
+      this.props.promise.resolve(type);
+    }
+
+    this.close();
+  }
+
+  close() {
+    this.setState({
+      visible: false
+    });
+
+    setTimeout(() => {
+      this.props.onClose();
+    }, 200);
+  }
+
   render() {
     return (
       <div>
@@ -68,61 +103,29 @@ export default class MessageBox extends Component {
       </div>
     )
   }
-
-  typeClass() {
-    return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
-  }
-
-  handleAction(type) {
-    if (this.props.modal) {
-      switch (type) {
-        case 'cancel':
-          this.props.promise.reject();
-          break;
-        case 'confirm':
-          this.props.promise.resolve();
-          break;
-        case 'prompt':
-          break;
-        default:
-          break;
-      }
-    } else {
-      this.props.promise.resolve(type);
-    }
-
-    this.close();
-  }
-
-  close() {
-    this.setState({
-      visible: false
-    });
-
-    setTimeout(() => {
-      this.props.onClose();
-    }, 200);
-  }
 }
 
 MessageBox.propTypes = {
   modal: PropTypes.oneOf(['alert', 'confirm', 'prompt']),
   type: PropTypes.oneOf(['success', 'warning', 'info', 'error']),
   title: PropTypes.string,
+  message: PropTypes.string,
+  showInput: PropTypes.bool,
   showClose: PropTypes.bool,
+  showCancelButton: PropTypes.bool,
   showConfirmButton: PropTypes.bool,
-  confirmButtonPosition: PropTypes.oneOf(['left', 'right']),
   confirmButtonText: PropTypes.string,
   cancelButtonText: PropTypes.string,
   cancelButtonClass: PropTypes.string,
-  confirmButtonClass: PropTypes.string
+  confirmButtonClass: PropTypes.string,
+  promise: PropTypes.object,
+  onClose: PropTypes.func
 }
 
 MessageBox.defaultProps = {
   title: '提示',
   showClose: true,
   showConfirmButton: true,
-  confirmButtonPosition: 'right',
   confirmButtonText: '确定',
   cancelButtonText: '取消'
 }

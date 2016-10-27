@@ -32,10 +32,10 @@ export default function Message(props = {}, type) {
   ReactDOM.render(component, div);
 }
 
-/*eslint-disable */
+/* eslint-disable */
 ['success', 'warning', 'info', 'error'].forEach(type => {
   Message[type] = (options = {}) => {
     return Message(options, type);
   };
 });
-/*eslint-enable */
+/* eslint-enable */

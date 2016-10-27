@@ -9,7 +9,7 @@ export default class View extends Component {
     if (!this.props.hasOwnProperty('if') || Boolean(this.props.if)) {
       const element = React.Children.only(this.props.children);
 
-      children = React.cloneElement(element, this.props.hasOwnProperty('show') && !Boolean(this.props.show) && {
+      children = React.cloneElement(element, this.props.hasOwnProperty('show') && !this.props.show && {
         key: element,
         style: Object.assign({}, element.props.style, {
           display: 'none'
@@ -30,7 +30,7 @@ export default class View extends Component {
 }
 
 View.propTypes = {
-  transition: PropTypes.string,
-  show: PropTypes.any,
-  if: PropTypes.any
+  if: PropTypes.oneOfType(PropTypes.bool, PropTypes.number, PropTypes.string),
+  show: PropTypes.oneOfType(PropTypes.bool, PropTypes.number, PropTypes.string),
+  transition: PropTypes.string
 };

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Component, View } from '../../libs';
+import { Component } from '../../libs';
 
 import Group from './group';
 
@@ -18,24 +18,6 @@ export default class Radio extends Component {
     if (this.state.checked != checked) {
       this.setState({ checked });
     }
-  }
-
-  render() {
-    return (
-      <label className="el-radio">
-        <span className="el-radio__input">
-          <span className={this.classNames('el-radio__inner', {'is-checked': this.state.checked}, {'is-disabled': this.props.disabled}, {'is-focus': this.props.focus})}></span>
-          <input type="radio" className="el-radio__original" checked={this.state.checked} disabled={this.props.disabled} onChange={this.onChange.bind(this)} onFocus={this.onFocus.bind(this)} onBlur={this.onBlur.bind(this)} />
-        </span>
-        <span className="el-radio__label">
-          {this.props.children || this.props.value}
-        </span>
-      </label>
-    )
-  }
-
-  getChecked(props) {
-    return props.model == props.value || Boolean(props.checked)
   }
 
   onChange(e) {
@@ -65,11 +47,30 @@ export default class Radio extends Component {
       focus: false
     })
   }
+
+  getChecked(props) {
+    return props.model == props.value || Boolean(props.checked)
+  }
+
+  render() {
+    return (
+      <label className="el-radio">
+        <span className="el-radio__input">
+          <span className={this.classNames('el-radio__inner', {'is-checked': this.state.checked}, {'is-disabled': this.props.disabled}, {'is-focus': this.props.focus})}></span>
+          <input type="radio" className="el-radio__original" checked={this.state.checked} disabled={this.props.disabled} onChange={this.onChange.bind(this)} onFocus={this.onFocus.bind(this)} onBlur={this.onBlur.bind(this)} />
+        </span>
+        <span className="el-radio__label">
+          {this.props.children || this.props.value}
+        </span>
+      </label>
+    )
+  }
 }
 
 Radio.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   disabled: PropTypes.bool,
+  focus: PropTypes.bool,
   checked: PropTypes.bool,
   onChange: PropTypes.func
 }

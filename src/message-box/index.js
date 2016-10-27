@@ -13,15 +13,20 @@ function next(props) {
       document.body.style.setProperty('overflow', 'hidden');
     }
 
-    ReactDOM.render(<MessageBox onClose={() => {
-      ReactDOM.unmountComponentAtNode(div);
-      document.body.removeChild(div);
-      document.body.style.removeProperty('overflow');
+    const component = React.createElement(MessageBox, Object.assign(props, {
+      promise: { resolve, reject },
+      onClose: () => {
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+        document.body.style.removeProperty('overflow');
 
-      if (props.onClose instanceof Function) {
-        props.onClose();
+        if (props.onClose instanceof Function) {
+          props.onClose();
+        }
       }
-    }} promise={{ resolve, reject }} {...props} />, div);
+    }));
+
+    ReactDOM.render(component, div);
   });
 }
 
