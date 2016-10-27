@@ -1,5 +1,5 @@
-import Row from './row';
-import Col from './col';
+import Row from './Row';
+import Col from './Col';
 
 export default {
   Row,

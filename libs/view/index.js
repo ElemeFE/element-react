@@ -30,7 +30,7 @@ export default class View extends Component {
 }
 
 View.propTypes = {
-  if: PropTypes.oneOfType(PropTypes.bool, PropTypes.number, PropTypes.string),
-  show: PropTypes.oneOfType(PropTypes.bool, PropTypes.number, PropTypes.string),
+  if: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  show: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   transition: PropTypes.string
 };
