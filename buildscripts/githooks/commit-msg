@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if ! npm run lint:src:q
+then
+    echo "pre-commit: Aborting commit due to lint errors"
+    exit 1
+fi
