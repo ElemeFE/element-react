@@ -42,7 +42,7 @@ npm i && npm start
     ```
 * lint:
     ```shell
-    make lint
+    npm run lint:src
     ```
 ## References
 1. https://github.com/JedWatson/classnames
