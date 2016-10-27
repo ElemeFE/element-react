@@ -14,6 +14,7 @@ import MessageBox from './message-box';
 import Loading from './loading';
 import Dialog from './dialog';
 import Progress from './progress';
+import Rate from './rate';
 
 const pages = {
   layout: { title: 'Layout 布局', component: Layout },
@@ -26,6 +27,7 @@ const pages = {
   dialog: { title: 'Dialog 对话框', component: Dialog },
   card: { title: 'Card 卡片', component: Card },
   progress: { title: 'Progress 进度条', component: Progress },
+  rate: { title: 'Rate 评分', component: Rate }
 };
 
 class App extends React.Component {
