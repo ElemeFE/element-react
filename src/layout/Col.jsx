@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import { Component } from '../../libs';
+import React from 'react';
+import { Component, PropTypes } from '../../libs';
 
 export default class Col extends Component {
   getStyle() {

@@ -29,8 +29,10 @@ export default class View extends Component {
   }
 }
 
+/* eslint-disable */
 View.propTypes = {
-  if: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
-  show: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  if: PropTypes.any,
+  show: PropTypes.any,
   transition: PropTypes.string
 };
+/* eslint-enable */

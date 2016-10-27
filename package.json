@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "cd demo && node run.js",
+    "test": "jest --config jest.json",
     "lint": "eslint -c .eslintrc.json src",
-    "test": "jest"
+    "lint:src:q": "eslint --quiet -c .eslintrc.json src",
+    "install:githooks": "node ./buildscripts/install-git-hooks.js"
   },
   "repository": {
     "type": "git",
