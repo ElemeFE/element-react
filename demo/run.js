@@ -1,6 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
+const path = require('path');
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
 
 new WebpackDevServer(webpack({
   devtool: 'eval',
@@ -16,10 +16,13 @@ new WebpackDevServer(webpack({
   plugins: [
     new webpack.HotModuleReplacementPlugin()
   ],
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         loaders: ['react-hot', 'babel'],
         include: [
           path.join(__dirname, 'pages'),
@@ -45,7 +48,7 @@ new WebpackDevServer(webpack({
   publicPath: '/',
   hot: true,
   historyApiFallback: true
-}).listen(3000, 'localhost', (error, result) => {
+}).listen(3000, 'localhost', error => {
   if (error) {
     console.log(error);
   }
