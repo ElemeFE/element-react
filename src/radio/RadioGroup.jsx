@@ -1,7 +1,15 @@
 import React, { PropTypes } from 'react';
-import { Component, View } from '../../libs';
+import { Component } from '../../libs';
 
 export default class RadioGroup extends Component {
+  onChange(value) {
+    if (this.props.onChange) {
+      this.props.onChange({
+        target: Object.assign(this.refs.RadioGroup, { value })
+      })
+    }
+  }
+
   render() {
     return (
       <div ref="RadioGroup" className="el-radio-group">
@@ -16,14 +24,6 @@ export default class RadioGroup extends Component {
         }
       </div>
     )
-  }
-
-  onChange(value) {
-    if (this.props.onChange) {
-      this.props.onChange({
-        target: Object.assign(this.refs.RadioGroup, { value })
-      })
-    }
   }
 }
 
