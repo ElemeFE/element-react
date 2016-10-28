@@ -34,6 +34,7 @@ npm i && npm start
      ...
     </div>
     ```
+    
 ### PropTypes
 
 继承了React所有的PropTypes, 并提供了一些通用的自定义类型, 所有的自定义组件不再使用React.PropTypes.
