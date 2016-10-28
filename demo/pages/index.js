@@ -22,13 +22,13 @@ const pages = {
   button: { title: 'Button 按钮', component: Button },
   radio: { title: 'Radio 单选框', component: Radio },
   progress: { title: 'Progress 进度条', component: Progress },
+  badge: { title: 'Badge 标记', component: Badge },
   alert: { title: 'Alert 警告', component: Alert },
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
   dialog: { title: 'Dialog 对话框', component: Dialog },
   card: { title: 'Card 卡片', component: Card },
-  badge: { title: 'Badge 标记', component: Badge },
 };
 
 class App extends React.Component {

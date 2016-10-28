@@ -25,6 +25,7 @@ export default class Playground extends React.Component {
             <Badge value={ 3 } className="demo-badge">
               <Button size="small">回复</Button>
             </Badge>
+            <Button type="text">等待下拉菜单</Button>
           </div>
         </section>
         <section className="demo-section">

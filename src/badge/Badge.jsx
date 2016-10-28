@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react';
-import classNames from 'classnames';
 import { Component } from '../../libs';
 
 export default class Badge extends Component {
   render() {
     const { children, value, max, isDot } = this.props;
-    const className = classNames({
+    const className = this.classNames({
       'el-badge__content': true,
       'is-fixed': !!children,
       'is-dot': !!isDot,
