@@ -30,7 +30,7 @@ export default class Badge extends Component {
   }
 }
 
-Badge.PropTypes = {
+Badge.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   max: PropTypes.number,
   isDot: PropTypes.bool,
