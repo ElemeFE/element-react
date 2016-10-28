@@ -8,3 +8,4 @@ export { default as MessageBox } from './message-box';
 export { default as Radio } from './radio';
 export { default as Dialog } from './dialog';
 export { default as Progress } from './progress'; 
+export { default as Badge } from './badge'; 
