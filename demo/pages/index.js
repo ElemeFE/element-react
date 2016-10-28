@@ -15,6 +15,7 @@ import Loading from './loading';
 import Dialog from './dialog';
 import Progress from './progress';
 import Badge from './badge';
+import Tabs from './tabs';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -27,6 +28,7 @@ const pages = {
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
+  tabs: { title: 'Tabs 标签页', component: Tabs },
   dialog: { title: 'Dialog 对话框', component: Dialog },
   card: { title: 'Card 卡片', component: Card },
 };
