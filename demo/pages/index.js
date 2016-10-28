@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './style.scss';
+import './style/base.scss';
+import './style/highlight.css';
 import '../../themes/default/index.css';
 
 import Alert from './alert';
@@ -48,7 +49,7 @@ class App extends React.Component {
         <header className="header">
           <h1>Element-React</h1>
         </header>
-        <div className="content">
+        <div className="main">
           <nav className="menu">
             <ul>
               {
@@ -60,7 +61,7 @@ class App extends React.Component {
               }
             </ul>
           </nav>
-          <div className="demo">
+          <div className="content">
             {
               React.createElement(pages[this.state.page].component)
             }
