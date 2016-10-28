@@ -41,6 +41,10 @@ new WebpackDevServer(webpack({
       {
         test: /\.(png|eot|svg|ttf|woff|woff2)(\?.+)?$/,
         loader : 'url-loader'
+      },
+      {
+        test: /\.md$/,
+        loader : 'raw-loader'
       }
     ]
   }
