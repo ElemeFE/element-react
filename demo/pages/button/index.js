@@ -1,14 +1,11 @@
 import './style.scss';
 
-import React, { Component } from 'react';
-
-import { Markdown } from '../../../libs';
-import { Button } from '../../../src';
-
+import React from 'react';
+import { Component, Markdown } from '../../../libs';
 import template from './README.md';
 
 export default class Playground extends Component {
   render() {
-    return <Markdown scope={this} component="Button">{template}</Markdown>
+    return <Markdown context={this} component="Button">{template}</Markdown>
   }
 }
