@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Markdown } from '../../../libs';
+import React from 'react';
+import { Component, Markdown } from '../../../libs';
 
 import './style.scss';
 
