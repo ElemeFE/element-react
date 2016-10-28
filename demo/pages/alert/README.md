@@ -19,7 +19,7 @@
 
 自定义关闭按钮为文字或其他符号。
 
-::: demo 在 Alert 组件中，你可以设置是否可关闭，关闭按钮的文本以及关闭时的回调函数。`closable`属性决定是否可关闭，接受`boolean`，默认为`true`。你可以设置`close-text`属性来代替右侧的关闭图标，注意：`close-text`必须为文本。设置`close`事件来设置关闭时的回调。
+::: demo 在 Alert 组件中，你可以设置是否可关闭，关闭按钮的文本以及关闭时的回调函数。`closable`属性决定是否可关闭，接受`boolean`，默认为`true`。你可以设置`close-text`属性来代替右侧的关闭图标，注意：`closeText`必须为文本。设置`onClose`事件来设置关闭时的回调。
 ```html
 <Alert title="不可关闭的 alert" type="success" closable={false} />
 <Alert title="自定义 close-text" type="info" closeText="知道了" />
@@ -31,7 +31,7 @@
 
 表示某种状态时提升可读性。
 
-::: demo 通过设置`show-icon`属性来显示 Alert 的 icon，这能更有效地向用户展示你的显示意图。
+::: demo 通过设置`showIcon`属性来显示 Alert 的 icon，这能更有效地向用户展示你的显示意图。
 ```html
 <Alert title="成功提示的文案" type="success" showIcon={true} />
 <Alert title="消息提示的文案" type="info" showIcon={true} />
@@ -68,11 +68,11 @@
 | type | 主题 | string | success/warning/info/error | info |
 | description | 辅助性文字 | string | — | — |
 | closable | 是否可关闭 | boolean | — | true |
-| close-text | 关闭按钮自定义文本 | string | — | — |
-| show-icon | 是否显示图标 | boolean | — | false |
+| closeText | 关闭按钮自定义文本 | string | — | — |
+| showIcon | 是否显示图标 | boolean | — | false |
 
 
 ### Events
 | 事件名称 | 说明 | 回调参数 |
 |---------- |-------- |---------- |
-| close | 关闭alert时触发的事件 | — |
+| onClose | 关闭alert时触发的事件 | — |

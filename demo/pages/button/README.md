@@ -35,24 +35,24 @@
 
 ```html
 <div className="intro-block">
-    <div className="block">
-      <span className="demonstration">默认显示颜色</span>
-      <span className="wrapper">
-          <Button type="success">成功按钮</Button>
-          <Button type="warning">警告按钮</Button>
-          <Button type="danger">危险按钮</Button>
-          <Button type="info">信息按钮</Button>
-      </span>
-    </div>
-    <div className="block">
-      <span className="demonstration">hover 显示颜色</span>
-      <span className="wrapper">
-          <Button plain={true} type="success">成功按钮</Button>
-          <Button plain={true} type="warning">警告按钮</Button>
-          <Button plain={true} type="danger">危险按钮</Button>
-          <Button plain={true} type="info">信息按钮</Button>
-      </span>
-    </div>
+  <div className="block">
+    <span className="demonstration">默认显示颜色</span>
+    <span className="wrapper">
+      <Button type="success">成功按钮</Button>
+      <Button type="warning">警告按钮</Button>
+      <Button type="danger">危险按钮</Button>
+      <Button type="info">信息按钮</Button>
+    </span>
+  </div>
+  <div className="block">
+    <span className="demonstration">hover 显示颜色</span>
+    <span className="wrapper">
+      <Button plain={true} type="success">成功按钮</Button>
+      <Button plain={true} type="warning">警告按钮</Button>
+      <Button plain={true} type="danger">危险按钮</Button>
+      <Button plain={true} type="info">信息按钮</Button>
+    </span>
+  </div>
 </div>
 ```
 :::

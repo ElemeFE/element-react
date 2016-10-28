@@ -23,10 +23,20 @@ export default class Markdown extends Component {
     const Element = require('../../src');
 
     for (const [id, component] of this.components) {
-      const div = document.getElementById(id);
+      const div = document.getElementById(id), args = ['context', 'React'], argv = [this.props.context, React];
 
-      ReactDOM.unmountComponentAtNode(div);
-      ReactDOM.render(new Function('React', this.props.component, component).call(this.props.scope, React, Element[this.props.component]), div);
+      for (const key in Element) {
+        args.push(key);
+        argv.push(Element[key]);
+      }
+
+      args.push(component);
+
+      if (div instanceof HTMLElement) {
+        ReactDOM.unmountComponentAtNode(div);
+      }
+
+      ReactDOM.render(new Function(...args).apply(null, argv), div);
     }
   }
 
@@ -76,6 +86,6 @@ export default class Markdown extends Component {
 /* eslint-disable */
 Markdown.propTypes = {
   component: PropTypes.string.isRequired,
-  scope: PropTypes.any
+  context: PropTypes.any
 }
 /* eslint-enable */
