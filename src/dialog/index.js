@@ -37,7 +37,6 @@ export default class Dialog extends Component {
   }
 
   handleWrapperClick(e) {
-    // if (this.props.closeOnClickModal && e.target.className === 'v-modal') {
     if (this.props.closeOnClickModal && e.target === e.currentTarget) {
       this.close(e);
     }
@@ -97,13 +96,13 @@ export default class Dialog extends Component {
     );
 
     const dimmer = (
-      <View show={ modal } transition="v-modal">
+      <View show={ modal } transition="v-modal" transitionKey="dialog-v-modal">
         <div className="v-modal" style={{ zIndex: 1012 }}></div>
       </View>
     );
 
     return (
-      <View show={ visible } transition="dialog-fade" key="dialog">
+      <View show={ visible }>
         <div>
           <div className="el-dialog__wrapper"
                tabIndex={ -1 }
