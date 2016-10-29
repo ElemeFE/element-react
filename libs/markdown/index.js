@@ -53,9 +53,9 @@ export default class Markdown extends Component {
       }
     });
 
-    const html = marked(this.props.children.replace(/:::\s?demo ([^:::]+):::/g, (match, p1, offset) => {
+    const html = marked(this.props.children.replace(/:::\s?demo ([^]+?):::/g, (match, p1, offset) => {
       return p1.replace(/(.+)\n([^]+)/, (match, p1, p2) => {
-        const id = offset.toString(36), code = p2.match(/```.*\n([^]+)```/)[1], component = transform(`<div>${code}</div>`, {
+        const id = offset.toString(36), code = p2.match(/```.*\n([^]+)```/)[1], component = transform(`${code}`, {
           presets: ['es2015', 'react']
         }).code.replace(/React.createElement/, 'return React.createElement');
 
