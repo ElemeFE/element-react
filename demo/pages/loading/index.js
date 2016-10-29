@@ -1,9 +1,10 @@
 import './style.scss';
 
 import React from 'react';
-import { Loading, Button } from '../../../src';
+import { Component, Markdown } from '../../../libs';
+import template from './README.md';
 
-export default class Playground extends React.Component {
+export default class Playground extends Component {
   constructor(props) {
     super(props);
 
@@ -13,37 +14,7 @@ export default class Playground extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <section className="demo-section">
-          <div className="demo-header">
-            <h2>Loading 加载</h2>
-            <p>加载数据时显示动效。</p>
-            <h3>区域加载</h3>
-            <p>在表格等容器中加载数据时显示。</p>
-          </div>
-          <div className="demo-content demo-loading">
-            <div className="el-loading-demo">
-              <Loading>
-                <div className="el-loading-mask" />
-              </Loading>
-            </div>
-          </div>
-        </section>
-        <section className="demo-section">
-          <div className="demo-header">
-            <h3>整页加载</h3>
-            <p>页面数据加载时显示。</p>
-          </div>
-          <div className="demo-content demo-loading">
-            <Button type="primary" onClick={this.onClick.bind(this)}>显示整页加载，3 秒后消失</Button>
-            {
-              this.state.fullscreen && <Loading fullscreen={true} />
-            }
-          </div>
-        </section>
-      </div>
-    )
+    return <Markdown context={this} component="Loading">{template}</Markdown>
   }
 
   onClick() {

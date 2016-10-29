@@ -28,7 +28,7 @@ export default class Playground extends React.Component {
           <div className="demo-content demo-progress">
             <Progress strokeWidth={18} percentage={0} textInside />
             <Progress strokeWidth={18} percentage={70} textInside />
-            <Progress strokeWidth={18} percentage={100} status="success" textInside />
+            <Progress strokeWidth={18}  status="success" textInside />
             <Progress strokeWidth={18} percentage={50} status="exception" textInside />
           </div>
         </section>
