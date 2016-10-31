@@ -30,7 +30,7 @@ export default class Component extends React.Component {
   applyProps(props) {
     if (this.element) {
       // apply new className
-      this.element.className = this.classNames(this.className, props.className);
+      this.element.className = this.classNames(props.className, this.className);
 
       // apply new style
       if (props.style) {
@@ -38,7 +38,7 @@ export default class Component extends React.Component {
 
         ReactDOM.render(<div style={props.style} />, div);
 
-        this.element.style.cssText = this.style + div.style.cssText;
+        this.element.style.cssText = div.style.cssText + ' ' + this.style;
 
         ReactDOM.unmountComponentAtNode(div);
       } else {

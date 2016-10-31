@@ -2,7 +2,7 @@ import './style.scss';
 
 import React from 'react';
 import { Component, Markdown } from '../../../libs';
-import template from './README.md';
+import template from '../../docs/zh-CN/loading.md';
 
 export default class Playground extends Component {
   constructor(props) {
