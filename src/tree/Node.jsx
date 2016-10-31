@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTransitionGroup from 'react-addons-transition-group'
 
 import { PropTypes, Component } from '../../libs';
-import {watchPropertyChange} from '../../libs/utils'
+import { watchPropertyChange } from '../../libs/utils'
 import CollapseTransition from './CollapseTransition'
 
 
@@ -11,13 +11,13 @@ function FirstChild(props) {
   return childrenArray[0] || null;
 }
 
-function NodeContent(props){
+function NodeContent(props) {
   const {nodeModel, renderContent, context} = props
 
-  if (typeof renderContent === 'function' ){
+  if (typeof renderContent === 'function') {
     return renderContent(Object.freeze(context))
-  }else{
-    return <span className="el-tree-node__label">{ nodeModel.label }</span>
+  } else {
+    return <span className="el-tree-node__label">{nodeModel.label}</span>
   }
 }
 
@@ -61,8 +61,8 @@ export default class Node extends Component {
       }),
     }
 
-    if (nodeModel.data != null){
-      this.watchers.c = watchPropertyChange(nodeModel.data, childrenKey, () =>{
+    if (nodeModel.data != null) {
+      this.watchers.c = watchPropertyChange(nodeModel.data, childrenKey, () => {
         nodeModel.updateChildren()
         this.setState({})//force update view 
       })
@@ -155,9 +155,9 @@ export default class Node extends Component {
         </div>
         <ReactTransitionGroup
           component={FirstChild}>
-          <CollapseTransition>
-            {
-              expanded && (
+          {
+            expanded && (
+              <CollapseTransition>
                 <div
                   className="el-tree-node__children">
                   {
@@ -167,9 +167,10 @@ export default class Node extends Component {
                     })
                   }
                 </div>
-              )
-            }
-          </CollapseTransition>
+
+              </CollapseTransition>
+            )
+          }
         </ReactTransitionGroup>
       </div>
     )
@@ -190,7 +191,7 @@ Node.propTypes = {
 Node.defaultProps = {
   nodeModel: {},
   options: {},
-  onCheckChange(){},
-  onNodeClicked(){},
+  onCheckChange() { },
+  onNodeClicked() { },
 }
 
