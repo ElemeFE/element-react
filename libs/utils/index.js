@@ -31,6 +31,8 @@ export function watchPropertyChange(target, property, cb) {
   let origin = target[property]
 
   Object.defineProperty(target, property, {
+    configurable: true,
+    
     get() {
       return origin
     },
@@ -46,6 +48,8 @@ export function watchPropertyChange(target, property, cb) {
   return ()=>{
     if (target.__watch_cache && target.__watch_cache[property]){
       delete target.__watch_cache[property]
+      delete target[property]
+      target[property] = origin
     }
   }
 }
