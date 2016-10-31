@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes, Component } from '../../libs';
-import { require_condition } from '../utils'
+import { require_condition } from '../../libs/utils'
 import Node from './Node'
 import TreeModel from './model/tree'
 /*

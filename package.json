@@ -8,7 +8,7 @@
     "test": "jest --config jest.json",
     "lint": "eslint -c .eslintrc.json src",
     "lint:src:q": "eslint --quiet -c .eslintrc.json src",
-    "install:githooks": "node ./buildscripts/install-git-hooks.js",
+    "install:githooks": "node ./build/githooks/install-git-hooks.js",
     "beautify:js": "js-beautify -r src/tree/**/*.js"
   },
   "repository": {
