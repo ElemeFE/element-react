@@ -53,8 +53,8 @@ export default class Markdown extends Component {
       }
     });
 
-    const html = marked(this.props.children.replace(/:::\s?demo ([^]+?):::/g, (match, p1, offset) => {
-      return p1.replace(/(.+)\n([^]+)/, (match, p1, p2) => {
+    const html = marked(this.props.children.replace(/:::\s?demo\s?([^]+?):::/g, (match, p1, offset) => {
+      return p1.replace(/(.*)\n?(```[^]+)/, (match, p1, p2) => {
         const id = offset.toString(36);
         const matched = p2.match(/```(.*)\n([^]+)```/);
         const lang = matched[1], code = matched[2].replace(/this/g, 'context');

@@ -50,9 +50,7 @@ export default class Toast extends Component {
           <img className="el-message__icon" src={icons[this.props.type]} />
           <div className="el-message__group">
             <p>{this.props.message}</p>
-            <View if={this.props.showClose}>
-              <div className="el-message__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div>
-            </View>
+            { this.props.showClose && <div className="el-message__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div> }
           </div>
         </div>
       </View>

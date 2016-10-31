@@ -24,17 +24,17 @@ const pages = {
   button: { title: 'Button 按钮', component: Button },
   radio: { title: 'Radio 单选框', component: Radio },
   progress: { title: 'Progress 进度条', component: Progress },
+  tree: { title: 'Tree 树形控件', component: Tree },
   badge: { title: 'Badge 标记', component: Badge },
   alert: { title: 'Alert 警告', component: Alert },
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
   dialog: { title: 'Dialog 对话框', component: Dialog },
-  card: { title: 'Card 卡片', component: Card },
-  tree: { title: 'Tree 树形控件', component: Tree },
+  card: { title: 'Card 卡片', component: Card }
 };
 
-const HASH_OFFSET = 1 
+const HASH_OFFSET = 1
 class App extends React.Component {
   constructor(props) {
     super(props);

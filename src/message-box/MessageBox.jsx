@@ -65,27 +65,29 @@ export default class MessageBox extends Component {
         <div style={{ position: 'absolute', zIndex: 1007 }}>
           <View show={this.state.visible} transition="msgbox-bounce">
             <div className="el-message-box">
-              <View if={this.props.title}>
-                <div className="el-message-box__header">
-                  <div className="el-message-box__title">{this.props.title}</div>
-                  <View if={this.props.showClose}>
-                    <i className="el-message-box__close el-icon-close" onClick={this.handleAction.bind(this, 'cancel')}></i>
-                  </View>
-                </div>
-              </View>
-              <View if={this.props.message}>
-                <div className="el-message-box__content">
-                  <div className={this.classNames('el-message-box__status', this.typeClass())}></div>
-                  <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
-                    <p>{this.props.message}</p>
+              {
+                this.props.title && (
+                  <div className="el-message-box__header">
+                    <div className="el-message-box__title">{this.props.title}</div>
+                    { this.props.showClose && <i className="el-message-box__close el-icon-close" onClick={this.handleAction.bind(this, 'cancel')} /> }
                   </div>
-                  <View show={this.props.showInput}>
-                    <div className="el-message-box__input">
-                      <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
+                )
+              }
+              {
+                this.props.message && (
+                  <div className="el-message-box__content">
+                    <div className={this.classNames('el-message-box__status', this.typeClass())}></div>
+                    <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
+                      <p>{this.props.message}</p>
                     </div>
-                  </View>
-                </div>
-              </View>
+                    <View show={this.props.showInput}>
+                      <div className="el-message-box__input">
+                        <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
+                      </div>
+                    </View>
+                  </div>
+                )
+              }
               <div className="el-message-box__btns">
                 <View show={this.props.showCancelButton}>
                   <Button className={this.props.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.props.cancelButtonText}</Button>

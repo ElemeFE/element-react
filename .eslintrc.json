@@ -25,6 +25,7 @@
     "react/prop-types": [1, { "ignore": ["children"] }],
     "react/no-find-dom-node": 1,
     "react/no-unused-prop-types": 1,
+    "react/jsx-first-prop-new-line": 1,
     "react/forbid-prop-types": [2, { "forbid": ["any"] }]
   }
 }
