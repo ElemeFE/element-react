@@ -40,12 +40,31 @@ body {
       }
 
       .menu-item {
-          width: 200px;
-          font-size: 13px;
-          color: #5e6d82;
-          line-height: 40px;
+        width: 200px;
+        font-size: 13px;
+        color: #5e6d82;
+        line-height: 40px;
+        height: 40px;
+        cursor: pointer;
+
+        a {
+          display: block;
           height: 40px;
-          cursor: pointer;
+          line-height: 40px;
+          font-size: 13px;
+          padding-left: 24px;
+          color: #5e6d82;
+          margin: 0;
+          padding: 0;
+          text-decoration: none;
+          position: relative;
+          -webkit-transition: all .3s;
+          transition: all .3s;
+        }
+
+        a:hover {
+          color: #20a0ff;
+        }
       }
     }
 
