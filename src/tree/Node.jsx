@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTransitionGroup from 'react-addons-transition-group'
 
 import { PropTypes, Component } from '../../libs';
-import {watchPropertyChange} from '../utils'
+import {watchPropertyChange} from '../../libs/utils'
 import CollapseTransition from './CollapseTransition'
 
 
