@@ -44,6 +44,7 @@ export default class Playground extends React.Component {
                     size="tiny"
                     visible={ this.state.dialogVisible1 }
                     onCancel={ e => this.handleDialogClose(1) }
+                    lockScroll={ false }
             >
               <Dialog.Body>
                 <span>这是一段信息</span>
