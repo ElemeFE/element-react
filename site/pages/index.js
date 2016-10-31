@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './style/base.scss';
-import './style/highlight.css';
 import '../../themes/default/index.css';
+import './style/highlight.css';
+import './style/base.scss';
 
 import Alert from './alert';
 import Layout from './layout';
@@ -37,7 +37,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: 'layout' // Do not change this line
+      page: location.hash.substr(1) || 'layout' // Do not change this line
     };
   }
 

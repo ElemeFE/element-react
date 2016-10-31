@@ -25,9 +25,9 @@
 
 ```html
 <div>
-  <Button type="primary" onClick={context.onClick.bind(context)}>显示整页加载，3 秒后消失</Button>
+  <Button type="primary" onClick={this.onClick.bind(this)}>显示整页加载，3 秒后消失</Button>
   {
-    context.state.fullscreen && <Loading fullscreen={true} />
+    this.state.fullscreen && <Loading fullscreen={true} />
   }
 </div>
 ```
