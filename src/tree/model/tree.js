@@ -41,4 +41,4 @@ export default class Tree {
 
     return checkedNodes;
   }
-};
+}

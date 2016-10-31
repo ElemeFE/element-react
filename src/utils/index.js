@@ -38,7 +38,6 @@ export function watchPropertyChange(target, property, cb) {
     set(value) {
       origin = value
       if (cache[property]){
-        console.debug('trigger change: ', property, origin)
         cache[property](origin)
       }
     }
