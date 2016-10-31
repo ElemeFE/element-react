@@ -50,7 +50,7 @@
 <Layout.Row>
   <Layout.Col span={ 8 } offset={ 0 }>
     <Card bodyStyle={{ padding: 0 }}>
-      <img src={{this.state.imgSrc}} className="image" />
+      <img src={this.state.imgSrc} className="image" />
       <div style={{ padding: 14 }}>
         <span>好吃的汉堡</span>
         <div className="bottom clearfix">
@@ -63,7 +63,7 @@
 
   <Layout.Col span={ 8 } offset={ 2 }>
     <Card bodyStyle={{ padding: 0 }}>
-      <img src={{ this.state.imgSrc }} className="image" />
+      <img src={this.state.imgSrc} className="image" />
       <div style={{ padding: 14 }}>
         <span>好吃的汉堡</span>
         <div className="bottom clearfix">
