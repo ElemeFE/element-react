@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './style/base.scss';
-import './style/highlight.css';
 import '../../themes/default/index.css';
+import './style/highlight.css';
+import './style/base.scss';
 
 import Alert from './alert';
 import Layout from './layout';
@@ -37,8 +37,16 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: 'loading'
+      page: location.hash.substr(1) || 'layout' // Do not change this line
     };
+  }
+
+  componentDidMount() {
+    window.addEventListener("hashchange", e => {
+      this.setState({
+        page: location.hash.substr(1)
+      })
+    }, false);
   }
 
   render() {
@@ -53,7 +61,9 @@ class App extends React.Component {
               {
                 Object.keys(pages).map(page => {
                   return (
-                    <li key={page} className="menu-item" onClick={this.onSelect.bind(this, page)}>{pages[page].title}</li>
+                    <li key={page} className="menu-item" onClick={this.onSelect.bind(this, page)}>
+                      <a href={`#${page}`}>{pages[page].title}</a>
+                    </li>
                   )
                 })
               }

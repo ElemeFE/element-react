@@ -40,12 +40,31 @@ body {
       }
 
       .menu-item {
-          width: 200px;
-          font-size: 13px;
-          color: #5e6d82;
-          line-height: 40px;
+        width: 200px;
+        font-size: 13px;
+        color: #5e6d82;
+        line-height: 40px;
+        height: 40px;
+        cursor: pointer;
+
+        a {
+          display: block;
           height: 40px;
-          cursor: pointer;
+          line-height: 40px;
+          font-size: 13px;
+          padding-left: 24px;
+          color: #5e6d82;
+          margin: 0;
+          padding: 0;
+          text-decoration: none;
+          position: relative;
+          -webkit-transition: all .3s;
+          transition: all .3s;
+        }
+
+        a:hover {
+          color: #20a0ff;
+        }
       }
     }
 
@@ -68,12 +87,6 @@ body {
       h2, h3, h4, h5 {
         font-weight: normal;
         color: #1f2f3d;
-      }
-
-      p {
-        margin: 1em 0;
-        font-size: 14px;
-        color: #5e6d82;
       }
 
       table {
@@ -161,12 +174,11 @@ body {
     line-height: 1.8;
     font-size: 12px;
     background-color: #f9fafc;
-    margin-bottom: 25px;
+    display: flex;
 
     pre {
       overflow-x: auto;
       padding: 18px 24px;
-      height: 100%;
     }
   }
 
@@ -211,4 +223,10 @@ body {
       transform: translateX(10px);
     }
   }
+}
+
+.content p {
+  margin: 1em 0;
+  font-size: 14px;
+  color: #5e6d82;
 }
