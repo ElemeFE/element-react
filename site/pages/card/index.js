@@ -1,17 +1,25 @@
-/**
- * Created by elemelyn on 16/10/21.
- */
-
 import './style.scss';
 
 import React from 'react';
-import { Button, Card, Layout } from '../../../src';
+import { Component, Markdown } from '../../../libs';
+import template from '../../docs/zh-CN/card.md';
 
-const Row = Layout.Row;
-const Col = Layout.Col;
+import { Card } from '../../../src';
 
 export default class Playground extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      imgSrc: require('./hamburger.png')
+    }
+  }
+
   render() {
+    return <Markdown context={this} component="Card">{template}</Markdown>
+  }
+
+  render1() {
     return (
       <div>
         <section className="demo-section">
