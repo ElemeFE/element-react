@@ -19,7 +19,7 @@ export default class View extends Component {
 
     if (this.props.transition) {
       return (
-        <ReactCSSTransitionGroup transitionName={this.props.transition} transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+        <ReactCSSTransitionGroup transitionName={this.props.transition} transitionEnterTimeout={500} transitionLeaveTimeout={300} key={this.props.transitionkey}>
           {children}
         </ReactCSSTransitionGroup>
       )
@@ -33,6 +33,7 @@ export default class View extends Component {
 View.propTypes = {
   if: PropTypes.any,
   show: PropTypes.any,
-  transition: PropTypes.string
+  transition: PropTypes.string,
+  transitionKey: PropTypes.string
 };
 /* eslint-enable */

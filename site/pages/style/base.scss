@@ -89,12 +89,6 @@ body {
         color: #1f2f3d;
       }
 
-      p {
-        margin: 1em 0;
-        font-size: 14px;
-        color: #5e6d82;
-      }
-
       table {
         border-collapse: collapse;
         width: 100%;
@@ -180,12 +174,11 @@ body {
     line-height: 1.8;
     font-size: 12px;
     background-color: #f9fafc;
-    margin-bottom: 25px;
+    display: flex;
 
     pre {
       overflow-x: auto;
       padding: 18px 24px;
-      height: 100%;
     }
   }
 
@@ -230,4 +223,10 @@ body {
       transform: translateX(10px);
     }
   }
+}
+
+.content p {
+  margin: 1em 0;
+  font-size: 14px;
+  color: #5e6d82;
 }

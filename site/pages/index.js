@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './style/base.scss';
-import './style/highlight.css';
 import '../../themes/default/index.css';
+import './style/highlight.css';
+import './style/base.scss';
 
 import Alert from './alert';
 import Layout from './layout';
@@ -16,6 +16,7 @@ import Loading from './loading';
 import Dialog from './dialog';
 import Progress from './progress';
 import Badge from './badge';
+import Tree from './tree'
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -30,21 +31,23 @@ const pages = {
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
   dialog: { title: 'Dialog 对话框', component: Dialog },
   card: { title: 'Card 卡片', component: Card },
+  tree: { title: 'Tree 树形控件', component: Tree },
 };
 
+const HASH_OFFSET = 1 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      page: 'layout' // Do not change this line
+      page: location.hash.substr(HASH_OFFSET) || 'layout' // Do not change this line
     };
   }
 
   componentDidMount() {
     window.addEventListener("hashchange", e => {
       this.setState({
-        page: location.hash.substr(1)
+        page: location.hash.substr(HASH_OFFSET)
       })
     }, false);
   }
