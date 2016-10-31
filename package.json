@@ -55,8 +55,9 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "is-equal": "^1.5.3",
-    "react-addons-css-transition-group": "^15.3.2",
     "react": "^15.3.2",
+    "react-addons-css-transition-group": "^15.3.2",
+    "react-addons-transition-group": "^15.3.2",
     "react-dom": "^15.3.2"
   }
 }
