@@ -37,8 +37,16 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: 'loading'
+      page: 'layout' // Do not change this line
     };
+  }
+
+  componentDidMount() {
+    window.addEventListener("hashchange", e => {
+      this.setState({
+        page: location.hash.substr(1)
+      })
+    }, false);
   }
 
   render() {
@@ -53,7 +61,9 @@ class App extends React.Component {
               {
                 Object.keys(pages).map(page => {
                   return (
-                    <li key={page} className="menu-item" onClick={this.onSelect.bind(this, page)}>{pages[page].title}</li>
+                    <li key={page} className="menu-item" onClick={this.onSelect.bind(this, page)}>
+                      <a href={`#${page}`}>{pages[page].title}</a>
+                    </li>
                   )
                 })
               }
