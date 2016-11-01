@@ -8,14 +8,13 @@
 :::demo 设置`active`属性，接受一个`Number`，表明步骤的 index，从 0 开始。需要定宽的步骤条时，设置`space`属性即可，它接受`Boolean`，单位为`px`，如果不设置，则为自适应。设置`finishStatus`属性可以改变已经完成的步骤的状态。
 ```javascript
 const Step = Steps.Step;
-let active = 0;
 <div>
-  <Steps space={200} active={0} finishStatus="success">
+  <Steps space={200} active={this.state.active} finishStatus="success">
     <Step title="步骤 1"></Step>
     <Step title="步骤 2"></Step>
     <Step title="步骤 3"></Step>
   </Steps>
-  <Button>下一步</Button>
+  <Button onClick={() => this.next()}>下一步</Button>
 </div>
 ```
 

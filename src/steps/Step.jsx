@@ -51,7 +51,7 @@ export default class Step extends Component {
               [statusClass]: true,
               'el-step__title': true,
             })}>
-            <slot name="title">{title}</slot>
+            {title}
           </div>
           <div
             className={this.classNames({
@@ -67,9 +67,9 @@ export default class Step extends Component {
 }
 
 Step.propTypes = {
-  title: PropTypes.string,
-  icon: PropTypes.string,
-  description: PropTypes.string,
+  title: PropTypes.node,
+  icon: PropTypes.node,
+  description: PropTypes.node,
   status: PropTypes.string,
   direction: PropTypes.string,
   style: PropTypes.object,
