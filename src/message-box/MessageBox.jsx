@@ -63,7 +63,7 @@ export default class MessageBox extends Component {
     return (
       <div>
         <div style={{ position: 'absolute', zIndex: 1007 }}>
-          <View show={this.state.visible} transition="msgbox-bounce">
+          <View show={this.state.visible} transition="msgbox-fade">
             <div className="el-message-box">
               {
                 this.props.title && (

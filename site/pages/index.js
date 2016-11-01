@@ -21,11 +21,15 @@ import Badge from './badge';
 import Tree from './tree';
 import Menu from './menu';
 import Steps from './steps';
+import Typography from './typography';
+import Color from './color';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
   'Basic': {
     layout: { title: 'Layout 布局', component: Layout },
+    color: { title: 'Color 色彩', component: Color },
+    typography: { title: 'Typography 字体', component: Typography },
     button: { title: 'Button 按钮', component: Button },
   },
   'Form': {
