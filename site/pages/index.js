@@ -23,11 +23,16 @@ import Input from './input';
 import Icon from './icon';
 import Menu from './menu';
 import Steps from './steps';
+import Typography from './typography';
+import Color from './color';
+import Breadcrumb from './breadcrumb';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
   'Basic': {
     layout: { title: 'Layout 布局', component: Layout },
+    color: { title: 'Color 色彩', component: Color },
+    typography: { title: 'Typography 字体', component: Typography },
     icon: { title: 'Icon 图标', component: Icon },
     button: { title: 'Button 按钮', component: Button },
   },
@@ -49,6 +54,7 @@ const pages = {
   },
   'Nav': {
     menu: { title: 'NavMenu 导航菜单', component: Menu },
+    breadcrumb: { title: 'Breadcrumb 面包屑', component: Breadcrumb },
     steps: { title: 'Steps 步骤', component: Steps },
   },
   'Others': {

@@ -30,8 +30,18 @@ function confirm(message, title, props) {
   return next(props);
 }
 
-function prompt() {
+function prompt(message, title, props) {
+  if (typeof title === 'object') {
+    props = title;
+  }
 
+  props = Object.assign({ title, message,
+    modal: 'prompt',
+    showCancelButton: true,
+    showInput: true
+  }, props);
+
+  return next(props);
 }
 
 function msgbox(props) {

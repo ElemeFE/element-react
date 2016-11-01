@@ -30,7 +30,7 @@
 :::demo 调用`$prompt`方法即可打开消息提示，它模拟了系统的 `prompt`。可以用`inputPattern`字段自己规定匹配模式，或者用`inputValidator`规定校验函数，可以返回`Boolean`或`String`，`Boolean`为`false`或字符串时均表示校验未通过，`String`相当于定义了`inputErrorMessage`字段。此外，可以用`inputPlaceholder`字段来定义输入框的占位符。
 
 ```html
-<Button type="text">点击打开 Message Box</Button>
+<Button type="text" onClick={this.onClick.bind(this, 'charlie')}>点击打开 Message Box</Button>
 ```
 :::
 

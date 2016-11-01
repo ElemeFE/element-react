@@ -31,6 +31,22 @@ export default class Playground extends React.Component {
           });
         });
         break;
+      case 'charlie':
+        MessageBox.prompt('请输入邮箱', '提示', {
+          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          inputErrorMessage: '邮箱格式不正确'
+        }).then(({ value }) => {
+          Message({
+            type: 'success',
+            message: '你的邮箱是: ' + value
+          });
+        }).catch(() => {
+          Message({
+            type: 'info',
+            message: '取消输入'
+          });
+        });
+        break;
       case 'delta':
         MessageBox.msgbox({
           title: '消息',

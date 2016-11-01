@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component, PropTypes, View } from '../../libs';
 import Button from '../button';
+import Input from '../input';
 
 const typeMap = {
   success: 'circle-check',
@@ -35,9 +36,11 @@ export default class MessageBox extends Component {
           this.props.promise.reject();
           break;
         case 'confirm':
+          if (this.props.modal === 'prompt') {
+            // TODO
+          }
+
           this.props.promise.resolve();
-          break;
-        case 'prompt':
           break;
         default:
           break;
@@ -63,7 +66,7 @@ export default class MessageBox extends Component {
     return (
       <div>
         <div style={{ position: 'absolute', zIndex: 1007 }}>
-          <View show={this.state.visible} transition="msgbox-bounce">
+          <View show={this.state.visible} transition="msgbox-fade">
             <div className="el-message-box">
               {
                 this.props.title && (
@@ -82,6 +85,7 @@ export default class MessageBox extends Component {
                     </div>
                     <View show={this.props.showInput}>
                       <div className="el-message-box__input">
+                        <Input placeholder={this.props.inputPlaceholder} ref="input" />
                         <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
                       </div>
                     </View>
@@ -93,7 +97,7 @@ export default class MessageBox extends Component {
                   <Button className={this.props.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.props.cancelButtonText}</Button>
                 </View>
                 <View show={this.props.showConfirmButton}>
-                  <Button className={this.classNames('el-button-primary', this.props.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.props.confirmButtonText}</Button>
+                  <Button className={this.classNames('el-button--primary', this.props.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.props.confirmButtonText}</Button>
                 </View>
               </div>
             </div>
@@ -120,6 +124,10 @@ MessageBox.propTypes = {
   cancelButtonText: PropTypes.string,
   cancelButtonClass: PropTypes.string,
   confirmButtonClass: PropTypes.string,
+  inputPlaceholder: PropTypes.string,
+  inputPattern: PropTypes.regex,
+  inputValidator: PropTypes.func,
+  inputErrorMessage: PropTypes.string,
   promise: PropTypes.object,
   onClose: PropTypes.func
 }
