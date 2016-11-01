@@ -21,37 +21,61 @@ import Tree from './tree'
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
-  layout: { title: 'Layout 布局', component: Layout },
-  button: { title: 'Button 按钮', component: Button },
-  radio: { title: 'Radio 单选框', component: Radio },
-  progress: { title: 'Progress 进度条', component: Progress },
-  tree: { title: 'Tree 树形控件', component: Tree },
-  badge: { title: 'Badge 标记', component: Badge },
-  alert: { title: 'Alert 警告', component: Alert },
-  loading: { title: 'Loading 加载', component: Loading },
-  message: { title: 'Message 消息提示', component: Message },
-  messageBox: { title: 'Message Box 弹框', component: MessageBox },
-  notification: { title: 'Notification 通知', component: Notification },
-  dialog: { title: 'Dialog 对话框', component: Dialog },
-  card: { title: 'Card 卡片', component: Card }
+  'Basic': {
+    layout: { title: 'Layout 布局', component: Layout },
+    button: { title: 'Button 按钮', component: Button },
+  },
+  'Form': {
+    radio: { title: 'Radio 单选框', component: Radio },
+  },
+  'Data': {
+    progress: { title: 'Progress 进度条', component: Progress },
+    tree: { title: 'Tree 树形控件', component: Tree },
+    badge: { title: 'Badge 标记', component: Badge },
+  },
+  'Notice': {
+    alert: { title: 'Alert 警告', component: Alert },
+    loading: { title: 'Loading 加载', component: Loading },
+    message: { title: 'Message 消息提示', component: Message },
+    messageBox: { title: 'Message Box 弹框', component: MessageBox },
+    notification: { title: 'Notification 通知', component: Notification },
+  },
+  'Nav': {
+
+  },
+  'Others': {
+    dialog: { title: 'Dialog 对话框', component: Dialog },
+    card: { title: 'Card 卡片', component: Card }
+  }
 };
 
-const HASH_OFFSET = 1
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      page: location.hash.substr(HASH_OFFSET) || 'layout' // Do not change this line
+      page: this.getPage() || 'layout' // Do not change this line
     };
   }
 
   componentDidMount() {
     window.addEventListener("hashchange", e => {
       this.setState({
-        page: location.hash.substr(HASH_OFFSET)
+        page: this.getPage()
       })
     }, false);
+  }
+
+  getPage() {
+    return location.hash.substr(1);
+  }
+
+  getComponent(page) {
+    this.components = this.components || Object.assign.apply(this, [{}].concat(Object.keys(pages).map(group => {
+      return pages[group]
+    })));
+
+    return this.components[page].component;
   }
 
   render() {
@@ -61,31 +85,41 @@ class App extends React.Component {
           <h1>Element-React</h1>
         </header>
         <div className="main">
-          <nav className="menu">
+          <nav className="side-nav">
             <ul>
-              {
-                Object.keys(pages).map(page => {
-                  return (
-                    <li key={page} className="menu-item" onClick={this.onSelect.bind(this, page)}>
-                      <a href={`#${page}`}>{pages[page].title}</a>
-                    </li>
-                  )
-                })
-              }
+              <li className="nav-item">
+                <a>基础组件</a>
+                {
+                  Object.keys(pages).map(group => {
+                    return (
+                      <div className="nav-group" key={group}>
+                        <div className="nav-group__title">{group}</div>
+                        <ul className="pure-menu-list">
+                          {
+                            Object.keys(pages[group]).map(page => {
+                              return (
+                                <li key={page} className="nav-item">
+                                  <a href={`#${page}`}>{pages[group][page].title}</a>
+                                </li>
+                              )
+                            })
+                          }
+                        </ul>
+                      </div>
+                    )
+                  })
+                }
+              </li>
             </ul>
           </nav>
           <div className="content">
             {
-              React.createElement(pages[this.state.page].component)
+              React.createElement(this.getComponent(this.state.page))
             }
           </div>
         </div>
       </div>
     )
-  }
-
-  onSelect(page) {
-    this.setState({ page })
   }
 }
 
