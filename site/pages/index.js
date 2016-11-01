@@ -20,6 +20,7 @@ import Progress from './progress';
 import Badge from './badge';
 import Tree from './tree';
 import Menu from './menu';
+import Steps from './steps';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -44,6 +45,7 @@ const pages = {
   },
   'Nav': {
     menu: { title: 'NavMenu 导航菜单', component: Menu }
+    steps: { title: 'Steps 步骤', component: Steps },
   },
   'Others': {
     dialog: { title: 'Dialog 对话框', component: Dialog },
