@@ -7,10 +7,10 @@ export default class Step extends Component {
   }
 
   render() {
-    const { title, icon, description, direction, style, lineStyle, status, index } = this.props;
+    const { title, icon, description, status, direction, style, lineStyle, stepNumber } = this.props;
     const directionClass = `is-${direction}`;
     const statusClass = `is-${status}`;
-    const iconNode = icon ? <i className={`el-icon-${icon}`}></i> : <div>{ index }</div>
+    const iconNode = icon ? <i className={`el-icon-${icon}`}></i> : <div>{ stepNumber }</div>
 
     return (
       <div
@@ -21,14 +21,14 @@ export default class Step extends Component {
         })}>
         <div
           className={this.classNames({
-            'el-step__head': true,
             [statusClass]: true,
+            'el-step__head': true,
             'is-text': !icon,
           })}>
           <div
             className={this.classNames({
-              'el-step__line': true,
               [directionClass]: true,
+              'el-step__line': true,
               'is-icon': icon,
             })}>
             <i className="el-step__line-inner" style={lineStyle}></i>
@@ -48,15 +48,15 @@ export default class Step extends Component {
           <div
             ref="title"
             className={this.classNames({
-              'el-step__title': true,
               [statusClass]: true,
+              'el-step__title': true,
             })}>
             <slot name="title">{title}</slot>
           </div>
           <div
             className={this.classNames({
-              'el-step__description': true,
               [statusClass]: true,
+              'el-step__description': true,
             })}>
             { description }
           </div>
@@ -73,7 +73,8 @@ Step.propTypes = {
   status: PropTypes.string,
   direction: PropTypes.string,
   style: PropTypes.object,
-  index: PropTypes.number,
+  lineStyle: PropTypes.object,
+  stepNumber: PropTypes.number,
 }
 
 Step.defaultProps = {

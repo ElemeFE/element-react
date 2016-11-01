@@ -43,7 +43,8 @@ export default class Steps extends Component {
         {
           React.Children.map(children, (child, index) => {
             const computedSpace = space ? `${space}px` : `${100 / children.length}%`;
-            const style = direction === 'horizontal' ? { width: computedSpace } : { height: computedSpace };
+            const style = direction === 'horizontal' ?
+            { width: computedSpace } : { height: index === children.length - 1 ? 'auto' : computedSpace };
             const status = this.calStatus(index);
             const lineStyle = this.calcProgress(status, index);
             return React.cloneElement(child, {
@@ -51,7 +52,7 @@ export default class Steps extends Component {
               lineStyle,
               direction,
               status,
-              index: index + 1,
+              stepNumber: index + 1,
             })
           })
         }
