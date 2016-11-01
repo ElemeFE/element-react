@@ -19,6 +19,7 @@ import Dialog from './dialog';
 import Progress from './progress';
 import Badge from './badge';
 import Tree from './tree';
+import Tooltip from './tooltip';
 import Input from './input';
 import Icon from './icon';
 import Menu from './menu';
@@ -59,6 +60,7 @@ const pages = {
   },
   'Others': {
     dialog: { title: 'Dialog 对话框', component: Dialog },
+    tooltip: { title: 'Tooltip 文字提示', component: Tooltip },
     card: { title: 'Card 卡片', component: Card }
   }
 };
