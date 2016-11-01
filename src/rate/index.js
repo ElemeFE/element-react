@@ -9,7 +9,20 @@ export default class Rate extends Component {
       hoverIndex: -1, // hover索引
       hoverColor: '', // hover颜色
       value: this.props.value - 1, // value
+      formatValue: this.props.value - 1, // 处理后的value
     };
+  }
+  componentDidMount() {
+    this.hoverStyle();
+    this.formatValue();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value && this.props.value !== nextProps.value) {
+      this.setState({
+        value: nextProps.value,
+      })
+    }
   }
 
   handleHover(k) {
@@ -23,7 +36,9 @@ export default class Rate extends Component {
     if (this.props.disabled) return false;
     this.setState({
       value: k,
+      formatValue: k,
     }, () => this.hoverStyle());
+    if (this.props.change) this.props.change(k + 1);
   }
 
   hoverStyle() {
@@ -38,13 +53,24 @@ export default class Rate extends Component {
       hoverColor,
     });
   }
+
+  formatValue() {
+    let { value } = this.state;
+    const pointSplit = value.toString().split('.');
+    if(!pointSplit[1]) return false;
+    value = Number(pointSplit[1].slice(0, 1)) >= 5 ? Number(`${pointSplit[0]}.5`) : Number(pointSplit[0]);
+    this.setState({
+      formatValue: value,
+    })
+    console.log(value)
+  }
  
   render() {
-    const { hoverIndex, hoverColor, value } = this.state;
-    const { texts } = this.props;
+    const { hoverIndex, hoverColor, value, formatValue } = this.state;
+    const { texts, disabled } = this.props;
     const rateHoverClassnames = 'el-rate__icon el-icon-star-on';
     const setCurIndex = hoverIndex === -1 ? value : hoverIndex;
-    console.log(value)
+    const formatValueSplit = formatValue.toString().split('.');
     return (
       <div className="el-rate">
         {
@@ -55,15 +81,26 @@ export default class Rate extends Component {
                 className={hoverIndex === k ? `${rateHoverClassnames} hover` : rateHoverClassnames}
                 onClick={() => this.handleClick(k)}
                 onMouseLeave={() => this.handleHover(-1)} 
-                onMouseEnter={() => this.handleHover(k)}></i>
+                onMouseEnter={() => this.handleHover(k)}>
+                {
+                  formatValueSplit[1] && k === Number(formatValueSplit[0]) + 1 ? 
+                    <i 
+                      style={{color: hoverColor, width: '50%'}}
+                      className="el-rate__decimal el-icon-star-on">
+                    </i> : null
+                }
+
+              </i>
             </span>
           )
         }
         {
-          setCurIndex !== -1 && this.props['show-text'] ?
+          (setCurIndex !== -1 && this.props['show-text']) || disabled ?
             <span 
               className="el-rate__text" 
-              style={{color: this.props['text-color']}}>{texts[setCurIndex]}</span> : null
+              style={{color: this.props['text-color']}}>
+              {disabled && this.props['text-template'] ? this.props.value : texts[setCurIndex]}
+            </span> : null
         }
         
       </div>
@@ -78,6 +115,8 @@ Rate.propTypes = {
   'text-color': PropTypes.string,
   'disabled': PropTypes.bool,
   'value': PropTypes.number,
+  'change': PropTypes.func,
+  'text-template': PropTypes.bool,
 }
 
 Rate.defaultProps = {

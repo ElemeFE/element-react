@@ -64,7 +64,7 @@ export default class Playground extends React.Component {
           </div>
 
           <div className="demo-content demo-rate">
-            <Rate disabled={true} value={4} />
+            <Rate disabled={true} value={3.9} text-template={true} />
           </div>
         </section>
       </div>

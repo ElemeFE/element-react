@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Toast from './Toast';
+import Toast from './toast';
 
 export default function Message(props = {}, type) {
   const div = document.createElement('div');
+
+  document.body.appendChild(div);
 
   if (typeof props === 'string') {
     props = {
@@ -16,20 +18,24 @@ export default function Message(props = {}, type) {
     props.type = type;
   }
 
-  ReactDOM.render(<Toast onClose={(...args) => {
-    ReactDOM.unmountComponentAtNode(div);
-    document.body.removeChild(div);
+  const component = React.createElement(Toast, Object.assign(props, {
+    onClose: (...args) => {
+      ReactDOM.unmountComponentAtNode(div);
+      document.body.removeChild(div);
 
-    if (props.onClose instanceof Function) {
-      props.onClose.apply(this, args);
+      if (props.onClose instanceof Function) {
+        props.onClose.apply(this, args);
+      }
     }
-  }} {...props} />, div);
+  }));
 
-  document.body.appendChild(div);
+  ReactDOM.render(component, div);
 }
 
+/*eslint-disable */
 ['success', 'warning', 'info', 'error'].forEach(type => {
   Message[type] = (options = {}) => {
     return Message(options, type);
   };
 });
+/*eslint-enable */
