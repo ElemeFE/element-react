@@ -111,7 +111,11 @@
 ### Input Events
 | 事件名称 | 说明 | 回调参数 |
 |---------|--------|---------|
-| click | 点击 Input 内的图标时触发 | event |
+| handleIconClick | 点击 Input 内的图标时触发 | event |
+| handleInput | input输入内容时触发 | event |
+| handlePressEnter | enter键被按下时触发 | event |
+| handleFocus | 输入框获得焦点时触发 | event |
+| handleBlur | 输入框失去焦点时触发 | event |
 
 ### Autocomplete API
 
