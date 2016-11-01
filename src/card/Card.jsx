@@ -5,12 +5,13 @@ export default class Card extends Component {
   render() {
     return (
       <div className="el-card">
-        <View if={ this.props.header }>
-          <div className="el-card__header">
-            { this.props.header }
-          </div>
-        </View>
-
+        {
+          this.props.header && (
+            <div className="el-card__header">
+              { this.props.header }
+            </div>
+          )
+        }
         <div className="el-card__body" style={ this.props.bodyStyle }>
           { this.props.children }
         </div>

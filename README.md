@@ -34,7 +34,7 @@ npm i && npm start
      ...
     </div>
     ```
-    
+
 ### PropTypes
 
 继承了React所有的PropTypes, 并提供了一些通用的自定义类型, 所有的自定义组件不再使用React.PropTypes.
@@ -44,19 +44,7 @@ npm i && npm start
 ### View
 
 * 属性
- * if [any], Vue中的`v-if`的实现, 参考[2].
-
-     ```js
-     // Vue
-     <i class="el-alert__icon" :class="[ iconClass, isBigIcon ]" v-if="showIcon"></i>
-
-     // React
-     <View if={this.props.showIcon}>
-     <i className={this.classNames('el-alert__icon', TYPE_CLASSES_MAP[this.props.type] || 'el-icon-information', {'is-big': this.props.description})}></i>
-     </View>
-     ```
-
- * show [any], Vue的`v-show`的实现, 参考[3].
+ * show [any], Vue的`v-show`的实现, 参考[2].
 
      ```js
      // Vue
@@ -68,7 +56,7 @@ npm i && npm start
      </View>
      ```
 
- * transition [String], Vue的`transition`的实现, 参考[4].
+ * transition [String], Vue的`transition`的实现, 参考[3].
 
      ```js
      // Vue
@@ -112,6 +100,5 @@ npm test
 
 ## References
 1. https://github.com/JedWatson/classnames
-2. https://vuejs.org/guide/conditional.html#v-if
-3. https://vuejs.org/guide/conditional.html#v-show
-4. https://vuejs.org/guide/transitions.html#Transitioning-Single-Elements-Components
+2. https://vuejs.org/guide/conditional.html#v-show
+3. https://vuejs.org/guide/transitions.html#Transitioning-Single-Elements-Components

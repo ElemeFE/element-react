@@ -44,7 +44,17 @@ export default class Markdown extends Component {
     const renderer = new marked.Renderer();
 
     renderer.code = (text) => {
-      return text
+      if (/demo-block/.test(text)) {
+        return text;
+      } else {
+        return `
+          <div class="demo-block">
+            <pre class="fixed">
+              <code>${highlight.highlightAuto(text).value}</code>
+            </pre>
+          </div>
+        `
+      }
     }
 
     marked.setOptions({
@@ -53,13 +63,14 @@ export default class Markdown extends Component {
       }
     });
 
-    const html = marked(this.props.children.replace(/:::\s?demo ([^]+?):::/g, (match, p1, offset) => {
-      return p1.replace(/(.+)\n([^]+)/, (match, p1, p2) => {
+    const html = marked(this.props.children.replace(/:::\s?demo\s?([^]+?):::/g, (match, p1, offset) => {
+      return p1.replace(/([^]*)\n?(```[^]+```)/, (match, p1, p2) => {
         const id = offset.toString(36);
         const matched = p2.match(/```(.*)\n([^]+)```/);
         const lang = matched[1], code = matched[2].replace(/this/g, 'context');
 
-        let transformTarget = null
+        let transformTarget = null;
+
         if (lang === 'javascript'){
           transformTarget = code
         }else{
@@ -76,7 +87,7 @@ export default class Markdown extends Component {
           <div class="demo-block demo-box demo-${this.props.component.toLowerCase()}">
             <div class="source" id="${id}"></div>
             <div class="meta">
-              <div class="description">${marked(p1)}</div>
+              <div class="description">${p1 && marked(p1)}</div>
               <div class="highlight">${marked(p2)}</div>
             </div>
           </div>
