@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './style/base.scss';
+import 'element-ui/lib/theme-default/index.css';
+
 import './style/highlight.css';
-import '../../themes/default/index.css';
+import './style/base.scss';
 
 import Alert from './alert';
 import Layout from './layout';
@@ -18,6 +19,7 @@ import Dialog from './dialog';
 import Progress from './progress';
 import Badge from './badge';
 import Tree from './tree';
+import Menu from './menu';
 import Steps from './steps';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
@@ -42,6 +44,7 @@ const pages = {
     notification: { title: 'Notification 通知', component: Notification },
   },
   'Nav': {
+    menu: { title: 'NavMenu 导航菜单', component: Menu },
     steps: { title: 'Steps 步骤', component: Steps },
   },
   'Others': {

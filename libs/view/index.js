@@ -1,11 +1,11 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import Component from '../component';
 
 export default class View extends Component {
   render() {
+    const hidden = this.props.hasOwnProperty('show') && !this.props.show;
     const element = React.Children.only(this.props.children);
-    const children = React.cloneElement(element, this.props.hasOwnProperty('show') && !this.props.show && {
+    const children = React.cloneElement(element, hidden && {
       key: element,
       style: Object.assign({}, element.props.style, {
         display: 'none'

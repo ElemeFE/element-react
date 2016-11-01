@@ -156,6 +156,15 @@ body {
     display: flex;
     flex-direction: row-reverse;
   }
+
+  .highlight {
+    width: 60%;
+  }
+
+  .highlight.full-width {
+    width: 100%;
+  }
+
   .description {
     padding: 18px 24px;
     width: 40%;
@@ -180,11 +189,6 @@ body {
       font-size: 12px;
       border-radius: 3px;
     }
-  }
-
-  .highlight {
-    width: 60%;
-    display: flex;
   }
 
   pre {
