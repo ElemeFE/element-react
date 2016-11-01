@@ -15,3 +15,4 @@ export { default as Input } from './input';
 export { default as Icon } from './icon';
 export { default as Menu } from './menu';
 export { default as Steps } from './steps';
+export { default as Breadcrumb } from './breadcrumb';

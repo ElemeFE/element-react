@@ -25,6 +25,7 @@ import Menu from './menu';
 import Steps from './steps';
 import Typography from './typography';
 import Color from './color';
+import Breadcrumb from './breadcrumb';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -53,6 +54,7 @@ const pages = {
   },
   'Nav': {
     menu: { title: 'NavMenu 导航菜单', component: Menu },
+    breadcrumb: { title: 'Breadcrumb 面包屑', component: Breadcrumb },
     steps: { title: 'Steps 步骤', component: Steps },
   },
   'Others': {
