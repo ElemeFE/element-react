@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import '../../themes/default/index.css';
+import 'element-ui/lib/theme-default/index.css';
+
 import './style/highlight.css';
 import './style/base.scss';
 
