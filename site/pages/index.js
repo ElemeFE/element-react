@@ -17,7 +17,8 @@ import Loading from './loading';
 import Dialog from './dialog';
 import Progress from './progress';
 import Badge from './badge';
-import Tree from './tree'
+import Tree from './tree';
+import Menu from './menu';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -41,7 +42,7 @@ const pages = {
     notification: { title: 'Notification 通知', component: Notification },
   },
   'Nav': {
-
+    menu: { title: 'NavMenu 导航菜单', component: Menu }
   },
   'Others': {
     dialog: { title: 'Dialog 对话框', component: Dialog },

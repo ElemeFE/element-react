@@ -8,7 +8,27 @@ export default class Markdown extends Component {
   constructor(props) {
     super(props);
 
+    marked.setOptions({
+      highlight: code => {
+        return highlight.highlightAuto(code).value;
+      }
+    });
+
     this.components = new Map;
+    this.renderer = new marked.Renderer();
+    this.renderer.code = (text) => {
+      if (/demo-block/.test(text)) {
+        return text;
+      } else {
+        return `
+          <div class="demo-block">
+            <pre class="fixed">
+              <code>${highlight.highlightAuto(text).value}</code>
+            </pre>
+          </div>
+        `
+      }
+    }
   }
 
   componentDidMount() {
@@ -41,28 +61,6 @@ export default class Markdown extends Component {
   }
 
   render() {
-    const renderer = new marked.Renderer();
-
-    renderer.code = (text) => {
-      if (/demo-block/.test(text)) {
-        return text;
-      } else {
-        return `
-          <div class="demo-block">
-            <pre class="fixed">
-              <code>${highlight.highlightAuto(text).value}</code>
-            </pre>
-          </div>
-        `
-      }
-    }
-
-    marked.setOptions({
-      highlight: code => {
-        return highlight.highlightAuto(code).value
-      }
-    });
-
     const html = marked(this.props.children.replace(/:::\s?demo\s?([^]+?):::/g, (match, p1, offset) => {
       return p1.replace(/([^]*)\n?(```[^]+```)/, (match, p1, p2) => {
         const id = offset.toString(36);
@@ -87,13 +85,13 @@ export default class Markdown extends Component {
           <div class="demo-block demo-box demo-${this.props.component.toLowerCase()}">
             <div class="source" id="${id}"></div>
             <div class="meta">
-              <div class="description">${p1 && marked(p1)}</div>
-              <div class="highlight">${marked(p2)}</div>
+              ${p1 && `<div class="description">${marked(p1)}</div>`}
+              <div class="highlight ${!p1 && 'full-width'}">${marked(p2)}</div>
             </div>
           </div>
         `
       })
-    }), { renderer });
+    }), { renderer: this.renderer });
 
     /* eslint-disable */
     return (
