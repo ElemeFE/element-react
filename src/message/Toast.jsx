@@ -25,6 +25,10 @@ export default class Toast extends Component {
     this.startTimer();
   }
 
+  componentWillUnmount() {
+    this.stopTimer();
+  }
+
   onClose() {
     this.stopTimer();
 

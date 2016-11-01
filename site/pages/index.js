@@ -12,6 +12,7 @@ import Radio from './radio';
 import Card from './card';
 import Message from './message';
 import MessageBox from './message-box';
+import Notification from './notification';
 import Loading from './loading';
 import Dialog from './dialog';
 import Progress from './progress';
@@ -30,6 +31,7 @@ const pages = {
   loading: { title: 'Loading 加载', component: Loading },
   message: { title: 'Message 消息提示', component: Message },
   messageBox: { title: 'Message Box 弹框', component: MessageBox },
+  notification: { title: 'Notification 通知', component: Notification },
   dialog: { title: 'Dialog 对话框', component: Dialog },
   card: { title: 'Card 卡片', component: Card }
 };

@@ -19,12 +19,12 @@ export default function Message(props = {}, type) {
   }
 
   const component = React.createElement(Toast, Object.assign(props, {
-    onClose: (...args) => {
+    onClose: () => {
       ReactDOM.unmountComponentAtNode(div);
       document.body.removeChild(div);
 
       if (props.onClose instanceof Function) {
-        props.onClose.apply(this, args);
+        props.onClose();
       }
     }
   }));

@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/message-box.md';
 
-import { MessageBox } from '../../../src';
+import { MessageBox, Message } from '../../../src';
 
 export default class Playground extends React.Component {
   render() {
