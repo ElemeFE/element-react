@@ -60,7 +60,6 @@
       </div>
     </Card>
   </Layout.Col>
-
   <Layout.Col span={ 8 } offset={ 2 }>
     <Card bodyStyle={{ padding: 0 }}>
       <img src={this.state.imgSrc} className="image" />

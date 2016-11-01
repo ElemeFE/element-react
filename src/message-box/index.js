@@ -48,7 +48,7 @@ function next(props) {
       document.body.style.setProperty('overflow', 'hidden');
     }
 
-    const component = React.createElement(MessageBox, Object.assign(props, {
+    const component = React.createElement(MessageBox, Object.assign({}, props, {
       promise: { resolve, reject },
       onClose: () => {
         ReactDOM.unmountComponentAtNode(div);

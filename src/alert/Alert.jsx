@@ -30,16 +30,20 @@ export default class Alert extends Component {
     return (
       <View show={this.state.visible} transition="el-alert-fade">
         <div className={this.classNames('el-alert', `el-alert--${ this.props.type }`)}>
-          <View if={this.props.showIcon}>
-            <i className={this.classNames('el-alert__icon', TYPE_CLASSES_MAP[this.props.type] || 'el-icon-information', {'is-big': this.props.description})}></i>
-          </View>
+          {
+            this.props.showIcon && <i className={this.classNames('el-alert__icon', TYPE_CLASSES_MAP[this.props.type] || 'el-icon-information', {
+              'is-big': this.props.description
+            })} />
+          }
           <div className="el-alert__content">
-            <View if={this.props.title}>
-              <span className={this.classNames('el-alert__title', {'is-bold': this.props.description})}>{this.props.title}</span>
-            </View>
-            <View if={this.props.description}>
-              <p className="el-alert__description">{this.props.description}</p>
-            </View>
+            {
+              this.props.title && <span className={this.classNames('el-alert__title', {
+                'is-bold': this.props.description
+              })}>{this.props.title}</span>
+            }
+            {
+              this.props.description && <p className="el-alert__description">{this.props.description}</p>
+            }
             <View show={this.props.closable}>
               <i className={this.classNames('el-alert__closebtn', this.props.closeText ? 'is-customed' : 'el-icon-close')} onClick={this.close.bind(this)}>{this.props.closeText}</i>
             </View>
