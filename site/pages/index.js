@@ -19,6 +19,8 @@ import Dialog from './dialog';
 import Progress from './progress';
 import Badge from './badge';
 import Tree from './tree';
+import Input from './input';
+import Icon from './icon';
 import Menu from './menu';
 import Steps from './steps';
 
@@ -26,10 +28,12 @@ import Steps from './steps';
 const pages = {
   'Basic': {
     layout: { title: 'Layout 布局', component: Layout },
+    icon: { title: 'Icon 图标', component: Icon },
     button: { title: 'Button 按钮', component: Button },
   },
   'Form': {
     radio: { title: 'Radio 单选框', component: Radio },
+    input: { title: 'Input 输入框', component: Input },
   },
   'Data': {
     progress: { title: 'Progress 进度条', component: Progress },
