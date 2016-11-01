@@ -11,8 +11,5 @@ export { default as Dialog } from './dialog';
 export { default as Progress } from './progress';
 export { default as Badge } from './badge';
 export { default as Tree } from './tree';
-<<<<<<< HEAD
 export { default as Menu } from './menu';
-=======
 export { default as Steps } from './steps';
->>>>>>> 53699b33c8a46e2a72b91e06ebaa8c05b1ec903a

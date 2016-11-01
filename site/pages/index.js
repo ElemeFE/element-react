@@ -44,7 +44,7 @@ const pages = {
     notification: { title: 'Notification 通知', component: Notification },
   },
   'Nav': {
-    menu: { title: 'NavMenu 导航菜单', component: Menu }
+    menu: { title: 'NavMenu 导航菜单', component: Menu },
     steps: { title: 'Steps 步骤', component: Steps },
   },
   'Others': {
