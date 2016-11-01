@@ -38,8 +38,6 @@ export default class Dialog extends Component {
   }
 
   onKeyDown(e) {
-    console.log('keydown');
-    console.log(e);
     if (this.props.closeOnPressEscape && e.keyCode === KeyCode.ESC) {
       this.close(e);
     }
