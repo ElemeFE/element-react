@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
+import { Component, PropTypes, View } from '../../libs';
 
 export default class SubMenu extends Component {
   constructor(props) {
@@ -72,11 +72,9 @@ export default class SubMenu extends Component {
             })}>
           </i>
         </div>
-        <Transition component="span" className="el-menu" style={{
-            display: this.opened() ? 'block' : 'none'
-          }} name={this.context.mode === 'horizontal' ? 'md-fade-bottom' : ''}>
-          <ul>{this.props.children}</ul>
-        </Transition>
+        <View show={this.opened()}>
+          <ul className="el-menu">{this.props.children}</ul>
+        </View>
       </li>
     )
   }
