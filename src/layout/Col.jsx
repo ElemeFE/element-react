@@ -5,8 +5,8 @@ export default class Col extends Component {
   getStyle() {
     const style = {};
 
-    if (this.props.gutter) {
-      style.paddingLeft = `${this.props.gutter / 2}px`;
+    if (this.context.gutter) {
+      style.paddingLeft = `${this.context.gutter / 2}px`;
       style.paddingRight = style.paddingLeft;
     }
 
@@ -22,10 +22,13 @@ export default class Col extends Component {
   }
 }
 
+Col.contextTypes = {
+  gutter: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
+
 Col.propTypes = {
-  gutter: PropTypes.number,
-  span: PropTypes.number.isRequired,
-  offset: PropTypes.number,
+  span: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pull: PropTypes.number,
   push: PropTypes.number
 }

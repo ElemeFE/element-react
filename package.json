@@ -4,11 +4,12 @@
   "description": "Element UI for React",
   "main": "index.js",
   "scripts": {
-    "start": "cd demo && node run.js",
+    "start": "cd site && node run.js",
     "test": "jest --config jest.json",
     "lint": "eslint -c .eslintrc.json src",
     "lint:src:q": "eslint --quiet -c .eslintrc.json src",
-    "install:githooks": "node ./buildscripts/install-git-hooks.js"
+    "install:githooks": "node ./build/githooks/install-git-hooks.js",
+    "beautify:js": "js-beautify -r src/tree/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -29,9 +30,10 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
-    "babel-standalone": "^6.18.0",
+    "babel-standalone": "^6.18.1",
     "css-loader": "^0.25.0",
-    "eslint": "^3.8.1",
+    "element-ui": "^1.0.0-rc.8",
+    "eslint": "^3.9.0",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
@@ -39,6 +41,7 @@
     "file-loader": "^0.9.0",
     "highlight.js": "^9.7.0",
     "jest": "^16.0.2",
+    "js-beautify": "^1.6.4",
     "marked": "^0.3.6",
     "node-sass": "^3.10.1",
     "raw-loader": "^0.5.1",
@@ -53,8 +56,10 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "is-equal": "^1.5.3",
-    "react-addons-css-transition-group": "^15.3.2",
+    "object-assign": "^4.1.0",
     "react": "^15.3.2",
+    "react-addons-css-transition-group": "^15.3.2",
+    "react-addons-transition-group": "^15.3.2",
     "react-dom": "^15.3.2"
   }
 }

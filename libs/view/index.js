@@ -1,38 +1,33 @@
-import React, { PropTypes } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import Component from '../component';
+import React, { Component, PropTypes } from 'react';
 
 export default class View extends Component {
   render() {
-    let children = null;
+    const style = this.props.hasOwnProperty('show') && !this.props.show && {
+      display: 'none'
+    };
 
-    if (!this.props.hasOwnProperty('if') || Boolean(this.props.if)) {
-      const element = React.Children.only(this.props.children);
-
-      children = React.cloneElement(element, this.props.hasOwnProperty('show') && !this.props.show && {
-        key: element,
-        style: Object.assign({}, element.props.style, {
-          display: 'none'
-        })
-      });
-    }
-
-    if (this.props.transition) {
-      return (
-        <ReactCSSTransitionGroup transitionName={this.props.transition} transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-          {children}
-        </ReactCSSTransitionGroup>
-      )
+    if (React.Children.count(this.props.children) > 1) {
+      return React.createElement(this.props.component, {
+        style: Object.assign({}, this.props.style, style),
+        className: this.props.className
+      }, this.props.children);
     } else {
-      return children;
+      return React.cloneElement(this.props.children, {
+        style: Object.assign({}, this.props.children.props.style, style)
+      });
     }
   }
 }
 
 /* eslint-disable */
 View.propTypes = {
-  if: PropTypes.any,
   show: PropTypes.any,
-  transition: PropTypes.string
+  component: PropTypes.string,
+  className: PropTypes.string,
+  style: PropTypes.object
 };
 /* eslint-enable */
+
+View.defaultProps = {
+  component: 'span'
+}

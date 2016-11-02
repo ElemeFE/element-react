@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import { Component, PropTypes, Transition, View } from '../../libs';
 
 const icons = {
   error: require('./assets/error.svg'),
@@ -25,6 +25,10 @@ export default class Toast extends Component {
     this.startTimer();
   }
 
+  componentWillUnmount() {
+    this.stopTimer();
+  }
+
   onClose() {
     this.stopTimer();
 
@@ -45,17 +49,17 @@ export default class Toast extends Component {
 
   render() {
     return (
-      <View show={this.state.visible} transition="el-message-fade">
-        <div className="el-message" onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
-          <img className="el-message__icon" src={icons[this.props.type]} />
-          <div className="el-message__group">
-            <p>{this.props.message}</p>
-            <View if={this.props.showClose}>
-              <div className="el-message__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div>
-            </View>
+      <Transition name="el-message-fade" duration="300">
+        <View show={this.state.visible}>
+          <div className="el-message" onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
+            <img className="el-message__icon" src={icons[this.props.type]} />
+            <div className="el-message__group">
+              <p>{this.props.message}</p>
+              { this.props.showClose && <div className="el-message__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div> }
+            </div>
           </div>
-        </div>
-      </View>
+        </View>
+      </Transition>
     )
   }
 }

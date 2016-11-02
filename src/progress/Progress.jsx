@@ -5,6 +5,7 @@ export default class Progress extends Component {
   constructor(props) {
     super(props);
   }
+
   relativeStrokeWidth() {
     const { strokeWidth, width } = this.props;
     return (strokeWidth / width * 100).toFixed(1);
@@ -14,10 +15,12 @@ export default class Progress extends Component {
     const radius = parseInt(50 - parseFloat(this.relativeStrokeWidth()) / 2, 10);
     return `M 50 50 m 0 -${radius} a ${radius} ${radius} 0 1 1 0 ${radius * 2} a ${radius} ${radius} 0 1 1 0 -${radius * 2}`;
   }
+
   perimeter() {
     const radius = 50 - parseFloat(this.relativeStrokeWidth()) / 2;
     return 2 * Math.PI * radius;
   }
+
   circlePathStyle() {
     const perimeter = this.perimeter();
     return {
@@ -26,6 +29,7 @@ export default class Progress extends Component {
       transition: 'stroke-dashoffset 0.6s ease 0s, stroke 0.6s ease'
     };
   }
+
   stroke() {
     let ret;
     switch (this.props.status) {
@@ -40,18 +44,21 @@ export default class Progress extends Component {
     }
     return ret;
   }
+
   iconClass() {
     const { type, status } =  this.props;
     return type === 'line'
       ? status === 'success' ? 'el-icon-circle-check' : 'el-icon-circle-cross'
       : status === 'success' ? 'el-icon-check' : 'el-icon-close'
   }
+
   progressTextSize() {
     const { type, strokeWidth, width } =  this.props;
     return type === 'line'
       ? 12 + strokeWidth * 0.4
       : width * 0.111111 + 2 ;
   }
+
   render() {
     const { type, percentage, status, strokeWidth, textInside, width, showText } = this.props;
     let progress;
@@ -60,9 +67,9 @@ export default class Progress extends Component {
         <div className="el-progress-bar">
           <div className="el-progress-bar__outer" style={{height: `${strokeWidth}px`}}>
             <div className="el-progress-bar__inner" style={{width: `${percentage}%`}}>
-              <View if={showText && textInside}>
-                <div className="el-progress-bar__innerText">{`${percentage}%`}</div>
-              </View>
+              {
+                showText && textInside && <div className="el-progress-bar__innerText">{`${percentage}%`}</div>
+              }
             </div>
           </div>
         </div>
@@ -77,23 +84,22 @@ export default class Progress extends Component {
         </div>
       )
     }
-    const progressInfo = (
-      <View if={showText && !textInside}>
-        <div
-          className="el-progress__text"
-          style={{fontSize: `${this.progressTextSize()}px`}}
-        >
-          {
-            status ? <i className={this.iconClass()} />
-            : `${percentage}%`
-          }
-        </div>
-      </View>
+    const progressInfo = showText && !textInside && (
+      <div
+        className="el-progress__text"
+        style={{fontSize: `${this.progressTextSize()}px`}}
+      >
+        {
+          status ? <i className={this.iconClass()} />
+          : `${percentage}%`
+        }
+      </div>
     );
+
     return (
       <div
         className={this.classNames({
-          "el-progress": true,
+          'el-progress': true,
           [`el-progress--${type}`]: true,
           [`is-${status}`]: !!status,
           'el-progress--without-text': !showText,
@@ -108,9 +114,9 @@ export default class Progress extends Component {
 }
 
 Progress.propTypes = {
-  type: PropTypes.oneOf(['line','circle']),
+  type: PropTypes.oneOf(['line', 'circle']),
   percentage: PropTypes.range(0, 100).isRequired,
-  status: PropTypes.oneOf(['success','exception']),
+  status: PropTypes.oneOf(['success', 'exception']),
   strokeWidth: PropTypes.number,
   width: PropTypes.number,
   textInside: PropTypes.bool,

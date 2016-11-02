@@ -6,7 +6,7 @@ export default class Tabs extends Component {
     super(props);
 
     this.state = {
-      currentName: '1',
+      currentName: props.activeName || props.children[0].props.name,
       barStyle: {},
     };
   }
@@ -15,10 +15,14 @@ export default class Tabs extends Component {
     this.calcBarStyle(true);
   }
 
-  shouldComponentUpdate() {
-
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.activeName !== this.props.activeName) {
+      this.setState({
+        currentName: nextProps.activeName,
+      });
+    }
   }
-  
+
   handleTabRemove() {
     
   }
@@ -35,7 +39,7 @@ export default class Tabs extends Component {
   }
 
   calcBarStyle(firstRendering) {
-    if (this.props.type || !this.tabs.length  ) return {};
+    if (this.props.type || !this.tabs.length ) return {};
 
     let style = {};
     let offset = 0;
@@ -43,7 +47,6 @@ export default class Tabs extends Component {
 
     this.props.children.every((item, index) => {
       let $el = this.tabs[index];
-      console.log(item)
 
       if (item.props.name !== this.state.currentName) {
         offset += $el.clientWidth;
@@ -67,8 +70,8 @@ export default class Tabs extends Component {
   }
 
   render() {
-    const { barStyle } = this.state;
-    const { children, type, activeName } = this.props;
+    const { currentName, barStyle } = this.state;
+    const { children, type } = this.props;
     const tabsCls = this.classNames({
       'el-tabs': true,
       'el-tabs--card': type === 'card',
@@ -83,11 +86,11 @@ export default class Tabs extends Component {
             children.map((item, index) => {
               const tabCls = this.classNames({
                 'el-tabs__item': true,
-                'is-active': item.props.name === activeName,
+                'is-active': item.props.name === currentName,
               });
 
               return (
-                <div key={ `el-tabs__header-${index}` } ref={ (tab) => this.tabs.push(tab) } name={ item.props.name } className={ tabCls } onClick={ (e) => this.handleTabClick(item, e) }>
+                <div key={ `el-tabs__header-${index}` } ref={ (tab) => tab && this.tabs.push(tab) } name={ item.props.name } className={ tabCls } onClick={ (e) => this.handleTabClick(item, e) }>
                   { item.props.label }
                 </div>
               )

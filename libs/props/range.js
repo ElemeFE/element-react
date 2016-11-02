@@ -1,4 +1,4 @@
-import { createPropType } from './util';
+import { createPropType } from '../utils';
 
 module.exports = (min, max) => {
   return createPropType((props, propName, componentName) => {

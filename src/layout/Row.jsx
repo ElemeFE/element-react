@@ -2,6 +2,12 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Row extends Component {
+  getChildContext() {
+    return {
+      gutter: this.props.gutter
+    };
+  }
+
   getStyle() {
     const style = {};
 
@@ -16,20 +22,18 @@ export default class Row extends Component {
   render() {
     return (
       <div className={this.classNames('el-row', this.props.justify !== 'start' && `is-justify-${this.props.justify}`, this.props.align !== 'top' && `is-align-${this.props.align}`, {'el-row--flex': this.props.type === 'flex'})} style={this.getStyle()}>
-        {
-          React.Children.map(this.props.children, element => {
-            return React.cloneElement(element, {
-              gutter: this.props.gutter
-            })
-          })
-        }
+        { this.props.children }
       </div>
     )
   }
 }
 
+Row.childContextTypes = {
+  gutter: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+};
+
 Row.propTypes = {
-  gutter: PropTypes.number,
+  gutter: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   type: PropTypes.string,
   justify: PropTypes.string,
   align: PropTypes.string
