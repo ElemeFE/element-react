@@ -27,6 +27,8 @@ import Steps from './steps';
 import Typography from './typography';
 import Color from './color';
 import Breadcrumb from './breadcrumb';
+import Checkbox from './checkbox';
+
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -39,6 +41,7 @@ const pages = {
   },
   'Form': {
     radio: { title: 'Radio 单选框', component: Radio },
+    checkbox: { title: 'Checkbox 多选框', component: Checkbox },
     input: { title: 'Input 输入框', component: Input },
   },
   'Data': {
