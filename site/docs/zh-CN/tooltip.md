@@ -12,10 +12,10 @@
 
 <div className="box">
   <div className="top">
-    <Tooltip className="item" effect="dark" content="Top Left 提示文字" placement="top-start">
+    <Tooltip className="item" effect="dark" content="Top Left 提示文字" placement="top-start" visible={true}>
       <Button>上左</Button>
     </Tooltip>
-    <Tooltip className="item" effect="dark" content="Top Center 提示文字" placement="top">
+    <Tooltip className="item" effect="dark" content="Top Center 提示文字" placement="top" visible={false}>
       <Button>上边</Button>
     </Tooltip>
     <Tooltip className="item" effect="dark" content="Top Right 提示文字" placement="top-end">
