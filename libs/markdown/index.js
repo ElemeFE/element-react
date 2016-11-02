@@ -21,11 +21,18 @@ export default class Markdown extends Component {
 
   renderDOM() {
     for (const [id, component] of this.components) {
-      ReactDOM.render(component, document.getElementById(id))
+      const div = document.getElementById(id);
+
+      if (div instanceof HTMLElement) {
+        ReactDOM.unmountComponentAtNode(div);
+        ReactDOM.render(component, div);
+      }
     }
   }
 
   render() {
+    this.components.clear();
+
     const html = marked(this.props.children.replace(/:::\s?demo\s?([^]+?):::/g, (match, p1, offset) => {
       const id = offset.toString(36);
 
