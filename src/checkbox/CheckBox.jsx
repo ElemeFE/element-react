@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component, PropTypes } from '../../libs'
 
-export default class CheckBox extends Component {
+export default class Checkbox extends Component {
 
   constructor(props) {
     super(props);
@@ -84,14 +84,14 @@ export default class CheckBox extends Component {
   }
 }
 
-CheckBox.defaultProps = {
+Checkbox.defaultProps = {
   checked: false,
   focus: false,
   trueLabel: '',
   falseLabel: '',
 }
 
-CheckBox.propTypes = {
+Checkbox.propTypes = {
   label: PropTypes.string,
   disabled: PropTypes.bool,
   checked: PropTypes.bool,

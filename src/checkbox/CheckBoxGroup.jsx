@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component, PropTypes } from '../../libs'
 
-export default class CheckBoxGroup extends Component {
+export default class CheckboxGroup extends Component {
 
   constructor(props) {
     super(props);
@@ -40,7 +40,7 @@ export default class CheckBoxGroup extends Component {
   }
 }
 
-CheckBoxGroup.propTypes = {
+CheckboxGroup.propTypes = {
   options: PropTypes.array,
   onChange: PropTypes.func,
 }
