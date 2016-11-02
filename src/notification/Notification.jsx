@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import { Component, PropTypes, Transition, View } from '../../libs';
 
 const typeMap = {
   success: 'circle-check',
@@ -59,22 +59,24 @@ export default class Notification extends Component {
 
   render() {
     return (
-      <View transition="el-notification-fade" show={this.state.visible}>
-        <div className="el-notification" style={{
-            top: this.props.top
-        }} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
-          {
-            this.props.type && <i className={this.classNames('el-notification__icon', this.typeClass())} />
-          }
-          <div className="el-notification__group" style={{
-            marginLeft: this.typeClass() ? '55px' : '0' }}
-          >
-            <span>{this.props.title}</span>
-            <p>{this.props.message}</p>
-            <div className="el-notification__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div>
+      <Transition name="el-notification-fade" duration="300">
+        <View show={this.state.visible}>
+          <div className="el-notification" style={{
+              top: this.props.top
+          }} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
+            {
+              this.props.type && <i className={this.classNames('el-notification__icon', this.typeClass())} />
+            }
+            <div className="el-notification__group" style={{
+              marginLeft: this.typeClass() ? '55px' : '0'
+            }}>
+              <span>{this.props.title}</span>
+              <p>{this.props.message}</p>
+              <div className="el-notification__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div>
+            </div>
           </div>
-        </div>
-      </View>
+        </View>
+      </Transition>
     )
   }
 }

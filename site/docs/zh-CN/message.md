@@ -49,7 +49,7 @@ element 为 Vue.prototype 添加了全局方法 $message。因此在 vue instanc
 
 单独引入 `Message`：
 
-```javascript
+```
 import { Message } from 'element-ui';
 ```
 

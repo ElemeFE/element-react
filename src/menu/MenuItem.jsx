@@ -30,6 +30,11 @@ export default class MenuItem extends Component {
   }
 }
 
+MenuItem.contextTypes = {
+  activeIndex: PropTypes.string,
+  onSelect: PropTypes.func
+};
+
 MenuItem.propTypes = {
   index: PropTypes.string.isRequired,
   route: PropTypes.object,
@@ -39,8 +44,3 @@ MenuItem.propTypes = {
 MenuItem.defaultProps = {
 
 }
-
-MenuItem.contextTypes = {
-  activeIndex: PropTypes.string,
-  onSelect: PropTypes.func
-};

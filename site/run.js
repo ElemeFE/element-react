@@ -32,7 +32,7 @@ new WebpackDevServer(webpack({
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader']
+        loaders: ['style', 'css']
       },
       {
         test: /\.scss$/,
@@ -40,11 +40,11 @@ new WebpackDevServer(webpack({
       },
       {
         test: /\.(png|eot|svg|ttf|woff|woff2)(\?.+)?$/,
-        loader : 'url-loader'
+        loader : 'url'
       },
       {
         test: /\.md$/,
-        loader : 'raw-loader'
+        loader : 'raw'
       }
     ]
   }
