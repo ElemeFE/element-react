@@ -154,15 +154,10 @@ body {
     background-color: #f9fafc;
     border-top: solid 1px #eaeefb;
     display: flex;
-    flex-direction: row-reverse;
   }
 
   .highlight {
-    width: 60%;
-  }
-
-  .highlight.full-width {
-    width: 100%;
+    flex: 1;
   }
 
   .description {
@@ -170,7 +165,6 @@ body {
     width: 40%;
     box-sizing: border-box;
     border-left: solid 1px #eaeefb;
-    float: right;
     font-size: 14px;
     line-height: 1.8;
     color: #5e6d82;
