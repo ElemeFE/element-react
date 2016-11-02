@@ -26,7 +26,7 @@ export default class Component extends React.Component {
   }
 
   componentDidMountProxy() {
-    this.shouldApplyProps(this.props) && this.applyProps(this.props); console.log('componentDidMountProxy');
+    this.shouldApplyProps(this.props) && this.applyProps(this.props);
   }
 
   componentWillReceivePropsProxy(props) {
