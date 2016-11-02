@@ -18,3 +18,4 @@ export { default as Steps } from './steps';
 export { default as Breadcrumb } from './breadcrumb';
 export { default as Tooltip } from './tooltip';
 export { default as InputNumber } from './input-number';
+export { default as Checkbox } from './checkbox';

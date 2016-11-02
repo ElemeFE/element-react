@@ -11,14 +11,18 @@ export default class Playground extends React.Component {
     super(props);
 
     this.state = {
-      value: 1
+      alpha: 1,
+      beta: 1,
+      charlie: 5
     }
   }
   render() {
     return <Markdown context={this} component="InputNumber">{template}</Markdown>
   }
 
-  onChange() {
-
+  onChange(type, event) {
+    this.setState({
+      [type]: event.target.value
+    })
   }
 }

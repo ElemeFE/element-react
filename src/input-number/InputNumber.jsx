@@ -2,7 +2,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import Input from '../input';
-import util from './util';
+import { accAdd, accSub } from './util';
 
 export default class InputNumber extends Component {
   constructor(props) {
@@ -11,6 +11,47 @@ export default class InputNumber extends Component {
     this.state = {
       value: props.value
     };
+  }
+
+  onKeyDown(e) {
+    e.preventDefault();
+
+    switch (e.keyCode) {
+      case 38: // KeyUp
+        this.increase();
+        break;
+      case 40: // KeyDown
+        this.decrease();
+        break;
+      default:
+        break;
+    }
+
+    // this.refs.input.focus();
+  }
+
+  onBlur() {
+    let value = Number(this.state.value);
+
+    if (isNaN(value) || value > this.props.max || value < this.props.min) {
+      value = this.state.value;
+    }
+
+    this.setState({ value })
+  }
+
+  onInput(value) {
+    this.setState({ value }, this.onChange);
+  }
+
+  onChange() {
+    if (this.props.onChange) {
+      this.props.onChange({
+        target: {
+          value: this.state.value
+        }
+      })
+    }
   }
 
   minDisabled() {
@@ -27,13 +68,13 @@ export default class InputNumber extends Component {
 
     if (value + step > max || disabled) return;
 
-    value = util.accAdd(step, value);
+    value = accAdd(step, value);
 
     if (this.maxDisabled()) {
       inputActive = false;
     }
 
-    this.setState({ value, inputActive });
+    this.setState({ value, inputActive }, this.onChange);
   }
 
   decrease() {
@@ -42,13 +83,13 @@ export default class InputNumber extends Component {
 
     if (value - step < min || disabled) return;
 
-    value = util.accSub(value, step);
+    value = accSub(value, step);
 
     if (this.minDisabled()) {
       inputActive = false;
     }
 
-    this.setState({ value, inputActive });
+    this.setState({ value, inputActive }, this.onChange);
   }
 
   activeInput(disabled) {
@@ -72,15 +113,27 @@ export default class InputNumber extends Component {
       <div className={this.classNames('el-input-number', this.props.size && `el-input-number--${this.props.size}`, {
         'is-disabled': this.props.disabled
       })}>
-        <Input className={this.classNames({
+        <Input ref="input" className={this.classNames({
           'is-active': this.state.inputActive
-        })} value={this.props.value} disabled={this.props.disabled} size={this.props.size} />
+        })}
+          value={this.state.value}
+          disabled={this.props.disabled}
+          size={this.props.size}
+          onKeyDown={this.onKeyDown.bind(this)}
+          onBlur={this.onBlur.bind(this)}
+          onChange={this.onInput.bind(this)} />
         <span className={this.classNames('el-input-number__decrease el-icon-minus', {
           'is-disabled': this.minDisabled()
-        })} onClick={this.decrease.bind(this)} onMouseEnter={this.activeInput.bind(this, this.minDisabled())} onMouseLeave={this.inactiveInput.bind(this, this.minDisabled())} />
+        })}
+          onClick={this.decrease.bind(this)}
+          onMouseEnter={this.activeInput.bind(this, this.minDisabled())}
+          onMouseLeave={this.inactiveInput.bind(this, this.minDisabled())} />
         <span className={this.classNames('el-input-number__increase el-icon-plus', {
           'is-disabled': this.maxDisabled()
-        })} onClick={this.increase.bind(this)} onMouseEnter={this.activeInput.bind(this, this.maxDisabled())} onMouseLeave={this.inactiveInput.bind(this, this.maxDisabled())} />
+        })}
+          onClick={this.increase.bind(this)}
+          onMouseEnter={this.activeInput.bind(this, this.maxDisabled())}
+          onMouseLeave={this.inactiveInput.bind(this, this.maxDisabled())} />
       </div>
     )
   }
@@ -92,7 +145,8 @@ InputNumber.propTypes = {
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   disabled: PropTypes.bool,
-  size: PropTypes.string
+  size: PropTypes.string,
+  onChange: PropTypes.func
 }
 
 InputNumber.defaultProps = {
