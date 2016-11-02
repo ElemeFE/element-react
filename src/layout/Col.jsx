@@ -28,7 +28,7 @@ Col.contextTypes = {
 
 Col.propTypes = {
   span: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  offset: PropTypes.number,
+  offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pull: PropTypes.number,
   push: PropTypes.number
 }
