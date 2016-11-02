@@ -38,23 +38,27 @@ export default class Canvas extends Component {
   }
 
   renderSource() {
-    const div = this.refs.source;
+    if (this.shouldUpdate) {
+      const div = this.refs.source;
 
-    if (div instanceof HTMLElement) {
-      const args = ['context', 'React'], argv = [this.props.context, React];
+      if (div instanceof HTMLElement) {
+        const args = ['context', 'React'], argv = [this.props.context, React];
 
-      const Element = require('../../src');
+        const Element = require('../../src');
 
-      for (const key in Element) {
-        args.push(key);
-        argv.push(Element[key]);
+        for (const key in Element) {
+          args.push(key);
+          argv.push(Element[key]);
+        }
+
+        args.push(this.component);
+
+        ReactDOM.unmountComponentAtNode(div);
+        ReactDOM.render(new Function(...args).apply(null, argv), div);
       }
-
-      args.push(this.component);
-
-      ReactDOM.unmountComponentAtNode(div);
-      ReactDOM.render(new Function(...args).apply(null, argv), div);
     }
+
+    delete this.shouldUpdate;
   }
 
   render() {
@@ -70,9 +74,12 @@ export default class Canvas extends Component {
       code = `<div>${source[2]}</div>`
     }
 
-    this.component = transform(code.replace(/this/g, 'context'), {
+    const component = transform(code.replace(/this/g, 'context'), {
       presets: ['es2015', 'react']
     }).code.replace(/React.createElement/, 'return React.createElement');
+
+    this.shouldUpdate = component != this.component || this.component === undefined;
+    this.component = component;
 
     return (
       <div className={`demo-block demo-box demo-${name}`}>
