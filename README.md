@@ -16,7 +16,7 @@ npm i && npm start
 
 ## 组件接口
 
-目前提供了3个基础组件, Component, PropTypes, Transition和View.
+目前提供了几个基础组件, Component, PropTypes, Transition和View.
 
 ### Component
 
@@ -37,7 +37,7 @@ npm i && npm start
 
 ### PropTypes
 
-继承了React所有的PropTypes, 并提供了一些通用的自定义类型, 所有的自定义组件不再使用React.PropTypes.
+继承了React所有的PropTypes, 并提供了一些通用的自定义类型, 所有的自定义组件不推荐使用React.PropTypes.
 
 * range(min, max)
 * regex

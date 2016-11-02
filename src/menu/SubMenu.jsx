@@ -72,7 +72,9 @@ export default class SubMenu extends Component {
             })}>
           </i>
         </div>
-        { this.opened() && <ul className="el-menu">{this.props.children}</ul> }
+        <View show={this.opened()}>
+          <ul className="el-menu">{this.props.children}</ul>
+        </View>
       </li>
     )
   }

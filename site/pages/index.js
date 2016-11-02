@@ -81,7 +81,9 @@ class App extends React.Component {
     window.addEventListener("hashchange", e => {
       this.setState({
         page: this.getPage()
-      })
+      });
+
+      window.scrollTo(0, 0);
     }, false);
   }
 
