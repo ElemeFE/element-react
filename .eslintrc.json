@@ -17,6 +17,7 @@
     "react/jsx-first-prop-new-line": 0,
     "jsx-a11y/img-has-alt": 0,
     "jsx-a11y/label-has-for": 0,
+    "import/no-named-as-default-member": 0,
     "import/no-extraneous-dependencies": 0,
     "import/prefer-default-export": 0,
     "no-console": 0,
