@@ -1,6 +1,6 @@
-import CheckBox from './CheckBox';
-import CheckBoxGroup from './CheckBoxGroup';
+import Checkbox from './Checkbox';
+import CheckboxGroup from './CheckboxGroup';
 
-CheckBox.Group = CheckBoxGroup;
+Checkbox.Group = CheckboxGroup;
 
-export default CheckBox;
+export default Checkbox;

@@ -19,7 +19,7 @@ export default class CheckBoxGroup extends Component {
     const { options } = this.state;
     let children;
     if (options.length > 0) {
-      children = this.props.children.map((child, index) => {
+      children = React.Children.map(this.props.children, (child, index) => {
         return React.cloneElement(
           child,
           {
