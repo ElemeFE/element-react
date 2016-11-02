@@ -1,6 +1,4 @@
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import classnames from 'classnames';
 import { Component, View } from '../../libs';
 import PopperJS from './utils/popper';
 
@@ -13,25 +11,29 @@ export default class Tooltip extends Component {
     }
   }
 
+  componentDidMount() {
+    super.componentDidMount && super.componentDidMount();
+    this.initialPopper();
+  }
+
   componentDidUpdate() {
-    const popper = this.refs.popper;
-    if (popper) popper.setAttribute('x-placement', this.props.placement);
+    this.initialPopper();
+  }
 
-    const arrow = this.refs.arrow;
-    if (arrow) arrow.setAttribute('x-arrow', "");
-
+  initialPopper() {
+    const { popper, reference, arrow } = this.refs;
     const { placement } = this.props;
-    if (!/^(top|bottom|left|right)(-start|-end)?$/g.test(placement)) {
-      return;
-    }
+    const options = { placement };
 
+    this.createPopper(popper, reference, arrow, options);
+  }
+
+  createPopper(popper, reference, arrow, options) {
     if (popper) {
-      const reference = this.refs.reference;
-      const options = { placement };
-
-      popper.setAttribute('x-placement', placement);
+      popper.setAttribute('x-placement', options.placement || "");
       this.popperJS = new PopperJS(reference, popper, options);
     }
+    if (arrow) arrow.setAttribute('x-arrow', "");
   }
 
   handleShowPopper() {
@@ -52,8 +54,8 @@ export default class Tooltip extends Component {
   }
 
   render() {
-    const { showPopper } = this.state;
     const { effect, content, disabled, transition, visibleArrow } = this.props;
+    const showPopper = (this.props.visible !== undefined) ? this.props.visible : this.state.showPopper;
 
     return (
       <div
@@ -70,7 +72,7 @@ export default class Tooltip extends Component {
           transition={ transition }
           transitionKey={ `tooltip-${transition}`}
         >
-          <div ref="popper" className={ classnames("el-tooltip__popper", `is-${effect}`) }>
+          <div ref="popper" className={ this.classNames("el-tooltip__popper", `is-${effect}`) }>
             <div>{ content }</div>
             { visibleArrow ? <div ref="arrow" className="popper__arrow"></div> : null }
           </div>
@@ -97,16 +99,13 @@ Tooltip.propTypes = {
   openDelay: PropTypes.number,
   // 手动控制模式，设置为 true 后，mouseenter 和 mouseleave 事件将不会生效
   manual: PropTypes.bool,
-
-  // TODO: 作用什么是什么？
-  value: PropTypes.bool
+  // 手动控制状态的展示
+  visible: PropTypes.bool
 };
 
 Tooltip.defaultProps = {
   effect: "dark",
-  // placement: "bottom",
-  placement: "top",
-  visible: false,
+  placement: "bottom",
   disabled: false,
   transition: "fade-in-linear",
   visibleArrow: true,
