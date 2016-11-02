@@ -4,8 +4,6 @@ import { transform } from 'babel-standalone';
 import highlight from 'highlight.js';
 import marked from 'marked';
 
-import Transition from '../transition';
-
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
@@ -40,23 +38,23 @@ export default class Canvas extends Component {
   }
 
   renderSource() {
-    const Element = require('../../src');
-
     const div = this.refs.source;
-    const args = ['context', 'React'], argv = [this.props.context, React];
-
-    for (const key in Element) {
-      args.push(key);
-      argv.push(Element[key]);
-    }
-
-    args.push(this.component);
 
     if (div instanceof HTMLElement) {
-      ReactDOM.unmountComponentAtNode(div);
-    }
+      const args = ['context', 'React'], argv = [this.props.context, React];
 
-    ReactDOM.render(new Function(...args).apply(null, argv), div);
+      const Element = require('../../src');
+
+      for (const key in Element) {
+        args.push(key);
+        argv.push(Element[key]);
+      }
+
+      args.push(this.component);
+
+      ReactDOM.unmountComponentAtNode(div);
+      ReactDOM.render(new Function(...args).apply(null, argv), div);
+    }
   }
 
   render() {
