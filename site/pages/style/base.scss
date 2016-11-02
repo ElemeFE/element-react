@@ -54,6 +54,14 @@ body {
     color: #1f2f3d;
   }
 
+  pre {
+    background-color: #f9fafc;
+    overflow-x: auto;
+    padding: 18px 24px;
+    line-height: 1.8;
+    font-size: 12px;
+  }
+
   table {
     border-collapse: collapse;
     width: 100%;
@@ -84,7 +92,7 @@ body {
 }
 
 .side-nav {
-  width: 200px;
+  width: 180px;
   padding: 30px;
 
   li {
@@ -151,24 +159,30 @@ body {
   }
 
   .meta {
+    position: relative;
+    overflow: hidden;
     background-color: #f9fafc;
     border-top: solid 1px #eaeefb;
-    display: flex;
+    transition: all .2s;
   }
 
   .highlight {
-    flex: 1;
+    overflow: auto;
+    border-right: 1px solid #eaeefb;
   }
 
   .description {
+    float: right;
     padding: 18px 24px;
-    width: 40%;
-    box-sizing: border-box;
-    border-left: solid 1px #eaeefb;
+    width: 270px;
     font-size: 14px;
     line-height: 1.8;
     color: #5e6d82;
+    margin-left: -1px;
     word-break: break-word;
+    box-sizing: border-box;
+    border-left: 1px solid #eaeefb;
+
     p {
       margin: 0;
     }
@@ -183,18 +197,6 @@ body {
       font-size: 12px;
       border-radius: 3px;
     }
-  }
-
-  pre {
-    background-color: #f9fafc;
-    overflow-x: auto;
-    padding: 18px 24px;
-    line-height: 1.8;
-    font-size: 12px;
-  }
-
-  pre.fixed {
-    white-space: pre-line;
   }
 
   .demo-block-control {

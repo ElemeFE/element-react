@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import { Component, PropTypes, Transition, View } from '../../libs';
 import Button from '../button';
 import Input from '../input';
 
@@ -66,46 +66,50 @@ export default class MessageBox extends Component {
     return (
       <div>
         <div style={{ position: 'absolute', zIndex: 1007 }}>
-          <View show={this.state.visible} transition="msgbox-fade">
-            <div className="el-message-box">
-              {
-                this.props.title && (
-                  <div className="el-message-box__header">
-                    <div className="el-message-box__title">{this.props.title}</div>
-                    { this.props.showClose && <i className="el-message-box__close el-icon-close" onClick={this.handleAction.bind(this, 'cancel')} /> }
-                  </div>
-                )
-              }
-              {
-                this.props.message && (
-                  <div className="el-message-box__content">
-                    <div className={this.classNames('el-message-box__status', this.typeClass())}></div>
-                    <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
-                      <p>{this.props.message}</p>
+          <Transition name="msgbox-fade" duration="300">
+            <View show={this.state.visible}>
+              <div className="el-message-box">
+                {
+                  this.props.title && (
+                    <div className="el-message-box__header">
+                      <div className="el-message-box__title">{this.props.title}</div>
+                      { this.props.showClose && <i className="el-message-box__close el-icon-close" onClick={this.handleAction.bind(this, 'cancel')} /> }
                     </div>
-                    <View show={this.props.showInput}>
-                      <div className="el-message-box__input">
-                        <Input placeholder={this.props.inputPlaceholder} ref="input" />
-                        <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
+                  )
+                }
+                {
+                  this.props.message && (
+                    <div className="el-message-box__content">
+                      <div className={this.classNames('el-message-box__status', this.typeClass())}></div>
+                      <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
+                        <p>{this.props.message}</p>
                       </div>
-                    </View>
-                  </div>
-                )
-              }
-              <div className="el-message-box__btns">
-                <View show={this.props.showCancelButton}>
-                  <Button className={this.props.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.props.cancelButtonText}</Button>
-                </View>
-                <View show={this.props.showConfirmButton}>
-                  <Button className={this.classNames('el-button--primary', this.props.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.props.confirmButtonText}</Button>
-                </View>
+                      <View show={this.props.showInput}>
+                        <div className="el-message-box__input">
+                          <Input placeholder={this.props.inputPlaceholder} ref="input" />
+                          <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
+                        </div>
+                      </View>
+                    </div>
+                  )
+                }
+                <div className="el-message-box__btns">
+                  <View show={this.props.showCancelButton}>
+                    <Button className={this.props.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.props.cancelButtonText}</Button>
+                  </View>
+                  <View show={this.props.showConfirmButton}>
+                    <Button className={this.classNames('el-button--primary', this.props.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.props.confirmButtonText}</Button>
+                  </View>
+                </div>
               </div>
-            </div>
-          </View>
+            </View>
+          </Transition>
         </div>
-        <View show={this.state.visible} transition="v-modal">
-          <div className="v-modal" style={{ zIndex: 1006 }}></div>
-        </View>
+        <Transition name="v-modal" duration="200">
+          <View show={this.state.visible}>
+            <div className="v-modal" style={{ zIndex: 1006 }}></div>
+          </View>
+        </Transition>
       </div>
     )
   }

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import marked from 'marked';
 
-import Document from './document';
+import Canvas from './canvas';
 
 export default class Markdown extends Component {
   constructor(props) {
@@ -29,9 +29,7 @@ export default class Markdown extends Component {
     const html = marked(this.props.children.replace(/:::\s?demo\s?([^]+?):::/g, (match, p1, offset) => {
       const id = offset.toString(36);
 
-      this.components.set(id, React.createElement(Document, Object.assign({
-        text: p1
-      }, this.props)));
+      this.components.set(id, React.createElement(Canvas, this.props, p1));
 
       return `<div id=${id}></div>`;
     }));
