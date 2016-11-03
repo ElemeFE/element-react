@@ -2,13 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
+const basePath = path.resolve(__dirname, '../../');
+
 module.exports = {
   devtool: 'eval',
   entry: [
-    './pages/index'
+    '../../site/pages/index'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(basePath, '../dist/site'),
     filename: 'bundle.js'
   },
   plugins: [
@@ -23,9 +25,9 @@ module.exports = {
         test: /\.jsx?$/,
         loaders: ['react-hot', 'babel'],
         include: [
-          path.join(__dirname, 'pages'),
-          path.join(__dirname, '../src'),
-          path.join(__dirname, '../libs')
+          path.join(basePath, 'site/pages'),
+          path.join(basePath, 'src'),
+          path.join(basePath, 'libs')
         ]
       },
       {
