@@ -10,5 +10,6 @@ todos.txt
 archieve
 Makefile
 jsconfig.json
+.vscode
 
 /site/dist/
