@@ -11,4 +11,4 @@ archieve
 Makefile
 jsconfig.json
 
-/site/dist/
+dist

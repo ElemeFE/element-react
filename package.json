@@ -1,17 +1,21 @@
 {
   "name": "element-react",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Element UI for React",
-  "main": "index.js",
+  "main": "dist/npm/index.js",
   "scripts": {
     "start": "cd site && node run.js",
-    "build": "cd site && ../node_modules/webpack/bin/webpack.js --config build.js --progress",
     "test": "jest --config jest.json",
+    "prepublish": "npm run lint && npm run build",
+    "build": "cd build/site && webpack --progress",
     "lint": "eslint -c .eslintrc.json src",
     "lint:src:q": "eslint --quiet -c .eslintrc.json src",
     "install:githooks": "node ./build/githooks/install-git-hooks.js",
     "beautify:js": "js-beautify -r src/tree/**/*.js"
   },
+  "files": [
+    "dist/npm"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eleme/element-react.git"
