@@ -45,7 +45,11 @@ export default class Checkbox extends Component {
     }
 
     if (this.props.onChange) {
-      this.props.onChange(e);
+      if (this.context.isWrap) {
+        this.props.onChange(e, label);
+      } else {
+        this.props.onChange(e);
+      }
     }
 
     this.setState({
@@ -101,3 +105,7 @@ Checkbox.propTypes = {
   falseLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func
 }
+
+Checkbox.contextTypes = {
+  isWrap: PropTypes.bool
+};
