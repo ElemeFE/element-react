@@ -10,5 +10,5 @@ install:
   npm i
 
 script:
-  npm run lint
-  npm start
+  - npm run lint
+  - npm run build

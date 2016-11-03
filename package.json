@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cd site && node run.js",
+    "build": "cd site && ../node_modules/webpack/bin/webpack.js --config build.js --progress",
     "test": "jest --config jest.json",
     "lint": "eslint -c .eslintrc.json src",
     "lint:src:q": "eslint --quiet -c .eslintrc.json src",
