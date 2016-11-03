@@ -1,5 +1,5 @@
-import Checkbox from './Checkbox';
-import CheckboxGroup from './CheckboxGroup';
+import Checkbox from './CheckBox';
+import CheckboxGroup from './CheckBoxGroup';
 
 Checkbox.Group = CheckboxGroup;
 
