@@ -8,31 +8,18 @@
 
 :::demo 通过设置绑定值自定义滑块的初始值
 ```html
-<template>
-  <div class="block">
-    <span class="demonstration">默认</span>
-    <el-slider v-model="value1"></el-slider>
-  </div>
-  <div class="block">
-    <span class="demonstration">自定义初始值</span>
-    <el-slider v-model="value2"></el-slider>
-  </div>
-  <div class="block">
-    <span class="demonstration">禁用</span>
-    <el-slider v-model="value3" disabled></el-slider>
-  </div>
-</template>
-
-<script>
-  export default {
-    data() {
-      return {
-        value1: 0,
-        value2: 50
-      }
-    }
-  }
-</script>
+<div className="block">
+  <span className="demonstration">默认</span>
+  <Slider value={this.state.value1} />
+</div>
+<div className="block">
+  <span className="demonstration">自定义初始值</span>
+  <Slider value={this.state.value2} />
+</div>
+<div className="block">
+  <span className="demonstration">禁用</span>
+  <Slider value={this.state.value3} disabled={true} />
+</div>
 ```
 :::
 
@@ -42,34 +29,14 @@
 
 :::demo 改变`step`的值可以改变步长，通过设置`show-step`属性可以显示间断点
 ```html
-<template>
-  <div class="block">
-    <span class="demonstration">不显示间断点</span>
-    <el-slider
-      v-model="value4"
-      :step="10">
-    </el-slider>
-  </div>
-  <div class="block">
-    <span class="demonstration">显示间断点</span>
-    <el-slider
-      v-model="value5"
-      :step="10"
-      show-stops>
-    </el-slider>
-  </div>
-</template>
-
-<script>
-  export default {
-    data() {
-      return {
-        value3: 0,
-        value4: 0
-      }
-    }
-  }
-</script>
+<div className="block">
+  <span className="demonstration">不显示间断点</span>
+  <Slider value={this.state.value4} step="10" />
+</div>
+<div className="block">
+  <span className="demonstration">显示间断点</span>
+  <Slider value={this.state.value5} step="10" showStops={true} />
+</div>
 ```
 :::
 
@@ -79,24 +46,9 @@
 
 :::demo 设置`show-input`属性会在右侧显示一个输入框
 ```html
-<template>
-  <div class="block">
-    <el-slider
-      v-model="value6"
-      show-input>
-    </el-slider>
-  </div>
-</template>
-
-<script>
-  export default {
-    data() {
-      return {
-        value5: 0
-      }
-    }
-  }
-</script>
+<div className="block">
+  <Slider value={this.state.value6} showInput={true} />
+</div>
 ```
 :::
 
