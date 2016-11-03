@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const basePath = path.resolve(__dirname, '../../');
 
@@ -16,12 +16,19 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('[name].css'),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-          warnings: false
+        warnings: false
       },
       output: {
-          comments: false
+        comments: false
+      }
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
       }
     })
   ],
