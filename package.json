@@ -6,8 +6,7 @@
   "scripts": {
     "start": "cd site && node run.js",
     "test": "jest --config jest.json",
-    "prepublish": "npm run lint && npm run build",
-    "build": "cd build/site && webpack --progress",
+    "build": "rm -fr dist && cd build/site && webpack --progress",
     "lint": "eslint -c .eslintrc.json src",
     "lint:src:q": "eslint --quiet -c .eslintrc.json src",
     "install:githooks": "node ./build/githooks/install-git-hooks.js",
@@ -44,6 +43,7 @@
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.3.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "highlight.js": "^9.7.0",
     "jest": "^16.0.2",
