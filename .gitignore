@@ -10,3 +10,5 @@ todos.txt
 archieve
 Makefile
 jsconfig.json
+
+/site/dist/
