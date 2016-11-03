@@ -13,3 +13,6 @@ script:
   - npm run lint
   - npm run build
   - npm test
+
+notifications:
+  slack: eleme:3Nouwh5OgNugxccCsiFYpUIB
