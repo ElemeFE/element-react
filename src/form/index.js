@@ -1,3 +1,6 @@
-import Alert from './Alert';
+import Form from './Form';
+import FormItem from './FormItem';
 
-export default Alert;
+Form.Item = FormItem;
+
+export default Form;
