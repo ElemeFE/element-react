@@ -10,6 +10,6 @@ export default class Playground extends Component {
   }
 
   render() {
-    return <Markdown context={this} component="Tree">{template}</Markdown>
+    return <Markdown context={this} component="time-picker">{template}</Markdown>
   }
 }

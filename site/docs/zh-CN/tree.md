@@ -59,7 +59,7 @@ let options = {
 
 ::: demo
 ```javascript
-//todo: add me
+<div>//todo: add me</div>
 ```
 :::
 
