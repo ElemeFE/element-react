@@ -70,14 +70,27 @@ export default class Canvas extends Component {
 
     let code = source[2];
 
-    if (!/^js|javascript/i.test(source[1])) {
+    if (!/^(js|javascript|jsfunc)/i.test(source[1])) {
       code = `<div>${source[2]}</div>`
     }
-
-    const component = transform(code.replace(/this/g, 'context'), {
-      presets: ['es2015', 'react']
-    }).code.replace(/React.createElement/, 'return React.createElement');
-
+    let component
+    // hacking through restrictions, so i can create React class in markdown.
+    // see time-picker.md demo
+    if (/^jsfunc/i.test(source[1])){
+      code = `
+        __rtn = (function() {
+          ${code}
+        })();
+      `
+      component = transform(code, {
+              presets: ['es2015', 'react']
+            }).code.replace('__rtn = ', 'return ')
+    }else{
+      component = transform(code.replace(/this/g, 'context'), {
+        presets: ['es2015', 'react']
+      }).code.replace(/React.createElement/, 'return React.createElement');
+    }
+    
     this.shouldUpdate = component != this.component || this.component === undefined;
     this.component = component;
 
@@ -85,9 +98,9 @@ export default class Canvas extends Component {
       <div className={`demo-block demo-box demo-${name}`}>
         <div className="source" ref="source"></div>
         <div className="meta" style={{
-            height: this.state.showBlock ? this.getHeight() : 0
+          height: this.state.showBlock ? this.getHeight() : 0
         }}>
-          { description && <div ref="description" className="description" dangerouslySetInnerHTML={{ __html: description }}></div> }
+          {description && <div ref="description" className="description" dangerouslySetInnerHTML={{ __html: description }}></div>}
           <div ref="highlight" className="highlight" dangerouslySetInnerHTML={{ __html: highlight }}></div>
         </div>
         <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
@@ -95,8 +108,8 @@ export default class Canvas extends Component {
             this.state.showBlock ? (
               <i className="el-icon-caret-top"></i>
             ) : (
-              <i className="el-icon-caret-bottom"></i>
-            )
+                <i className="el-icon-caret-bottom"></i>
+              )
           }
         </div>
       </div>

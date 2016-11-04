@@ -30,6 +30,7 @@ import Breadcrumb from './breadcrumb';
 import InputNumber from './input-number';
 import Checkbox from './checkbox';
 import Slider from './slider';
+import TimePicker from './time-picker'
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -45,6 +46,7 @@ const pages = {
     'checkbox': { title: 'Checkbox 多选框', component: Checkbox },
     'input': { title: 'Input 输入框', component: Input },
     'input-number': { title: 'Input Number 计数器', component: InputNumber },
+    'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
     'slider': { title: 'Slider 滑块', component: Slider },
   },
   'Data': {
@@ -95,10 +97,12 @@ class App extends React.Component {
   }
 
   getComponent(page) {
-    this.components = this.components || Object.assign.apply(this, [{}].concat(Object.keys(pages).map(group => {
-      return pages[group]
-    })));
-
+    this.components = this.components ||
+      Object.assign.apply(this, [{}].concat(
+        Object.keys(pages).map(group => {
+          return pages[group]
+        })
+      ));
     return this.components[page].component;
   }
 
