@@ -3,7 +3,7 @@ node_js:
   - "6"
 
 env:
-- TRAVIS_CI=1
+  - TRAVIS_CI=1
 
 cache:
   directories:

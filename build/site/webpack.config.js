@@ -6,9 +6,7 @@ const basePath = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
-    core: [path.join(basePath, 'src'), path.join(basePath, 'libs')],
-    app: path.join(basePath, 'site/pages'),
-    vendor: ['react', 'react-dom']
+    bundle: path.join(basePath, 'site/pages/index')
   },
   output: {
     path: path.resolve(basePath, 'dist/site'),
@@ -18,12 +16,10 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('[name].css'),
-    new webpack.optimize.CommonsChunkPlugin('vendor', "vendor.js"),
   ].concat(process.env.TRAVIS_CI ? [] : [
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: false,
       compress: {
         warnings: false
       },
