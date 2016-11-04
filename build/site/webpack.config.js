@@ -6,7 +6,7 @@ const basePath = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
-    core: [path.join(basePath, 'src'), path.join(basePath, 'libs/markdown')],
+    core: [path.join(basePath, 'src'), path.join(basePath, 'libs')],
     app: path.join(basePath, 'site/pages'),
     vendor: ['react', 'react-dom']
   },
@@ -19,22 +19,19 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('[name].css'),
     new webpack.optimize.CommonsChunkPlugin('vendor', "vendor.js"),
+  ].concat(process.env.TRAVIS_CI ? [] : [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: false,
       compress: {
         warnings: false
       },
       output: {
         comments: false
       }
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
     })
-  ],
+  ]),
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
