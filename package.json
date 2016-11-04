@@ -5,7 +5,7 @@
   "main": "dist/npm/index.js",
   "scripts": {
     "start": "cd site && node run.js",
-    "test": "jest --config jest.json",
+    "test": "jest",
     "build": "rm -fr dist && cd build/site && webpack --progress",
     "lint": "eslint -c .eslintrc.json src",
     "lint:src:q": "eslint --quiet -c .eslintrc.json src",
@@ -67,5 +67,8 @@
     "react-addons-css-transition-group": "^15.3.2",
     "react-addons-transition-group": "^15.3.2",
     "react-dom": "^15.3.2"
+  },
+  "jest": {
+    "testRegex": "/jest/.+\\.(js|jsx)$"
   }
 }
