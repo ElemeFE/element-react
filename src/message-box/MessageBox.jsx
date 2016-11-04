@@ -29,24 +29,73 @@ export default class MessageBox extends Component {
     return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
   }
 
-  handleAction(type) {
-    if (this.props.modal) {
-      switch (type) {
+  onChange(event) {
+    this.validate(event.target.value);
+  }
+
+  validate(value) {
+    const { inputPattern, inputValidator, inputErrorMessage } = this.props;
+    const { editorErrorMessage } = this.state;
+
+    return Promise.resolve().then(() => {
+      this.inputValue = value;
+
+      if (inputPattern && !inputPattern.test(inputValue)) {
+        return inputErrorMessage || $t('el.messagebox.error');
+      }
+
+      if (typeof inputValidator === 'function') {
+        const validateResult = inputValidator(inputValue);
+
+        if (validateResult === false) {
+          return inputErrorMessage || $t('el.messagebox.error');
+        }
+
+        if (typeof validateResult === 'string') {
+          return validateResult;
+        }
+      }
+    }).then(editorErrorMessage => {
+      this.setState({ editorErrorMessage });
+
+      if (editorErrorMessage) {
+        this.refs.input.classList.add('invalid');
+      } else {
+        this.refs.input.classList.remove('invalid');
+      }
+
+      return !editorErrorMessage;
+    });
+  }
+
+  handleAction(action) {
+    const { modal, promise, showInput } = this.props;
+
+    if (modal) {
+      switch (action) {
         case 'cancel':
-          this.props.promise.reject();
+          promise.reject();
           break;
         case 'confirm':
-          if (this.props.modal === 'prompt') {
-            // TODO
+          if (modal === 'prompt') {
+            this.validate(this.inputValue).then(result => {
+              if (result) {
+                if (showInput) {
+                  promise.resolve({ value: this.inputValue, action });
+                } else {
+                  promise.resolve(action);
+                }
+              }
+            });
+          } else {
+            promise.resolve();
           }
-
-          this.props.promise.resolve();
           break;
         default:
           break;
       }
     } else {
-      this.props.promise.resolve(type);
+      promise.resolve(action);
     }
 
     this.close();
@@ -86,7 +135,7 @@ export default class MessageBox extends Component {
                       </div>
                       <View show={this.props.showInput}>
                         <div className="el-message-box__input">
-                          <Input placeholder={this.props.inputPlaceholder} ref="input" />
+                          <Input ref="input" placeholder={this.props.inputPlaceholder} onChange={this.onChange.bind(this)} />
                           <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
                         </div>
                       </View>

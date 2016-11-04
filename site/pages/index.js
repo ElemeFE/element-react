@@ -31,7 +31,8 @@ import Breadcrumb from './breadcrumb';
 import InputNumber from './input-number';
 import Checkbox from './checkbox';
 import Slider from './slider';
-import TimePicker from './time-picker'
+import Form from './form';
+import TimePicker from './time-picker';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -50,6 +51,7 @@ const pages = {
     'input-number': { title: 'Input Number 计数器', component: InputNumber },
     'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
     'slider': { title: 'Slider 滑块', component: Slider },
+    'form': { title: 'Form 表单', component: Form },
   },
   'Data': {
     'progress': { title: 'Progress 进度条', component: Progress },
