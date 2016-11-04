@@ -1,5 +1,6 @@
 import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
+import AsyncValidator from 'async-validator';
+import { Component, PropTypes, Transition } from '../../libs';
 
 export default class FormItem extends Component {
   constructor(props) {
@@ -33,12 +34,24 @@ export default class FormItem extends Component {
     }
   }
 
-  componentWillMount() {
+  componentWillUnMount() {
     this.context.removeField(this);
   }
 
+  onFieldBlur() {
+    this.validate('blur');
+  }
+
+  onFieldChange() {
+    if (this.validateDisabled) {
+      this.validateDisabled = false;
+      return;
+    }
+    this.validate('change');
+  }
+
   validate(trigger, cb) {
-    const { validating, valid, error } = this.state;
+    let { validating, valid, error } = this.state;
 
     var rules = this.getFilteredRule(trigger);
     if (!rules || rules.length === 0) {
@@ -52,7 +65,7 @@ export default class FormItem extends Component {
     var validator = new AsyncValidator(descriptor);
     var model = { [this.props.prop]: this.fieldValue() };
 
-    validator.validate(model, { firstFields: true }, (errors, fields) => {
+    validator.validate(model, { firstFields: true }, errors => {
       valid = !errors;
       error = errors ? errors[0].message : '';
       cb && cb(errors);
@@ -62,13 +75,23 @@ export default class FormItem extends Component {
     this.setState({ validating, valid, error });
   }
 
+  getInitialValue() {
+    var value = this.context.model[this.props.prop];
+    if (value === undefined) {
+      return value;
+    } else {
+      return JSON.parse(JSON.stringify(value));
+    }
+  }
+
   resetField() {
-    const { validating, valid, error } = this.state;
+    let { valid, error } = this.state;
 
     valid = true;
     error = '';
 
-    let model = this.context.model;
+    this.setState({ valid, error });
+
     let value = this.fieldValue();
 
     if (Array.isArray(value) && value.length > 0) {
@@ -93,27 +116,6 @@ export default class FormItem extends Component {
     return rules.filter(rule => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1;
     });
-  }
-
-  onFieldBlur() {
-    this.validate('blur');
-  }
-
-  onFieldChange() {
-    if (this.validateDisabled) {
-      this.validateDisabled = false;
-      return;
-    }
-    this.validate('change');
-  }
-
-  getInitialValue() {
-    var value = this.context.model[this.props.prop];
-    if (value === undefined) {
-      return value;
-    } else {
-      return JSON.parse(JSON.stringify(value));
-    }
   }
 
   labelStyle() {

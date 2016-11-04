@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
+import { Component, PropTypes } from '../../libs';
 
 export default class Form extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class Form extends Component {
       labelWidth: this.props.labelWidth,
       rules: this.props.rules,
       model: this.props.model,
-      addField: this.addField.bind(this)
+      addField: this.addField.bind(this),
       removeField: this.removeField.bind(this)
     };
   }
@@ -70,8 +70,8 @@ export default class Form extends Component {
 
   render() {
     return (
-      <form className={this.classNames('el-form', this.props. && `el-form--label-${this.props.labelPosition}`, {
-        'el-form--inline': inline
+      <form className={this.classNames('el-form', this.props.labelPosition && `el-form--label-${this.props.labelPosition}`, {
+        'el-form--inline': this.props.inline
       })}>{this.props.children}</form>
     )
   }

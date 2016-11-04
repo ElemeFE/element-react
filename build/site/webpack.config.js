@@ -6,7 +6,9 @@ const basePath = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
-    bundle: '../../site/pages/index'
+    core: [path.join(basePath, 'src'), path.join(basePath, 'libs/markdown')],
+    app: path.join(basePath, 'site/pages'),
+    vendor: ['react', 'react-dom']
   },
   output: {
     path: path.resolve(basePath, 'dist/site'),
@@ -16,8 +18,9 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin('[name].css'),
-    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.CommonsChunkPlugin('vendor', "vendor.js"),
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false

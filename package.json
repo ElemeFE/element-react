@@ -60,6 +60,7 @@
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
+    "async-validator": "^1.6.6",
     "classnames": "^2.2.5",
     "is-equal": "^1.5.3",
     "react": "^15.3.2",
