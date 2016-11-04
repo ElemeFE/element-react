@@ -4,11 +4,32 @@ import classnames from 'classnames';
 import equal from 'is-equal';
 
 export default class Component extends React.Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
+    this.proxy('componentDidMount', this.componentDidMountProxy);
+    this.proxy('componentWillReceiveProps', this.componentWillReceivePropsProxy);
+  }
+
+  proxy(name, replace) {
+    const fn = this[name];
+
+    this[name] = (...args) => {
+      if (replace instanceof Function) {
+        replace.apply(this, args);
+      }
+
+      if (fn instanceof Function) {
+        fn.apply(this, args);
+      }
+    }
+  }
+
+  componentDidMountProxy() {
     this.shouldApplyProps(this.props) && this.applyProps(this.props);
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceivePropsProxy(props) {
     this.shouldApplyProps(props, this.props) && this.applyProps(props);
   }
 
