@@ -1,92 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import pages from '../locales/zh-CN/nav';
+
 import 'element-ui/lib/theme-default/index.css';
 
 import './style/highlight.css';
 import './style/base.scss';
-
-import Alert from './alert';
-import Layout from './layout';
-import Button from './button';
-import Radio from './radio';
-import Card from './card';
-import Message from './message';
-import MessageBox from './message-box';
-import Notification from './notification';
-import Loading from './loading';
-import Dialog from './dialog';
-import Progress from './progress';
-import Badge from './badge';
-import Tree from './tree';
-import Tooltip from './tooltip';
-import Input from './input';
-import Icon from './icon';
-import Menu from './menu';
-import Steps from './steps';
-import Typography from './typography';
-import Color from './color';
-import Breadcrumb from './breadcrumb';
-import InputNumber from './input-number';
-import Checkbox from './checkbox';
-import Slider from './slider';
-
-// pages是有序的Object, 会影响到左侧的菜单顺序.
-const pages = {
-  'Basic': {
-    'layout': { title: 'Layout 布局', component: Layout },
-    'color': { title: 'Color 色彩', component: Color },
-    'typography': { title: 'Typography 字体', component: Typography },
-    'icon': { title: 'Icon 图标', component: Icon },
-    'button': { title: 'Button 按钮', component: Button },
-  },
-  'Form': {
-    'radio': { title: 'Radio 单选框', component: Radio },
-    'checkbox': { title: 'Checkbox 多选框', component: Checkbox },
-    'input': { title: 'Input 输入框', component: Input },
-    'input-number': { title: 'Input Number 计数器', component: InputNumber },
-    'slider': { title: 'Slider 滑块', component: Slider },
-  },
-  'Data': {
-    'progress': { title: 'Progress 进度条', component: Progress },
-    'tree': { title: 'Tree 树形控件', component: Tree },
-    'badge': { title: 'Badge 标记', component: Badge },
-  },
-  'Notice': {
-    'alert': { title: 'Alert 警告', component: Alert },
-    'loading': { title: 'Loading 加载', component: Loading },
-    'message': { title: 'Message 消息提示', component: Message },
-    'message-box': { title: 'Message Box 弹框', component: MessageBox },
-    'notification': { title: 'Notification 通知', component: Notification },
-  },
-  'Nav': {
-    'menu': { title: 'NavMenu 导航菜单', component: Menu },
-    'breadcrumb': { title: 'Breadcrumb 面包屑', component: Breadcrumb },
-    'steps': { title: 'Steps 步骤', component: Steps },
-  },
-  'Others': {
-    'dialog': { title: 'Dialog 对话框', component: Dialog },
-    'tooltip': { title: 'Tooltip 文字提示', component: Tooltip },
-    'card': { title: 'Card 卡片', component: Card }
-  }
-};
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      page: this.getPage() || 'layout' // Do not change this line
+      page: this.getPage() || 'layout'
     };
+  }
+
+  componentWillMount() {
+    this.renderPage();
   }
 
   componentDidMount() {
     window.addEventListener("hashchange", e => {
+      window.scrollTo(0, 0);
+
       this.setState({
         page: this.getPage()
+      }, () => {
+        this.renderPage();
       });
-
-      window.scrollTo(0, 0);
     }, false);
   }
 
@@ -94,12 +37,90 @@ class App extends React.Component {
     return location.hash.substr(1);
   }
 
-  getComponent(page) {
-    this.components = this.components || Object.assign.apply(this, [{}].concat(Object.keys(pages).map(group => {
-      return pages[group]
-    })));
+  setComponent(component) {
+    this.setState({ component });
+  }
 
-    return this.components[page].component;
+  renderPage() {
+    switch (this.state.page) {
+      case 'layout':
+        require([`./layout`], this.setComponent.bind(this))
+        break;
+      case 'color':
+        require([`./color`], this.setComponent.bind(this));
+        break;
+      case 'typography':
+        require([`./typography`], this.setComponent.bind(this));
+        break;
+      case 'icon':
+        require([`./icon`], this.setComponent.bind(this));
+        break;
+      case 'button':
+        require([`./button`], this.setComponent.bind(this));
+        break;
+      case 'radio':
+        require([`./radio`], this.setComponent.bind(this));
+        break;
+      case 'checkbox':
+        require([`./checkbox`], this.setComponent.bind(this));
+        break;
+      case 'input':
+        require([`./input`], this.setComponent.bind(this));
+        break;
+      case 'input-number':
+        require([`./input-number`], this.setComponent.bind(this));
+        break;
+      case 'slider':
+        require([`./slider`], this.setComponent.bind(this));
+        break;
+      case 'form':
+        require([`./form`], this.setComponent.bind(this))
+        break;
+      case 'progress':
+        require([`./progress`], this.setComponent.bind(this));
+        break;
+      case 'tree':
+        require([`./tree`], this.setComponent.bind(this));
+        break;
+      case 'badge':
+        require([`./badge`], this.setComponent.bind(this));
+        break;
+      case 'alert':
+        require([`./alert`], this.setComponent.bind(this));
+        break;
+      case 'loading':
+        require([`./loading`], this.setComponent.bind(this));
+        break;
+      case 'message':
+        require([`./message`], this.setComponent.bind(this));
+        break;
+      case 'message-box':
+        require([`./message-box`], this.setComponent.bind(this));
+        break;
+      case 'notification':
+        require([`./notification`], this.setComponent.bind(this));
+        break;
+      case 'menu':
+        require([`./menu`], this.setComponent.bind(this));
+        break;
+      case 'breadcrumb':
+        require([`./breadcrumb`], this.setComponent.bind(this));
+        break;
+      case 'steps':
+        require([`./steps`], this.setComponent.bind(this));
+        break;
+      case 'dialog':
+        require([`./dialog`], this.setComponent.bind(this));
+        break;
+      case 'tooltip':
+        require([`./tooltip`], this.setComponent.bind(this));
+        break;
+      case 'card':
+        require([`./card`], this.setComponent.bind(this));
+        break;
+      default:
+        break;
+    }
   }
 
   render() {
@@ -138,7 +159,7 @@ class App extends React.Component {
           </nav>
           <div className="content">
             {
-              React.createElement(this.getComponent(this.state.page))
+              this.state.component && React.createElement(this.state.component.default)
             }
           </div>
         </div>
