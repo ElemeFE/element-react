@@ -67,7 +67,7 @@ export default class Checkbox extends Component {
             this.classNames("el-checkbox__inner",
             {'is-disabled': this.props.disabled},
             {'is-checked': this.state.checked},
-            {'indeterminate': this.props.indeterminate},
+            {'is-indeterminate': this.props.indeterminate},
             {'is-focus': this.state.focus})}>
           </span>
           <input
