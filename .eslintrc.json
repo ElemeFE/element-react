@@ -14,13 +14,18 @@
     "react/no-string-refs": 0,
     "react/jsx-closing-bracket-location": 0,
     "react/no-did-mount-set-state": 0,
+    "react/jsx-first-prop-new-line": 0,
     "jsx-a11y/img-has-alt": 0,
-    "jsx-a11y/label-has-for": 1,
+    "jsx-a11y/label-has-for": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/prefer-default-export": 0,
+    "no-console": 0,
+    "no-unused-vars": 1,
     "react/sort-comp": 1,
-    "react/prefer-stateless-function": 1,
-    "react/prop-types": 1,
-    "react/forbid-prop-types": [2, { "forbid": ["any", "array"] }]
+    "react/prefer-stateless-function": 0,
+    "react/prop-types": [1, { "ignore": ["children"] }],
+    "react/no-find-dom-node": 1,
+    "react/no-unused-prop-types": 1,
+    "react/forbid-prop-types": [2, { "forbid": ["any"] }]
   }
 }
-
-

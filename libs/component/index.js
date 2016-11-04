@@ -30,16 +30,17 @@ export default class Component extends React.Component {
   applyProps(props) {
     if (this.element) {
       // apply new className
-      this.element.className = this.classNames(this.className, props.className);
+      this.element.className = this.classNames(props.className, this.className);
 
       // apply new style
       if (props.style) {
         const div = document.createElement('div');
-        const dom = ReactDOM.render(<div style={props.style} />, div);
+
+        ReactDOM.render(<div style={props.style} />, div);
+
+        this.element.style.cssText = div.style.cssText + ' ' + this.style;
 
         ReactDOM.unmountComponentAtNode(div);
-
-        this.element.style.cssText = this.style + dom.style.cssText;
       } else {
         this.element.style.cssText = this.style;
       }
@@ -51,7 +52,9 @@ export default class Component extends React.Component {
   }
 }
 
+/* eslint-disable */
 Component.propTypes = {
   className: React.PropTypes.string,
   style: React.PropTypes.object
 }
+/* eslint-enable */

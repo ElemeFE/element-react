@@ -3,28 +3,6 @@ import ReactDOM from 'react-dom';
 
 import MessageBox from './MessageBox';
 
-function next(props) {
-  return new Promise((resolve, reject) => {
-    const div = document.createElement('div');
-
-    document.body.appendChild(div);
-
-    if (props.lockScroll != false) {
-      document.body.style.setProperty('overflow', 'hidden');
-    }
-
-    ReactDOM.render(<MessageBox onClose={() => {
-      ReactDOM.unmountComponentAtNode(div);
-      document.body.removeChild(div);
-      document.body.style.removeProperty('overflow');
-
-      if (props.onClose instanceof Function) {
-        props.onClose();
-      }
-    }} promise={{ resolve, reject }} {...props} />, div);
-  });
-}
-
 function alert(message, title, props) {
   if (typeof title === 'object') {
     props = title;
@@ -58,6 +36,33 @@ function prompt() {
 
 function msgbox(props) {
   return next(props);
+}
+
+function next(props) {
+  return new Promise((resolve, reject) => {
+    const div = document.createElement('div');
+
+    document.body.appendChild(div);
+
+    if (props.lockScroll != false) {
+      document.body.style.setProperty('overflow', 'hidden');
+    }
+
+    const component = React.createElement(MessageBox, Object.assign({}, props, {
+      promise: { resolve, reject },
+      onClose: () => {
+        ReactDOM.unmountComponentAtNode(div);
+        document.body.removeChild(div);
+        document.body.style.removeProperty('overflow');
+
+        if (props.onClose instanceof Function) {
+          props.onClose();
+        }
+      }
+    }));
+
+    ReactDOM.render(component, div);
+  });
 }
 
 export default {
