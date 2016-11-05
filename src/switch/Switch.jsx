@@ -5,7 +5,6 @@ export default class Switch extends Component {
 
   constructor(props) {
     super(props);
-    console.log('constructor');
     this.state = {
       value: Boolean(props.value),
       disabled: Boolean(props.disabled),
@@ -14,12 +13,10 @@ export default class Switch extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
     this.updateSwitch();
   }
 
   componentDidUpdate(prevProps) {
-    console.log('componentDidUpdate');
     this.updateSwitch();
   }
 
@@ -54,7 +51,6 @@ export default class Switch extends Component {
   }
 
   render() {
-    console.log('render');
     const {name, onText, offText, onIconClass, offIconClass} = this.props;
     const {value, disabled, width} = this.state;
     return (
