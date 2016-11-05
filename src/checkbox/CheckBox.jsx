@@ -45,7 +45,11 @@ export default class Checkbox extends Component {
     }
 
     if (this.props.onChange) {
-      this.props.onChange(e);
+      if (this.context.isWrap) {
+        this.props.onChange(e, label);
+      } else {
+        this.props.onChange(e);
+      }
     }
 
     this.setState({
@@ -63,7 +67,7 @@ export default class Checkbox extends Component {
             this.classNames("el-checkbox__inner",
             {'is-disabled': this.props.disabled},
             {'is-checked': this.state.checked},
-            {'indeterminate': this.props.indeterminate},
+            {'is-indeterminate': this.props.indeterminate},
             {'is-focus': this.state.focus})}>
           </span>
           <input
@@ -101,3 +105,7 @@ Checkbox.propTypes = {
   falseLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func
 }
+
+Checkbox.contextTypes = {
+  isWrap: PropTypes.bool
+};

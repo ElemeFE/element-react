@@ -20,8 +20,6 @@ export default class Tree extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    super.componentWillReceiveProps(nextProps)
-
     if (nextProps.data instanceof Array) {
       this.state.treeModel.root.setData(nextProps.data)
       this.setState({})//force update

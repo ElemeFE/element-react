@@ -1,21 +1,33 @@
 const path = require('path');
 const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const basePath = path.resolve(__dirname, '../../');
 
 module.exports = {
-  devtool: 'eval',
-  entry: [
-    '../../site/pages/index'
-  ],
+  entry: {
+    bundle: path.join(basePath, 'site/pages/index')
+  },
   output: {
-    path: path.resolve(basePath, '../dist/site'),
-    filename: 'bundle.js'
+    path: path.resolve(basePath, 'dist/site'),
+    chunkFilename: '[chunkhash:12].js',
+    filename: '[name].js',
+    publicPath: '/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
+    new ExtractTextPlugin('[name].css'),
+  ].concat(process.env.TRAVIS_CI ? [] : [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      output: {
+        comments: false
+      }
+    })
+  ]),
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
@@ -23,7 +35,7 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        loaders: ['react-hot', 'babel'],
+        loaders: ['babel'],
         include: [
           path.join(basePath, 'site/pages'),
           path.join(basePath, 'src'),
@@ -32,15 +44,19 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loaders: ['style', 'css']
+        loader: ExtractTextPlugin.extract('style', 'css')
       },
       {
         test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
+        loader: ExtractTextPlugin.extract("style", "css", "sass")
       },
       {
-        test: /\.(png|eot|svg|ttf|woff|woff2)(\?.+)?$/,
-        loader : 'url'
+        test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
+        loader: 'file?name=[hash:12].[ext]'
+      },
+      {
+        test: /\.(jpg|png|gif)(\?.+)?$/,
+        loader: 'url?name=[hash:12].[ext]&limit=10000'
       },
       {
         test: /\.md$/,

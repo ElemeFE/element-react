@@ -2,14 +2,10 @@ import './style.scss';
 
 import React from 'react';
 import { Component, Markdown } from '../../../libs';
-import template from '../../docs/zh-CN/time-picker.md';
+import template from '../../docs/zh-CN/form.md';
 
 export default class Playground extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
-    return <Markdown context={this} component="Tree">{template}</Markdown>
+    return <Markdown context={this} component="Form">{template}</Markdown>
   }
 }

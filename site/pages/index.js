@@ -19,6 +19,7 @@ import Dialog from './dialog';
 import Progress from './progress';
 import Badge from './badge';
 import Tree from './tree';
+import Rate from './rate';
 import Tooltip from './tooltip';
 import Input from './input';
 import Icon from './icon';
@@ -31,6 +32,8 @@ import InputNumber from './input-number';
 import Checkbox from './checkbox';
 import Slider from './slider';
 import Switch from './switch';
+import Form from './form';
+import TimePicker from './time-picker';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -42,12 +45,15 @@ const pages = {
     'button': { title: 'Button 按钮', component: Button },
   },
   'Form': {
+    'Rate': { title: 'Rate 评分', component: Rate },
     'radio': { title: 'Radio 单选框', component: Radio },
     'checkbox': { title: 'Checkbox 多选框', component: Checkbox },
     'input': { title: 'Input 输入框', component: Input },
     'input-number': { title: 'Input Number 计数器', component: InputNumber },
+    'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
     'slider': { title: 'Slider 滑块', component: Slider },
     'switch': { title: 'Switch 开关', component: Switch },
+    'form': { title: 'Form 表单', component: Form },
   },
   'Data': {
     'progress': { title: 'Progress 进度条', component: Progress },
@@ -97,10 +103,12 @@ class App extends React.Component {
   }
 
   getComponent(page) {
-    this.components = this.components || Object.assign.apply(this, [{}].concat(Object.keys(pages).map(group => {
-      return pages[group]
-    })));
-
+    this.components = this.components ||
+      Object.assign.apply(this, [{}].concat(
+        Object.keys(pages).map(group => {
+          return pages[group]
+        })
+      ));
     return this.components[page].component;
   }
 
