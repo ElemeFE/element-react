@@ -21,5 +21,6 @@ export { default as Tooltip } from './tooltip';
 export { default as InputNumber } from './input-number';
 export { default as Checkbox } from './checkbox';
 export { default as Slider } from './slider';
+export { default as Switch } from './switch';
 export { default as Form } from './form';
 export { TimeSelect } from './date-picker';

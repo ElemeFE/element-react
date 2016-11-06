@@ -31,6 +31,7 @@ import Breadcrumb from './breadcrumb';
 import InputNumber from './input-number';
 import Checkbox from './checkbox';
 import Slider from './slider';
+import Switch from './switch';
 import Form from './form';
 import TimePicker from './time-picker';
 
@@ -51,6 +52,7 @@ const pages = {
     'input-number': { title: 'Input Number 计数器', component: InputNumber },
     'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
     'slider': { title: 'Slider 滑块', component: Slider },
+    'switch': { title: 'Switch 开关', component: Switch },
     'form': { title: 'Form 表单', component: Form },
   },
   'Data': {
