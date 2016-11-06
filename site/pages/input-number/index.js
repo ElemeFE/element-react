@@ -1,10 +1,8 @@
 import './style.scss';
 
 import React from 'react';
-import { Component, Markdown } from '../../../libs';
+import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/input-number.md';
-
-import { MessageBox, Message } from '../../../src';
 
 export default class Playground extends React.Component {
   constructor(props) {

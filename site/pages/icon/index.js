@@ -1,7 +1,7 @@
 import './style.scss';
 
 import React from 'react';
-import { Component, Markdown } from '../../../libs';
+import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/icon.md';
 
 import iconList from './iconList'
