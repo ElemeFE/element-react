@@ -9,7 +9,6 @@
     "build": "rm -fr dist && cd build/site && webpack --progress",
     "lint": "eslint -c .eslintrc.json src",
     "lint:src:q": "eslint --quiet -c .eslintrc.json src",
-    "install:githooks": "node ./build/githooks/install-git-hooks.js",
     "beautify:js": "js-beautify -r src/tree/**/*.js"
   },
   "files": [
