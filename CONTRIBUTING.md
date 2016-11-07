@@ -1,1 +1,0 @@
-# Element React Contributing Guide
