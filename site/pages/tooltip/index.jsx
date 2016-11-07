@@ -1,8 +1,8 @@
-import './style.scss';
-
 import React from 'react';
 import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/tooltip.md';
+
+import './style.scss';
 
 export default class Playground extends React.Component {
   constructor(props){

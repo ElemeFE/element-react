@@ -1,16 +1,11 @@
-import './style.scss';
-
 import React from 'react';
+import { Notification } from '../../../src';
 import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/notification.md';
 
-import { Notification } from '../../../src';
+import './style.scss';
 
 export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="Notification">{template}</Markdown>
-  }
-
   onOpen(type) {
     switch (type) {
       case '1':
@@ -55,5 +50,9 @@ export default class Playground extends React.Component {
       default:
         break;
     }
+  }
+
+  render() {
+    return <Markdown context={this} component="Notification">{template}</Markdown>
   }
 }

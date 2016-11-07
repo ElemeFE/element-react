@@ -15,7 +15,6 @@ import Message from './message';
 import MessageBox from './message-box';
 import Notification from './notification';
 import Loading from './loading';
-import Dialog from './dialog';
 import Progress from './progress';
 import Badge from './badge';
 import Tree from './tree';
@@ -73,7 +72,6 @@ const pages = {
     'steps': { title: 'Steps 步骤', component: Steps },
   },
   'Others': {
-    'dialog': { title: 'Dialog 对话框', component: Dialog },
     'tooltip': { title: 'Tooltip 文字提示', component: Tooltip },
     'card': { title: 'Card 卡片', component: Card }
   }

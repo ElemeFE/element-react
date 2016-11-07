@@ -1,19 +1,20 @@
-import './style.scss';
-
 import React from 'react';
 import { Markdown } from '../../../libs';
-import template from '../../docs/zh-CN/card.md';
+import template from '../../docs/zh-CN/icon.md';
+import iconList from './iconList'
+
+import './style.scss';
 
 export default class Playground extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      imgSrc: require('./hamburger.png')
+      list: iconList
     }
   }
 
   render() {
-    return <Markdown context={this} component="Card">{template}</Markdown>
+    return <Markdown context={this} component="Icon">{template}</Markdown>
   }
 }

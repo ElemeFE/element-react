@@ -1,16 +1,11 @@
-import './style.scss';
-
 import React from 'react';
+import { MessageBox, Message } from '../../../src';
 import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/message-box.md';
 
-import { MessageBox, Message } from '../../../src';
+import './style.scss';
 
 export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="MessageBox">{template}</Markdown>
-  }
-
   onClick(type) {
     switch (type) {
       case 'alpha':
@@ -62,5 +57,9 @@ export default class Playground extends React.Component {
       default:
         break;
     }
+  }
+
+  render() {
+    return <Markdown context={this} component="MessageBox">{template}</Markdown>
   }
 }

@@ -1,8 +1,8 @@
-import './style.scss';
-
 import React from 'react';
 import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/loading.md';
+
+import './style.scss';
 
 export default class Playground extends React.Component {
   constructor(props) {
@@ -11,10 +11,6 @@ export default class Playground extends React.Component {
     this.state = {
       fullscreen: false
     }
-  }
-
-  render() {
-    return <Markdown context={this} component="Loading">{template}</Markdown>
   }
 
   onClick() {
@@ -29,5 +25,9 @@ export default class Playground extends React.Component {
     this.setState({
       fullscreen: true
     });
+  }
+
+  render() {
+    return <Markdown context={this} component="Loading">{template}</Markdown>
   }
 }
