@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import { Component, PropTypes } from '../../libs';
 
 export default class Progress extends Component {
   constructor(props) {
@@ -116,7 +116,7 @@ export default class Progress extends Component {
 Progress.propTypes = {
   type: PropTypes.oneOf(['line', 'circle']),
   percentage: PropTypes.range(0, 100).isRequired,
-  status: PropTypes.oneOf(['success', 'exception']),
+  status: PropTypes.string,
   strokeWidth: PropTypes.number,
   width: PropTypes.number,
   textInside: PropTypes.bool,

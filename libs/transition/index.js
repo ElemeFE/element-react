@@ -11,9 +11,9 @@ export default class Transition extends Component {
       className: this.props.className,
       style: this.props.style,
       key: this.props.key
-    }, React.Children.map(this.props.children, element => {
+    }, React.Children.map(this.props.children, (element, index) => {
       return React.cloneElement(element, {
-        key: Math.random().toString()
+        key: index
       })
     }));
   }
