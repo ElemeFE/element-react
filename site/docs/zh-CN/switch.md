@@ -47,7 +47,7 @@
   value={true}
   onText=""
   offText=""
-  change={(value)=>{console.log('switch ---> ' + value)}}>
+  onChange={(value)=>{console.log('switch ---> ' + value)}}>
 </Switch>
 ```
 :::
@@ -69,4 +69,4 @@
 ### Events
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
-| change  | switch 状态发生变化时的回调函数    | value |
+| onChange  | switch 状态发生变化时的回调函数    | value |

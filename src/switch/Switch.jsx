@@ -18,7 +18,9 @@ export default class Switch extends Component {
 
   componentDidUpdate(prevProps) {
     this.updateSwitch();
-    this.props.change(this.state.value);
+    if (this.props.onChange) {
+      this.props.onChange(this.state.value);
+    }
   }
 
   updateSwitch() {
@@ -35,7 +37,6 @@ export default class Switch extends Component {
   }
 
   handleMiscClick() {
-
     if (!this.state.disabled) {
       this.setState({
         value: !this.state.value
@@ -107,7 +108,7 @@ Switch.propTypes = {
   onColor: PropTypes.string,
   offColor: PropTypes.string,
   name: PropTypes.string,
-  change: PropTypes.func
+  onChange: PropTypes.func
 };
 
 Switch.defaultProps = {
@@ -121,5 +122,5 @@ Switch.defaultProps = {
   onColor: '',
   offColor: '',
   name: '',
-  change: () => {}
+  onChange: undefined
 };
