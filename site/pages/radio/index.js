@@ -1,7 +1,7 @@
 import './style.scss';
 
 import React from 'react';
-import { Component, Markdown } from '../../../libs';
+import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/radio.md';
 
 export default class Playground extends React.Component {

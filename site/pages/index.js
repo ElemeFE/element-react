@@ -45,7 +45,7 @@ const pages = {
     'button': { title: 'Button 按钮', component: Button },
   },
   'Form': {
-    'Rate': { title: 'Rate 评分', component: Rate },
+    'rate': { title: 'Rate 评分', component: Rate },
     'radio': { title: 'Radio 单选框', component: Radio },
     'checkbox': { title: 'Checkbox 多选框', component: Checkbox },
     'input': { title: 'Input 输入框', component: Input },

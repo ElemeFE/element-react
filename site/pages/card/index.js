@@ -1,10 +1,8 @@
 import './style.scss';
 
 import React from 'react';
-import { Component, Markdown } from '../../../libs';
+import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/card.md';
-
-import { Card } from '../../../src';
 
 export default class Playground extends React.Component {
   constructor(props) {
