@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { transform } from 'babel-standalone';
-import highlight from 'highlight.js';
+import highlight from 'highlight';
 import marked from 'marked';
 
 export default class Canvas extends Component {
@@ -42,19 +42,19 @@ export default class Canvas extends Component {
       const div = this.refs.source;
 
       if (div instanceof HTMLElement) {
-        const args = ['context', 'React'], argv = [this.props.context, React];
+        require(['../../src'], Element => {
+          const args = ['context', 'React'], argv = [this.props.context, React];
 
-        const Element = require('../../src');
+          for (const key in Element) {
+            args.push(key);
+            argv.push(Element[key]);
+          }
 
-        for (const key in Element) {
-          args.push(key);
-          argv.push(Element[key]);
-        }
+          args.push(this.component);
 
-        args.push(this.component);
-
-        ReactDOM.unmountComponentAtNode(div);
-        ReactDOM.render(new Function(...args).apply(null, argv), div);
+          ReactDOM.unmountComponentAtNode(div);
+          ReactDOM.render(new Function(...args).apply(null, argv), div);
+        });
       }
     }
 
@@ -83,14 +83,14 @@ export default class Canvas extends Component {
         })();
       `
       component = transform(code, {
-              presets: ['es2015', 'react']
-            }).code.replace('__rtn = ', 'return ')
+        presets: ['es2015', 'react']
+      }).code.replace('__rtn = ', 'return ')
     }else{
       component = transform(code.replace(/this/g, 'context'), {
         presets: ['es2015', 'react']
       }).code.replace(/React.createElement/, 'return React.createElement');
     }
-    
+
     this.shouldUpdate = component != this.component || this.component === undefined;
     this.component = component;
 

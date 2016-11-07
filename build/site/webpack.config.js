@@ -1,24 +1,30 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const basePath = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
-    bundle: path.join(basePath, 'site/pages/index')
+    vendor: ['react', 'react-dom', 'marked', 'popper', 'highlight'],
+    app: path.join(basePath, 'site/pages')
   },
   output: {
     path: path.resolve(basePath, 'dist/site'),
     chunkFilename: '[chunkhash:12].js',
-    filename: '[name].js',
-    publicPath: '/'
+    filename: '[chunkhash:12].js'
   },
   plugins: [
-    new ExtractTextPlugin('[name].css'),
+    new ExtractTextPlugin('[chunkhash:12].css'),
+    new HtmlWebpackPlugin({
+      template: './index.html'
+    })
   ].concat(process.env.TRAVIS_CI ? [] : [
-    new webpack.optimize.DedupePlugin(),
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+    new webpack.optimize.CommonsChunkPlugin('vendor', '[chunkhash:12].js'),
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
@@ -29,6 +35,7 @@ module.exports = {
     })
   ]),
   resolve: {
+    root: path.join(basePath, 'vendor'),
     extensions: ['', '.js', '.jsx']
   },
   module: {
@@ -48,15 +55,11 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract("style", "css", "sass")
+        loaders: ['style', 'css', 'sass']
       },
       {
-        test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
-        loader: 'file?name=[hash:12].[ext]'
-      },
-      {
-        test: /\.(jpg|png|gif)(\?.+)?$/,
-        loader: 'url?name=[hash:12].[ext]&limit=10000'
+        test: /\.(ttf|eot|svg|woff|woff2|jpg|png|gif)(\?.+)?$/,
+        loader: 'url?name=[hash:12].[ext]&limit=25000'
       },
       {
         test: /\.md$/,
