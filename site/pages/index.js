@@ -133,7 +133,7 @@ class App extends React.Component {
                             Object.keys(pages[group]).map(page => {
                               return (
                                 <li key={page} className="nav-item">
-                                  <a href={`#${page}`}>{pages[group][page].title}</a>
+                                  <a href={`#${page}`} className={page === this.state.page ? 'active' : ''}>{pages[group][page].title}</a>
                                 </li>
                               )
                             })
