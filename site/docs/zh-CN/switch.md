@@ -38,6 +38,20 @@
 ```
 :::
 
+### 回调事件
+
+:::demo 设置`change`回调事件，当开关状态发生了改变，会回调此函数，并返回当前`value`值。
+
+```html
+<Switch
+  value={true}
+  onText=""
+  offText=""
+  change={(value)=>{console.log('switch ---> ' + value)}}>
+</Switch>
+```
+:::
+
 ### Attributes
 
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
@@ -55,4 +69,4 @@
 ### Events
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
-| change  | switch 状态发生变化时的回调函数    | — |
+| change  | switch 状态发生变化时的回调函数    | value |
