@@ -73,9 +73,8 @@ export default class Component extends React.Component {
   }
 }
 
-/* eslint-disable */
+
 Component.propTypes = {
   className: React.PropTypes.string,
   style: React.PropTypes.object
 }
-/* eslint-enable */

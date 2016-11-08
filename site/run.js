@@ -54,6 +54,6 @@ new WebpackDevServer(webpack({
   historyApiFallback: true
 }).listen(3000, 'localhost', error => {
   if (error) {
-    console.log(error);
+    throw error;
   }
 });
