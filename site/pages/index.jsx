@@ -89,7 +89,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener("hashchange", e => {
+    window.addEventListener("hashchange", () => {
       this.setState({
         page: this.getPage()
       });
