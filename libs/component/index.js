@@ -57,11 +57,13 @@ export default class Component extends React.Component {
       if (props.style) {
         const div = document.createElement('div');
 
-        ReactDOM.render(React.createElement('div', {
+        /* eslint-disable */
+        const component = ReactDOM.render(React.createElement('div', {
           style: props.style
         }), div);
+        /* eslint-enable */
 
-        this.element.style.cssText = div.style.cssText + ' ' + this.style;
+        this.element.style.cssText = component.style.cssText + ' ' + this.style;
 
         ReactDOM.unmountComponentAtNode(div);
       } else {
