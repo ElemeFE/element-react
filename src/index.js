@@ -24,3 +24,4 @@ export { default as Slider } from './slider';
 export { default as Switch } from './switch';
 export { default as Form } from './form';
 export { TimeSelect } from './date-picker';
+export { default as Upload } from './upload';
