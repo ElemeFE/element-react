@@ -59,7 +59,7 @@ export default class Component extends React.Component {
 
         ReactDOM.render(<div style={props.style} />, div);
 
-        this.element.style.cssText = div.style.cssText + ' ' + this.style;
+        this.element.style.cssText = div.firstChild.style.cssText + ' ' + this.style;
 
         ReactDOM.unmountComponentAtNode(div);
       } else {
