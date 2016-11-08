@@ -24,29 +24,28 @@ export default class Input extends Component {
   }
 
   handleChange(e) {
+    const { onChange } = this.props;
+
+    if (onChange) {
+      onChange(e);
+    }
+
     this.resizeTextarea();
-    const { handleInput, handlePressEnter } = this.props;
-    if (e.keyCode === 13 && handlePressEnter) {
-      handlePressEnter(e);
-    }
-    if (handleInput) {
-      handleInput(e);
-    }
   }
 
   handleFocus(e) {
-    const { handleFocus } = this.props;
-    if (handleFocus) handleFocus(e)
+    const { onFocus } = this.props;
+    if (onFocus) onFocus(e)
   }
 
   handleBlur(e) {
-    const { handleBlur } = this.props;
-    if (handleBlur) handleBlur(e)
+    const { onBlur } = this.props;
+    if (onBlur) onBlur(e)
   }
 
   handleIconClick(e) {
-    const { handleIconClick } = this.props;
-    if (handleIconClick) handleIconClick(e)
+    const { onIconClick } = this.props;
+    if (onIconClick) onIconClick(e)
   }
 
   resizeTextarea() {
@@ -97,7 +96,7 @@ export default class Input extends Component {
     // input图标
     const iconDOM = icon ? <i className={`el-input__icon el-icon-${icon}`} onClick={e => this.handleIconClick(e)}></i> : null
     // validating状态
-    const validatingDOM =validating ? <i className="el-input__icon el-icon-loading"></i> : null
+    const validatingDOM = validating ? <i className="el-input__icon el-icon-loading"></i> : null
 
     return type !== 'textarea' ?
       <div className={classname}>
@@ -106,7 +105,7 @@ export default class Input extends Component {
         <input
           { ...otherProps }
           ref="input"
-          className="el-input__inner"
+          className={this.classNames("el-input__inner", this.props.className)}
           onChange={e => this.handleChange(e)}
           onFocus={e => this.handleFocus(e) }
           onBlur={e => this.handleBlur(e) }
@@ -119,7 +118,7 @@ export default class Input extends Component {
         <textarea
           { ...otherProps }
           ref="textarea"
-          className="el-textarea__inner"
+          className={this.classNames("el-textarea__inner", this.props.className)}
           style={Object.assign({}, this.props.style, this.state.textareaStyle)}
           rows={rows}
           onChange={e => this.handleChange(e)}
@@ -155,11 +154,10 @@ Input.propTypes = {
   rows: PropTypes.number,
 
   // event
-  handleFocus: PropTypes.func,
-  handleBlur: PropTypes.func,
-  handleInput: PropTypes.func,
-  handlePressEnter: PropTypes.func,
-  handleIconClick: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  onIconClick: PropTypes.func,
 
   // autoComplete
   autoComplete: PropTypes.string,
