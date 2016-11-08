@@ -7,7 +7,7 @@ new WebpackDevServer(webpack({
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './pages/index'
+    './pages'
   ],
   output: {
     path: path.join(__dirname, 'dist'),

@@ -5,12 +5,10 @@
   "main": "dist/npm/index.js",
   "scripts": {
     "start": "cd site && node run.js",
-    "test": "jest --config jest.json",
-    "prepublish": "npm run lint && npm run build",
-    "build": "cd build/site && webpack --progress",
+    "test": "jest",
+    "build": "rm -fr dist && cd build/site && webpack --progress",
     "lint": "eslint -c .eslintrc.json src",
     "lint:src:q": "eslint --quiet -c .eslintrc.json src",
-    "install:githooks": "node ./build/githooks/install-git-hooks.js",
     "beautify:js": "js-beautify -r src/tree/**/*.js"
   },
   "files": [
@@ -44,8 +42,9 @@
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.3.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
-    "highlight.js": "^9.7.0",
+    "html-webpack-plugin": "^2.24.1",
     "jest": "^16.0.2",
     "js-beautify": "^1.6.4",
     "marked": "^0.3.6",
@@ -60,11 +59,15 @@
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
+    "async-validator": "^1.6.6",
     "classnames": "^2.2.5",
     "is-equal": "^1.5.3",
     "react": "^15.3.2",
     "react-addons-css-transition-group": "^15.3.2",
     "react-addons-transition-group": "^15.3.2",
     "react-dom": "^15.3.2"
+  },
+  "jest": {
+    "testRegex": "/jest/.+\\.(js|jsx)$"
   }
 }

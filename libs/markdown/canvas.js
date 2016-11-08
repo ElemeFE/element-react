@@ -1,19 +1,26 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { transform } from 'babel-standalone';
-import highlight from 'highlight.js';
 import marked from 'marked';
+
+import highlight from '../../vendor/highlight';
 
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.state = {
+      showBlock: false,
+    };
   }
 
   componentWillMount() {
     marked.setOptions({
-      highlight: code => {
+      highlight: (code, lang) => {
+        if (/^js/i.test(lang)) {
+          lang = 'javascript'
+          return highlight.highlightAuto(code, [lang]).value;
+        }
+
         return highlight.highlightAuto(code).value;
       }
     });
@@ -42,19 +49,19 @@ export default class Canvas extends Component {
       const div = this.refs.source;
 
       if (div instanceof HTMLElement) {
-        const args = ['context', 'React'], argv = [this.props.context, React];
+        require(['../../src'], Element => {
+          const args = ['context', 'React'], argv = [this.props.context, React];
 
-        const Element = require('../../src');
+          for (const key in Element) {
+            args.push(key);
+            argv.push(Element[key]);
+          }
 
-        for (const key in Element) {
-          args.push(key);
-          argv.push(Element[key]);
-        }
+          args.push(this.component);
 
-        args.push(this.component);
-
-        ReactDOM.unmountComponentAtNode(div);
-        ReactDOM.render(new Function(...args).apply(null, argv), div);
+          ReactDOM.unmountComponentAtNode(div);
+          ReactDOM.render(new Function(...args).apply(null, argv), div);
+        });
       }
     }
 
@@ -70,13 +77,26 @@ export default class Canvas extends Component {
 
     let code = source[2];
 
-    if (!/^js|javascript/i.test(source[1])) {
+    if (!/^(js|javascript|jsfunc)/i.test(source[1])) {
       code = `<div>${source[2]}</div>`
     }
-
-    const component = transform(code.replace(/this/g, 'context'), {
-      presets: ['es2015', 'react']
-    }).code.replace(/React.createElement/, 'return React.createElement');
+    let component
+    // hacking through restrictions, so i can create React class in markdown.
+    // see time-picker.md demo
+    if (/^jsfunc/i.test(source[1])) {
+      code = `
+        __rtn = (function() {
+          ${code}
+        })();
+      `
+      component = transform(code, {
+        presets: ['es2015', 'react']
+      }).code.replace('__rtn = ', 'return ')
+    } else {
+      component = transform(code.replace(/this/g, 'context'), {
+        presets: ['es2015', 'react']
+      }).code.replace(/React.createElement/, 'return React.createElement');
+    }
 
     this.shouldUpdate = component != this.component || this.component === undefined;
     this.component = component;
@@ -85,20 +105,21 @@ export default class Canvas extends Component {
       <div className={`demo-block demo-box demo-${name}`}>
         <div className="source" ref="source"></div>
         <div className="meta" style={{
-            height: this.state.showBlock ? this.getHeight() : 0
+          height: this.state.showBlock ? this.getHeight() : 0
         }}>
-          { description && <div ref="description" className="description" dangerouslySetInnerHTML={{ __html: description }}></div> }
+          {description && <div ref="description" className="description" dangerouslySetInnerHTML={{ __html: description }}></div>}
           <div ref="highlight" className="highlight" dangerouslySetInnerHTML={{ __html: highlight }}></div>
         </div>
-        <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
-          {
-            this.state.showBlock ? (
-              <i className="el-icon-caret-top"></i>
-            ) : (
-              <i className="el-icon-caret-bottom"></i>
-            )
-          }
-        </div>
+        {
+          this.state.showBlock ?
+            <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
+              <i className="el-icon-caret-top"></i><span>隐藏代码</span>
+            </div>
+            :
+            <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
+              <i className="el-icon-caret-bottom"></i><span>显示代码</span>
+            </div>
+        }
       </div>
     )
   }

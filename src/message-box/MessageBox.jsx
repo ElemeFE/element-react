@@ -2,6 +2,7 @@ import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import Button from '../button';
 import Input from '../input';
+import i18n from '../locale';
 
 const typeMap = {
   success: 'circle-check',
@@ -29,24 +30,72 @@ export default class MessageBox extends Component {
     return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
   }
 
-  handleAction(type) {
-    if (this.props.modal) {
-      switch (type) {
+  onChange(event) {
+    this.validate(event.target.value);
+  }
+
+  validate(value) {
+    const { inputPattern, inputValidator, inputErrorMessage } = this.props;
+
+    return Promise.resolve().then(() => {
+      this.inputValue = value;
+
+      if (inputPattern && !inputPattern.test(value)) {
+        return inputErrorMessage || i18n.t('el.messagebox.error');
+      }
+
+      if (typeof inputValidator === 'function') {
+        const validateResult = inputValidator(value);
+
+        if (validateResult === false) {
+          return inputErrorMessage || i18n.t('el.messagebox.error');
+        }
+
+        if (typeof validateResult === 'string') {
+          return validateResult;
+        }
+      }
+    }).then(editorErrorMessage => {
+      this.setState({ editorErrorMessage });
+
+      if (editorErrorMessage) {
+        this.refs.input.classList.add('invalid');
+      } else {
+        this.refs.input.classList.remove('invalid');
+      }
+
+      return !editorErrorMessage;
+    });
+  }
+
+  handleAction(action) {
+    const { modal, promise, showInput } = this.props;
+
+    if (modal) {
+      switch (action) {
         case 'cancel':
-          this.props.promise.reject();
+          promise.reject();
           break;
         case 'confirm':
-          if (this.props.modal === 'prompt') {
-            // TODO
+          if (modal === 'prompt') {
+            this.validate(this.inputValue).then(result => {
+              if (result) {
+                if (showInput) {
+                  promise.resolve({ value: this.inputValue, action });
+                } else {
+                  promise.resolve(action);
+                }
+              }
+            });
+          } else {
+            promise.resolve();
           }
-
-          this.props.promise.resolve();
           break;
         default:
           break;
       }
     } else {
-      this.props.promise.resolve(type);
+      promise.resolve(action);
     }
 
     this.close();
@@ -67,7 +116,7 @@ export default class MessageBox extends Component {
       <div>
         <div style={{ position: 'absolute', zIndex: 1007 }}>
           <Transition name="msgbox-fade" duration="300">
-            <View show={this.state.visible}>
+            <View key={Math.random()} show={this.state.visible}>
               <div className="el-message-box">
                 {
                   this.props.title && (
@@ -86,7 +135,7 @@ export default class MessageBox extends Component {
                       </div>
                       <View show={this.props.showInput}>
                         <div className="el-message-box__input">
-                          <Input placeholder={this.props.inputPlaceholder} ref="input" />
+                          <Input ref="input" placeholder={this.props.inputPlaceholder} onChange={this.onChange.bind(this)} />
                           <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
                         </div>
                       </View>
@@ -106,7 +155,7 @@ export default class MessageBox extends Component {
           </Transition>
         </div>
         <Transition name="v-modal" duration="200">
-          <View show={this.state.visible}>
+          <View key={Math.random()} show={this.state.visible}>
             <div className="v-modal" style={{ zIndex: 1006 }}></div>
           </View>
         </Transition>

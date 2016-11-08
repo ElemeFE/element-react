@@ -62,6 +62,11 @@
 | checked  | 当前是否勾选    | boolean   | — | false |
 | indeterminate  | 设置 indeterminate 状态，只负责样式控制    | boolean   | — | false |
 
+### Checkbox Events
+| 事件名称 | 说明 | 回调参数 |
+|---------- |-------- |---------- |
+| change  | 当绑定值变化时触发的事件 |  event 事件对象  |
+
 ### Checkbox-group Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
@@ -70,4 +75,4 @@
 ### Checkbox-group Events
 | 事件名称 | 说明 | 回调参数 |
 |---------- |-------- |---------- |
-| change  | 当绑定值变化时触发的事件 |  event 事件对象  |
+| change  | 当绑定值变化时触发的事件 |  所有选中的选项  |

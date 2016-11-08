@@ -1,3 +1,5 @@
+export { default as i18n } from './locale';
+
 export { default as Alert } from './alert';
 export { default as Button } from './button';
 export { default as Card } from './card';
@@ -8,6 +10,7 @@ export { default as MessageBox } from './message-box';
 export { default as Notification } from './notification';
 export { default as Radio } from './radio';
 export { default as Dialog } from './dialog';
+export { default as Rate } from './rate';
 export { default as Progress } from './progress';
 export { default as Badge } from './badge';
 export { default as Tree } from './tree';
@@ -21,3 +24,7 @@ export { default as InputNumber } from './input-number';
 export { default as Checkbox } from './checkbox';
 export { default as Slider } from './slider';
 export {default as Table} from './table'
+export { default as Switch } from './switch';
+export { default as Form } from './form';
+export { default as Upload } from './upload';
+export { TimeSelect } from './date-picker';
