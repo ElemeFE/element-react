@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { PropTypes, Component } from '../../../libs';
-import {PopperReactMixin} from '../../../libs/utils'
+import { PopperReactMixin } from '../../../libs/utils'
 
 class TimeSelectPanel extends Component {
   constructor(props) {
     super(props);
-    //todo: fix me
-    PopperReactMixin.call(this, ()=>this.refs.root, this.props.getPopperRefElement, Object.assign({
+    PopperReactMixin.call(this, () => this.refs.root, this.props.getPopperRefElement, Object.assign({
       boundariesPadding: 0,
       gpuAcceleration: false
     }, props.popperMixinOption));
@@ -20,27 +19,12 @@ class TimeSelectPanel extends Component {
   }
 
   items() {
-    const {start, end, step, minTime} = this.props
-    const result = [];
-
-    if (start && end && step) {
-      let current = start;
-      while (compareTime(current, end) <= 0) {
-        result.push({
-          value: current,
-          disabled: compareTime(current, minTime || '00:00') <= 0
-
-        });
-        current = nextTime(current, step);
-      }
-    }
-
-    return result;
+    return TimeSelectPanel.items(this.props)
   }
 
   render() {
     const {value} = this.props
-    
+
     return (
       <div
         ref="root"
@@ -62,6 +46,29 @@ class TimeSelectPanel extends Component {
     )
   }
 }
+
+TimeSelectPanel.isValid = (value, {start, end, step, minTime}) => {
+  const items = TimeSelectPanel.items({ start, end, step, minTime })
+  return !!items.filter(e => !e.disabled).find(e => e.value === value)
+}
+
+TimeSelectPanel.items = ({start, end, step, minTime}) => {
+  const result = [];
+
+  if (start && end && step) {
+    let current = start;
+    while (compareTime(current, end) <= 0) {
+      result.push({
+        value: current,
+        disabled: compareTime(current, minTime || '00:00') <= 0
+
+      });
+      current = nextTime(current, step);
+    }
+  }
+  return result;
+}
+
 
 TimeSelectPanel.propTypes = {
   start: PropTypes.string,
