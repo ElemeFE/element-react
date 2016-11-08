@@ -34,6 +34,7 @@ import Slider from './slider';
 import Switch from './switch';
 import Form from './form';
 import TimePicker from './time-picker';
+import Upload from './upload';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -45,14 +46,15 @@ const pages = {
     'button': { title: 'Button 按钮', component: Button },
   },
   'Form': {
-    'rate': { title: 'Rate 评分', component: Rate },
     'radio': { title: 'Radio 单选框', component: Radio },
     'checkbox': { title: 'Checkbox 多选框', component: Checkbox },
     'input': { title: 'Input 输入框', component: Input },
     'input-number': { title: 'Input Number 计数器', component: InputNumber },
-    'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
-    'slider': { title: 'Slider 滑块', component: Slider },
     'switch': { title: 'Switch 开关', component: Switch },
+    'slider': { title: 'Slider 滑块', component: Slider },
+    'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
+    'upload': { title: 'Upload 上传', component: Upload },
+    'rate': { title: 'Rate 评分', component: Rate },
     'form': { title: 'Form 表单', component: Form },
   },
   'Data': {
