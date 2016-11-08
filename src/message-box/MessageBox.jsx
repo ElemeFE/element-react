@@ -2,6 +2,7 @@ import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import Button from '../button';
 import Input from '../input';
+import i18n from '../locale';
 
 const typeMap = {
   success: 'circle-check',
@@ -40,14 +41,14 @@ export default class MessageBox extends Component {
       this.inputValue = value;
 
       if (inputPattern && !inputPattern.test(value)) {
-        return inputErrorMessage || $t('el.messagebox.error');
+        return inputErrorMessage || i18n.t('el.messagebox.error');
       }
 
       if (typeof inputValidator === 'function') {
         const validateResult = inputValidator(value);
 
         if (validateResult === false) {
-          return inputErrorMessage || $t('el.messagebox.error');
+          return inputErrorMessage || i18n.t('el.messagebox.error');
         }
 
         if (typeof validateResult === 'string') {
