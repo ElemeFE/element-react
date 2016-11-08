@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
-import { Progress } from '../../src';
+import Progress from '../progress';
 
 export default class UploadList extends Component {
   constructor(props) {
