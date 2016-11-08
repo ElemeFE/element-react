@@ -60,7 +60,7 @@ export default class Notification extends Component {
   render() {
     return (
       <Transition name="el-notification-fade" duration="300">
-        <View show={this.state.visible}>
+        <View key={Math.random()} show={this.state.visible}>
           <div className="el-notification" style={{
               top: this.props.top
           }} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>

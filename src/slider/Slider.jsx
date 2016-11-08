@@ -9,22 +9,25 @@ export default class Slider extends Component {
     super(props);
 
     this.state = {
-      inputValue: props.value
+      oldValue: props.value,
+      inputValue: props.value,
+      currentPosition: (props.value - props.min) / (props.max - props.min) * 100 + '%'
     }
   }
 
   onSliderClick(event) {
     if (this.props.disabled) return;
 
-    var currentX = event.clientX;
-    var sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
-    var newPos = (currentX - sliderOffsetLeft) / this.sliderWidth() * 100;
+    const currentX = event.clientX;
+    const sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
+    const newPos = (currentX - sliderOffsetLeft) / this.sliderWidth() * 100;
 
     this.setPosition(newPos);
   }
 
-  onInputChange() {
-    const { max, min, value } = this.props;
+  onInputChange(event) {
+    const { max, min } = this.props;
+    const { value } = event.target;
 
     if (value === '') {
       return;
@@ -81,20 +84,21 @@ export default class Slider extends Component {
 
   setPosition(newPos) {
     if (newPos >= 0 && (newPos <= 100)) {
-      const { max, min, step, value } = this.props;
+      const { max, min, step } = this.props;
 
       const lengthPerStep = 100 / ((max - min) / step);
       const steps = Math.round(newPos / lengthPerStep);
 
-      // this.$emit('input', Math.round(steps * lengthPerStep * (max - min) * 0.01 + min));
+      const value = Math.round(steps * lengthPerStep * (max - min) * 0.01 + min);
 
       this.setState({
+        inputValue: value,
         currentPosition: (value - min) / (max - min) * 100 + '%'
       })
 
       if (!this.state.dragging) {
-        if (value !== this.oldValue) {
-          this.oldValue = value;
+        if (value !== this.state.oldValue) {
+          this.state.oldValue = value;
 
           if (this.props.onChange) {
             this.props.onChange({
@@ -153,7 +157,7 @@ export default class Slider extends Component {
               ref="input"
               className="el-slider__input"
               value={this.state.inputValue}
-              onKeyUp={this.onInputChange.bind(this)}
+              onChange={this.onInputChange.bind(this)}
               step={this.props.step}
               disabled={this.props.disabled}
               min={this.props.min}
@@ -181,7 +185,7 @@ export default class Slider extends Component {
             onMouseEnter={this.handleMouseEnter.bind(this)}
             onMouseLeave={this.handleMouseLeave.bind(this)}
             onMouseDown={this.onButtonDown.bind(this)} >
-            <Tooltip ref="tooltip" placement="top" content={<span>{this.props.value}</span>}>
+            <Tooltip ref="tooltip" placement="top" content={<span>{this.state.inputValue}</span>}>
               <div className={this.classNames('el-slider__button', {
                 'hover': this.state.hovering,
                 'dragging': this.state.dragging
@@ -203,7 +207,6 @@ Slider.propTypes = {
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  defaultValue: PropTypes.number,
   value: PropTypes.number,
   showInput: PropTypes.bool,
   showStops: PropTypes.bool,
@@ -215,6 +218,5 @@ Slider.defaultProps = {
   min: 0,
   max: 100,
   step: 1,
-  defaultValue: 0,
   value: 0
 }

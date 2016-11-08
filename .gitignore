@@ -12,4 +12,4 @@ Makefile
 jsconfig.json
 .vscode
 
-/site/dist/
+dist

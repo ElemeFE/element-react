@@ -1,14 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { transform } from 'babel-standalone';
-import highlight from 'highlight.js';
 import marked from 'marked';
+
+import highlight from '../../vendor/highlight';
 
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.state = {
+      showBlock: false,
+    };
   }
 
   componentWillMount() {
@@ -47,19 +49,19 @@ export default class Canvas extends Component {
       const div = this.refs.source;
 
       if (div instanceof HTMLElement) {
-        const args = ['context', 'React'], argv = [this.props.context, React];
+        require(['../../src'], Element => {
+          const args = ['context', 'React'], argv = [this.props.context, React];
 
-        const Element = require('../../src');
+          for (const key in Element) {
+            args.push(key);
+            argv.push(Element[key]);
+          }
 
-        for (const key in Element) {
-          args.push(key);
-          argv.push(Element[key]);
-        }
+          args.push(this.component);
 
-        args.push(this.component);
-
-        ReactDOM.unmountComponentAtNode(div);
-        ReactDOM.render(new Function(...args).apply(null, argv), div);
+          ReactDOM.unmountComponentAtNode(div);
+          ReactDOM.render(new Function(...args).apply(null, argv), div);
+        });
       }
     }
 
@@ -108,15 +110,16 @@ export default class Canvas extends Component {
           {description && <div ref="description" className="description" dangerouslySetInnerHTML={{ __html: description }}></div>}
           <div ref="highlight" className="highlight" dangerouslySetInnerHTML={{ __html: highlight }}></div>
         </div>
-        <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
-          {
-            this.state.showBlock ? (
-              <i className="el-icon-caret-top"></i>
-            ) : (
-                <i className="el-icon-caret-bottom"></i>
-              )
-          }
-        </div>
+        {
+          this.state.showBlock ?
+            <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
+              <i className="el-icon-caret-top"></i><span>隐藏代码</span>
+            </div>
+            :
+            <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
+              <i className="el-icon-caret-bottom"></i><span>显示代码</span>
+            </div>
+        }
       </div>
     )
   }
