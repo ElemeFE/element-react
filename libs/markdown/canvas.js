@@ -13,7 +13,12 @@ export default class Canvas extends Component {
 
   componentWillMount() {
     marked.setOptions({
-      highlight: code => {
+      highlight: (code, lang) => {
+        if (/^js/i.test(lang)) {
+          lang = 'javascript'
+          return highlight.highlightAuto(code, [lang]).value;
+        }
+
         return highlight.highlightAuto(code).value;
       }
     });
@@ -76,21 +81,21 @@ export default class Canvas extends Component {
     let component
     // hacking through restrictions, so i can create React class in markdown.
     // see time-picker.md demo
-    if (/^jsfunc/i.test(source[1])){
+    if (/^jsfunc/i.test(source[1])) {
       code = `
         __rtn = (function() {
           ${code}
         })();
       `
       component = transform(code, {
-              presets: ['es2015', 'react']
-            }).code.replace('__rtn = ', 'return ')
-    }else{
+        presets: ['es2015', 'react']
+      }).code.replace('__rtn = ', 'return ')
+    } else {
       component = transform(code.replace(/this/g, 'context'), {
         presets: ['es2015', 'react']
       }).code.replace(/React.createElement/, 'return React.createElement');
     }
-    
+
     this.shouldUpdate = component != this.component || this.component === undefined;
     this.component = component;
 
