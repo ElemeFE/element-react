@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { transform } from 'babel-standalone';
-import highlight from 'highlight';
 import marked from 'marked';
+
+import highlight from '../../vendor/highlight';
 
 export default class Canvas extends Component {
   constructor(props) {

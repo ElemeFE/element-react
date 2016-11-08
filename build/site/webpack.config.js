@@ -7,7 +7,6 @@ const basePath = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
-    vendor: ['react', 'react-dom', 'marked', 'popper', 'highlight'],
     app: path.join(basePath, 'site/pages')
   },
   output: {
@@ -22,7 +21,6 @@ module.exports = {
     })
   ].concat(process.env.TRAVIS_CI ? [] : [
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
-    new webpack.optimize.CommonsChunkPlugin('vendor', '[chunkhash:12].js'),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
@@ -35,7 +33,6 @@ module.exports = {
     })
   ]),
   resolve: {
-    root: path.join(basePath, 'vendor'),
     extensions: ['', '.js', '.jsx']
   },
   module: {

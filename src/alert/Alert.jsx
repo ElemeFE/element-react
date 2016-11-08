@@ -29,7 +29,7 @@ export default class Alert extends Component {
   render() {
     return (
       <Transition name="el-alert-fade" duration="200">
-        <View show={this.state.visible} key={Math.random()}>
+        <View key={Math.random()} show={this.state.visible}>
           <div className={this.classNames('el-alert', `el-alert--${ this.props.type }`)}>
             {
               this.props.showIcon && <i className={this.classNames('el-alert__icon', TYPE_CLASSES_MAP[this.props.type] || 'el-icon-information', {

@@ -1,16 +1,11 @@
-import './style.scss';
-
 import React from 'react';
+import { Message } from '../../../src';
 import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/message.md';
 
-import { Message } from '../../../src';
+import './style.scss';
 
 export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="Message">{template}</Markdown>
-  }
-
   onClick(id, type, showClose) {
     const message = {
       info: '这是一条消息提示',
@@ -32,5 +27,9 @@ export default class Playground extends React.Component {
       default:
         break;
     }
+  }
+
+  render() {
+    return <Markdown context={this} component="Message">{template}</Markdown>
   }
 }

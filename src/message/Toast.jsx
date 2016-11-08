@@ -50,7 +50,7 @@ export default class Toast extends Component {
   render() {
     return (
       <Transition name="el-message-fade" duration="300">
-        <View show={this.state.visible}>
+        <View key={Math.random()} show={this.state.visible}>
           <div className="el-message" onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
             <img className="el-message__icon" src={icons[this.props.type]} />
             <div className="el-message__group">

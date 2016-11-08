@@ -1,8 +1,8 @@
-import './style.scss';
-
 import React from 'react';
 import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/input-number.md';
+
+import './style.scss';
 
 export default class Playground extends React.Component {
   constructor(props) {
@@ -14,13 +14,14 @@ export default class Playground extends React.Component {
       charlie: 5
     }
   }
-  render() {
-    return <Markdown context={this} component="InputNumber">{template}</Markdown>
-  }
 
   onChange(type, event) {
     this.setState({
       [type]: event.target.value
     })
+  }
+
+  render() {
+    return <Markdown context={this} component="InputNumber">{template}</Markdown>
   }
 }

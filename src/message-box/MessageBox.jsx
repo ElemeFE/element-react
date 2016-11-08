@@ -2,6 +2,7 @@ import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import Button from '../button';
 import Input from '../input';
+import i18n from '../locale';
 
 const typeMap = {
   success: 'circle-check',
@@ -35,20 +36,19 @@ export default class MessageBox extends Component {
 
   validate(value) {
     const { inputPattern, inputValidator, inputErrorMessage } = this.props;
-    const { editorErrorMessage } = this.state;
 
     return Promise.resolve().then(() => {
       this.inputValue = value;
 
-      if (inputPattern && !inputPattern.test(inputValue)) {
-        return inputErrorMessage || $t('el.messagebox.error');
+      if (inputPattern && !inputPattern.test(value)) {
+        return inputErrorMessage || i18n.t('el.messagebox.error');
       }
 
       if (typeof inputValidator === 'function') {
-        const validateResult = inputValidator(inputValue);
+        const validateResult = inputValidator(value);
 
         if (validateResult === false) {
-          return inputErrorMessage || $t('el.messagebox.error');
+          return inputErrorMessage || i18n.t('el.messagebox.error');
         }
 
         if (typeof validateResult === 'string') {
@@ -116,7 +116,7 @@ export default class MessageBox extends Component {
       <div>
         <div style={{ position: 'absolute', zIndex: 1007 }}>
           <Transition name="msgbox-fade" duration="300">
-            <View show={this.state.visible}>
+            <View key={Math.random()} show={this.state.visible}>
               <div className="el-message-box">
                 {
                   this.props.title && (
@@ -155,7 +155,7 @@ export default class MessageBox extends Component {
           </Transition>
         </div>
         <Transition name="v-modal" duration="200">
-          <View show={this.state.visible}>
+          <View key={Math.random()} show={this.state.visible}>
             <div className="v-modal" style={{ zIndex: 1006 }}></div>
           </View>
         </Transition>

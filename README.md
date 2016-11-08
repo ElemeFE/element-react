@@ -2,7 +2,7 @@
 
 ![](https://travis-ci.org/eleme/element-react.svg?branch=master)
 
-[Element](https://github.com/ElemeFE/element) was initially written in [Vue](vuejs.org), which has many elegant UI components, but we also love [React](https://facebook.github.io/react/), so we forked it for the React community.
+[Element](https://github.com/ElemeFE/element) was initially written in [Vue](https://vuejs.org/), which has many elegant UI components, but we also love [React](https://facebook.github.io/react/), so we forked it for the React community.
 
 ## Getting Started
 

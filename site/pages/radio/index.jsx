@@ -1,8 +1,8 @@
-import './style.scss';
-
 import React from 'react';
 import { Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/radio.md';
+
+import './style.scss';
 
 export default class Playground extends React.Component {
   constructor(props) {
@@ -13,10 +13,6 @@ export default class Playground extends React.Component {
       charlie: 3,
       delta: '北京'
     }
-  }
-
-  render() {
-    return <Markdown context={this} component="Radio">{template}</Markdown>
   }
 
   onChange(type, event, value) {
@@ -30,5 +26,9 @@ export default class Playground extends React.Component {
       default:
         break;
     }
+  }
+
+  render() {
+    return <Markdown context={this} component="Radio">{template}</Markdown>
   }
 }

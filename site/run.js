@@ -17,8 +17,7 @@ new WebpackDevServer(webpack({
     new webpack.HotModuleReplacementPlugin()
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
-    root: '../vendor'
+    extensions: ['', '.js', '.jsx']
   },
   module: {
     loaders: [
