@@ -35,6 +35,7 @@ import Switch from './switch';
 import Form from './form';
 import TimePicker from './time-picker';
 import Upload from './upload';
+import Dialog from './dialog';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -76,6 +77,7 @@ const pages = {
     'steps': { title: 'Steps 步骤', component: Steps },
   },
   'Others': {
+    'dialog': { title: 'Dialog 对话框', component: Dialog },
     'tooltip': { title: 'Tooltip 文字提示', component: Tooltip },
     'card': { title: 'Card 卡片', component: Card }
   }
