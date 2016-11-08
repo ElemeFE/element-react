@@ -57,7 +57,9 @@ export default class Component extends React.Component {
       if (props.style) {
         const div = document.createElement('div');
 
-        ReactDOM.render(<div style={props.style} />, div);
+        ReactDOM.render(React.createElement('div', {
+          style: props.style
+        }), div);
 
         this.element.style.cssText = div.style.cssText + ' ' + this.style;
 

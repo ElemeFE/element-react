@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # set ORIGIN to current git origin
 ORIGIN=$(git remote -v | grep "^origin\s\S*\s[(]push[)]" | awk '{print $2}');
 VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
