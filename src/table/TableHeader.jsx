@@ -1,13 +1,12 @@
 import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
-import classNames from 'classNames';
+import { Component, PropTypes } from '../../libs';
 
 export default class TableHeader extends  Component{
   render() {
     const { columns, style } = this.props;
 
     return (
-      <table 
+      <table
         style={style}
         className={this.classNames('el-table__header')}
         cellPadding={0}
@@ -17,8 +16,8 @@ export default class TableHeader extends  Component{
             {
               columns.map((item, idx)=>{
                 return (
-                  <th 
-                    key={idx} 
+                  <th
+                    key={idx}
                     style={{width: item.width?item.width:''}}>
                     <div className="cell">{item.label}</div>
                   </th>)
@@ -29,7 +28,7 @@ export default class TableHeader extends  Component{
       </table>
     )
   }
-};
+}
 
 TableHeader.propTypes = {
    columns: PropTypes.array.isRequired

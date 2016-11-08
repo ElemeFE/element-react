@@ -1,13 +1,12 @@
 import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
-import classNames from 'classNames';
+import { Component, PropTypes } from '../../libs';
 
 export default class TableBody extends  Component{
   render() {
     const { columns, data, style } = this.props;
 
     return (
-      <table 
+      <table
         className={this.classNames('el-table__body')}
         cellPadding={0}
         cellSpacing={0}>
@@ -19,7 +18,7 @@ export default class TableBody extends  Component{
                   {
                     columns.map((col, colIdx)=>{
                       return (
-                        <td 
+                        <td
                           key={colIdx}
                           style={{width: col.width?col.width: ''}}>
                           <div className="cell">{dataItem[col.prop]}</div>
@@ -35,7 +34,7 @@ export default class TableBody extends  Component{
       </table>
     )
   }
-};
+}
 
 TableBody.propTypes = {
   columns: PropTypes.array.isRequired,

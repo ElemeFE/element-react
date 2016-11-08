@@ -192,7 +192,7 @@ FormItem.propTypes = {
   labelWidth: PropTypes.string,
   prop: PropTypes.string,
   required: PropTypes.bool,
-  rules: PropTypes.oneOfType(PropTypes.object, PropTypes.array)
+  rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 }
 
 FormItem.defaultProps = {

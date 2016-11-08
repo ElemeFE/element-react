@@ -45,7 +45,7 @@ export default class InputNumber extends Component {
       value = this.state.value;
     }
 
-    this.setState({ value })
+    this.setState({ value });
   }
 
   onInput(value) {
@@ -121,9 +121,11 @@ export default class InputNumber extends Component {
       <div className={this.classNames('el-input-number', this.props.size && `el-input-number--${this.props.size}`, {
         'is-disabled': this.props.disabled
       })}>
-        <Input ref="input" className={this.classNames({
-          'is-active': this.state.inputActive
-        })}
+        <Input
+          ref="input"
+          className={this.classNames({
+            'is-active': this.state.inputActive
+          })}
           value={this.state.value}
           disabled={this.props.disabled}
           size={this.props.size}

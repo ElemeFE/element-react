@@ -57,7 +57,9 @@ export default class Component extends React.Component {
       if (props.style) {
         const div = document.createElement('div');
 
-        ReactDOM.render(<div style={props.style} />, div);
+        ReactDOM.render(React.createElement('div', {
+          style: props.style
+        }), div);
 
         this.element.style.cssText = div.firstChild.style.cssText + ' ' + this.style;
 
@@ -73,9 +75,8 @@ export default class Component extends React.Component {
   }
 }
 
-/* eslint-disable */
+
 Component.propTypes = {
   className: React.PropTypes.string,
   style: React.PropTypes.object
 }
-/* eslint-enable */

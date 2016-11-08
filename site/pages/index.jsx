@@ -30,15 +30,11 @@ import Breadcrumb from './breadcrumb';
 import InputNumber from './input-number';
 import Checkbox from './checkbox';
 import Slider from './slider';
-<<<<<<< HEAD:site/pages/index.js
 import Table from './table';
-
-=======
 import Switch from './switch';
 import Form from './form';
 import TimePicker from './time-picker';
 import Upload from './upload';
->>>>>>> d322fe20ed0ff19c49fa05fe4960184c25da9c27:site/pages/index.jsx
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -62,7 +58,7 @@ const pages = {
     'form': { title: 'Form 表单', component: Form },
   },
   'Data': {
-    table: { title: 'Table 表格组件', component: Table },
+    'table': { title: 'Table 表格组件', component: Table },
     'progress': { title: 'Progress 进度条', component: Progress },
     'tree': { title: 'Tree 树形控件', component: Tree },
     'badge': { title: 'Badge 标记', component: Badge },

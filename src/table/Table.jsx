@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Component, PropTypes, Transition, View } from '../../libs';
-import classNames from 'classNames';
+import { Component, PropTypes } from '../../libs';
 import TableHeader from './TableHeader'
 import TableBody from './TableBody'
 
@@ -25,44 +24,43 @@ export default class Table extends Component{
   }
 
   render() {
-    const { 
-      fit, 
-      stripe, 
-      border, 
-      columns, 
-      data, 
-      style } = this.props;
+    const {
+      fit,
+      stripe,
+      border,
+      columns,
+      data } = this.props;
     const { bodyWidth } = this.state;
     const rootClassName = this.classNames(
-      'el-table', 
-      classNames({
-        'el-table--fit':fit, 
-        'el-table--striped': stripe, 
+      'el-table',
+      {
+        'el-table--fit':fit,
+        'el-table--striped': stripe,
         'el-table--border': border
-      })
+      }
     );
 
 
     return (
       <div className={rootClassName}>
-        <div 
+        <div
           className="el-table__header-wrapper">
-          <TableHeader 
+          <TableHeader
             style={{width: bodyWidth}}
-            columns={columns}/>
+            columns={columns} />
         </div>
-        <div 
-          className="el-table__body-wrapper" 
+        <div
+          className="el-table__body-wrapper"
           ref="bodyWrapper">
-          <TableBody 
+          <TableBody
             style={{width: bodyWidth}}
-            columns={columns} 
-            data={data}/>
+            columns={columns}
+            data={data} />
         </div>
       </div>
     )
   }
-};
+}
 
 Table.propTypes = {
   columns: PropTypes.array.isRequired,

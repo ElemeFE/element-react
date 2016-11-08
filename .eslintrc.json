@@ -21,12 +21,13 @@
     "import/no-extraneous-dependencies": 1,
     "import/prefer-default-export": 0,
     "no-empty": 1,
+    "no-console": 1,
     "react/sort-comp": 1,
     "react/prefer-stateless-function": 0,
     "react/prop-types": [1, { "ignore": ["children", "key"] }],
     "react/no-find-dom-node": 1,
     "react/no-unused-prop-types": 1,
     "react/forbid-prop-types": [1, { "forbid": ["array"] }]
-    
+
   }
 }

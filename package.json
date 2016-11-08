@@ -6,10 +6,9 @@
   "scripts": {
     "start": "cd site && node run.js",
     "test": "jest",
-    "build": "rm -fr dist && cd build/site && webpack --progress",
-    "lint": "eslint -c .eslintrc.json src",
-    "lint:src:q": "eslint --quiet -c .eslintrc.json src",
-    "beautify:js": "js-beautify -r src/tree/**/*.js"
+    "lint": "eslint src libs site --quiet",
+    "build": "cd build/site && webpack --progress",
+    "release": "./build/scripts/release.sh"
   },
   "files": [
     "dist/npm"
