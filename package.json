@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cd site && node run.js",
     "test": "jest",
-    "lint": "eslint --quiet src libs site",
+    "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
     "release": "./build/scripts/release.sh"
   },
