@@ -189,6 +189,6 @@ MessageBox.defaultProps = {
   title: '提示',
   showClose: true,
   showConfirmButton: true,
-  confirmButtonText: '确定',
-  cancelButtonText: '取消'
+  confirmButtonText: i18n.t('el.messagebox.confirm'),
+  cancelButtonText: i18n.t('el.messagebox.cancel')
 }

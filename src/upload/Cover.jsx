@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { Progress } from '../../src';
+import i18n from '../locale';
 
 export default class Cover extends Component {
   constructor(props) {
@@ -40,9 +41,9 @@ export default class Cover extends Component {
                 <View show={mouseover}>
                   <div className="el-dragger__cover__interact">
                     <div className="el-draggeer__cover__btns">
-                      <span className="btn" onClick={() => this.props.onClick()}><i className="el-icon-upload2"></i><span>继续上传</span></span>
-                      <span className="btn" onClick={() => onPreview(image)}><i className="el-icon-view"></i><span>查看图片</span></span>
-                      <span className="btn" onClick={() => onRemove(image)}><i className="el-icon-delete2"></i><span>删除</span></span>
+                      <span className="btn" onClick={() => this.props.onClick()}><i className="el-icon-upload2"></i><span>{i18n.t('el.upload.continue')}</span></span>
+                      <span className="btn" onClick={() => onPreview(image)}><i className="el-icon-view"></i><span>{i18n.t('el.upload.preview')}</span></span>
+                      <span className="btn" onClick={() => onRemove(image)}><i className="el-icon-delete2"></i><span>{i18n.t('el.upload.delete')}</span></span>
                     </div>
                   </div>
                 </View>
