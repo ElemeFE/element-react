@@ -7,8 +7,9 @@ import marked from 'marked';
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.state = {
+      showBlock: false,
+    };
   }
 
   componentWillMount() {
@@ -103,15 +104,16 @@ export default class Canvas extends Component {
           {description && <div ref="description" className="description" dangerouslySetInnerHTML={{ __html: description }}></div>}
           <div ref="highlight" className="highlight" dangerouslySetInnerHTML={{ __html: highlight }}></div>
         </div>
-        <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
-          {
-            this.state.showBlock ? (
-              <i className="el-icon-caret-top"></i>
-            ) : (
-                <i className="el-icon-caret-bottom"></i>
-              )
-          }
-        </div>
+        {
+          this.state.showBlock ?
+            <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
+              <i className="el-icon-caret-top"></i><span>隐藏代码</span>
+            </div>
+          :
+          <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
+            <i className="el-icon-caret-bottom"></i><span>显示代码</span>
+          </div>
+        }
       </div>
     )
   }

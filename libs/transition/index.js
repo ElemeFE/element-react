@@ -12,9 +12,7 @@ export default class Transition extends Component {
       style: this.props.style,
       key: this.props.key
     }, React.Children.map(this.props.children, element => {
-      return React.cloneElement(element, {
-        key: Math.random().toString()
-      })
+      return React.cloneElement(element)
     }));
   }
 }
