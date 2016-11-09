@@ -18,7 +18,7 @@ class BodyItem extends Component{
 
   render(){
     const { itemData, columns, rowIndex, rowClassName } = this.props;
-    const rootClassName = classnames({
+    const rootClassName = this.classNames({
       'hover-row': this.state.hover,
       [rowClassName&&rowClassName(itemData, rowIndex)]: true
     });
