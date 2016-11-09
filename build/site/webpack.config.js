@@ -7,7 +7,7 @@ const basePath = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
-    app: path.join(basePath, 'site/pages')
+    site: path.join(basePath, 'site')
   },
   output: {
     path: path.resolve(basePath, 'dist/site'),
@@ -41,7 +41,7 @@ module.exports = {
         test: /\.jsx?$/,
         loaders: ['babel'],
         include: [
-          path.join(basePath, 'site/pages'),
+          path.join(basePath, 'site'),
           path.join(basePath, 'src'),
           path.join(basePath, 'libs')
         ]
