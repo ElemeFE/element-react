@@ -7,6 +7,7 @@ new WebpackDevServer(webpack({
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
+    'react-hot-loader/patch',
     './index'
   ],
   output: {
@@ -23,7 +24,7 @@ new WebpackDevServer(webpack({
     loaders: [
       {
         test: /\.jsx?$/,
-        loaders: ['react-hot', 'babel'],
+        loaders: ['babel'],
         include: [
           path.join(__dirname, '../site'),
           path.join(__dirname, '../src'),
