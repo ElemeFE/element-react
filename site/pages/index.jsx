@@ -1,10 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
-import 'element-ui/lib/theme-default/index.css';
-
-import './style/highlight.css';
-import './style/base.scss';
 
 import Alert from './alert';
 import Layout from './layout';
@@ -83,7 +77,7 @@ const pages = {
   }
 };
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -160,5 +154,3 @@ class App extends React.Component {
     )
   }
 }
-
-ReactDOM.render(<App />, document.getElementById('app'));

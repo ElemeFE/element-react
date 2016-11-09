@@ -7,7 +7,7 @@ new WebpackDevServer(webpack({
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './pages'
+    './index'
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -25,7 +25,7 @@ new WebpackDevServer(webpack({
         test: /\.jsx?$/,
         loaders: ['react-hot', 'babel'],
         include: [
-          path.join(__dirname, 'pages'),
+          path.join(__dirname, '../site'),
           path.join(__dirname, '../src'),
           path.join(__dirname, '../libs')
         ]

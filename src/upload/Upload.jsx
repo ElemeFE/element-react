@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
-import UploadList from './Upload-List';
-import IframeUpload from './Iframe-Upload';
-import AjaxUpload from './Ajax-Upload';
+import UploadList from './UploadList';
+import iFrameUpload from './iFrameUpload';
+import AjaxUpload from './AjaxUpload';
 
 export default class Upload extends Component {
   constructor(props) {
@@ -152,7 +152,7 @@ export default class Upload extends Component {
     const children = React.Children.map(this.props.children, child => React.cloneElement(child));
     const uploadComponent = typeof FormData !== 'undefined'
      ? <AjaxUpload {...restProps}>{children}</AjaxUpload>
-     : <IframeUpload {...restProps}>{children}</IframeUpload>;
+     : <iFrameUpload {...restProps}>{children}</iFrameUpload>;
     if (type === 'select') {
      return (
        <div className="el-upload">
