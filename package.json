@@ -68,6 +68,13 @@
     "react-dom": "^15.4.0-rc.4"
   },
   "jest": {
-    "testRegex": "/jest/.+\\.(js|jsx)$"
+    "testRegex": "/jest/.+\\.(js|jsx)$",
+    "testPathIgnorePatterns": [
+      "<rootDir>/tests/jest/mock.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(png|eot|svg|ttf|woff|woff2)(\\?.+)?$": "<rootDir>/tests/jest/mock.js",
+      "\\.(css|scss)$": "identity-obj-proxy"
+    }
   }
 }
