@@ -4,33 +4,39 @@ import { PropTypes, Component } from '../../libs';
 import { EventRegister } from '../../libs/internal'
 
 import TimeSelectPanel from './panel/TimeSelectPanel'
-import {HAVE_TRIGGER_TYPES, PLACEMENT_MAP} from './constants'
+import { HAVE_TRIGGER_TYPES, PLACEMENT_MAP } from './constants'
 
 /*
 todo: 
   handle animation popup
-  handle input change cascading, auto matically select closest value
 */
 
 const haveTriggerType = (type) => {
   return HAVE_TRIGGER_TYPES.indexOf(type) !== -1
 }
 
+
 export default class TimeSelect extends Component {
   constructor(props) {
     super(props);
     this.type = 'time-select';
     this.state = {
-      pickerVisible: false
+      pickerVisible: false,
+      value: props.value // skip validate initial value?
     }
   }
 
   onPicked(value) {
-    if (!this.props.onChange(value)) {// only close when onChange return false/null/undefined
-      this.setState({
-        pickerVisible: false
-      })
-    }
+    this.setState({
+      pickerVisible: false,
+      value
+    })
+    this.lastPickedValue = value
+    this.props.onChange(value)
+  }
+
+  triggerClass() {
+    return this.type.indexOf('time') !== -1 ? 'el-icon-time' : 'el-icon-date';//todo: this.type?
   }
 
   calcIsShowTrigger() {
@@ -49,6 +55,10 @@ export default class TimeSelect extends Component {
     }
   }
 
+  isValid(value) {
+    return TimeSelectPanel.isValid(value, this.props)
+  }
+
   handleBlur() {
     this.props.onBlur(this);
   }
@@ -60,8 +70,8 @@ export default class TimeSelect extends Component {
     let selectionEnd = target.selectionEnd;
     let length = target.value.length;
 
-    const hidePicker = ()=>{
-      this.setState({pickerVisible: false})
+    const hidePicker = () => {
+      this.setState({ pickerVisible: false })
     }
 
     // tab
@@ -105,8 +115,8 @@ export default class TimeSelect extends Component {
   }
 
   render() {
-    const {triggerClass, isReadOnly, placeholder, value, onChange, align, ...others} = this.props;
-    const {pickerVisible} = this.state;
+    const {isReadOnly, placeholder, align, ...others} = this.props;
+    const {pickerVisible, value} = this.state;
 
     return (
       <span
@@ -127,7 +137,13 @@ export default class TimeSelect extends Component {
           target={document}
           eventName="click"
           func={() => {
-            this.setState({ pickerVisible: false })
+            const {value} = this.state
+            if (this.isValid(value)) {
+              this.setState({ pickerVisible: false })
+              this.props.onChange(value)
+            } else {
+              this.setState({ pickerVisible: false, value: this.lastPickedValue })
+            }
           } } />
 
         <input
@@ -138,7 +154,7 @@ export default class TimeSelect extends Component {
           onFocus={this.handleFocus.bind(this)}
           onBlur={this.handleBlur.bind(this)}
           onKeyDown={this.handleKeydown.bind(this)}
-          onChange={(evt) => { onChange(evt.target.value) } }
+          onChange={(evt) => { this.setState({ value: evt.target.value }) } }
           ref="reference"
           value={value}
           />
@@ -146,23 +162,23 @@ export default class TimeSelect extends Component {
         {
           this.calcIsShowTrigger() && <span
             onClick={this.handleTriggerClick.bind(this)}
-            className={this.classNames('el-date-editor__trigger', 'el-icon', triggerClass)}
+            className={this.classNames('el-date-editor__trigger', 'el-icon', this.triggerClass())}
             />
         }
 
         {
-            pickerVisible && <TimeSelectPanel
-              {...others}
-              key="time-select-panel"
-              value={value}
-              onPicked={this.onPicked.bind(this)}
-              getPopperRefElement={()=>this.refs.reference}
-              popperMixinOption={
-                {
-                  placement: PLACEMENT_MAP[align] || PLACEMENT_MAP.left
-                }
-              } />
-          }
+          pickerVisible && <TimeSelectPanel
+            {...others}
+            key="time-select-panel"
+            value={value}
+            onPicked={this.onPicked.bind(this)}
+            getPopperRefElement={() => this.refs.reference}
+            popperMixinOption={
+              {
+                placement: PLACEMENT_MAP[align] || PLACEMENT_MAP.left
+              }
+            } />
+        }
       </span>
     )
   }
@@ -172,11 +188,9 @@ TimeSelect.propTypes = {
   align: PropTypes.oneOf(['left', 'center', 'right']),
   isShowTrigger: PropTypes.bool,
   isReadOnly: PropTypes.bool,
-  triggerClass: PropTypes.string,
   placeholder: PropTypes.string,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
-  //(value)=>hasError:Boolean, /- false: close popup, true: indicate error
   onChange: PropTypes.func,
   // time select pannel:
   start: PropTypes.string,

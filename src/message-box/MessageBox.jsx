@@ -26,46 +26,38 @@ export default class MessageBox extends Component {
     })
   }
 
-  typeClass() {
-    return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
-  }
-
   onChange(event) {
     this.validate(event.target.value);
   }
 
+  typeClass() {
+    return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
+  }
+
   validate(value) {
     const { inputPattern, inputValidator, inputErrorMessage } = this.props;
+    let editorErrorMessage;
 
-    return Promise.resolve().then(() => {
-      this.inputValue = value;
+    if (inputPattern && !inputPattern.test(value)) {
+      editorErrorMessage = inputErrorMessage || i18n.t('el.messagebox.error');
+    }
 
-      if (inputPattern && !inputPattern.test(value)) {
-        return inputErrorMessage || i18n.t('el.messagebox.error');
+    if (typeof inputValidator === 'function') {
+      const validateResult = inputValidator(value);
+
+      if (validateResult === false) {
+        editorErrorMessage = inputErrorMessage || i18n.t('el.messagebox.error');
       }
 
-      if (typeof inputValidator === 'function') {
-        const validateResult = inputValidator(value);
-
-        if (validateResult === false) {
-          return inputErrorMessage || i18n.t('el.messagebox.error');
-        }
-
-        if (typeof validateResult === 'string') {
-          return validateResult;
-        }
+      if (typeof validateResult === 'string') {
+        editorErrorMessage = validateResult;
       }
-    }).then(editorErrorMessage => {
-      this.setState({ editorErrorMessage });
+    }
 
-      if (editorErrorMessage) {
-        this.refs.input.classList.add('invalid');
-      } else {
-        this.refs.input.classList.remove('invalid');
-      }
+    this.inputValue = value;
+    this.setState({ editorErrorMessage });
 
-      return !editorErrorMessage;
-    });
+    return !editorErrorMessage;
   }
 
   handleAction(action) {
@@ -78,15 +70,15 @@ export default class MessageBox extends Component {
           break;
         case 'confirm':
           if (modal === 'prompt') {
-            this.validate(this.inputValue).then(result => {
-              if (result) {
-                if (showInput) {
-                  promise.resolve({ value: this.inputValue, action });
-                } else {
-                  promise.resolve(action);
-                }
+            if (this.validate(this.inputValue)) {
+              if (showInput) {
+                promise.resolve({ value: this.inputValue, action });
+              } else {
+                promise.resolve(action);
               }
-            });
+            } else {
+              return;
+            }
           } else {
             promise.resolve();
           }
@@ -116,7 +108,7 @@ export default class MessageBox extends Component {
       <div>
         <div style={{ position: 'absolute', zIndex: 1007 }}>
           <Transition name="msgbox-fade" duration="300">
-            <View key={Math.random()} show={this.state.visible}>
+            <View key="el-message-box" show={this.state.visible}>
               <div className="el-message-box">
                 {
                   this.props.title && (
@@ -135,7 +127,9 @@ export default class MessageBox extends Component {
                       </div>
                       <View show={this.props.showInput}>
                         <div className="el-message-box__input">
-                          <Input ref="input" placeholder={this.props.inputPlaceholder} onChange={this.onChange.bind(this)} />
+                          <Input className={this.classNames({
+                              'invalid': this.state.editorErrorMessage
+                            })} placeholder={this.props.inputPlaceholder} onChange={this.onChange.bind(this)} />
                           <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
                         </div>
                       </View>
@@ -155,7 +149,7 @@ export default class MessageBox extends Component {
           </Transition>
         </div>
         <Transition name="v-modal" duration="200">
-          <View key={Math.random()} show={this.state.visible}>
+          <View key="v-modal" show={this.state.visible}>
             <div className="v-modal" style={{ zIndex: 1006 }}></div>
           </View>
         </Transition>

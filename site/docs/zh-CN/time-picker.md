@@ -13,7 +13,7 @@ class TimeSelectDemo extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: ''
+      value: '14:30'
     }
   }
 
@@ -69,10 +69,19 @@ return <TimeSelectDemo />
 ### Time Select Options
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
+| align | 对齐方式 | string | left, center, right | left |
+| isShowTrigger | 是否显示图标 | bool | - | - |
+| placeholder | placeholder | string | - | - |
+| isReadOnly | readonly | bool | - | - |
 | start | 开始时间 | string | — | 09:00 |
 | end | 结束时间 | string | — | 18:00 |
 | step | 间隔时间 | string | — | 00:30 |
 | minTime | 最小时间，小于该时间的时间段将被禁用 | string | — | 00:00 |
+| value | 值 | string | — | - |
+| onFocus | onFocus | func:(TimeSelectReactComponent)=>{} | — | - |
+| onBlur | onBlur | func:(TimeSelectReactComponent)=>{} | — | - |
+| onChange | onChange | func:(value)=>{} | — | - |
+
 
 ### Time Picker Options
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |

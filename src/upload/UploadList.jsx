@@ -1,7 +1,11 @@
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
+<<<<<<< HEAD:src/upload/Upload-List.jsx
 import { Progress } from '../../src';
 import i18n from '../locale';
+=======
+import Progress from '../progress';
+>>>>>>> 3ab6cc9376b130cbc6feb5b9dc0e435522a98b88:src/upload/UploadList.jsx
 
 export default class UploadList extends Component {
   constructor(props) {

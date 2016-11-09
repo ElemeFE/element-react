@@ -7,7 +7,8 @@ new WebpackDevServer(webpack({
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './pages'
+    'react-hot-loader/patch',
+    './index'
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -23,9 +24,9 @@ new WebpackDevServer(webpack({
     loaders: [
       {
         test: /\.jsx?$/,
-        loaders: ['react-hot', 'babel'],
+        loaders: ['babel'],
         include: [
-          path.join(__dirname, 'pages'),
+          path.join(__dirname, '../site'),
           path.join(__dirname, '../src'),
           path.join(__dirname, '../libs')
         ]
@@ -54,6 +55,6 @@ new WebpackDevServer(webpack({
   historyApiFallback: true
 }).listen(3000, 'localhost', error => {
   if (error) {
-    console.log(error);
+    throw error;
   }
 });

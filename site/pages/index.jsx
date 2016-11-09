@@ -1,10 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
-import 'element-ui/lib/theme-default/index.css';
-
-import './style/highlight.css';
-import './style/base.scss';
 
 import Alert from './alert';
 import Layout from './layout';
@@ -30,10 +24,12 @@ import Breadcrumb from './breadcrumb';
 import InputNumber from './input-number';
 import Checkbox from './checkbox';
 import Slider from './slider';
+import Table from './table';
 import Switch from './switch';
 import Form from './form';
 import TimePicker from './time-picker';
 import Upload from './upload';
+import Dialog from './dialog';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -57,6 +53,7 @@ const pages = {
     'form': { title: 'Form 表单', component: Form },
   },
   'Data': {
+    'table': { title: 'Table 表格组件', component: Table },
     'progress': { title: 'Progress 进度条', component: Progress },
     'tree': { title: 'Tree 树形控件', component: Tree },
     'badge': { title: 'Badge 标记', component: Badge },
@@ -74,12 +71,13 @@ const pages = {
     'steps': { title: 'Steps 步骤', component: Steps },
   },
   'Others': {
+    'dialog': { title: 'Dialog 对话框', component: Dialog },
     'tooltip': { title: 'Tooltip 文字提示', component: Tooltip },
     'card': { title: 'Card 卡片', component: Card }
   }
 };
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -156,5 +154,3 @@ class App extends React.Component {
     )
   }
 }
-
-ReactDOM.render(<App />, document.getElementById('app'));
