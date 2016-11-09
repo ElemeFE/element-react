@@ -6,7 +6,7 @@
 
 基础的表格展示用法。
 
-:::demo 当`el-table`元素中注入`data`对象数组后，在`el-table-column`中用`prop`属性来对应对象中的键名即可填入数据，用`label`属性来定义表格的列名。可以使用`width`属性来定义列宽。
+:::demo 当`Table`元素中注入`data`和`columns` 对象数组后，在`column`中用`prop`属性来对应对象中的键名即可填入数据，用`label`属性来定义表格的列名。可以使用`width`属性来定义列宽。
 ```javascript
 let columns = [
   {
@@ -55,8 +55,47 @@ let data = [{
 使用带斑马纹的表格，可以更容易区分出不同行的数据。
 
 :::demo `stripe`属性可以创建带斑马纹的表格。它接受一个`Boolean`，默认为`false`，设置为`true`即为启用。
-```html
+```javascript
+  let columns = [
+  {
+    label: "日期",
+    prop: "date",
+    width: 180
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 180
+  },
+  {
+    label: "地址",
+    prop: "address"
+  }
+];
 
+let data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1518 弄'
+  }, {
+    date: '2016-05-04',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1517 弄'
+  }, {
+    date: '2016-05-01',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1519 弄'
+  }, {
+    date: '2016-05-03',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1516 弄'
+  }];
+
+ <Table 
+   style={{width: '100%'}}
+   stripe={true}
+   columns={columns} 
+   data={data}/>
 
 ```
 :::
@@ -64,8 +103,47 @@ let data = [{
 ### 带边框表格
 
 :::demo 默认情况下，Table 组件是不具有竖直方向的边框的，如果需要，可以使用`border`属性，它接受一个`Boolean`，设置为`true`即可启用。
-```html
+```javascript
+  let columns = [
+  {
+    label: "日期",
+    prop: "date",
+    width: 180
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 180
+  },
+  {
+    label: "地址",
+    prop: "address"
+  }
+];
 
+let data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1518 弄'
+  }, {
+    date: '2016-05-04',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1517 弄'
+  }, {
+    date: '2016-05-01',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1519 弄'
+  }, {
+    date: '2016-05-03',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1516 弄'
+  }];
+
+ <Table 
+   style={{width: '100%'}}
+   border={true}
+   columns={columns} 
+   data={data}/>
 
 ```
 :::
@@ -75,8 +153,56 @@ let data = [{
 可将表格内容 highlight 显示，方便区分「成功、信息、警告、危险」等内容。
 
 :::demo 可以通过指定 Table 组件的 rowClassName 属性来为 Table 中的某一行添加 class，表明该行处于某种状态。
-```html
+```javascript
+  let columns = [
+  {
+    label: "日期",
+    prop: "date",
+    width: 180
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 180
+  },
+  {
+    label: "地址",
+    prop: "address"
+  }
+];
 
+let data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1518 弄'
+  }, {
+    date: '2016-05-04',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1517 弄'
+  }, {
+    date: '2016-05-01',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1519 弄'
+  }, {
+    date: '2016-05-03',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1516 弄'
+  }];
+
+ const rowClassName = function(row, index){
+  if (index === 1) {
+    return 'info-row';
+  } else if (index === 3) {
+    return 'positive-row';
+  }
+  return '';
+ }
+
+ <Table 
+   style={{width: '100%'}}
+   rowClassName={rowClassName}
+   columns={columns} 
+   data={data}/>
 
 ```
 :::
@@ -86,8 +212,64 @@ let data = [{
 纵向内容过多时，可选择固定表头。
 
 :::demo 只要在`el-table`元素中定义了`height`属性，即可实现固定表头的表格，而不需要额外的代码。
-```html
+```javascript
+   let columns = [
+  {
+    label: "日期",
+    prop: "date",
+    width: 180
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 180
+  },
+  {
+    label: "地址",
+    prop: "address"
+  }
+];
 
+let data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1518 弄'
+  }, {
+    date: '2016-05-04',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1517 弄'
+  }, {
+    date: '2016-05-01',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1519 弄'
+  }, {
+    date: '2016-05-03',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1516 弄'
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1518 弄'
+  }, {
+    date: '2016-05-04',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1517 弄'
+  }, {
+    date: '2016-05-01',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1519 弄'
+  }, {
+    date: '2016-05-03',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1516 弄'
+  }];
+
+ <Table 
+   style={{width: '100%'}}
+   border={true}
+   height={250}
+   columns={columns} 
+   data={data}/>
 
 ```
 :::
