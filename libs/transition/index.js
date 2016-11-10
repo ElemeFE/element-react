@@ -10,11 +10,7 @@ export default class Transition extends Component {
       component: this.props.component,
       className: this.props.className,
       style: this.props.style
-    }, React.Children.map(this.props.children, element => {
-      return React.cloneElement(element, {
-        key: Math.random().toString()
-      })
-    }));
+    }, this.props.children);
   }
 }
 
@@ -27,5 +23,5 @@ Transition.propTypes = {
 };
 
 Transition.defaultProps = {
-    duration: 300
+  duration: 300
 }

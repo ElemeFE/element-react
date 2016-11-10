@@ -2,6 +2,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Steps extends Component {
+
   calcProgress(status, index) {
     let step = 100;
     const style = {};
@@ -23,6 +24,7 @@ export default class Steps extends Component {
       : style.width = step + '%';
     return style;
   }
+
   calStatus(index) {
     const { active, finishStatus, processStatus } = this.props;
     let status = 'wait';
@@ -35,6 +37,7 @@ export default class Steps extends Component {
 
     return status;
   }
+
   render() {
     const { children, space, direction } = this.props;
 

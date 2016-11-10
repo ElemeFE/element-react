@@ -2,14 +2,10 @@ import React from 'react';
 import ReactTransitionGroup from 'react-addons-transition-group'
 
 import { PropTypes, Component } from '../../libs';
-import { watchPropertyChange } from '../../libs/utils'
+import { watchPropertyChange, ReactUtils } from '../../libs/utils'
 import CollapseTransition from './CollapseTransition'
 
 
-function FirstChild(props) {
-  const childrenArray = React.Children.toArray(props.children);
-  return childrenArray[0] || null;
-}
 
 function NodeContent(props) {
   const {nodeModel, renderContent, context} = props
@@ -154,7 +150,7 @@ export default class Node extends Component {
           <NodeContent nodeModel={nodeModel} renderContent={renderContent} context={this} />
         </div>
         <ReactTransitionGroup
-          component={FirstChild}>
+          component={ReactUtils.firstChild}>
           {
             expanded && (
               <CollapseTransition>

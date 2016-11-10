@@ -1,9 +1,14 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import { Component, PropTypes } from '../../libs';
 
 import calcTextareaHeight from './calcTextareaHeight'
 
-import assign from 'object-assign';
+function fixControlledValue(value) {
+  if (typeof value === 'undefined' || value === null) {
+    return '';
+  }
+  return value;
+}
 
 export default class Input extends Component {
 
@@ -19,14 +24,28 @@ export default class Input extends Component {
   }
 
   handleChange(e) {
+    const { onChange } = this.props;
+
+    if (onChange) {
+      onChange(e);
+    }
+
     this.resizeTextarea();
-    const { handleInput, handlePressEnter } = this.props;
-    if (e.keyCode === 13 && handlePressEnter) {
-      handlePressEnter(e);
-    }
-    if (handleInput) {
-      handleInput(e);
-    }
+  }
+
+  handleFocus(e) {
+    const { onFocus } = this.props;
+    if (onFocus) onFocus(e)
+  }
+
+  handleBlur(e) {
+    const { onBlur } = this.props;
+    if (onBlur) onBlur(e)
+  }
+
+  handleIconClick(e) {
+    const { onIconClick } = this.props;
+    if (onIconClick) onIconClick(e)
   }
 
   resizeTextarea() {
@@ -44,22 +63,16 @@ export default class Input extends Component {
   render() {
     const {
       type,
-      name,
       size,
       disabled,
       prepend,
       append,
       icon,
-      placeholder,
-      readOnly,
-      maxlength,
-      minlength,
       autoComplete,
-      autoFocus,
-      form,
-      value,
       validating,
-      rows
+      rows,
+      autosize,
+      ...otherProps
     } = this.props;
 
     const classname = this.classNames(
@@ -71,36 +84,31 @@ export default class Input extends Component {
       }
     )
 
+    if ('value' in this.props) {
+      otherProps.value = fixControlledValue(this.props.value);
+      delete otherProps.defaultValue;
+    }
+
     // 前置元素
     const prependDOM = prepend ? <div className="el-input-group__prepend">{prepend}</div> : null
     // 后置元素
     const appendDOM = append ? <div className="el-input-group__append">{append}</div> : null
     // input图标
-    const iconDOM = icon ? <i className={`el-input__icon el-icon-${icon}`} onClick={e => this.props.handleIconClick(e)}></i> : null
+    const iconDOM = icon ? <i className={`el-input__icon el-icon-${icon}`} onClick={e => this.handleIconClick(e)}></i> : null
     // validating状态
-    const validatingDOM =validating ? <i className="el-input__icon el-icon-loading"></i> : null
+    const validatingDOM = validating ? <i className="el-input__icon el-icon-loading"></i> : null
 
     return type !== 'textarea' ?
       <div className={classname}>
         { prependDOM }
         { iconDOM }
         <input
-          className="el-input__inner"
-          type={type}
-          name={name}
-          placeholder={placeholder}
-          disabled={disabled}
-          readOnly={readOnly}
-          maxLength={maxlength}
-          minLength={minlength}
-          autoComplete={autoComplete}
-          autoFocus={autoFocus}
-          form={form}
-          value={value}
+          { ...otherProps }
           ref="input"
+          className={this.classNames("el-input__inner", this.props.className)}
           onChange={e => this.handleChange(e)}
-          onFocus={e => this.props.handleFocus(e) }
-          onBlur={e => this.props.handleBlur(e) }
+          onFocus={e => this.handleFocus(e) }
+          onBlur={e => this.handleBlur(e) }
         />
         { validatingDOM }
         { appendDOM }
@@ -108,22 +116,14 @@ export default class Input extends Component {
       :
       <div className={classname}>
         <textarea
-          className="el-textarea__inner"
-          value={value}
+          { ...otherProps }
           ref="textarea"
-          name={name}
-          placeholder={placeholder}
-          disabled={disabled}
-          style={assign({}, this.props.style, this.state.textareaStyle)}
-          readOnly={readOnly}
+          className={this.classNames("el-textarea__inner", this.props.className)}
+          style={Object.assign({}, this.props.style, this.state.textareaStyle)}
           rows={rows}
-          form={form}
-          autoFocus={autoFocus}
-          maxLength={maxlength}
-          minLength={minlength}
           onChange={e => this.handleChange(e)}
-          onFocus={e => this.props.handleFocus(e)}
-          onBlur={e => this.props.handleBlur(e)}
+          onFocus={e => this.handleFocus(e)}
+          onBlur={e => this.handleBlur(e)}
         >
         </textarea>
       </div>
@@ -139,8 +139,10 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   readOnly: PropTypes.bool,
   autoFocus: PropTypes.bool,
-  maxlength: PropTypes.number,
-  minlength: PropTypes.number,
+  maxLength: PropTypes.number,
+  minLength: PropTypes.number,
+  defaultValue: PropTypes.any,
+  value: PropTypes.any,
 
   // type !== 'textarea'
   size: PropTypes.oneOf(['large', 'small', 'mini']),
@@ -152,11 +154,10 @@ Input.propTypes = {
   rows: PropTypes.number,
 
   // event
-  handleFocus: PropTypes.func,
-  handleBlur: PropTypes.func,
-  handleInput: PropTypes.func,
-  handlePressEnter: PropTypes.func,
-  handleIconClick: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  onIconClick: PropTypes.func,
 
   // autoComplete
   autoComplete: PropTypes.string,

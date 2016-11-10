@@ -4,7 +4,7 @@
 
 ### 基础用法
 
-::: demo 简简单单一个框
+::: demo
 ```html
 <Input placeholder="请输入内容" />
 ```
@@ -76,6 +76,9 @@
 根据输入内容提供对应的输入建议, 依赖autoComplete
 
 ::: demo autocomplete 是一个可带输入建议的输入框组件，
+```html
+add me
+```
 :::
 
 ### 自定义模板(TODO)
@@ -83,6 +86,9 @@
 可自定义输入建议的显示，依赖autoComplete
 
 ::: demo autocomplete 是一个可带输入建议的输入框组件，
+```html
+add me
+```
 :::
 
 ### 远程搜索(TODO)
@@ -90,6 +96,9 @@
 从服务端搜索数据，依赖autoComplete
 
 ::: demo autocomplete 是一个可带输入建议的输入框组件，
+```html
+add me
+```
 :::
 
 

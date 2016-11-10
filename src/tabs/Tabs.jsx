@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
+import { Component, PropTypes, View } from '../../libs';
 
 export default class Tabs extends Component {
   constructor(props) {
@@ -126,31 +126,26 @@ export default class Tabs extends Component {
               )
             })
           }
-          <div className="el-tabs__active-bar" style={ barStyle }></div>
+          <View show={ !type }>
+            <div className="el-tabs__active-bar" style={ barStyle }></div>
+          </View>
         </div>
         <div className="el-tabs__content">
-        <View show={true}>
-          {children}
-        </View>
           {
-            // React.Children.map(children, (item, index) => {
-            //   const { name } = item.props;
-            //   let transitionName = '';
+            React.Children.map(children, (item, index) => {
+              const { name } = item.props;
+              let transitionName = '';
 
-            //   if (name === currentName) {
-            //     transitionName = 'slideInRight';
-            //   }
+              if (name === currentName) {
+                transitionName = 'slideInRight';
+              }
 
-            //   console.log(item)
-
-            //   return (
-            //     <Transition name={ transitionName }>
-            //       <View show={ false }>
-            //         { item }
-            //       </View>
-            //     </Transition>
-            //   );
-            // })
+              return (
+                <View show={ name === currentName }>
+                  { item }
+                </View>
+              );
+            })
           }
         </div>
       </div>

@@ -4,11 +4,32 @@ import classnames from 'classnames';
 import equal from 'is-equal';
 
 export default class Component extends React.Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
+    this.proxy('componentDidMount', this.componentDidMountProxy);
+    this.proxy('componentWillReceiveProps', this.componentWillReceivePropsProxy);
+  }
+
+  proxy(name, replace) {
+    const fn = this[name];
+
+    this[name] = (...args) => {
+      if (replace instanceof Function) {
+        replace.apply(this, args);
+      }
+
+      if (fn instanceof Function) {
+        fn.apply(this, args);
+      }
+    }
+  }
+
+  componentDidMountProxy() {
     this.shouldApplyProps(this.props) && this.applyProps(this.props);
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceivePropsProxy(props) {
     this.shouldApplyProps(props, this.props) && this.applyProps(props);
   }
 
@@ -36,9 +57,11 @@ export default class Component extends React.Component {
       if (props.style) {
         const div = document.createElement('div');
 
-        ReactDOM.render(<div style={props.style} />, div);
+        ReactDOM.render(React.createElement('div', {
+          style: props.style
+        }), div);
 
-        this.element.style.cssText = div.style.cssText + ' ' + this.style;
+        this.element.style.cssText = div.firstChild.style.cssText + ' ' + this.style;
 
         ReactDOM.unmountComponentAtNode(div);
       } else {
@@ -52,9 +75,8 @@ export default class Component extends React.Component {
   }
 }
 
-/* eslint-disable */
+
 Component.propTypes = {
   className: React.PropTypes.string,
   style: React.PropTypes.object
 }
-/* eslint-enable */

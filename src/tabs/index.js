@@ -3,4 +3,4 @@ import TabPane from './TabPane'
 
 Tabs.Pane = TabPane;
 
-export default Tabs
+export default Tabs;
