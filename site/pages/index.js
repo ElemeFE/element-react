@@ -30,6 +30,7 @@ import Breadcrumb from './breadcrumb';
 import InputNumber from './input-number';
 import Checkbox from './checkbox';
 import Slider from './slider';
+import Tag from './tag';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -48,6 +49,7 @@ const pages = {
     'slider': { title: 'Slider 滑块', component: Slider },
   },
   'Data': {
+    'tag': { title: 'Tag 标签', component: Tag },
     'progress': { title: 'Progress 进度条', component: Progress },
     'tree': { title: 'Tree 树形控件', component: Tree },
     'badge': { title: 'Badge 标记', component: Badge },
