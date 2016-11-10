@@ -31,6 +31,7 @@ import TimePicker from './time-picker';
 import Upload from './upload';
 import Dialog from './dialog';
 import Tabs from './tabs';
+import Tag from './tag';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -55,6 +56,7 @@ const pages = {
   },
   'Data': {
     'table': { title: 'Table 表格组件', component: Table },
+    'tag': { title: 'Tag 标签', component: Tag },
     'progress': { title: 'Progress 进度条', component: Progress },
     'tree': { title: 'Tree 树形控件', component: Tree },
     'badge': { title: 'Badge 标记', component: Badge },
