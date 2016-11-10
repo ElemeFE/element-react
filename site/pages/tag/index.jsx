@@ -1,5 +1,4 @@
 import './style.scss';
-
 import React from 'react';
 import { Component, Markdown } from '../../../libs';
 import template from '../../docs/zh-CN/tag.md';
