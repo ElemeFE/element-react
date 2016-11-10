@@ -14,6 +14,7 @@ export default class TabPane extends Component {
 TabPane.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string,
+  disabled: PropTypes.bool
 }
 
 TabPane.defaultProps = {
