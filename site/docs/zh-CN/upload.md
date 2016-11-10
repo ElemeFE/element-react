@@ -5,7 +5,7 @@
 ### 点击上传多个文件
 
 ::: demo 通过 tip属性 你可以传入自定义的上传按钮类型和文字提示。
-```javascript
+```html
 <Upload
   action="//jsonplaceholder.typicode.com/posts/"
   onPreview={() => this.handlePreview()}
@@ -22,7 +22,7 @@
 可将文件拖入指定区域进行上传。
 
 ::: demo 将 `type` 属性指定为 'drag' 可以将上传控件变为支持拖拽的形式，并且你可以通过 `multiple` 属性来控制是否支持多选，`onPreview` 和 `onRemove` 是一个钩子函数，分别在点击上传后的文件链接和点击移除上传后的文件后被调用。
-```javascript
+```html
 <Upload
   action="//jsonplaceholder.typicode.com/posts/"
   type="drag"
