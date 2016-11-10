@@ -92,6 +92,9 @@ export default class Select extends Component {
   }
 
   render() {
+    const { multiple, size } = this.props;
+    const { inputWidth, inputLength } = this.state;
+
     return (
       <div
         className={this.classNames('el-select', {
@@ -104,7 +107,7 @@ export default class Select extends Component {
                 'max-width': inputWidth - 32 + 'px'
             }}>
               {
-                filterable && (
+                this.props.filterable && (
                   <Input
                     ref="input"
                     type="text"
