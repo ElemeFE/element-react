@@ -26,10 +26,11 @@ import Checkbox from './checkbox';
 import Slider from './slider';
 import Table from './table';
 import Switch from './switch';
-import Form from './form';
 import TimePicker from './time-picker';
 import Upload from './upload';
 import Dialog from './dialog';
+import Tabs from './tabs';
+import Tag from './tag';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -50,10 +51,11 @@ const pages = {
     'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
     'upload': { title: 'Upload 上传', component: Upload },
     'rate': { title: 'Rate 评分', component: Rate },
-    'form': { title: 'Form 表单', component: Form },
+    // 'form': { title: 'Form 表单', component: Form },
   },
   'Data': {
     'table': { title: 'Table 表格组件', component: Table },
+    'tag': { title: 'Tag 标签', component: Tag },
     'progress': { title: 'Progress 进度条', component: Progress },
     'tree': { title: 'Tree 树形控件', component: Tree },
     'badge': { title: 'Badge 标记', component: Badge },
@@ -67,6 +69,7 @@ const pages = {
   },
   'Nav': {
     'menu': { title: 'NavMenu 导航菜单', component: Menu },
+    'tabs': { title: 'Tabs 标签页', component: Tabs },
     'breadcrumb': { title: 'Breadcrumb 面包屑', component: Breadcrumb },
     'steps': { title: 'Steps 步骤', component: Steps },
   },

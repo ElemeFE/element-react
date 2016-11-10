@@ -9,7 +9,16 @@ export default class Table extends Component{
   constructor(props, context){
     super(props, context);
     this.state = {
-      bodyWidth: 'auto'
+      bodyWidth: 'auto',
+      bodyHeight: 'auto',
+      headerHeight: 'auto',
+      resizeProxyVisible: false
+    }
+  }
+
+  getChildContext(){
+    return {
+      $parent: this
     }
   }
 
@@ -18,9 +27,17 @@ export default class Table extends Component{
   }
 
   initLayout(){
+    const { height } = this.props;
     const rootDom = ReactDOM.findDOMNode(this);
     const bodyWidth = parseFloat(window.getComputedStyle(rootDom).getPropertyValue("width"));
-    this.setState({bodyWidth});
+    const headerHeight = this.refs.headerWrapper.offsetHeight;
+    const bodyHeight = height ? height - headerHeight : this.state.headerHeight;
+
+    this.setState({
+      bodyWidth,
+      bodyHeight,
+      headerHeight,
+    });
   }
 
   render() {
@@ -30,7 +47,11 @@ export default class Table extends Component{
       border,
       columns,
       data } = this.props;
-    const { bodyWidth } = this.state;
+
+    const { 
+      bodyWidth, 
+      bodyHeight } = this.state;
+
     const rootClassName = this.classNames(
       'el-table',
       {
@@ -44,23 +65,31 @@ export default class Table extends Component{
     return (
       <div className={rootClassName}>
         <div
+          ref="headerWrapper"
           className="el-table__header-wrapper">
-          <TableHeader
-            style={{width: bodyWidth}}
-            columns={columns} />
+          <TableHeader style={{width: bodyWidth}} {...this.props}/>
         </div>
         <div
+          style={{height: bodyHeight}}
           className="el-table__body-wrapper"
           ref="bodyWrapper">
           <TableBody
-            style={{width: bodyWidth}}
-            columns={columns}
-            data={data} />
+            style={{width: bodyWidth}} {...this.props} />
+        </div>
+
+        <div
+          style={{display: this.state.resizeProxyVisible?"block":"none"}}
+          className="el-table__column-resize-proxy" 
+          ref="resizeProxy">
         </div>
       </div>
     )
   }
 }
+
+Table.childContextTypes = {
+  $parent: React.PropTypes.object
+};
 
 Table.propTypes = {
   columns: PropTypes.array.isRequired,
