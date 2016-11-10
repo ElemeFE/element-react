@@ -1,6 +1,5 @@
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
-import classnames from 'classnames';
 
 class BodyItem extends Component{
   constructor(props, context){
@@ -8,7 +7,7 @@ class BodyItem extends Component{
     this.state = {
       hover: false
     };
-  } 
+  }
 
   onMouseState(hover){
     this.setState({
@@ -24,10 +23,10 @@ class BodyItem extends Component{
     });
 
     return (
-      <tr 
+      <tr
         className={rootClassName}
-        onMouseEnter={(e)=>{this.onMouseState(true)}} 
-        onMouseLeave={e=>this.onMouseState(false)}>
+        onMouseEnter={()=>{this.onMouseState(true)}}
+        onMouseLeave={()=>this.onMouseState(false)}>
         {
           columns.map((col, idx)=>{
             return (
@@ -52,9 +51,9 @@ BodyItem.propTypes = {
 
 export default class TableBody extends  Component{
   render() {
-    const { 
-      columns, 
-      data, 
+    const {
+      columns,
+      data,
       style,
       rowClassName } = this.props;
 
@@ -64,14 +63,14 @@ export default class TableBody extends  Component{
         cellPadding={0}
         cellSpacing={0}>
         <tbody>
-          { 
+          {
             data.map((dataItem, dataIdx)=>{
               return (
-                <BodyItem 
-                  key={dataIdx} 
+                <BodyItem
+                  key={dataIdx}
                   rowIndex={dataIdx}
                   rowClassName={rowClassName}
-                  itemData={dataItem} 
+                  itemData={dataItem}
                   columns={columns}/>
               )
             })
