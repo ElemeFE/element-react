@@ -1,12 +1,15 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import { Component, PropTypes, Transition, View } from '../../libs';
 
 export default class Tabs extends Component {
   constructor(props) {
     super(props);
 
+    const { children, activeName } = props;
+
     this.state = {
-      currentName: props.activeName || props.children[0].props.name,
+      children: children instanceof Array ? children : [children],
+      currentName: activeName || children[0].props.name,
       barStyle: {},
     };
   }
@@ -23,8 +26,28 @@ export default class Tabs extends Component {
     }
   }
 
-  handleTabRemove() {
-    
+  handleTabRemove(tab, index, e) {
+    const { children, currentName } = this.state;
+    const { tabRemove } = this.props;
+
+    e.stopPropagation();
+
+    if (children[index].props.name === currentName) {
+      const nextChild = children[index + 1];
+      const prevChild = children[index - 1];
+
+      this.setState({
+        currentName: nextChild ? nextChild.props.name : prevChild ? prevChild.props.name : '-1',
+      });
+    }
+
+    children.splice(index, 1);
+
+    this.setState({
+      children
+    }, () => {
+      tabRemove && tabRemove(tab, e);
+    });
   }
 
   handleTabClick(tab, e) {
@@ -44,7 +67,7 @@ export default class Tabs extends Component {
     let style = {};
     let offset = 0;
     let tabWidth = 0;
-    let children = this.props.children instanceof Array ? this.props.children : [this.props.children];
+    let children = this.state.children instanceof Array ? this.state.children : [this.state.children];
 
     children.every((item, index) => {
       let $el = this.tabs[index];
@@ -71,8 +94,8 @@ export default class Tabs extends Component {
   }
 
   render() {
-    const { currentName, barStyle } = this.state;
-    const { children, type, closable, disabled } = this.props;
+    const { children, currentName, barStyle } = this.state;
+    const { type, closable, disabled } = this.props;
     const tabsCls = this.classNames({
       'el-tabs': true,
       'el-tabs--card': type === 'card',
@@ -96,7 +119,9 @@ export default class Tabs extends Component {
               return (
                 <div key={ `el-tabs__item-${index}` } ref={ (tab) => tab && this.tabs.push(tab) } name={ name } className={ tabCls } onClick={ (e) => this.handleTabClick(item, e) }>
                   { label }
-                  { closable && <span className="el-icon-close" onClick={ () => this.handleTabRemove() }></span> }
+                  <View show={ closable }>
+                    <span className="el-icon-close" onClick={ (e) => this.handleTabRemove(item, index, e) }></span>
+                  </View>
                 </div>
               )
             })
@@ -104,7 +129,29 @@ export default class Tabs extends Component {
           <div className="el-tabs__active-bar" style={ barStyle }></div>
         </div>
         <div className="el-tabs__content">
-          { children }
+        <View show={true}>
+          {children}
+        </View>
+          {
+            // React.Children.map(children, (item, index) => {
+            //   const { name } = item.props;
+            //   let transitionName = '';
+
+            //   if (name === currentName) {
+            //     transitionName = 'slideInRight';
+            //   }
+
+            //   console.log(item)
+
+            //   return (
+            //     <Transition name={ transitionName }>
+            //       <View show={ false }>
+            //         { item }
+            //       </View>
+            //     </Transition>
+            //   );
+            // })
+          }
         </div>
       </div>
     );

@@ -12,7 +12,7 @@ export default class TabPane extends Component {
 }
 
 TabPane.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.string.isRequired,
   name: PropTypes.string,
 }
 

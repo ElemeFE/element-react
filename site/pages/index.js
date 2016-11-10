@@ -56,7 +56,7 @@ const pages = {
   },
   'Nav': {
     menu: { title: 'NavMenu 导航菜单', component: Menu },
-    tabs: { titel: 'Tabs 标签页', component: Tabs },
+    tabs: { title: 'Tabs 标签页', component: Tabs },
     breadcrumb: { title: 'Breadcrumb 面包屑', component: Breadcrumb },
     steps: { title: 'Steps 步骤', component: Steps },
   },
