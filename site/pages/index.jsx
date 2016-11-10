@@ -30,6 +30,7 @@ import Form from './form';
 import TimePicker from './time-picker';
 import Upload from './upload';
 import Dialog from './dialog';
+import Tabs from './tabs';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -67,6 +68,7 @@ const pages = {
   },
   'Nav': {
     'menu': { title: 'NavMenu 导航菜单', component: Menu },
+    'tabs': { title: 'Tabs 标签页', component: Tabs },
     'breadcrumb': { title: 'Breadcrumb 面包屑', component: Breadcrumb },
     'steps': { title: 'Steps 步骤', component: Steps },
   },
