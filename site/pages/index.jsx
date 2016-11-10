@@ -26,7 +26,6 @@ import Checkbox from './checkbox';
 import Slider from './slider';
 import Table from './table';
 import Switch from './switch';
-import Form from './form';
 import TimePicker from './time-picker';
 import Upload from './upload';
 import Dialog from './dialog';
