@@ -55,7 +55,11 @@ module.exports = {
         loaders: ['style', 'css', 'sass']
       },
       {
-        test: /\.(ttf|eot|svg|woff|woff2|jpg|png|gif)(\?.+)?$/,
+        test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
+        loader: 'file?name=[hash:12].[ext]'
+      },
+      {
+        test: /\.(jpe?g|png|gif)(\?.+)?$/,
         loader: 'url?name=[hash:12].[ext]&limit=25000'
       },
       {

@@ -12,16 +12,6 @@ export default class Checkbox extends Component {
     };
   }
 
-  getLabel() {
-    let label;
-    if (this.props.trueLabel || this.props.falseLabel) {
-      label = this.props.checked ? this.props.trueLabel : this.props.falseLabel;
-    }else {
-      label = this.props.label;
-    }
-    return label;
-  }
-
   onFocus() {
     this.setState({
       focus: true
@@ -58,17 +48,27 @@ export default class Checkbox extends Component {
     });
   }
 
+  getLabel() {
+    let label;
+    if (this.props.trueLabel || this.props.falseLabel) {
+      label = this.props.checked ? this.props.trueLabel : this.props.falseLabel;
+    }else {
+      label = this.props.label;
+    }
+    return label;
+  }
+
   render() {
     return (
       <label className="el-checkbox">
         <span className="el-checkbox__input">
           <span
-            className={
-            this.classNames("el-checkbox__inner",
-            {'is-disabled': this.props.disabled},
-            {'is-checked': this.state.checked},
-            {'is-indeterminate': this.props.indeterminate},
-            {'is-focus': this.state.focus})}>
+            className={this.classNames("el-checkbox__inner", {
+              'is-disabled': this.props.disabled,
+              'is-checked': this.state.checked,
+              'is-indeterminate': this.props.indeterminate,
+              'is-focus': this.state.focus
+            })}>
           </span>
           <input
             className="el-checkbox__original"

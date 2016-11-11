@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import { Component } from '../../libs';
+import React from 'react';
+import { Component, PropTypes } from '../../libs';
 
 export default class Rate extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ export default class Rate extends Component {
     };
   }
   componentDidMount() {
-    
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,7 +41,7 @@ export default class Rate extends Component {
     }
   }
 
-  
+
 
   setCurrentValue(value) {
     const { disabled, allowHalf } = this.props;
@@ -112,6 +112,7 @@ export default class Rate extends Component {
     let showWhenAllowHalf = allowHalf && pointerAtLeftHalf && ((item - 0.5).toFixed(1) === currentValue.toFixed(1));
     return showWhenDisabled || showWhenAllowHalf;
   }
+  
   classes() {
     const { currentValue } = this.state;
     const { allowHalf, max } = this.props;
@@ -211,19 +212,19 @@ export default class Rate extends Component {
     })
 
   }
- 
+
   render() {
     const { showText, textColor, disabled } = this.props;
     const { hoverIndex } = this.state;
     return (
       <div className="el-rate">
         {
-          Array(5).join(',').split(',').map((v, k) => 
-            <span 
-              className="el-rate__item" 
+          [...Array(5)].map((v, k) =>
+            <span
+              className="el-rate__item"
               style={{ cursor: disabled ? 'auto' : 'pointer' }}
               onClick={() => this.selectValue(k)}
-              onMouseMove={() => this.setCurrentValue(k)} 
+              onMouseMove={() => this.setCurrentValue(k)}
               onMouseLeave={() => this.resetCurrentValue()}
               key={k}>
               <i
@@ -231,7 +232,7 @@ export default class Rate extends Component {
                 className={hoverIndex === k ? `hover el-rate__icon ${this.classes()[k]}` : `el-rate__icon ${this.classes()[k]}`}>
                 {
                   this.showDecimalIcon(k) ?
-                    <i 
+                    <i
                       style={this.decimalStyle()}
                       className={`el-rate__decimal ${this.decimalIconClass()}`}>
                     </i> : null
@@ -242,11 +243,11 @@ export default class Rate extends Component {
           )
         }
         {
-          showText ? 
+          showText ?
             <span className="el-rate__text" style={{ color: textColor }}>{ this.showText() }</span>
           : null
         }
-        
+
       </div>
     )
   }
@@ -281,7 +282,7 @@ Rate.defaultProps = {
   'value': 0, // 星级
   'lowThreshold': 2, // 低分和中等分数的界限值，值本身被划分在低分中
   'highThreshold': 4, // 高分和中等分数的界限值，值本身被划分在高分中
-  'max': 5, 
+  'max': 5,
   'voidColor': '#C6D1DE',
   'disabledVoidColor': '#EFF2F7',
   'iconClasses': ['el-icon-star-on', 'el-icon-star-on', 'el-icon-star-on'],
@@ -291,4 +292,3 @@ Rate.defaultProps = {
   'textTemplate': '{value}',
   'change': () => {  }
 }
-

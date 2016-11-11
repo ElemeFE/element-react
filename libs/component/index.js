@@ -7,11 +7,11 @@ export default class Component extends React.Component {
   constructor(props) {
     super(props);
 
-    this.proxy('componentDidMount', this.componentDidMountProxy);
-    this.proxy('componentWillReceiveProps', this.componentWillReceivePropsProxy);
+    this.createMethodProxy('componentDidMount', this.componentDidMountProxy);
+    this.createMethodProxy('componentWillReceiveProps', this.componentWillReceivePropsProxy);
   }
 
-  proxy(name, replace) {
+  createMethodProxy(name, replace) {
     const fn = this[name];
 
     this[name] = (...args) => {
