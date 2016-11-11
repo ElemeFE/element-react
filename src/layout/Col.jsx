@@ -15,7 +15,11 @@ export default class Col extends Component {
 
   render() {
     return (
-      <div className={this.classNames('el-col', `el-col-${this.props.span}`, this.props.offset && `el-col-offset-${this.props.offset}`, this.props.pull && `el-col-pull-${this.props.pull}`, this.props.push && `el-col-push-${this.props.push}`)} style={this.getStyle()}>
+      <div className={this.classNames('el-col', `el-col-${this.props.span}`,
+        this.props.offset && `el-col-offset-${this.props.offset}`,
+        this.props.pull && `el-col-pull-${this.props.pull}`,
+        this.props.push && `el-col-push-${this.props.push}`
+      )} style={this.getStyle()}>
         {this.props.children}
       </div>
     )

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Component, PropTypes, View } from '../../libs';
+import DebounceInput from 'react-debounce-input';
 
 import Input from '../input';
 import i18n from '../locale';
@@ -43,10 +44,6 @@ export default class Select extends Component {
 
   iconClass() {
     return this.showCloseIcon() ? 'circle-close' : (this.props.remote && this.props.filterable ? '' : 'caret-top');
-  }
-
-  debounce() {
-    return this.props.remote ? 300 : 0;
   }
 
   showCloseIcon() {
@@ -292,7 +289,7 @@ export default class Select extends Component {
   }
 
   render() {
-    const { multiple, size, disabled, filterable, loading } = this.props;
+    const { multiple, size, disabled, filterable, loading, remote } = this.props;
     const { inputWidth, inputLength, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
 
     return (
@@ -308,11 +305,11 @@ export default class Select extends Component {
             }}>
               {
                 filterable && (
-                  <Input
+                  <DebounceInput
                     ref="input"
                     type="text"
                     className="el-select__input"
-                    debounce={this.debounce()}
+                    debounceTimeout={remote ? 300 : 0}
                     style={{
                       width: inputLength + 'px',
                       'max-width': inputWidth - 42 + 'px'
