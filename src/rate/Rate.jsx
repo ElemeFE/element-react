@@ -218,7 +218,7 @@ export default class Rate extends Component {
     return (
       <div className="el-rate">
         {
-          Array(5).join(',').split(',').map((v, k) =>
+          [...Array(5)].map((v, k) =>
             <span
               className="el-rate__item"
               style={{ cursor: disabled ? 'auto' : 'pointer' }}
