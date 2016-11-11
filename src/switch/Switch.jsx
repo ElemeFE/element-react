@@ -16,7 +16,7 @@ export default class Switch extends Component {
     this.updateSwitch();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     this.updateSwitch();
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
@@ -58,25 +58,27 @@ export default class Switch extends Component {
     const {value, disabled, width} = this.state;
     return (
       <div
-        className={this.classNames('el-switch', {'is-disabled' : disabled}, {'el-switch--wide' : this.hasText()})}>
+        className={this.classNames('el-switch', {
+          'is-disabled' : disabled,
+          'el-switch--wide' : this.hasText()
+        })}>
 
         <View show={disabled}>
           <div className="el-switch__mask"></div>
         </View>
 
         <input className="el-switch__input" type="checkbox" checked={value} name={name}
-               disabled={disabled} style={{display: 'none'}} onChange={()=>{}}/>
+          disabled={disabled} style={{display: 'none'}} onChange={()=>{}} />
 
-        <span className="el-switch__core" ref="core" onClick={this.handleMiscClick.bind(this)}
-              style={{ 'width': width + 'px' }}>
-          <span className="el-switch__button" ref="button"/>
+        <span className="el-switch__core" ref="core" onClick={this.handleMiscClick.bind(this)} style={{ 'width': width + 'px' }}>
+          <span className="el-switch__button" ref="button" />
         </span>
 
         <Transition name="label-fade">
           <View show={value}>
             <div className="el-switch__label el-switch__label--left" onClick={this.handleMiscClick.bind(this)}
-                 style={{ 'width': width + 'px' }}>
-              {onIconClass && <i className={this.classNames('onIconClass')}/>}
+              style={{ 'width': width + 'px' }}>
+              {onIconClass && <i className="onIconClass" />}
               {!onIconClass && onText && <span>{onText}</span>}
             </div>
           </View>
@@ -85,8 +87,8 @@ export default class Switch extends Component {
         <Transition name="label-fade">
           <View show={!this.state.value}>
             <div className="el-switch__label el-switch__label--right" onClick={this.handleMiscClick.bind(this)}
-                 style={{ 'width': this.state.width + 'px' }}>
-              {offIconClass && <i className={this.classNames('offIconClass')}/>}
+              style={{ 'width': this.state.width + 'px' }}>
+              {offIconClass && <i className="offIconClass" />}
               {!offIconClass && offText && <span>{offText}</span>}
             </div>
           </View>
