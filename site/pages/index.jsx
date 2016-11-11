@@ -31,6 +31,7 @@ import Upload from './upload';
 import Dialog from './dialog';
 import Tabs from './tabs';
 import Tag from './tag';
+import Select from './select';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -46,6 +47,7 @@ const pages = {
     'checkbox': { title: 'Checkbox 多选框', component: Checkbox },
     'input': { title: 'Input 输入框', component: Input },
     'input-number': { title: 'Input Number 计数器', component: InputNumber },
+    'select': { title: 'Select 选择器', component: Select },
     'switch': { title: 'Switch 开关', component: Switch },
     'slider': { title: 'Slider 滑块', component: Slider },
     'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },

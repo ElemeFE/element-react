@@ -1,9 +1,10 @@
 {
   "extends": [ "airbnb", "eslint:recommended" ],
-  "plugins": [ "react", "jsx-a11y"],
+  "plugins": [ "react", "jsx-a11y" ],
   "env": {
-    "es6": true,
-    "browser": true
+    "browser": true,
+    "commonjs": true,
+    "es6": true
   },
   "rules": {
     "jsx-a11y/no-static-element-interactions": 0,
@@ -28,6 +29,5 @@
     "react/no-find-dom-node": 1,
     "react/no-unused-prop-types": 1,
     "react/forbid-prop-types": [1, { "forbid": ["array"] }]
-
   }
 }

@@ -40,7 +40,11 @@ new WebpackDevServer(webpack({
         loaders: ["style", "css", "sass"]
       },
       {
-        test: /\.(png|eot|svg|ttf|woff|woff2)(\?.+)?$/,
+        test: /\.(eot|svg|ttf|woff|woff2)(\?.+)?$/,
+        loader : 'file'
+      },
+      {
+        test: /\.(jpe?g|png|gif)(\?.+)?$/,
         loader : 'url'
       },
       {

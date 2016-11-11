@@ -2,7 +2,9 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
-import 'element-ui/lib/theme-default/index.css';
+/* eslint-disable */
+import 'element-theme-default';
+/* eslint-enable */
 
 import './styles/highlight.css';
 import './styles/base.scss';

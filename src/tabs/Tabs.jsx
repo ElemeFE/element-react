@@ -5,10 +5,12 @@ export default class Tabs extends Component {
   constructor(props) {
     super(props);
 
-    const { children, activeName } = props;
+    let { children, activeName } = props;
+
+    children = React.Children.toArray(children);
 
     this.state = {
-      children: children instanceof Array ? children : [children],
+      children: children,
       currentName: activeName || children[0].props.name,
       barStyle: {},
     };
@@ -28,7 +30,7 @@ export default class Tabs extends Component {
 
   handleTabRemove(tab, index, e) {
     const { children, currentName } = this.state;
-    const { tabRemove } = this.props;
+    const { onTabRemove } = this.props;
 
     e.stopPropagation();
 
@@ -46,7 +48,7 @@ export default class Tabs extends Component {
     this.setState({
       children
     }, () => {
-      tabRemove && tabRemove(tab, e);
+      onTabRemove && onTabRemove(tab, e);
     });
   }
 
@@ -54,10 +56,10 @@ export default class Tabs extends Component {
     this.setState({
       currentName: tab.props.name,
     }, () => {
-      const { tabClick } = this.props;
+      const { onTabClick } = this.props;
 
       this.calcBarStyle();
-      tabClick && tabClick(tab, e);
+      onTabClick && onTabClick(tab, e);
     });
   }
 
@@ -95,7 +97,7 @@ export default class Tabs extends Component {
 
   render() {
     const { children, currentName, barStyle } = this.state;
-    const { type, closable, disabled } = this.props;
+    const { type, closable } = this.props;
     const tabsCls = this.classNames({
       'el-tabs': true,
       'el-tabs--card': type === 'card',
@@ -108,7 +110,7 @@ export default class Tabs extends Component {
         <div className="el-tabs__header">
           {
             React.Children.map(children, (item, index) => {
-              const { name, label } = item.props;
+              const { name, label, disabled } = item.props;
               const tabCls = this.classNames({
                 'el-tabs__item': true,
                 'is-active': name === currentName,
@@ -132,13 +134,14 @@ export default class Tabs extends Component {
         </div>
         <div className="el-tabs__content">
           {
-            React.Children.map(children, (item, index) => {
+            React.Children.map(children, item => {
               const { name } = item.props;
-              let transitionName = '';
 
-              if (name === currentName) {
-                transitionName = 'slideInRight';
-              }
+              // let transitionName = '';
+              //
+              // if (name === currentName) {
+              //   transitionName = 'slideInRight';
+              // }
 
               return (
                 <View show={ name === currentName }>
@@ -157,8 +160,8 @@ Tabs.propTypes = {
   type: PropTypes.oneOf(['card', 'border-card']),
   closable: PropTypes.bool,
   activeName: PropTypes.string,
-  tabClick: PropTypes.func,
-  tabRemove: PropTypes.func,
+  onTabClick: PropTypes.func,
+  onTabRemove: PropTypes.func,
 }
 
 Tabs.defaultProps = {

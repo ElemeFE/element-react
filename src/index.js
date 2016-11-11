@@ -28,5 +28,6 @@ export { default as Table } from './table'
 export { default as Switch } from './switch';
 export { default as Form } from './form';
 export { default as Upload } from './upload';
-export { TimeSelect } from './date-picker';
 export { default as Tag } from './tag';
+export { default as Select } from './select';
+export { TimeSelect } from './date-picker';
