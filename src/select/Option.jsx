@@ -7,83 +7,96 @@ export default class Option extends Component {
 
     this.state = {
       index: -1,
-      groupDisabled: false,
       visible: true,
       hitState: false
     }
+
+    // this.$on('queryChange', this.queryChange);
+    // this.$on('resetIndex', this.resetIndex);
+  }
+
+  parent() {
+    return this.context.component;
+  }
+
+  componentWillMount() {
+    this.parent().onOptionCreate(this);
+
+    this.setState({
+      index: this.parent().state.options.indexOf(this)
+    });
+
+    if (this.currentSelected() === true) {
+      this.parent().addOptionToValue(this, true);
+    }
+  }
+
+  currentSelected() {
+    return this.props.selected || (this.parent().props.multiple ? this.parent().state.value.indexOf(this.props.value) > -1 : this.parent().state.value === this.props.value);
   }
 
   currentLabel() {
     return this.props.label || ((typeof this.props.value === 'string' || typeof this.props.value === 'number') ? this.props.value : '');
   }
 
-  parent() {
-    // let result = this.$parent;
-    // while (!result.isSelect) {
-    //   result = result.$parent;
-    // }
-    // return result;
-  }
-
   itemSelected() {
-    if (Object.prototype.toString.call(this.parent.selected) === '[object Object]') {
-      return this === this.parent.selected;
-    } else if (Array.isArray(this.parent.selected)) {
-      return this.parent.value.indexOf(this.value) > -1;
+    if (Object.prototype.toString.call(this.parent().state.selected) === '[object Object]') {
+      return this === this.parent().state.selected;
+    } else if (Array.isArray(this.parent().state.selected)) {
+      return this.parent().state.value.indexOf(this.props.value) > -1;
     }
   }
 
-  currentSelected() {
-    return this.props.selected || (this.context.multiple ? this.parent.value.indexOf(this.value) > -1 : this.parent.value === this.value);
-  }
-
-  handleGroupDisabled(val) {
-    this.groupDisabled = val;
-  }
-
   hoverItem() {
-    if (!this.disabled && !this.groupDisabled) {
-      this.parent.hoverIndex = this.parent.options.indexOf(this);
+    if (!this.props.disabled && !this.context.disabled) {
+      this.parent().setState({
+        hoverIndex: this.parent().state.options.indexOf(this)
+      });
     }
   }
 
   selectOptionClick() {
-    if (this.disabled !== true && this.groupDisabled !== true) {
-      this.dispatch('select', 'handleOptionClick', this);
+    if (this.props.disabled !== true && this.context.disabled !== true) {
+      this.parent().onOptionClick(this);
     }
   }
 
   queryChange(query) {
     // query 里如果有正则中的特殊字符，需要先将这些字符转义
     let parsedQuery = query.replace(/(\^|\(|\)|\[|\]|\$|\*|\+|\.|\?|\\|\{|\}|\|)/g, '\\$1');
-    this.visible = new RegExp(parsedQuery, 'i').test(this.currentLabel);
-    if (!this.visible) {
-      this.parent.filteredOptionsCount--;
+
+    const visible = new RegExp(parsedQuery, 'i').test(this.currentLabel());
+
+    if (!visible) {
+      this.parent().setState({
+        filteredOptionsCount: this.parent().state.filteredOptionsCount - 1
+      });
     }
+
+    this.setState({ visible });
   }
 
   resetIndex() {
-    this.$nextTick(() => {
-      this.index = this.parent.options.indexOf(this);
+    this.setState({
+      index: this.parent().state.options.indexOf(this)
     });
   }
 
   render() {
-    const { visible, index, groupDisabled } = this.state;
-    const { disabled } = this.props;
+    const { visible, index } = this.state;
 
     return (
       <View show={visible}>
         <li
           className={this.classNames('el-select-dropdown__item', {
-            'selected': this.itemSelected(), 'is-disabled': disabled || groupDisabled, 'hover': parent.hoverIndex === index
+            'selected': this.itemSelected(),
+            'is-disabled': this.props.disabled || this.context.disabled,
+            'hover': this.parent().state.hoverIndex === index
           })}
           onMouseEnter={this.hoverItem.bind(this)}
           onClick={this.selectOptionClick.bind(this)}
         >
-          <slot>
-            <span>{this.currentLabel()}</span>
-          </slot>
+          { this.props.children || <span>{this.currentLabel()}</span> }
         </li>
       </View>
     )
@@ -91,7 +104,8 @@ export default class Option extends Component {
 }
 
 Option.contextTypes = {
-  component: PropTypes.any
+  component: PropTypes.any,
+  disabled: PropTypes.bool
 };
 
 Option.propTypes = {

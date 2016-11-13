@@ -10,7 +10,7 @@
     "test": "jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
-    "prepublish": "./build/scripts/compile.sh",
+    "prepare": "./build/scripts/compile.sh",
     "postpublish": "./build/scripts/release.sh"
   },
   "repository": {

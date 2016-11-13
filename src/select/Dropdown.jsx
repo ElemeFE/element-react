@@ -1,4 +1,5 @@
 import React from 'react';
+import Popper from '../../vendor/popper';
 import { Component, PropTypes } from '../../libs';
 
 export default class Dropdown extends Component {
@@ -6,12 +7,8 @@ export default class Dropdown extends Component {
     super(props);
 
     this.state = {
-      minWidth: ''
+      minWidth: props.inputWidth + 'px'
     }
-  }
-
-  componentWillMount() {
-    // this.minWidth = this.$parent.$el.getBoundingClientRect().width + 'px';
   }
 
   componentDidMount() {
@@ -23,13 +20,11 @@ export default class Dropdown extends Component {
 
   render() {
     return (
-      <div
-        className={this.classNames('el-select-dropdown', {
+      <div className={this.classNames('el-select-dropdown', {
           'is-multiple': this.context.multiple
-        })}
-        style={{
-          minWidth: this.state.minWidth
-        }}>
+      })} style={{
+        minWidth: this.props.inputWidth
+      }}>
         {this.props.children}
       </div>
     )
@@ -37,5 +32,7 @@ export default class Dropdown extends Component {
 }
 
 Dropdown.contextTypes = {
+  component: PropTypes.any,
+  inputWidth: PropTypes.number,
   multiple: PropTypes.bool
 };

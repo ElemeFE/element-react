@@ -1,5 +1,5 @@
 import React from 'react';
-import PopperJS from '../../vendor/popper';
+import Popper from '../../vendor/popper';
 import { Component, View, PropTypes } from '../../libs';
 
 export default class Tooltip extends Component {
@@ -31,7 +31,7 @@ export default class Tooltip extends Component {
   createPopper(popper, reference, arrow, options) {
     if (popper) {
       popper.setAttribute('x-placement', options.placement || "");
-      this.popperJS = new PopperJS(reference, popper, options);
+      this.popperJS = new Popper(reference, popper, options);
     }
     if (arrow) arrow.setAttribute('x-arrow', "");
   }
