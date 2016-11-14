@@ -58,8 +58,80 @@ let options = {
 适用于需要选择层级时使用。在下例中，由于在点击时才进行该层数据的获取，导致层级不可预知，如果没有下层数据，则点击后下拉按钮会消失。
 
 ::: demo
-```javascript
-<div>//todo: add me</div>
+```jsfunc
+class TreeCheckDemo extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      regions: [{
+        'name': 'region1'
+      }, {
+        'name': 'region2'
+      }]
+    }
+
+    this.options = {
+      label: 'name',
+      children: 'zones'
+    }
+    this.count = 1
+
+  }
+
+  handleCheckChange(data, checked, indeterminate) {
+    console.log(data, checked, indeterminate);
+  }
+
+  loadNode(node, resolve) {
+    if (node.level === -1) {
+      return resolve([{ name: 'region1' }, { name: 'region2' }]);
+    }
+    if (node.level > 4) return resolve([]);
+
+    let hasChild;
+    if (node.data.name === 'region1') {
+      hasChild = true;
+    } else if (node.data.name === 'region2') {
+      hasChild = false;
+    } else {
+      hasChild = node.level <= 2
+    }
+
+    setTimeout(()=> {
+      let data;
+      if (hasChild) {
+        data = [{
+          name: 'zone' + this.count++
+        }, {
+          name: 'zone' + this.count++
+        }];
+      } else {
+        data = [];
+      }
+
+      resolve(data);
+    }, 500);
+  }
+
+  render() {
+    const {regions} = this.state
+    return (
+      <Tree 
+        data={regions} 
+        options={this.options} 
+        isShowCheckbox={true}
+        lazy={true}
+        load={this.loadNode.bind(this)}
+        onCheckChange={this.handleCheckChange.bind(this)}
+        onNodeClicked={(data, nodeModel, reactElement, treeNode)=>{
+            console.debug('onNodeClicked: ', data, nodeModel, reactElement)
+        }} 
+        />
+    )
+  }
+}
+
+return <TreeCheckDemo />
 ```
 :::
 
@@ -70,7 +142,7 @@ let options = {
 | data     | 展示数据 | array | — | — |
 | options | 配置选项，具体看下表 | object | — | — |
 | load | 加载子树数据的方法 | function(node, resolve) | — | — |
-| showCheckbox | 节点是否可被选择 | boolean | — | false |
+| isShowCheckbox | 节点是否可被选择 | boolean | — | false |
 | renderContent | 树节点的内容区的渲染 Function: (context: NodeReactElement)=>ReactElement，会传入1个参数，NodeReactElement的实例| Function | - | - |
 | highlightCurrent | 是否高亮当前选中节点，默认值是 false。| boolean | - | false |
 

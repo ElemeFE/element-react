@@ -3,12 +3,8 @@ import { PropTypes, Component } from '../../libs';
 import { require_condition } from '../../libs/utils'
 import Node from './Node'
 import TreeModel from './model/tree'
-/*
-todo:
-  when checkbox is added, do:
-    optimize `onCheckChange` implementation
-    check `getCheckedNodes`
-*/
+
+
 export default class Tree extends Component {
   constructor(props) {
     super(props)
@@ -47,7 +43,7 @@ export default class Tree extends Component {
 
   render() {
     const {treeModel} = this.state
-    const {options, renderContent, highlightCurrent, showCheckbox, onCheckChange, onNodeClicked} = this.props
+    const {options, renderContent, highlightCurrent, isShowCheckbox, onCheckChange, onNodeClicked} = this.props
 
     return (
       <div className={this.classNames('el-tree', { 'el-tree--highlight-current': highlightCurrent })}>
@@ -60,7 +56,7 @@ export default class Tree extends Component {
                 options={options}
                 renderContent={renderContent}
                 treeNode={this}
-                showCheckbox={showCheckbox}
+                isShowCheckbox={isShowCheckbox}
                 onCheckChange={onCheckChange}
                 onNodeClicked={onNodeClicked}
                 ></Node>
@@ -75,13 +71,13 @@ export default class Tree extends Component {
 Tree.propTypes = {
   data: PropTypes.array,
   renderContent: PropTypes.func,
-  showCheckbox: PropTypes.bool,
+  isShowCheckbox: PropTypes.bool,
   options: PropTypes.shape({
     children: PropTypes.string,
     label: PropTypes.string,
     icon: PropTypes.string,
   }),//equal to props in vue element
-  lazy: PropTypes.bool,
+  lazy: PropTypes.bool,//todo: check this
   highlightCurrent: PropTypes.bool,
   // (f:(resolve, reject)=>Unit)=>Unit
   load: PropTypes.func,
@@ -94,6 +90,6 @@ Tree.propTypes = {
 Tree.defaultProps = {
   data: [],
   options: { children: 'children', label: 'label', icon: 'icon' },
-  onCheckChange(){},
-  onNodeClicked(){},
+  onCheckChange() { },
+  onNodeClicked() { },
 }
