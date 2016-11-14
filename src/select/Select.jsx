@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DebounceInput from 'react-debounce-input';
+import debounce from 'throttle-debounce/debounce';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
+import Tag from '../tag';
 import Input from '../input';
 import i18n from '../locale';
 
@@ -44,6 +46,10 @@ export default class Select extends Component {
     if (props.remote) {
       this.state.voidRemoteQuery = true;
     }
+
+    this.debouncedOnInputChange = debounce(this.debounce(), () => {
+      this.onInputChange();
+    });
   }
 
   getChildContext() {
@@ -54,7 +60,7 @@ export default class Select extends Component {
 
   componentDidMount() {
     const { remote, multiple } = this.props;
-    const { value } = this.state.value;
+    const { value } = this.state;
 
     this.findDOMNodes();
 
@@ -83,10 +89,6 @@ export default class Select extends Component {
     if (state.query != this.state.query) {
       this.onQueryChange(state.query);
     }
-
-    if (state.selected != this.state.selected) {
-      this.onSelectedChange(state.selected, this.state.selected);
-    }
   }
 
   componentDidUpdate(props, state) {
@@ -114,7 +116,12 @@ export default class Select extends Component {
   findDOMNodes() {
     this.reference = ReactDOM.findDOMNode(this.refs.reference);
     this.popper = ReactDOM.findDOMNode(this.refs.popper);
+    this.input = ReactDOM.findDOMNode(this.refs.input);
     this.root = ReactDOM.findDOMNode(this);
+  }
+
+  debounce() {
+    return this.props.remote ? 300 : 0;
   }
 
   onVisibleChange(visible) {
@@ -135,7 +142,7 @@ export default class Select extends Component {
       // this.broadcast('select-dropdown', 'destroyPopper');
 
       if (this.refs.input) {
-        this.refs.input.blur();
+        this.input.blur();
       }
 
       this.resetHoverIndex();
@@ -168,7 +175,7 @@ export default class Select extends Component {
         query = selectedLabel;
 
         if (multiple) {
-          this.refs.input.focus();
+          this.input.focus();
         } else {
           // this.broadcast('input', 'inputSelect');
         }
@@ -230,7 +237,7 @@ export default class Select extends Component {
     });
   }
 
-  onSelectedChange(val, oldVal) {
+  onSelectedChange(val) {
     const { multiple, filterable } = this.props;
     let { query, hoverIndex, inputLength, selected, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
@@ -275,8 +282,6 @@ export default class Select extends Component {
         });
       }
 
-      if (val === oldVal) return;
-
       // this.$emit('input', val.value);
       // this.$emit('change', val.value);
     }
@@ -311,7 +316,7 @@ export default class Select extends Component {
   }
 
   optionsAllDisabled(options) {
-     return options.length === options.filter(item => item.props.disabled === true).length;
+     return options.length === (options.filter(item => item.props.disabled === true).length);
   }
 
   iconClass() {
@@ -437,14 +442,16 @@ export default class Select extends Component {
       this.toggleLastOptionHitState(false);
     }
 
-    this.state.inputLength = this.refs.input.value.length * 15 + 20;
+    this.setState({
+      inputLength: this.refs.input.value.length * 15 + 20
+    });
   }
 
   resetInputHeight() {
     let inputChildNodes = this.reference.childNodes;
     let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0];
 
-    input.style.height = Math.max(this.$refs.tags.clientHeight + 6, this.size === 'small' ? 28 : 36) + 'px';
+    input.style.height = Math.max(this.refs.tags.clientHeight + 6, this.size === 'small' ? 28 : 36) + 'px';
 
     // this.broadcast('select-dropdown', 'updatePopper');
   }
@@ -492,7 +499,7 @@ export default class Select extends Component {
       });
     }
 
-    if (!this.optionsAllDisabled()) {
+    if (!this.optionsAllDisabled(options)) {
       if (direction === 'next') {
         hoverIndex++;
 
@@ -502,12 +509,13 @@ export default class Select extends Component {
 
         this.resetScrollTop();
 
-        if (options[hoverIndex].props.disabled === true ||
-          options[hoverIndex].props.groupDisabled === true ||
-          !options[hoverIndex].props.visible) {
-          this.navigateOptions('next');
-        }
+        // if (options[hoverIndex].props.disabled === true ||
+        //   options[hoverIndex].props.groupDisabled === true ||
+        //   !options[hoverIndex].props.visible) {
+        //   this.navigateOptions('next');
+        // }
       }
+
       if (direction === 'prev') {
         hoverIndex--;
 
@@ -517,11 +525,11 @@ export default class Select extends Component {
 
         this.resetScrollTop();
 
-        if (options[hoverIndex].props.disabled === true ||
-          options[hoverIndex].props.groupDisabled === true ||
-          !options[hoverIndex].props.visible) {
-          this.navigateOptions('prev');
-        }
+        // if (options[hoverIndex].props.disabled === true ||
+        //   options[hoverIndex].props.groupDisabled === true ||
+        //   !options[hoverIndex].props.visible) {
+        //   this.navigateOptions('prev');
+        // }
       }
     }
 
@@ -529,19 +537,21 @@ export default class Select extends Component {
   }
 
   resetScrollTop() {
-    let { hoverIndex, options, dropdownUl } = this.state;
-
-    let bottomOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
-    let topOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().top - this.popper.getBoundingClientRect().top;
-
-    if (bottomOverflowDistance > 0) {
-      dropdownUl.scrollTop += bottomOverflowDistance;
-    }
-    if (topOverflowDistance < 0) {
-      dropdownUl.scrollTop += topOverflowDistance;
-    }
-
-    this.setState({ dropdownUl });
+    // let { hoverIndex, options, dropdownUl } = this.state;
+    //
+    // console.log(options, hoverIndex, options[hoverIndex]);
+    //
+    // let bottomOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
+    // let topOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().top - this.popper.getBoundingClientRect().top;
+    //
+    // if (bottomOverflowDistance > 0) {
+    //   dropdownUl.scrollTop += bottomOverflowDistance;
+    // }
+    // if (topOverflowDistance < 0) {
+    //   dropdownUl.scrollTop += topOverflowDistance;
+    // }
+    //
+    // this.setState({ dropdownUl });
   }
 
   selectOption() {
@@ -579,6 +589,8 @@ export default class Select extends Component {
   }
 
   onInputChange() {
+    console.log(this.state.selectedLabel);
+
     if (this.props.filterable && this.state.selectedLabel !== this.state.value) {
       this.setState({
         query: this.state.selectedLabel
@@ -638,6 +650,7 @@ export default class Select extends Component {
     }
 
     this.setState({ selected, selectedLabel }, () => {
+      this.onSelectedChange(this.state.selected);
       this.setState({ visible });
     });
   }
@@ -661,8 +674,8 @@ export default class Select extends Component {
   }
 
   render() {
-    const { multiple, size, disabled, filterable, loading, remote } = this.props;
-    const { inputWidth, inputLength, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
+    const { multiple, size, disabled, filterable, loading } = this.props;
+    const { selected, inputWidth, inputLength, query, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
 
     return (
       <div className={this.classNames('el-select', {
@@ -672,19 +685,57 @@ export default class Select extends Component {
         {
           multiple && (
             <div ref="tags" className="el-select__tags" onClick={this.toggleMenu.bind(this)} style={{
-                maxWidth: inputWidth - 32 + 'px'
-              }}>
+              maxWidth: inputWidth - 32 + 'px'
+            }}>
+              {
+                selected.map(el => {
+                  return (
+                    <Tag
+                      type="primary"
+                      key={el.props.value}
+                      hit={el.hitState}
+                      closable={true}
+                      closeTransition={true}
+                      onClose={this.deleteTag.bind(this, el)}
+                    >{el.currentLabel()}</Tag>
+                  )
+                })
+              }
               {
                 filterable && (
                   <DebounceInput
                     ref="input"
                     type="text"
                     className="el-select__input"
-                    debounceTimeout={remote ? 300 : 0}
-                    onChange={this.onInputChange.bind(this)}
-                    style={{
-                      width: inputLength,
-                      maxWidth: inputWidth - 42
+                    style={{ width: inputLength, maxWidth: inputWidth - 42 }}
+                    value={query}
+                    debounceTimeout={this.debounce()}
+                    onChange={e => {}}
+                    onKeyUp={this.managePlaceholder.bind(this)}
+                    onKeyDown={e => {
+                      this.resetInputState();
+
+                      switch (e.keyCode) {
+                        case 27:
+                          this.setState({ visible: false });
+                          break;
+                        case 8:
+                          this.deletePrevTag();
+                          break;
+                        case 13:
+                          this.selectOption();
+                          break;
+                        case 38:
+                          this.navigateOptions('prev');
+                          break;
+                        case 40:
+                          this.navigateOptions('next');
+                          break;
+                        default:
+                          break;
+                      }
+
+                      e.preventDefault();
                     }}
                   />
                 )
@@ -705,10 +756,32 @@ export default class Select extends Component {
           onIconClick={this.toggleMenu.bind(this)}
           onMouseEnter={this.onMouseEnter.bind(this)}
           onMouseLeave={this.onMouseLeave.bind(this)}
+          onKeyUp={this.debouncedOnInputChange.bind(this)}
+          onKeyDown={e => {
+            e.preventDefault();
+
+            switch (e.keyCode) {
+              case 9:
+              case 27:
+                this.setState({ visible: false });
+                break;
+              case 13:
+                this.selectOption();
+                break;
+              case 38:
+                this.navigateOptions('prev');
+                break;
+              case 40:
+                this.navigateOptions('next');
+                break;
+              default:
+                break;
+            }
+          }}
         />
         <Transition name="md-fade-bottom" duration="200">
           <View show={visible && this.emptyText() !== false}>
-            <Dropdown ref="popper" inputWidth={inputWidth}>
+            <Dropdown ref="popper">
               <View show={options.length > 0 && filteredOptionsCount > 0 && !loading}>
                 <ul className="el-select-dropdown__list">
                   {this.props.children}

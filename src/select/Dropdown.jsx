@@ -3,14 +3,6 @@ import Popper from '../../vendor/popper';
 import { Component, PropTypes } from '../../libs';
 
 export default class Dropdown extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      minWidth: props.inputWidth + 'px'
-    }
-  }
-
   componentDidMount() {
     // this.referenceElm = this.$parent.$refs.reference.$el;
     // this.$parent.popperElm = this.popperElm = this.$el;
@@ -18,12 +10,23 @@ export default class Dropdown extends Component {
     // this.$on('destroyPopper', this.destroyPopper);
   }
 
+  updatePopper() {
+
+  }
+
+  destroyPopper() {
+
+  }
+
   render() {
+    const parent = this.context.component;
+
     return (
       <div className={this.classNames('el-select-dropdown', {
-          'is-multiple': this.context.multiple
+          'is-multiple': parent.props.multiple
       })} style={{
-        minWidth: this.props.inputWidth
+        width: '100%',
+        // minWidth: parent.state.inputWidth
       }}>
         {this.props.children}
       </div>
@@ -32,7 +35,5 @@ export default class Dropdown extends Component {
 }
 
 Dropdown.contextTypes = {
-  component: PropTypes.any,
-  inputWidth: PropTypes.number,
-  multiple: PropTypes.bool
+  component: PropTypes.any
 };
