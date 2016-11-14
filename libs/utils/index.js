@@ -79,5 +79,14 @@ export function hashCode(str){
 	return hash;
 }
 
+export function debounce(func, delayms){
+  let timeout = null;
+  return function(...args){
+    if (timeout != null) clearTimeout(timeout)
+    timeout = setTimeout(()=>func.apply(this, args), delayms) 
+  }
+}
+
 export {default as DateUtils} from './date'
 export * from './popper-mixins'
+export {IDGenerator} from './IDGenerator'

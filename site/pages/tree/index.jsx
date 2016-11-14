@@ -1,6 +1,6 @@
 import React from 'react';
 import { Markdown } from '../../../libs';
-import template from '../../docs/zh-CN/time-picker.md';
+import template from '../../docs/zh-CN/tree.md';
 
 import './style.scss';
 
