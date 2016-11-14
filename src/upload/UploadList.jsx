@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { Progress } from '../../src';
+import i18n from '../locale';
 
 export default class UploadList extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class UploadList extends Component {
 
     const isFinished = (status) => status === 'finished';
     return (
-      <div tag="ul" className="el-upload__files" name="list">
+      <Transition component="ul" className="el-upload__files" name="list">
         {
           fileList.map((file, index) =>
             <li
@@ -26,7 +27,7 @@ export default class UploadList extends Component {
                 <i className="el-icon-document"></i>{file.name}
               </a>
               <View show={isFinished(file.status)}>
-                <span className="el-upload__btn-delete" onClick={() => onRemove(file)}>删除</span>
+                <span className="el-upload__btn-delete" onClick={() => onRemove(file)}>{i18n.t('el.upload.delete')}</span>
               </View>
               {
                 file.showProgress &&
@@ -39,7 +40,7 @@ export default class UploadList extends Component {
             </li>
           )
         }
-      </div>
+      </Transition>
     );
   }
 }

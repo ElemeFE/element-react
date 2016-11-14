@@ -23,5 +23,5 @@ Transition.propTypes = {
 };
 
 Transition.defaultProps = {
-    duration: 300
+  duration: 300
 }

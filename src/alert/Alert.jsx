@@ -19,11 +19,11 @@ export default class Alert extends Component {
   close() {
     this.setState({
       visible: false
+    }, () => {
+      if (this.props.onClose) {
+        this.props.onClose();
+      }
     });
-
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
   }
 
   render() {

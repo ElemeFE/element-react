@@ -7,7 +7,7 @@ const basePath = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
-    app: path.join(basePath, 'site/pages')
+    site: path.join(basePath, 'site')
   },
   output: {
     path: path.resolve(basePath, 'dist/site'),
@@ -41,7 +41,7 @@ module.exports = {
         test: /\.jsx?$/,
         loaders: ['babel'],
         include: [
-          path.join(basePath, 'site/pages'),
+          path.join(basePath, 'site'),
           path.join(basePath, 'src'),
           path.join(basePath, 'libs')
         ]
@@ -55,7 +55,11 @@ module.exports = {
         loaders: ['style', 'css', 'sass']
       },
       {
-        test: /\.(ttf|eot|svg|woff|woff2|jpg|png|gif)(\?.+)?$/,
+        test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
+        loader: 'file?name=[hash:12].[ext]'
+      },
+      {
+        test: /\.(jpe?g|png|gif)(\?.+)?$/,
         loader: 'url?name=[hash:12].[ext]&limit=25000'
       },
       {
