@@ -1,5 +1,4 @@
 import React from 'react';
-import Popper from '../../vendor/popper';
 import { Component, PropTypes } from '../../libs';
 
 export default class Dropdown extends Component {
@@ -22,7 +21,7 @@ export default class Dropdown extends Component {
     const parent = this.context.component;
 
     return (
-      <div className={this.classNames('el-select-dropdown', {
+      <div ref="popper" className={this.classNames('el-select-dropdown', {
           'is-multiple': parent.props.multiple
       })} style={{
         width: '100%',
