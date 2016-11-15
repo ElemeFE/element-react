@@ -132,7 +132,8 @@ export const scheduleLayout = (columns, owerTableWidth, scrollY, fit)=>{
     return preWidth + nextWidth;
   }, 0);
 
-  owerTableWidth -= (scrollY?getScrollBarWidth():0);
+  const gutterWidth = scrollY ? getScrollBarWidth() : 0;
+  owerTableWidth -= gutterWidth;
 
   if(bodyMinWidth <= owerTableWidth && fit){
     let remainWidthForEach = (owerTableWidth - calcuateColumnsTotalWidth(columnsWithWidth)) / columnsWithNoWidth.length;

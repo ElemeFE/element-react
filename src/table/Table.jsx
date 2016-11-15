@@ -85,7 +85,7 @@ export default class Table extends Component{
     this.setState({
       scrollX: this.refs.mainBody.isScrollX(),
       scrollY: scrollY,
-      bodyWidth: scheduleLayout(this.state._columns, this.state.thisTableWidth, scrollY, this.props.fit).bodyWidth
+      bodyWidth: scheduleLayout(this.state._columns, this.state.realTableWidth, scrollY, this.props.fit).bodyWidth
     });
   }
 
