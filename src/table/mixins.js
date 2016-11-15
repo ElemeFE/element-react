@@ -1,3 +1,5 @@
+import { getScrollBarWidth } from './utils'
+
 const MIN_COLUMN_WIDTH = 80;
 
 export const defaultColumn = {
@@ -20,10 +22,16 @@ export const defaultColumn = {
   }
 };
 
+//计算列实际占用宽度, 必须用realWidth
+const calcuateColumnsTotalWidth = (columns=[])=>{
+  return columns.reduce((preWidth, next)=>{
+    var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
+    return preWidth + nextWidth;
+  }, 0);
+}
+
 export const getDefaultColumn = (type, options)=>{
   const column = {};
-
-  Object.assign(column, defaultColumn[type || 'default']);
 
   for (var name in options) {
     if (options.hasOwnProperty(name)) {
@@ -34,6 +42,8 @@ export const getDefaultColumn = (type, options)=>{
     }
   }
 
+  Object.assign(column, defaultColumn[type || 'default']);
+
   if (!column.minWidth) {
     column.minWidth = MIN_COLUMN_WIDTH;
   }
@@ -43,13 +53,13 @@ export const getDefaultColumn = (type, options)=>{
   return column;
 };
 
-
 export const enhanceColumns = (columns=[], tableId)=>{
   let columnIdSeed = 1;
 
   const _columns = columns.map((col)=>{
-    let width = col.width && !isNaN(col.width)? parseInt(col.width, 10): null;
-    let minWidth = col.minWidth && !isNaN(minWidth)? parseInt(col.minWidth, 10): null;
+    let width = col.width && !isNaN(col.width)? parseInt(col.width, 10): undefined;
+    let minWidth = col.minWidth && !isNaN(minWidth)? parseInt(col.minWidth, 10): undefined;
+    let realWidth = col.width || MIN_COLUMN_WIDTH;
 
     const columnId = tableId + 'column_' + columnIdSeed++
 
@@ -60,6 +70,7 @@ export const enhanceColumns = (columns=[], tableId)=>{
       type: col.type,
       minWidth,
       width,
+      realWidth,
       align: col.align,
       sortable: col.sortable,
       sortMethod: col.sortMethod,
@@ -79,11 +90,9 @@ export const enhanceColumns = (columns=[], tableId)=>{
     });
   });
 
-  const fixedLeftColumns = _columns.filter((col)=>{
-    return (typeof col.fixed == 'boolean' &&  !!col.fixed) || col.fixed == 'left';
-  });
-  const flattenColumns = _columns.filter((col)=>{return !col.fixed});
+  const fixedLeftColumns = _columns.filter((col)=>{ return (typeof col.fixed == 'boolean' &&  !!col.fixed) || col.fixed == 'left';});
   const fixedRightColumns = _columns.filter((col)=>{return col.fixed == 'right'});
+  const flattenColumns = _columns.filter((col)=>{return !col.fixed});
   const newColumns = fixedLeftColumns.concat(flattenColumns).concat(fixedRightColumns);
 
   return {
@@ -100,17 +109,11 @@ export const calculateFixedWidth = (fxiedColumns=[])=>{
     var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
     return preWidth + nextWidth;
   }, 0);
-
   return width;
 };
 
-
 export const calculateBodyWidth = (columns, owerTableWidth)=>{
-  let bodyMinWidth = columns.reduce((preWidth, next)=>{
-    var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
-    return preWidth + nextWidth;
-  }, 0);
-
+  let bodyMinWidth = calcuateColumnsTotalWidth(columns);
   if(bodyMinWidth < owerTableWidth){
     return owerTableWidth;
   }else{
@@ -118,8 +121,31 @@ export const calculateBodyWidth = (columns, owerTableWidth)=>{
   }
 }
 
-export const updateColumns = ()=>{
+export const scheduleLayout = (columns, owerTableWidth, scrollY, fit)=>{
+  const layout = {};
+  const columnsWithNoWidth = columns.filter((col)=>typeof col.width == 'undefined');
+  const columnsWithWidth = columns.filter((col)=>typeof col.width != 'undefined');
 
+  //计算列占用最小宽度，不能使用realWidth
+  let bodyMinWidth = columns.reduce((preWidth, next)=>{
+    var nextWidth = next.width || MIN_COLUMN_WIDTH;
+    return preWidth + nextWidth;
+  }, 0);
+
+  owerTableWidth -= (scrollY?getScrollBarWidth():0);
+
+  if(bodyMinWidth <= owerTableWidth && fit){
+    let remainWidthForEach = (owerTableWidth - calcuateColumnsTotalWidth(columnsWithWidth)) / columnsWithNoWidth.length;
+    remainWidthForEach = remainWidthForEach < MIN_COLUMN_WIDTH ? MIN_COLUMN_WIDTH : remainWidthForEach;
+    columnsWithNoWidth.forEach((col)=>{col.realWidth = remainWidthForEach});
+    bodyMinWidth = calcuateColumnsTotalWidth(columns);
+  }else{
+    bodyMinWidth = calcuateColumnsTotalWidth(columns);
+  }
+
+  layout.bodyWidth = bodyMinWidth;
+
+  return layout;
 };
 
 
