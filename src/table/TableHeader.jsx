@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import Checkbox from '../checkbox';
 import { Component, PropTypes } from '../../libs';
+import { getScrollBarWidth } from './utils'
 
 export default class TableHeader extends  Component{
   constructor(props, context){
@@ -22,6 +24,8 @@ export default class TableHeader extends  Component{
 
     if (!column || 
       !this.$ower.props.border || 
+      column.type == 'selection' ||
+      column.type == 'index' ||
       (typeof column.resizable != 'undefined' && column.resizable)) {
       return;
     }
@@ -82,9 +86,11 @@ export default class TableHeader extends  Component{
         if (this.dragging) {
           const finalLeft = parseInt(resizeProxy.style.left, 10);
           const columnWidth = finalLeft - this.state.dragState.startColumnLeft;
-          column.width = column.realWidth = columnWidth;
+          //width本应为配置的高度， 如果改变过宽度， realWidth 与 width永远保持一致
+          //这列不再参与宽度的自动重新分配
+          column.realWidth = column.width = columnWidth;
 
-          //this.store.scheduleLayout();
+          this.context.$owerTable.scheduleLayout();
 
           document.body.style.cursor = '';
           this.dragging = false;
@@ -109,8 +115,13 @@ export default class TableHeader extends  Component{
     }
   }
 
+  onAllChecked(checked){
+    const body = this.context.$owerTable.refs.mainBody;
+    body.selectAll(checked);
+  }
+
   render() {
-    const { columns, style } = this.props;
+    const { columns, style, isScrollY, fixed } = this.props;
 
     return (
       <table
@@ -125,12 +136,23 @@ export default class TableHeader extends  Component{
                 return (
                   <th
                     key={idx}
+                    className={this.classNames({'is-hidden': !this.props.fixed && column.fixed})}
                     onMouseMove={(e)=>this.handleMouseMove(e, column)}
                     onMouseDown={(e)=>this.handleMouseDown(e, column)}
-                    style={{width: column.width?column.width:''}}>
-                    <div className="cell">{column.label}</div>
+                    style={{width: column.realWidth}}>
+                    {
+                      column.type == 'selection' && <div className="cell" onChange={e=>this.onAllChecked(e.target.checked)}><Checkbox/></div>
+                    }
+                    {
+                      column.type == 'index' && <div className="cell">#</div>
+                    }
+                    { column.type != 'selection' && column.type != 'index' && <div className="cell">{column.label}</div>}
                   </th>)
               })
+            }
+
+            {
+              !fixed && isScrollY&& <th className="gutter" style={{ width:  getScrollBarWidth()+ 'px' }}></th>
             }
           </tr>
         </thead>
