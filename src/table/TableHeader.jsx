@@ -5,6 +5,9 @@ import { Component, PropTypes } from '../../libs';
 export default class TableHeader extends  Component{
   constructor(props, context){
     super(props, context);
+
+    this.$ower = context.$owerTable;
+
     this.state = {
       dragging: false,
       dragState: {}
@@ -18,7 +21,7 @@ export default class TableHeader extends  Component{
     }
 
     if (!column || 
-      !this.props.border || 
+      !this.$ower.props.border || 
       (typeof column.resizable != 'undefined' && column.resizable)) {
       return;
     }
@@ -38,7 +41,7 @@ export default class TableHeader extends  Component{
   }
 
   handleMouseDown(event, column){
-    if (this.draggingColumn && this.props.border) {
+    if (this.draggingColumn && this.$ower.props.border) {
       this.dragging = true;
 
       let columnEl = event.target;
@@ -46,9 +49,9 @@ export default class TableHeader extends  Component{
         columnEl = columnEl.parentNode;
       }
 
-      this.context.$parent.setState({resizeProxyVisible: true});
+      this.$ower.setState({resizeProxyVisible: true});
 
-      const tableEl = ReactDom.findDOMNode(this.context.$parent);
+      const tableEl = ReactDom.findDOMNode(this.context.$owerTable);
       const tableLeft = tableEl.getBoundingClientRect().left;
       const columnRect = columnEl.getBoundingClientRect();
       const minLeft = columnRect.left - tableLeft + 30;
@@ -62,7 +65,7 @@ export default class TableHeader extends  Component{
         tableLeft
       };
 
-      const resizeProxy = this.context.$parent.refs.resizeProxy;
+      const resizeProxy = this.context.$owerTable.refs.resizeProxy;
       resizeProxy.style.left = this.state.dragState.startLeft + 'px';
 
       document.onselectstart = function() { return false; };
@@ -88,7 +91,7 @@ export default class TableHeader extends  Component{
           this.draggingColumn = null;
           this.dragState = {};
 
-          this.context.$parent.setState({resizeProxyVisible: false});
+          this.context.$owerTable.setState({resizeProxyVisible: false});
         }
 
         document.removeEventListener('mousemove', handleMouseMove);
@@ -137,9 +140,9 @@ export default class TableHeader extends  Component{
 }
 
 TableHeader.contextTypes = {
-  $parent: React.PropTypes.object
+  $owerTable: React.PropTypes.object
 };
 
 TableHeader.propTypes = {
-   columns: PropTypes.array.isRequired
+  columns: PropTypes.array.isRequired
 };
