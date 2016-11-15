@@ -8,18 +8,14 @@ export default class Checkbox extends Component {
     this.state = {
       checked: Boolean(props.checked),
       focus: Boolean(props.focus),
-      label: this.getLabel(),
+      label: this.getLabel(props),
     };
   }
 
-  getLabel() {
-    let label;
-    if (this.props.trueLabel || this.props.falseLabel) {
-      label = this.props.checked ? this.props.trueLabel : this.props.falseLabel;
-    }else {
-      label = this.props.label;
-    }
-    return label;
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      checked: nextProps.checked, focus: nextProps.focus, label: this.getLabel(nextProps)
+    })
   }
 
   onFocus() {
@@ -58,17 +54,28 @@ export default class Checkbox extends Component {
     });
   }
 
+  getLabel(props) {
+    let label;
+    if (props.trueLabel || props.falseLabel) {
+      label = props.checked ? props.trueLabel : props.falseLabel;
+    }else {
+      label = props.label;
+    }
+    return label;
+  }
+
   render() {
     return (
       <label className="el-checkbox">
         <span className="el-checkbox__input">
           <span
             className={
-            this.classNames("el-checkbox__inner",
-            {'is-disabled': this.props.disabled},
-            {'is-checked': this.state.checked},
-            {'is-indeterminate': this.props.indeterminate},
-            {'is-focus': this.state.focus})}>
+              this.classNames("el-checkbox__inner",
+                {'is-disabled': this.props.disabled},
+                {'is-checked': this.state.checked},
+                {'is-indeterminate': this.props.indeterminate},
+                {'is-focus': this.state.focus})}
+            >
           </span>
           <input
             className="el-checkbox__original"
