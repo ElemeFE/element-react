@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DebounceInput from 'react-debounce-input';
-import debounce from 'throttle-debounce/debounce';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
+import { debounce } from '../../libs/utils';
 
 import Tag from '../tag';
 import Input from '../input';
@@ -47,9 +46,9 @@ export default class Select extends Component {
       this.state.voidRemoteQuery = true;
     }
 
-    this.debouncedOnInputChange = debounce(this.debounce(), () => {
+    this.debouncedOnInputChange = debounce(() => {
       this.onInputChange();
-    });
+    }, this.debounce());
   }
 
   getChildContext() {
@@ -303,16 +302,22 @@ export default class Select extends Component {
 
       remoteMethod(query);
 
-      // this.broadcast('option', 'resetIndex');
+      options.forEach(option => {
+        option.resetIndex();
+      });
     } else if (typeof filterMethod === 'function') {
       filterMethod(query);
     } else {
-      filteredOptionsCount = optionsCount;
-
-      // this.broadcast('option', 'queryChange', val);
+      this.setState({
+        filteredOptionsCount: optionsCount
+      }, () => {
+        options.forEach(option => {
+          option.queryChange(query);
+        });
+      });
     }
 
-    this.setState({ hoverIndex, voidRemoteQuery, filteredOptionsCount });
+    this.setState({ hoverIndex, voidRemoteQuery });
   }
 
   optionsAllDisabled(options) {
@@ -499,6 +504,8 @@ export default class Select extends Component {
       });
     }
 
+    let skip;
+
     if (!this.optionsAllDisabled(options)) {
       if (direction === 'next') {
         hoverIndex++;
@@ -509,11 +516,11 @@ export default class Select extends Component {
 
         this.resetScrollTop();
 
-        // if (options[hoverIndex].props.disabled === true ||
-        //   options[hoverIndex].props.groupDisabled === true ||
-        //   !options[hoverIndex].props.visible) {
-        //   this.navigateOptions('next');
-        // }
+        if (options[hoverIndex].props.disabled === true ||
+            options[hoverIndex].props.groupDisabled === true ||
+           !options[hoverIndex].state.visible ) {
+          skip = 'next';
+        }
       }
 
       if (direction === 'prev') {
@@ -525,15 +532,19 @@ export default class Select extends Component {
 
         this.resetScrollTop();
 
-        // if (options[hoverIndex].props.disabled === true ||
-        //   options[hoverIndex].props.groupDisabled === true ||
-        //   !options[hoverIndex].props.visible) {
-        //   this.navigateOptions('prev');
-        // }
+        if (options[hoverIndex].props.disabled === true ||
+            options[hoverIndex].props.groupDisabled === true ||
+           !options[hoverIndex].state.visible ) {
+          skip = 'prev';
+        }
       }
     }
 
-    this.setState({ hoverIndex, options });
+    this.setState({ hoverIndex, options }, () => {
+      if (skip) {
+        this.navigateOptions(skip);
+      }
+    });
   }
 
   resetScrollTop() {
@@ -589,40 +600,36 @@ export default class Select extends Component {
   }
 
   onInputChange() {
-    console.log(this.state.selectedLabel);
-
     if (this.props.filterable && this.state.selectedLabel !== this.state.value) {
       this.setState({
         query: this.state.selectedLabel
-      })
+      });
     }
   }
 
   onOptionCreate(option) {
-    let { options, optionsCount, filteredOptionsCount } = this.state;
+    this.state.options.push(option);
+    this.state.optionsCount++;
+    this.state.filteredOptionsCount++;
 
-    options.push(option);
-    optionsCount++;
-    filteredOptionsCount++;
-
-    this.setState({ options, optionsCount, filteredOptionsCount });
+    this.setState(this.state);
   }
 
   onOptionDestroy(option) {
-    let { options, optionsCount, filteredOptionsCount } = this.state;
+    this.state.optionsCount--;
+    this.state.filteredOptionsCount--;
 
-    optionsCount--;
-    filteredOptionsCount--;
-
-    let index = options.indexOf(option);
+    let index = this.state.options.indexOf(option);
 
     if (index > -1) {
-      options.splice(index, 1);
+      this.state.options.splice(index, 1);
     }
 
-    this.setState({ options, optionsCount, filteredOptionsCount });
-
-    // this.broadcast('option', 'resetIndex');
+    this.setState(this.state, () => {
+      this.state.options.forEach(option => {
+        option.resetIndex();
+      });
+    });
   }
 
   onOptionClick(option) {
@@ -703,39 +710,38 @@ export default class Select extends Component {
               }
               {
                 filterable && (
-                  <DebounceInput
+                  <input
                     ref="input"
                     type="text"
                     className="el-select__input"
                     style={{ width: inputLength, maxWidth: inputWidth - 42 }}
                     value={query}
-                    debounceTimeout={this.debounce()}
-                    onChange={e => {}}
-                    onKeyUp={this.managePlaceholder.bind(this)}
+
+
                     onKeyDown={e => {
-                      this.resetInputState();
+                      // this.resetInputState();
+                      // onChange={this.debouncedOnInputChange}
+                      // onKeyUp={this.managePlaceholder.bind(this)}
 
                       switch (e.keyCode) {
                         case 27:
-                          this.setState({ visible: false });
+                          this.setState({ visible: false }); e.preventDefault();
                           break;
                         case 8:
                           this.deletePrevTag();
                           break;
                         case 13:
-                          this.selectOption();
+                          this.selectOption(); e.preventDefault();
                           break;
                         case 38:
-                          this.navigateOptions('prev');
+                          this.navigateOptions('prev'); e.preventDefault();
                           break;
                         case 40:
-                          this.navigateOptions('next');
+                          this.navigateOptions('next'); e.preventDefault();
                           break;
                         default:
                           break;
                       }
-
-                      e.preventDefault();
                     }}
                   />
                 )
@@ -752,27 +758,26 @@ export default class Select extends Component {
           disabled={disabled}
           readOnly={!filterable || multiple}
           icon={this.iconClass()}
+          onChange={e => this.setState({ selectedLabel: e.target.value })}
           onClick={this.toggleMenu.bind(this)}
           onIconClick={this.toggleMenu.bind(this)}
           onMouseEnter={this.onMouseEnter.bind(this)}
           onMouseLeave={this.onMouseLeave.bind(this)}
           onKeyUp={this.debouncedOnInputChange.bind(this)}
           onKeyDown={e => {
-            e.preventDefault();
-
             switch (e.keyCode) {
               case 9:
               case 27:
-                this.setState({ visible: false });
+                this.setState({ visible: false }); e.preventDefault();
                 break;
               case 13:
-                this.selectOption();
+                this.selectOption(); e.preventDefault();
                 break;
               case 38:
-                this.navigateOptions('prev');
+                this.navigateOptions('prev'); e.preventDefault();
                 break;
               case 40:
-                this.navigateOptions('next');
+                this.navigateOptions('next'); e.preventDefault();
                 break;
               default:
                 break;
@@ -786,8 +791,8 @@ export default class Select extends Component {
                 <ul className="el-select-dropdown__list">
                   {this.props.children}
                 </ul>
-                { this.emptyText() && <p className="el-select-dropdown__empty">{this.emptyText()}</p> }
               </View>
+              { this.emptyText() && <p className="el-select-dropdown__empty">{this.emptyText()}</p> }
             </Dropdown>
           </View>
         </Transition>

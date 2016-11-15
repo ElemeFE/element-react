@@ -8,8 +8,14 @@ export default class Checkbox extends Component {
     this.state = {
       checked: Boolean(props.checked),
       focus: Boolean(props.focus),
-      label: this.getLabel(),
+      label: this.getLabel(props),
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      checked: nextProps.checked, focus: nextProps.focus, label: this.getLabel(nextProps)
+    })
   }
 
   onFocus() {
@@ -48,14 +54,12 @@ export default class Checkbox extends Component {
     });
   }
 
-  getLabel() {
-    let label;
-    if (this.props.trueLabel || this.props.falseLabel) {
-      label = this.props.checked ? this.props.trueLabel : this.props.falseLabel;
+  getLabel(props) {
+    if (props.trueLabel || props.falseLabel) {
+      return props.checked ? props.trueLabel : props.falseLabel;
     }else {
-      label = this.props.label;
+      return props.label;
     }
-    return label;
   }
 
   render() {

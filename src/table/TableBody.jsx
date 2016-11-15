@@ -10,6 +10,16 @@ class BodyItem extends Component{
   }
 
   onMouseState(hover){
+    const fixedLeftBody = this.context.$owerTable.refs.fixedLeftBody;
+    const mainBody = this.context.$owerTable.refs.mainBody;
+    const fixedRightBody = this.context.$owerTable.refs.fixedRightBody;
+
+    fixedLeftBody && fixedLeftBody.hoverRowItem(this.props.rowIndex, hover);
+    mainBody && mainBody.hoverRowItem(this.props.rowIndex, hover);
+    fixedRightBody && fixedRightBody.hoverRowItem(this.props.rowIndex, hover);
+  }
+
+  setHoverState(hover){
     this.setState({
       hover: hover
     });
@@ -19,7 +29,7 @@ class BodyItem extends Component{
     const { itemData, columns, rowIndex, rowClassName } = this.props;
     const rootClassName = this.classNames({
       'hover-row': this.state.hover,
-      [rowClassName&&rowClassName(itemData, rowIndex)]: true
+      [rowClassName?rowClassName(itemData, rowIndex):'']: true
     });
 
     return (
@@ -29,11 +39,12 @@ class BodyItem extends Component{
         onMouseLeave={()=>this.onMouseState(false)}>
         {
           columns.map((col, idx)=>{
+            let content = col.render ? col.render(itemData, col) : itemData[col.property];
             return (
               <td
                 key={idx}
                 style={{width: col.width?col.width: ''}}>
-                <div className="cell">{itemData[col.prop]}</div>
+                <div className="cell">{content}</div>
               </td>
             )
           })
@@ -43,19 +54,34 @@ class BodyItem extends Component{
   }
 }
 
+
+BodyItem.contextTypes = {
+  $owerTable: React.PropTypes.object
+};
+
 BodyItem.propTypes = {
   columns: PropTypes.array.isRequired,
   itemData: PropTypes.object.isRequired,
 };
 
-
 export default class TableBody extends  Component{
+  constructor(props, context){
+    super(props, context);
+    this.rowPrefix = props.fixed + 'TableRow';
+  }
+  hoverRowItem(rowIndex, hover){
+    var rcRowElement = this.refs[this.rowPrefix + rowIndex ];
+    rcRowElement.setHoverState(hover);
+  }
   render() {
-    const {
-      columns,
-      data,
-      style,
-      rowClassName } = this.props;
+    const { 
+      columns, 
+      data, 
+      rowClassName,
+      fixed
+    } = this.props;
+
+    const rowPrefix = this.rowPrefix;
 
     return (
       <table
@@ -65,9 +91,11 @@ export default class TableBody extends  Component{
         <tbody>
           {
             data.map((dataItem, dataIdx)=>{
+              var refId = rowPrefix + dataIdx;
               return (
-                <BodyItem
+                <BodyItem 
                   key={dataIdx}
+                  ref={refId}
                   rowIndex={dataIdx}
                   rowClassName={rowClassName}
                   itemData={dataItem}
@@ -82,7 +110,7 @@ export default class TableBody extends  Component{
 }
 
 TableBody.contextTypes = {
-  $parent: React.PropTypes.object
+  $owerTable: React.PropTypes.object
 };
 
 TableBody.propTypes = {

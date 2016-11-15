@@ -66,9 +66,7 @@
     "react": "^15.4.0-rc.4",
     "react-addons-css-transition-group": "^15.4.0-rc.4",
     "react-addons-transition-group": "^15.4.0-rc.4",
-    "react-debounce-input": "^2.4.1",
-    "react-dom": "^15.4.0-rc.4",
-    "throttle-debounce": "^1.0.1"
+    "react-dom": "^15.4.0-rc.4"
   },
   "jest": {
     "testRegex": "/jest/.+\\.(js|jsx)$",

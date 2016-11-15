@@ -11,7 +11,6 @@ export default class Option extends Component {
       hitState: false
     }
 
-    // this.$on('queryChange', this.queryChange);
     // this.$on('resetIndex', this.resetIndex);
   }
 
@@ -29,6 +28,10 @@ export default class Option extends Component {
     if (this.currentSelected() === true) {
       this.parent().addOptionToValue(this, true);
     }
+  }
+
+  componentWillUnMount() {
+    this.parent().onOptionDestroy(this);
   }
 
   currentSelected() {
