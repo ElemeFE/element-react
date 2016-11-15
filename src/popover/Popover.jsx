@@ -64,7 +64,10 @@ export default class Popover extends Component {
   }
 
   initialPopper() {
-    this.refs.arrow.setAttribute('x-arrow', '');
+    if (this.refs.arrow) {
+      this.refs.arrow.setAttribute('x-arrow', '');
+    }
+    
     this.popperJS = new Popper(this.reference, this.refs.popper, {
       placement: this.props.placement
     });
