@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Component, PropTypes } from '../../libs';
-import { enhanceColumns, calculateBodyWidth, calculateFixedWidth } from './mixins';
+import { enhanceColumns, calculateBodyWidth, calculateFixedWidth, scheduleLayout } from './mixins';
+import { getScrollBarWidth } from './utils';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
@@ -22,15 +23,17 @@ export default class Table extends Component{
       _columns: enhCols.columns,//补充后的列配置
       fixedLeftColumns: enhCols.fixedLeftColumns,
       fixedRightColumns: enhCols.fixedRightColumns,
-
       data: data,
 
-      bodyWidth: 'auto',
-      bodyHeight: 'auto',
-      headerHeight: 'auto',
+      bodyWidth: '',
+      bodyHeight: '',
+      headerHeight: '',
       realTableHeaderHeight: '',
       realTableHeight: '',
-      resizeProxyVisible: false
+      resizeProxyVisible: false,
+
+      scrollY: false,//表格竖Y轴是否有滚动条,
+      scrollX: false
     }
   }
 
@@ -45,11 +48,11 @@ export default class Table extends Component{
   }
 
   initLayout(){
-    const rootDom = ReactDOM.findDOMNode(this);
-    const thisTableWidth = parseFloat(window.getComputedStyle(rootDom).getPropertyValue('width'));
-    const realTableHeight = parseFloat(window.getComputedStyle(rootDom).getPropertyValue('height'));
-    const { height } = this.props;
-    const bodyWidth = calculateBodyWidth(this.state.columns, thisTableWidth);
+    const { height, fit } = this.props;
+    const rootComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
+    const thisTableWidth = parseFloat(rootComputedStyle.getPropertyValue('width'));
+    const realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
+    const bodyWidth = scheduleLayout(this.state._columns, thisTableWidth, undefined, fit).bodyWidth;
     const headerHeight = this.refs.headerWrapper.offsetHeight;
     const bodyHeight = height ? height - headerHeight : this.state.headerHeight;
 
@@ -58,7 +61,31 @@ export default class Table extends Component{
       bodyHeight,
       headerHeight,
       realTableHeaderHeight: headerHeight,
+      realTableWidth: thisTableWidth,
       realTableHeight: this.props.height || realTableHeight || 'auto'
+    }, ()=>{
+      this.adjustScrollState();
+    });
+  }
+
+  scheduleLayout(){
+    const { _columns, realTableWidth, scrollY } = this.state;
+
+    const layout = scheduleLayout(_columns, realTableWidth, scrollY, this.props.fit);
+    this.setState({
+      bodyWidth: layout.bodyWidth
+    }, ()=>{
+      this.onScrollBodyWrapper();
+      this.adjustScrollState();
+    });
+  }
+
+  adjustScrollState(){
+    const scrollY = this.refs.mainBody.isScrollY();
+    this.setState({
+      scrollX: this.refs.mainBody.isScrollX(),
+      scrollY: scrollY,
+      bodyWidth: scheduleLayout(this.state._columns, this.state.thisTableWidth, scrollY, this.props.fit).bodyWidth
     });
   }
 
@@ -72,18 +99,19 @@ export default class Table extends Component{
   }
 
   onScrollBodyWrapper(e){
+    const target = e ? e.target : this.refs.bodyWrapper;
     const headerWrapper = this.refs.headerWrapper;
     const fixedBodyWrapper = this.refs.fixedBodyWrapper;
     const rightFixedBodyWrapper = this.refs.rightFixedBodyWrapper;
 
-    headerWrapper.scrollLeft = e.target.scrollLeft;
-    fixedBodyWrapper && (fixedBodyWrapper.scrollTop = e.target.scrollTop);
-    rightFixedBodyWrapper && (rightFixedBodyWrapper.scrollTop = e.target.scrollTop);
+    headerWrapper.scrollLeft = target.scrollLeft;
+    fixedBodyWrapper && (fixedBodyWrapper.scrollTop = target.scrollTop);
+    rightFixedBodyWrapper && (rightFixedBodyWrapper.scrollTop = target.scrollTop);
   }
 
   render() {
-    const { fit, stripe, border } = this.props;
-    const { 
+    let { fit, stripe, border, highlightCurrentRow } = this.props;
+    let { 
       bodyWidth,  
       bodyHeight, 
       _columns, 
@@ -91,7 +119,9 @@ export default class Table extends Component{
       fixedLeftColumns, 
       fixedRightColumns, 
       realTableHeight,
-      realTableHeaderHeight
+      realTableHeaderHeight,
+      scrollY,
+      scrollX
     } = this.state;
 
     const rootClassName = this.classNames(
@@ -103,12 +133,15 @@ export default class Table extends Component{
       }
     );
 
+    const scrollYWiddth = scrollX?getScrollBarWidth() : 0;
+
     return (
       <div className={rootClassName}>
         <div
           ref="headerWrapper"
           className="el-table__header-wrapper">
           <TableHeader 
+            isScrollY={scrollY}
             style={{width: bodyWidth}} 
             columns={_columns}/>
         </div>
@@ -123,6 +156,7 @@ export default class Table extends Component{
             style={{width: bodyWidth}}
             rowClassName={this.props.rowClassName}
             columns={_columns}
+            highlightCurrentRow={highlightCurrentRow}
             data={data}/>
         </div>
         {
@@ -130,7 +164,7 @@ export default class Table extends Component{
             <div 
               className="el-table__fixed" 
               ref="fixedWrapper"
-              style={{width: calculateFixedWidth(fixedLeftColumns), height: realTableHeight}}>
+              style={{width: calculateFixedWidth(fixedLeftColumns), height: realTableHeight ? (realTableHeight - scrollYWiddth) : ''}}>
               <div className="el-table__fixed-header-wrapper" ref="fixedHeaderWrapper">
                 <TableHeader
                   fixed="left"
@@ -141,13 +175,14 @@ export default class Table extends Component{
               <div 
                 className="el-table__fixed-body-wrapper" 
                 ref="fixedBodyWrapper"
-                style={{top: realTableHeaderHeight, height: bodyHeight ? bodyHeight : ''}}>
+                style={{top: realTableHeaderHeight, height: bodyHeight ? (bodyHeight - scrollYWiddth) : ''}}>
                 <TableBody
                   ref="fixedLeftBody"
                   fixed="left"
                   rowClassName={this.props.rowClassName}
                   columns={fixedLeftColumns}
                   data={data}
+                  highlightCurrentRow={highlightCurrentRow}
                   style={{width: calculateFixedWidth(fixedLeftColumns)}}>
                 </TableBody>
               </div>
@@ -157,12 +192,12 @@ export default class Table extends Component{
         <div 
           className="el-table__fixed-right" 
           ref="rightFixedWrapper"
-          style={{width: calculateFixedWidth(fixedRightColumns), height: realTableHeight,right: 0}}>
+          style={{width: calculateFixedWidth(fixedRightColumns), height: realTableHeight ? (realTableHeight - scrollYWiddth) : '' ,right: scrollY?getScrollBarWidth() : 0}}>
           <div 
             className="el-table__fixed-header-wrapper" 
             ref="rightFixedHeaderWrapper">
             <TableHeader
-              fixed="left"
+              fixed="right"
               border="border"
               columns={fixedRightColumns}
               style={{width: '100%', height: '100%'}}/>
@@ -170,13 +205,14 @@ export default class Table extends Component{
           <div 
             className="el-table__fixed-body-wrapper" 
             ref="rightFixedBodyWrapper"
-            style={{top: realTableHeaderHeight, height: bodyHeight?bodyHeight:''}}>
+            style={{top: realTableHeaderHeight, height: bodyHeight? (bodyHeight - scrollYWiddth):''}}>
             <TableBody
               ref="fixedRightBody"
               fixed="right"
               rowClassName={this.props.rowClassName}
               columns={fixedRightColumns}
               data={data}
+              highlightCurrentRow={highlightCurrentRow}
               style={{width: calculateFixedWidth(fixedRightColumns)}}>
             </TableBody>
           </div>
@@ -208,11 +244,18 @@ Table.propTypes = {
   border: PropTypes.bool,
   fit: PropTypes.bool,
   rowClassName: PropTypes.func,
-  style: PropTypes.object
+  style: PropTypes.object,
+  highlightCurrentRow: PropTypes.bool,
+
+  //Event
+  onCurrentChange: PropTypes.func,
+  onSelectAll: PropTypes.func,
+  onSelectChange: PropTypes.func
 };
 
 Table.defaultProps = {
   stripe: false,
   border: false,
-  fit: true
+  fit: true,
+  highlightCurrentRow: false
 };

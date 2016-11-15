@@ -280,7 +280,19 @@ let data = [{
 
 :::demo 固定列需要使用`fixed`属性，它接受 Boolean 值或者`left` `right`，表示左边固定还是右边固定。
 ```javascript
-   var columns = [
+var columns;
+var data;
+initConfig();
+
+  <Table 
+   style={{width: '100%'}}
+   border={true}
+   height={250}
+   columns={columns} 
+   data={data}/>
+
+function initConfig(){
+    columns = [
   {
     label: "日期",
     prop: "date",
@@ -313,13 +325,101 @@ let data = [{
     fixed: 'right',
     width: 100,
     render: ()=>{
-      return "mksdfds";
+      return <span><Button type="text" size="small">查看</Button><Button type="text" size="small">编辑</Button></span>
     }
   }
 ];
 
 
-var data = [{
+ data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  }];
+}
+```
+:::
+
+### 固定列和表头
+
+横纵内容过多时，可选择固定列和表头。
+
+:::demo 固定列和表头可以同时使用，只需要将上述两个属性分别设置好即可。
+```javascript
+var columns;
+var data;
+initConfig();
+
+  <Table 
+   style={{width: '100%'}}
+   border={true}
+   height={250}
+   columns={columns} 
+   data={data}/>
+
+function initConfig(){
+    columns = [
+  {
+    label: "日期",
+    prop: "date",
+    width: 150,
+    fixed: 'left'
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 160
+  },
+  {
+    label: "省份",
+    prop: "province",
+    width: 160
+  },
+  {
+    label: "地址",
+    prop: "address",
+    width: 400
+  },
+  {
+    label: "邮编",
+    prop: "zip",
+    width: 120
+  }
+];
+
+
+ data = [{
     date: '2016-05-02',
     name: '王小虎',
     province: '上海',
@@ -369,24 +469,101 @@ var data = [{
     address: '上海市普陀区金沙江路 1518 弄',
     zip: 200333
   }];
-
- <Table 
-   style={{width: '100%'}}
-   border={true}
-   height={250}
-   columns={columns} 
-   data={data}/>
-  
+}
 ```
 :::
 
-### 固定列和表头
+### 单选
 
-横纵内容过多时，可选择固定列和表头。
+选择单行数据时使用色块表示
 
-:::demo 固定列和表头可以同时使用，只需要将上述两个属性分别设置好即可。
-```html
+:::demo 实现多选非常简单: 手动添加一个`el-table-column`，设`type`属性为`selection`即可。在本例中，为了方便说明其他属性，我们还使用了`inline-template`和`show-tooltip-when-overflow`：设置了`inline-template`属性后，可以通过调用`row`对象中的值取代`prop`属性的设置；默认情况下若内容过多会折行显示，若需要单行显示可以使用`show-tooltip-when-overflow`属性，它接受一个`Boolean`，为`true`时多余的内容会在 hover 时以 tooltip 的形式显示出来。
+```javascript
+var columns;
+var data;
+initConfig();
 
+<Table 
+  style={{width: '100%'}}
+  border={true}
+  height={250}
+  columns={columns} 
+  highlightCurrentRow={true}
+  onCurrentChange={item=>{console.log(item)}}
+  data={data}/>
+
+function initConfig(){
+    columns = [
+  { 
+    type: 'index'
+  },
+  {
+    label: "日期",
+    prop: "date",
+    width: 150
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 160
+  },
+  {
+    label: "地址",
+    prop: "address"
+  }
+];
+
+ data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  }];
+}
 ```
 :::
 
@@ -395,9 +572,92 @@ var data = [{
 选择多行数据时使用 Checkbox。
 
 :::demo 实现多选非常简单: 手动添加一个`el-table-column`，设`type`属性为`selection`即可。在本例中，为了方便说明其他属性，我们还使用了`inline-template`和`show-tooltip-when-overflow`：设置了`inline-template`属性后，可以通过调用`row`对象中的值取代`prop`属性的设置；默认情况下若内容过多会折行显示，若需要单行显示可以使用`show-tooltip-when-overflow`属性，它接受一个`Boolean`，为`true`时多余的内容会在 hover 时以 tooltip 的形式显示出来。
-```html
+```javascript
+var columns;
+var data;
+initConfig();
 
+<Table 
+  style={{width: '100%'}}
+  border={true}
+  height={250}
+  columns={columns} 
+  onSelectChange={(dataItem, checked)=>{console.log(dataItem, checked)}}
+  onSelectAll={(dataList, checked)=>{console.log(dataList, checked);}}
+  data={data}/>
 
+function initConfig(){
+    columns = [
+  { 
+    type: 'selection'
+  },
+  {
+    label: "日期",
+    prop: "date",
+    width: 150
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 160
+  },
+  {
+    label: "地址",
+    prop: "address"
+  }
+];
+
+ data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  },{
+    date: '2016-05-02',
+    name: '王小虎',
+    province: '上海',
+    city: '普陀区',
+    address: '上海市普陀区金沙江路 1518 弄',
+    zip: 200333
+  }];
+}
 ```
 :::
 
