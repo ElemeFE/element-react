@@ -122,7 +122,6 @@ export default class TableHeader extends  Component{
 
   render() {
     const { columns, style, isScrollY, fixed } = this.props;
-
     return (
       <table
         style={style}

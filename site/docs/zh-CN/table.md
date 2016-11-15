@@ -287,7 +287,7 @@ initConfig();
   <Table 
    style={{width: '100%'}}
    border={true}
-   height={250}
+   height={255}
    columns={columns} 
    data={data}/>
 
