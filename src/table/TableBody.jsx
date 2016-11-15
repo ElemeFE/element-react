@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Checkbox from '../checkbox';
+import { getScrollBarWidth } from './utils'
 
 class BodyItem extends Component{
   constructor(props, context){
@@ -120,7 +121,8 @@ export default class TableBody extends  Component{
 
   isScrollY(){
     const tableBodyWrapper = this.context.$owerTable.refs.bodyWrapper;
-    return tableBodyWrapper.offsetHeight < this.refs.root.offsetHeight;
+    const contentHeight = tableBodyWrapper.offsetHeight - (this.isScrollX() ? getScrollBarWidth() : 0);
+    return contentHeight < this.refs.root.offsetHeight;
   }
 
   isScrollX(){
