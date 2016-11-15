@@ -55,13 +55,11 @@ export default class Checkbox extends Component {
   }
 
   getLabel(props) {
-    let label;
     if (props.trueLabel || props.falseLabel) {
-      label = props.checked ? props.trueLabel : props.falseLabel;
+      return props.checked ? props.trueLabel : props.falseLabel;
     }else {
-      label = props.label;
+      return props.label;
     }
-    return label;
   }
 
   render() {
@@ -69,13 +67,12 @@ export default class Checkbox extends Component {
       <label className="el-checkbox">
         <span className="el-checkbox__input">
           <span
-            className={
-              this.classNames("el-checkbox__inner",
-                {'is-disabled': this.props.disabled},
-                {'is-checked': this.state.checked},
-                {'is-indeterminate': this.props.indeterminate},
-                {'is-focus': this.state.focus})}
-            >
+            className={this.classNames("el-checkbox__inner", {
+              'is-disabled': this.props.disabled,
+              'is-checked': this.state.checked,
+              'is-indeterminate': this.props.indeterminate,
+              'is-focus': this.state.focus
+            })}>
           </span>
           <input
             className="el-checkbox__original"

@@ -80,6 +80,7 @@ export default class Canvas extends Component {
     if (!/^(js|javascript|jsfunc)/i.test(source[1])) {
       code = `<div>${source[2]}</div>`
     }
+
     let component
     // hacking through restrictions, so i can create React class in markdown.
     // see time-picker.md demo

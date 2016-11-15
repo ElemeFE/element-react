@@ -72,6 +72,8 @@ export default class Input extends Component {
       validating,
       rows,
       autosize,
+      onMouseEnter,
+      onMouseLeave,
       ...otherProps
     } = this.props;
 
@@ -98,8 +100,10 @@ export default class Input extends Component {
     // validating状态
     const validatingDOM = validating ? <i className="el-input__icon el-icon-loading"></i> : null
 
+    delete otherProps.onIconClick;
+
     return type !== 'textarea' ?
-      <div className={classname}>
+      <div className={classname} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         { prependDOM }
         { iconDOM }
         <input

@@ -2,18 +2,10 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class OptionGroup extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      minWidth: ''
-    }
-  }
-
-  componentDidMount() {
-    // if (this.disabled) {
-    //     this.broadcast('option', 'handleGroupDisabled', this.disabled);
-    //   }
+  getChildContext() {
+    return {
+      disabled: this.props.disabled
+    };
   }
 
   render() {
@@ -29,6 +21,10 @@ export default class OptionGroup extends Component {
     )
   }
 }
+
+OptionGroup.childContextTypes = {
+  disabled: PropTypes.bool
+};
 
 OptionGroup.propTypes = {
   label: PropTypes.string,

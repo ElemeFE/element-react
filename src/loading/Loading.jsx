@@ -30,7 +30,7 @@ export default class Loading extends Component {
           style={{
             position: 'absolute',
             zIndex: 10001,
-            backgroundColor: 'rgba(0, 0, 0, 0.65098)',
+            backgroundColor: 'rgba(255, 255, 255, 0.901961)',
             margin: 0,
             top: 0,
             right: 0,
@@ -38,15 +38,18 @@ export default class Loading extends Component {
             left: 0,
             display: 'block'
           }}>
-          <div
-            className="el-loading-spinner"
-            style={{
-              display: 'inline-block',
-              position: 'absolute'
-            }}>
-            <div className="el-loading-bubble bubble1"></div>
-            <div className="el-loading-bubble bubble2"></div>
-            <div className="el-loading-bubble bubble3"></div>
+          <div className={this.classNames('el-loading-spinner', {
+            'is-full-screen': this.props.fullscreen
+          })} style={{
+            position: 'absolute',
+            display: 'inline-block'
+          }}>
+            <svg className="circular" viewBox="25 25 50 50">
+              <circle className="path" cx="50" cy="50" r="20" fill="none" />
+            </svg>
+            {
+              this.props.text && <p className="el-loading-text">{this.props.text}</p>
+            }
           </div>
         </div>
         {this.props.children}
@@ -56,5 +59,6 @@ export default class Loading extends Component {
 }
 
 Loading.propTypes = {
-  fullscreen: PropTypes.bool
+  fullscreen: PropTypes.bool,
+  text: PropTypes.string
 }

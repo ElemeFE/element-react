@@ -1,19 +1,8 @@
 import React from 'react';
+import Popper from '../../vendor/popper';
 import { Component, PropTypes } from '../../libs';
 
 export default class Dropdown extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      minWidth: ''
-    }
-  }
-
-  componentWillMount() {
-    // this.minWidth = this.$parent.$el.getBoundingClientRect().width + 'px';
-  }
-
   componentDidMount() {
     // this.referenceElm = this.$parent.$refs.reference.$el;
     // this.$parent.popperElm = this.popperElm = this.$el;
@@ -21,15 +10,24 @@ export default class Dropdown extends Component {
     // this.$on('destroyPopper', this.destroyPopper);
   }
 
+  updatePopper() {
+
+  }
+
+  destroyPopper() {
+
+  }
+
   render() {
+    const parent = this.context.component;
+
     return (
-      <div
-        className={this.classNames('el-select-dropdown', {
-          'is-multiple': this.context.multiple
-        })}
-        style={{
-          minWidth: this.state.minWidth
-        }}>
+      <div className={this.classNames('el-select-dropdown', {
+          'is-multiple': parent.props.multiple
+      })} style={{
+        width: '100%',
+        // minWidth: parent.state.inputWidth
+      }}>
         {this.props.children}
       </div>
     )
@@ -37,5 +35,5 @@ export default class Dropdown extends Component {
 }
 
 Dropdown.contextTypes = {
-  multiple: PropTypes.bool
+  component: PropTypes.any
 };
