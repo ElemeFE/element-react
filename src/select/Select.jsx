@@ -16,7 +16,6 @@ export default class Select extends Component {
 
     this.state = {
       options: [],
-      // selected: {},
       isSelect: true,
       inputLength: 20,
       inputWidth: 0,
@@ -28,7 +27,6 @@ export default class Select extends Component {
       selectedLabel: '',
       selectInit: false,
       hoverIndex: -1,
-      // query: '',
       voidRemoteQuery: false,
       bottomOverflowBeforeHidden: 0,
       inputHovering: false,
