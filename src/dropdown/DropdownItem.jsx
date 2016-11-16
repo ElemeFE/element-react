@@ -2,24 +2,19 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class DropdownItem extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleClick() {
-
+    this.context.component.handleMenuItemClick(this.props.command, this);
   }
 
   render() {
     const { disabled, divided } = this.props;
+
     return (
       <li
-        className={this.classNames({
-          'el-dropdown-menu__item': true,
+        className={this.classNames('el-dropdown-menu__item', {
           'is-disabled': disabled,
           'el-dropdown-menu__item--divided': divided
-        })}
-        onClick={() => this.handleClick()}
+        })} onClick={this.handleClick.bind(this)}
       >
         { this.props.children }
       </li>
@@ -27,11 +22,12 @@ export default class DropdownItem extends Component {
   }
 }
 
+DropdownItem.contextTypes = {
+  component: PropTypes.any
+};
+
 DropdownItem.propTypes = {
+  command: PropTypes.string,
   disabled: PropTypes.bool,
   divided: PropTypes.bool,
-}
-
-DropdownItem.defaultProps = {
-
-}
+};
