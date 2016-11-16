@@ -13,12 +13,7 @@ export default class Form extends Component {
 
   getChildContext() {
     return {
-      labelSuffix: this.props.labelSuffix,
-      labelWidth: this.props.labelWidth,
-      rules: this.props.rules,
-      model: this.props.model,
-      addField: this.addField.bind(this),
-      removeField: this.removeField.bind(this)
+      component: this
     };
   }
 
@@ -78,23 +73,19 @@ export default class Form extends Component {
 }
 
 Form.childContextTypes = {
-  labelSuffix: PropTypes.string,
-  labelWidth: PropTypes.string,
-  rules: PropTypes.object,
-  model: PropTypes.object,
-  addField: PropTypes.func,
-  removeField: PropTypes.func
+  component: PropTypes.any
 };
 
 Form.propTypes = {
   model: PropTypes.object,
   rules: PropTypes.object,
-  labelPosition: PropTypes.string,
-  labelWidth: PropTypes.string,
+  labelPosition: PropTypes.oneOf(['right', 'left', 'top']),
+  labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   labelSuffix: PropTypes.string,
   inline: PropTypes.bool
 }
 
 Form.defaultProps = {
+  labelPosition: 'right',
   labelSuffix: ''
 };

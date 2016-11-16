@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import AsyncValidator from 'async-validator';
 import { Component, PropTypes, Transition } from '../../libs';
 
@@ -14,8 +15,11 @@ export default class FormItem extends Component {
   }
 
   componentDidMount() {
-    if (this.props.prop) {
-      this.context.addField(this);
+    const { prop } = this.props;
+
+    if (prop) {
+      this.parent().addField(this);
+
       this.initialValue = this.getInitialValue();
 
       let rules = this.getRules();
@@ -23,19 +27,24 @@ export default class FormItem extends Component {
       if (rules.length) {
         rules.every(rule => {
           if (rule.required) {
-            this.isRequired = true;
+            this.state.isRequired = true;
+
             return false;
           }
         });
 
-        // this.$on('el.form.blur', this.onFieldBlur);
-        // this.$on('el.form.change', this.onFieldChange);
+        ReactDOM.findDOMNode(this.parent()).addEventListener('blur', this.onFieldBlur.bind(this))
+        ReactDOM.findDOMNode(this.parent()).addEventListener('change', this.onFieldChange.bind(this))
       }
     }
   }
 
   componentWillUnMount() {
-    this.context.removeField(this);
+    this.parent().removeField(this);
+  }
+
+  parent() {
+    return this.context.component;
   }
 
   onFieldBlur() {
@@ -45,8 +54,10 @@ export default class FormItem extends Component {
   onFieldChange() {
     if (this.validateDisabled) {
       this.validateDisabled = false;
+
       return;
     }
+
     this.validate('change');
   }
 
@@ -54,6 +65,7 @@ export default class FormItem extends Component {
     let { validating, valid, error } = this.state;
 
     var rules = this.getFilteredRule(trigger);
+
     if (!rules || rules.length === 0) {
       cb && cb();
       return true;
@@ -76,7 +88,8 @@ export default class FormItem extends Component {
   }
 
   getInitialValue() {
-    var value = this.context.model[this.props.prop];
+    var value = this.parent().props.model[this.props.prop];
+
     if (value === undefined) {
       return value;
     } else {
@@ -96,16 +109,16 @@ export default class FormItem extends Component {
 
     if (Array.isArray(value) && value.length > 0) {
       this.validateDisabled = true;
-      this.context.model[this.props.prop] = [];
+      this.parent().props.model[this.props.prop] = [];
     } else if (value) {
       this.validateDisabled = true;
-      this.context.model[this.props.prop] = this.initialValue;
+      this.parent().props.model[this.props.prop] = this.initialValue;
     }
   }
 
   getRules() {
-    var formRules = this.context.rules;
-    var selfRuels = this.rules;
+    var formRules = this.parent().props.rules;
+    var selfRuels = this.props.rules;
 
     formRules = formRules ? formRules[this.props.prop] : [];
     return [].concat(selfRuels || formRules || []);
@@ -113,6 +126,7 @@ export default class FormItem extends Component {
 
   getFilteredRule(trigger) {
     var rules = this.getRules();
+
     return rules.filter(rule => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1;
     });
@@ -120,48 +134,43 @@ export default class FormItem extends Component {
 
   labelStyle() {
     var ret = {};
-    var labelWidth = this.props.labelWidth || this.context.labelWidth;
+    var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
     if (labelWidth) {
-      ret.width = labelWidth;
+      ret.width = Number(labelWidth);
     }
     return ret;
   }
 
   contentStyle() {
     var ret = {};
-    var labelWidth = this.props.labelWidth || this.context.labelWidth;
+    var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
     if (labelWidth) {
-      ret.marginLeft = labelWidth;
+      ret.marginLeft = Number(labelWidth);
     }
     return ret;
   }
 
-  form() {
-    var parent = this.$parent;
-    while (parent.$options.componentName !== 'form') {
-      parent = parent.$parent;
-    }
-    return parent;
-  }
-
   fieldValue() {
-    var model = this.context.model;
+    var model = this.parent().props.model;
     if (!model || !this.props.prop) { return; }
     var temp = this.props.prop.split(':');
     return temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
   }
 
   render() {
+    const { error, validating, isRequired } = this.state;
+    const { label, required } = this.props;
+
     return (
       <div className={this.classNames('el-form-item', {
-        'is-error': this.state.error !== '',
-        'is-validating': this.state.validating,
-        'is-required': this.state.isRequired || this.props.required
+        'is-error': error !== '',
+        'is-validating': validating,
+        'is-required': isRequired || required
       })}>
         {
-          this.props.label && (
+          label && (
             <label className="el-form-item__label" style={this.labelStyle()}>
-              {this.props.label + this.context.labelSuffix}
+              {label + this.parent().props.labelSuffix}
             </label>
           )
         }
@@ -169,7 +178,7 @@ export default class FormItem extends Component {
           {this.props.children}
           <Transition name="md-fade-bottom">
             {
-              this.state.error !== '' && <div className="el-form-item__error">{this.state.error}</div>
+              error && <div className="el-form-item__error">{error}</div>
             }
           </Transition>
         </div>
@@ -179,12 +188,7 @@ export default class FormItem extends Component {
 }
 
 FormItem.contextTypes = {
-  labelSuffix: PropTypes.string,
-  labelWidth: PropTypes.string,
-  rules: PropTypes.object,
-  model: PropTypes.object,
-  addField: PropTypes.func,
-  removeField: PropTypes.func
+  component: PropTypes.any
 };
 
 FormItem.propTypes = {
@@ -193,8 +197,4 @@ FormItem.propTypes = {
   prop: PropTypes.string,
   required: PropTypes.bool,
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
-}
-
-FormItem.defaultProps = {
-
 };
