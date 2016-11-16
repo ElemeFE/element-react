@@ -9,7 +9,7 @@
 :::demo 通过组件`slot`来设置下拉触发的元素以及需要通过具名`slot`为`dropdown` 来设置下拉菜单。默认情况下，下拉按钮只要`hover`即可，无需点击也会显示下拉菜单。
 
 ```html
-<Dropdown trigger="click" menu={(
+<Dropdown menu={(
   <Dropdown.Menu>
     <Dropdown.Item>黄金糕</Dropdown.Item>
     <Dropdown.Item>狮子头</Dropdown.Item>

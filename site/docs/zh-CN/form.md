@@ -142,7 +142,7 @@
 
 ::: demo Form 组件提供了表单验证的功能，只需要通过 `rule` 属性传入约定的验证规则，并 Form-Item 的 `prop` 属相设置为需校验的字段名即可。校验规则参见 [async-validator](https://github.com/yiminghe/async-validator)
 ```html
-<Form model={this.state.ruleForm} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
+<Form ref={e => this.ruleForm = e} model={this.state.ruleForm} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
   <Form.Item label="活动名称" prop="name">
     <Input value={this.state.ruleForm.name}></Input>
   </Form.Item>
@@ -197,7 +197,7 @@
 
 ::: demo 这个例子中展示了如何使用自定义验证规则来完成密码的二次验证
 ```html
-<Form model={this.state.ruleForm2} rules={this.state.rules2} labelWidth="100" className="demo-ruleForm">
+<Form ref={e => this.ruleForm2 = e} model={this.state.ruleForm2} rules={this.state.rules2} labelWidth="100" className="demo-ruleForm">
   <Form.Item label="密码" prop="pass">
     <Input type="password" value={this.state.ruleForm2.pass} autoComplete="off"></Input>
   </Form.Item>

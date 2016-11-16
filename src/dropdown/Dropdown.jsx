@@ -107,12 +107,12 @@ Dropdown.childContextTypes = {
 };
 
 Dropdown.propTypes = {
-  trigger: PropTypes.oneOf(['hover', 'click']),
-  menuAlign: PropTypes.oneOf(['start', 'end']),
+  menu: PropTypes.node.isRequired,
   type: PropTypes.string,
   size: PropTypes.string,
+  trigger: PropTypes.oneOf(['hover', 'click']),
+  menuAlign: PropTypes.oneOf(['start', 'end']),
   splitButton: PropTypes.bool,
-  menu: PropTypes.node,
   onClick: PropTypes.func,
   onCommand: PropTypes.func
 }
