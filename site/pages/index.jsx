@@ -34,6 +34,7 @@ import Tag from './tag';
 import Select from './select';
 import Dropdown from './dropdown';
 import Popover from './popover';
+import Form from './form';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -55,7 +56,7 @@ const pages = {
     'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
     'upload': { title: 'Upload 上传', component: Upload },
     'rate': { title: 'Rate 评分', component: Rate },
-    // 'form': { title: 'Form 表单', component: Form },
+    'form': { title: 'Form 表单', component: Form },
   },
   'Data': {
     'table': { title: 'Table 表格组件', component: Table },

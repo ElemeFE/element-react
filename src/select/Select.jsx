@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Popper from '../../vendor/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 import { debounce } from '../../libs/utils';
@@ -115,6 +116,8 @@ export default class Select extends Component {
     this.popper = ReactDOM.findDOMNode(this.refs.popper);
     this.input = ReactDOM.findDOMNode(this.refs.input);
     this.root = ReactDOM.findDOMNode(this);
+
+    this.popperJS = new Popper(this.reference, this.popper);
   }
 
   debounce() {
@@ -286,7 +289,7 @@ export default class Select extends Component {
 
   onQueryChange(query) {
     const { multiple, filterable, remote, remoteMethod, filterMethod } = this.props;
-    let { voidRemoteQuery, hoverIndex, filteredOptionsCount, options, optionsCount } = this.state;
+    let { voidRemoteQuery, hoverIndex, options, optionsCount } = this.state;
 
     // this.broadcast('select-dropdown', 'updatePopper');
 
