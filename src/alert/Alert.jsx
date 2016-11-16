@@ -38,9 +38,11 @@ export default class Alert extends Component {
             }
             <div className="el-alert__content">
               {
-                this.props.title && <span className={this.classNames('el-alert__title', {
-                  'is-bold': this.props.description
-                })}>{this.props.title}</span>
+                this.props.title && (
+                  <span className={this.classNames('el-alert__title', {
+                    'is-bold': this.props.description
+                  })}>{this.props.title}</span>
+                )
               }
               {
                 this.props.description && <p className="el-alert__description">{this.props.description}</p>

@@ -128,10 +128,16 @@ export default class MessageBox extends Component {
                         </div>
                         <View show={this.props.showInput}>
                           <div className="el-message-box__input">
-                            <Input className={this.classNames({
+                            <Input
+                              className={this.classNames({
                                 'invalid': this.state.editorErrorMessage
-                              })} placeholder={this.props.inputPlaceholder} onChange={this.onChange.bind(this)} />
-                            <div className="el-message-box__errormsg" style={{ visibility: this.state.editorErrorMessage ? 'visible' : 'hidden' }}>{this.state.editorErrorMessage}</div>
+                              })}
+                              placeholder={this.props.inputPlaceholder}
+                              onChange={this.onChange.bind(this)}
+                            />
+                            <div className="el-message-box__errormsg" style={{
+                              visibility: this.state.editorErrorMessage ? 'visible' : 'hidden'
+                            }}>{this.state.editorErrorMessage}</div>
                           </div>
                         </View>
                       </div>

@@ -25,7 +25,7 @@ export default class Tag extends Component {
 
     return(
       <Transition name={closeTransition ? '' : 'md-fade-center'} duration="200">
-        <View key={Math.random()} show={this.state.visible}>
+        <View key="el-tag" show={this.state.visible}>
           <span className={this.classNames('el-tag', type && `el-tag--${type}`, {
             'is-hit': hit
           })}>

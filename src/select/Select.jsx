@@ -1,6 +1,10 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import ReactDOM from 'react-dom';
+import { Component, PropTypes, Transition, View } from '../../libs';
+import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
+import { debounce } from '../../libs/utils';
 
+import Tag from '../tag';
 import Input from '../input';
 import i18n from '../locale';
 
@@ -12,57 +16,330 @@ export default class Select extends Component {
 
     this.state = {
       options: [],
-      selected: {},
       isSelect: true,
       inputLength: 20,
       inputWidth: 0,
       valueChangeBySelected: false,
-      cachedPlaceHolder: '',
-      optionsCount: 0,
       filteredOptionsCount: 0,
+      optionsCount: 0,
       dropdownUl: null,
       visible: false,
       selectedLabel: '',
       selectInit: false,
       hoverIndex: -1,
-      query: '',
       voidRemoteQuery: false,
       bottomOverflowBeforeHidden: 0,
-      optionsAllDisabled: false,
       inputHovering: false,
-      currentPlaceholder: ''
+      cachedPlaceHolder: props.placeholder,
+      currentPlaceholder: props.placeholder,
+      value: props.value
+    };
+
+    if (props.multiple) {
+      this.state.selectedInit = true;
+      this.state.selected = [];
     }
+
+    if (props.remote) {
+      this.state.voidRemoteQuery = true;
+    }
+
+    this.debouncedOnInputChange = debounce(() => {
+      this.onInputChange();
+    }, this.debounce());
   }
 
   getChildContext() {
     return {
-      component: this,
-      multiple: this.props.multiple
+      component: this
     };
   }
 
-  iconClass() {
-    return this.showCloseIcon() ? 'circle-close' : (this.props.remote && this.props.filterable ? '' : 'caret-top');
+  componentDidMount() {
+    const { remote, multiple } = this.props;
+    const { value } = this.state;
+
+    this.findDOMNodes();
+
+    if (remote && multiple && Array.isArray(value)) {
+      this.setState({
+        selected: this.state.options.reduce((prev, curr) => {
+          return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
+        }, [])
+      }, () => {
+        this.resetInputHeight();
+      });
+    }
+
+    addResizeListener(this.root, this.resetInputWidth.bind(this));
+  }
+
+  componentWillUpdate(props, state) {
+    if (state.value != this.state.value) {
+      this.onValueChange(state.value);
+    }
+
+    if (state.visible != this.state.visible) {
+      this.onVisibleChange(state.visible);
+    }
+
+    if (state.query != this.state.query) {
+      this.onQueryChange(state.query);
+    }
+  }
+
+  componentDidUpdate(props, state) {
+    this.findDOMNodes();
+
+    if (this.refs.reference) {
+      this.state.inputWidth = this.reference.getBoundingClientRect().width;
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.placeholder != this.props.placeholder) {
+      this.setState({
+        currentPlaceholder: props.placeholder
+      });
+    }
+  }
+
+  componentWillUnMount() {
+    if (this.resetInputWidth()){
+      removeResizeListener(this.root, this.resetInputWidth.bind(this));
+    }
+  }
+
+  findDOMNodes() {
+    this.reference = ReactDOM.findDOMNode(this.refs.reference);
+    this.popper = ReactDOM.findDOMNode(this.refs.popper);
+    this.input = ReactDOM.findDOMNode(this.refs.input);
+    this.root = ReactDOM.findDOMNode(this);
   }
 
   debounce() {
     return this.props.remote ? 300 : 0;
   }
 
+  onVisibleChange(visible) {
+    const { multiple, filterable } = this.props;
+    let { query, dropdownUl, selected, selectedLabel, bottomOverflowBeforeHidden } = this.state;
+
+    if (!visible) {
+      this.reference.querySelector('input').blur();
+
+      if (this.root.querySelector('.el-input__icon')) {
+        const elements = this.root.querySelector('.el-input__icon');
+
+        for (let i = 0; i < elements.length; i++) {
+          elements[i].classList.remove('is-reverse');
+        }
+      }
+
+      // this.broadcast('select-dropdown', 'destroyPopper');
+
+      if (this.refs.input) {
+        this.input.blur();
+      }
+
+      this.resetHoverIndex();
+
+      if (!multiple) {
+        if (dropdownUl && selected) {
+          bottomOverflowBeforeHidden = ReactDOM.findDOMNode(selected).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
+        }
+
+        if (selected && selected.props.value) {
+          selectedLabel = selected.currentLabel();
+        }
+
+        this.setState({ bottomOverflowBeforeHidden, selectedLabel });
+      }
+    } else {
+      let icon = this.root.querySelector('.el-input__icon');
+
+      if (icon && !icon.classList.contains('el-icon-circle-close')) {
+        const elements = this.root.querySelector('.el-input__icon');
+
+        for (let i = 0; i < elements.length; i++) {
+          elements[i].classList.add('is-reverse');
+        }
+      }
+
+      // this.broadcast('select-dropdown', 'updatePopper');
+
+      if (filterable) {
+        query = selectedLabel;
+
+        if (multiple) {
+          this.input.focus();
+        } else {
+          // this.broadcast('input', 'inputSelect');
+        }
+      }
+
+      if (!dropdownUl) {
+        let dropdownChildNodes = this.popper.childNodes;
+        dropdownUl = [].filter.call(dropdownChildNodes, item => item.tagName === 'UL')[0];
+      }
+
+      if (!multiple && dropdownUl) {
+        if (bottomOverflowBeforeHidden > 0) {
+          dropdownUl.scrollTop += bottomOverflowBeforeHidden;
+        }
+      }
+
+      this.setState({ query: query || '', dropdownUl });
+    }
+  }
+
+  onValueChange(val) {
+    const { multiple } = this.props;
+    let { options, valueChangeBySelected, selectedInit, selected, selectedLabel, currentPlaceholder, cachedPlaceHolder } = this.state;
+
+    if (valueChangeBySelected) {
+      return this.setState({
+        valueChangeBySelected: false
+      });
+    }
+
+    if (multiple && Array.isArray(val)) {
+      this.resetInputHeight();
+
+      selectedInit = true;
+      selected = [];
+      currentPlaceholder = cachedPlaceHolder;
+
+      val.forEach(item => {
+        let option = this.options.filter(option => option.props.value === item)[0];
+        if (option) {
+          this.addOptionToValue(option);
+        }
+      });
+    }
+
+    if (!multiple) {
+      let option = options.filter(option => option.props.value === val)[0];
+
+      if (option) {
+        this.addOptionToValue(option);
+      } else {
+        selected = {};
+        selectedLabel = '';
+      }
+    }
+
+    this.setState({ selectedInit, selected, currentPlaceholder, selectedLabel }, () => {
+      this.resetHoverIndex();
+    });
+  }
+
+  onSelectedChange(val) {
+    const { multiple, filterable } = this.props;
+    let { query, hoverIndex, inputLength, selected, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
+
+    if (multiple) {
+      if (selected.length > 0) {
+        currentPlaceholder = '';
+      } else {
+        currentPlaceholder = cachedPlaceHolder;
+      }
+
+      this.setState({ currentPlaceholder }, () => {
+        this.resetInputHeight();
+      });
+
+      if (selectedInit) {
+        return this.setState({
+          selectedInit: false
+        });
+      }
+
+      valueChangeBySelected = true;
+
+      const result = val.map(item => item.props.value);
+
+      // this.$emit('input', result);
+      // this.$emit('change', result);
+      // this.dispatch('form-item', 'el.form.change', val);
+
+      if (filterable) {
+        query = '';
+        hoverIndex = -1;
+        inputLength = 20;
+
+        this.refs.input.focus();
+      }
+
+      this.setState({ valueChangeBySelected, query, hoverIndex, inputLength });
+    } else {
+      if (selectedInit) {
+        return this.setState({
+          selectedInit: false
+        });
+      }
+
+      // this.$emit('input', val.value);
+      // this.$emit('change', val.value);
+    }
+  }
+
+  onQueryChange(query) {
+    const { multiple, filterable, remote, remoteMethod, filterMethod } = this.props;
+    let { voidRemoteQuery, hoverIndex, filteredOptionsCount, options, optionsCount } = this.state;
+
+    // this.broadcast('select-dropdown', 'updatePopper');
+
+    if (multiple && filterable) {
+      this.resetInputHeight();
+    }
+
+    if (remote && typeof remoteMethod === 'function') {
+      hoverIndex = -1;
+      voidRemoteQuery = query === '';
+
+      remoteMethod(query);
+
+      options.forEach(option => {
+        option.resetIndex();
+      });
+    } else if (typeof filterMethod === 'function') {
+      filterMethod(query);
+    } else {
+      this.setState({
+        filteredOptionsCount: optionsCount
+      }, () => {
+        options.forEach(option => {
+          option.queryChange(query);
+        });
+      });
+    }
+
+    this.setState({ hoverIndex, voidRemoteQuery });
+  }
+
+  optionsAllDisabled(options) {
+     return options.length === (options.filter(item => item.props.disabled === true).length);
+  }
+
+  iconClass() {
+    return this.showCloseIcon() ? 'circle-close' : (this.props.remote && this.props.filterable ? '' : 'caret-top');
+  }
+
   showCloseIcon() {
     let criteria = this.props.clearable && this.state.inputHovering && !this.props.multiple && this.state.options.indexOf(this.state.selected) > -1;
 
-    if (!this.$el) return false;
+    if (!this.root) return false;
 
-    let icon = this.$el.querySelector('.el-input__icon');
+    let icon = this.root.querySelector('.el-input__icon');
 
     if (icon) {
       if (criteria) {
-        icon.addEventListener('click', this.deleteSelected);
-        addClass(icon, 'is-show-close');
+        icon.addEventListener('click', this.deleteSelected.bind(this));
+        icon.classList.add('is-show-close');
       } else {
-        icon.removeEventListener('click', this.deleteSelected);
-        removeClass(icon, 'is-show-close');
+        icon.removeEventListener('click', this.deleteSelected.bind(this));
+        icon.classList.remove('is-show-close');
       }
     }
 
@@ -95,98 +372,110 @@ export default class Select extends Component {
   }
 
   doDestroy() {
-    this.$refs.popper.doDestroy();
+    this.refs.popper.doDestroy();
   }
 
   handleClose() {
-    this.visible = false;
+    this.setState({ visible: false });
   }
 
   toggleLastOptionHitState(hit) {
-    if (!Array.isArray(this.selected)) return;
-    const option = this.selected[this.selected.length - 1];
+    const { selected } = this.state;
+
+    if (!Array.isArray(selected)) return;
+
+    const option = selected[selected.length - 1];
+
     if (!option) return;
+
     if (hit === true || hit === false) {
-      option.hitState = hit;
-      return hit;
+      return option.hitState = hit;
     }
+
     option.hitState = !option.hitState;
+
     return option.hitState;
   }
 
   deletePrevTag(e) {
     if (e.target.value.length <= 0 && !this.toggleLastOptionHitState()) {
-      this.selected.pop();
+      const { selected } = this.state;
+
+      selected.pop();
+
+      this.setState({ selected });
     }
   }
 
   addOptionToValue(option, init) {
-    if (this.multiple) {
-      if (this.selected.indexOf(option) === -1 && (this.remote ? this.value.indexOf(option.value) === -1 : true)) {
+    const { multiple, remote } = this.props;
+    let { selected, selectedLabel, hoverIndex, value } = this.state;
+
+    if (multiple) {
+      if (selected.indexOf(option) === -1 && (remote ? value.indexOf(option.props.value) === -1 : true)) {
         this.selectedInit = !!init;
-        this.selected.push(option);
+
+        selected.push(option);
+
         this.resetHoverIndex();
       }
     } else {
       this.selectedInit = !!init;
-      this.selected = option;
-      this.selectedLabel = option.currentLabel;
-      this.hoverIndex = option.index;
+
+      selected = option;
+      selectedLabel = option.currentLabel();
+      hoverIndex = option.index;
     }
+
+    this.setState({ selected, selectedLabel, hoverIndex });
   }
 
   managePlaceholder() {
-    if (this.currentPlaceholder !== '') {
-      this.currentPlaceholder = this.$refs.input.value ? '' : this.cachedPlaceHolder;
+    let { currentPlaceholder, cachedPlaceHolder } = this.state;
+
+    if (currentPlaceholder !== '') {
+      currentPlaceholder = this.refs.input.value ? '' : cachedPlaceHolder;
     }
+
+    this.setState({ currentPlaceholder });
   }
 
   resetInputState(e) {
-    if (e.keyCode !== 8) this.toggleLastOptionHitState(false);
-    this.inputLength = this.$refs.input.value.length * 15 + 20;
-  }
+    if (e.keyCode !== 8) {
+      this.toggleLastOptionHitState(false);
+    }
 
-  resetInputHeight() {
-    this.$nextTick(() => {
-      let inputChildNodes = this.$refs.reference.$el.childNodes;
-      let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0];
-      input.style.height = Math.max(this.$refs.tags.clientHeight + 6, this.size === 'small' ? 28 : 36) + 'px';
-      this.broadcast('select-dropdown', 'updatePopper');
+    this.setState({
+      inputLength: this.refs.input.value.length * 15 + 20
     });
   }
 
-  resetHoverIndex() {
-    setTimeout(() => {
-      if (!this.multiple) {
-        this.hoverIndex = this.options.indexOf(this.selected);
-      } else {
-        if (this.selected.length > 0) {
-          this.hoverIndex = Math.min.apply(null, this.selected.map(item => this.options.indexOf(item)));
-        } else {
-          this.hoverIndex = -1;
-        }
-      }
-    }, 300);
+  resetInputHeight() {
+    let inputChildNodes = this.reference.childNodes;
+    let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0];
+
+    input.style.height = Math.max(this.refs.tags.clientHeight + 6, this.size === 'small' ? 28 : 36) + 'px';
+
+    // this.broadcast('select-dropdown', 'updatePopper');
   }
 
-  handleOptionSelect(option) {
-    if (!this.multiple) {
-      this.selected = option;
-      this.selectedLabel = option.currentLabel;
-      this.visible = false;
-    } else {
-      let optionIndex = -1;
-      this.selected.forEach((item, index) => {
-        if (item === option || item.currentLabel === option.currentLabel) {
-          optionIndex = index;
-        }
-      });
-      if (optionIndex > -1) {
-        this.selected.splice(optionIndex, 1);
+  resetHoverIndex() {
+    const { multiple } = this.props;
+    let { hoverIndex, options, selected } = this.state;
+
+    setTimeout(() => {
+      if (!multiple) {
+        hoverIndex = options.indexOf(selected);
       } else {
-        this.selected.push(option);
+        if (selected.length > 0) {
+          hoverIndex = Math.min.apply(null, selected.map(item => options.indexOf(item)));
+        } else {
+          hoverIndex = -1;
+        }
       }
-    }
+
+      this.setState({ hoverIndex });
+    }, 300);
   }
 
   toggleMenu() {
@@ -205,117 +494,252 @@ export default class Select extends Component {
   }
 
   navigateOptions(direction) {
-    if (!this.visible) {
-      this.visible = true;
-      return;
+    let { visible, hoverIndex, options } = this.state;
+
+    if (!visible) {
+      return this.setState({
+        visible: true
+      });
     }
-    if (!this.optionsAllDisabled) {
+
+    let skip;
+
+    if (!this.optionsAllDisabled(options)) {
       if (direction === 'next') {
-        this.hoverIndex++;
-        if (this.hoverIndex === this.options.length) {
-          this.hoverIndex = 0;
+        hoverIndex++;
+
+        if (hoverIndex === options.length) {
+          hoverIndex = 0;
         }
+
         this.resetScrollTop();
-        if (this.options[this.hoverIndex].disabled === true ||
-          this.options[this.hoverIndex].groupDisabled === true ||
-          !this.options[this.hoverIndex].visible) {
-          this.navigateOptions('next');
+
+        if (options[hoverIndex].props.disabled === true ||
+            options[hoverIndex].props.groupDisabled === true ||
+           !options[hoverIndex].state.visible ) {
+          skip = 'next';
         }
       }
+
       if (direction === 'prev') {
-        this.hoverIndex--;
-        if (this.hoverIndex < 0) {
-          this.hoverIndex = this.options.length - 1;
+        hoverIndex--;
+
+        if (hoverIndex < 0) {
+          hoverIndex = options.length - 1;
         }
+
         this.resetScrollTop();
-        if (this.options[this.hoverIndex].disabled === true ||
-          this.options[this.hoverIndex].groupDisabled === true ||
-          !this.options[this.hoverIndex].visible) {
-          this.navigateOptions('prev');
+
+        if (options[hoverIndex].props.disabled === true ||
+            options[hoverIndex].props.groupDisabled === true ||
+           !options[hoverIndex].state.visible ) {
+          skip = 'prev';
         }
       }
     }
+
+    this.setState({ hoverIndex, options }, () => {
+      if (skip) {
+        this.navigateOptions(skip);
+      }
+    });
   }
 
   resetScrollTop() {
-    let bottomOverflowDistance = this.options[this.hoverIndex].$el.getBoundingClientRect().bottom - this.$refs.popper.$el.getBoundingClientRect().bottom;
-    let topOverflowDistance = this.options[this.hoverIndex].$el.getBoundingClientRect().top - this.$refs.popper.$el.getBoundingClientRect().top;
-    if (bottomOverflowDistance > 0) {
-      this.dropdownUl.scrollTop += bottomOverflowDistance;
-    }
-    if (topOverflowDistance < 0) {
-      this.dropdownUl.scrollTop += topOverflowDistance;
-    }
+    // let { hoverIndex, options, dropdownUl } = this.state;
+    //
+    // console.log(options, hoverIndex, options[hoverIndex]);
+    //
+    // let bottomOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
+    // let topOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().top - this.popper.getBoundingClientRect().top;
+    //
+    // if (bottomOverflowDistance > 0) {
+    //   dropdownUl.scrollTop += bottomOverflowDistance;
+    // }
+    // if (topOverflowDistance < 0) {
+    //   dropdownUl.scrollTop += topOverflowDistance;
+    // }
+    //
+    // this.setState({ dropdownUl });
   }
 
   selectOption() {
-    if (this.options[this.hoverIndex]) {
-      this.handleOptionSelect(this.options[this.hoverIndex]);
+    let { hoverIndex, options } = this.state;
+
+    if (options[hoverIndex]) {
+      this.onOptionClick(options[hoverIndex]);
     }
   }
 
   deleteSelected(event) {
     event.stopPropagation();
-    this.selected = {};
-    this.selectedLabel = '';
-    this.$emit('input', '');
-    this.$emit('change', '');
-    this.visible = false;
+
+    this.setState({
+      selected: {},
+      selectedLabel: '',
+      visible: false
+    });
+
+    // this.$emit('input', '');
+    // this.$emit('change', '');
   }
 
   deleteTag(event, tag) {
-    let index = this.selected.indexOf(tag);
+    let { selected } = this.state;
+    let index = selected.indexOf(tag);
+
     if (index > -1) {
-      this.selected.splice(index, 1);
+      selected.splice(index, 1);
     }
+
+    this.setState({ selected });
+
     event.stopPropagation();
   }
 
   onInputChange() {
-    if (this.filterable && this.selectedLabel !== this.value) {
-      this.query = this.selectedLabel;
+    if (this.props.filterable && this.state.selectedLabel !== this.state.value) {
+      this.setState({
+        query: this.state.selectedLabel
+      });
     }
+  }
+
+  onOptionCreate(option) {
+    this.state.options.push(option);
+    this.state.optionsCount++;
+    this.state.filteredOptionsCount++;
+
+    this.setState(this.state);
   }
 
   onOptionDestroy(option) {
-    this.optionsCount--;
-    this.filteredOptionsCount--;
-    let index = this.options.indexOf(option);
+    this.state.optionsCount--;
+    this.state.filteredOptionsCount--;
+
+    let index = this.state.options.indexOf(option);
+
     if (index > -1) {
-      this.options.splice(index, 1);
+      this.state.options.splice(index, 1);
     }
-    this.broadcast('option', 'resetIndex');
+
+    this.setState(this.state, () => {
+      this.state.options.forEach(option => {
+        option.resetIndex();
+      });
+    });
+  }
+
+  onOptionClick(option) {
+    const { multiple } = this.props;
+    let { visible, selected, selectedLabel } = this.state;
+
+    if (!multiple) {
+      selected = option;
+      selectedLabel = option.currentLabel();
+      visible = false;
+    } else {
+      let optionIndex = -1;
+
+      selected.forEach((item, index) => {
+        if (item === option || item.currentLabel() === option.currentLabel()) {
+          optionIndex = index;
+        }
+      });
+
+      if (optionIndex > -1) {
+        selected.splice(optionIndex, 1);
+      } else {
+        selected.push(option);
+      }
+    }
+
+    this.setState({ selected, selectedLabel }, () => {
+      this.onSelectedChange(this.state.selected);
+      this.setState({ visible });
+    });
+  }
+
+  onMouseEnter() {
+    this.setState({
+      inputHovering: true
+    })
+  }
+
+  onMouseLeave() {
+    this.setState({
+      inputHovering: false
+    })
   }
 
   resetInputWidth() {
-    this.inputWidth = this.$refs.reference.$el.getBoundingClientRect().width;
+    this.setState({
+      inputWidth: this.reference.getBoundingClientRect().width
+    })
   }
 
   render() {
     const { multiple, size, disabled, filterable, loading } = this.props;
-    const { inputWidth, inputLength, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
+    const { selected, inputWidth, inputLength, query, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
 
     return (
-      <div
-        className={this.classNames('el-select', {
+      <div className={this.classNames('el-select', {
           'is-multiple': multiple,
           'is-small': size === 'small'
         })}>
         {
           multiple && (
             <div ref="tags" className="el-select__tags" onClick={this.toggleMenu.bind(this)} style={{
-              'max-width': inputWidth - 32 + 'px'
+              maxWidth: inputWidth - 32 + 'px'
             }}>
               {
+                selected.map(el => {
+                  return (
+                    <Tag
+                      type="primary"
+                      key={el.props.value}
+                      hit={el.hitState}
+                      closable={true}
+                      closeTransition={true}
+                      onClose={this.deleteTag.bind(this, el)}
+                    >{el.currentLabel()}</Tag>
+                  )
+                })
+              }
+              {
                 filterable && (
-                  <Input
+                  <input
                     ref="input"
                     type="text"
                     className="el-select__input"
-                    debounce={this.debounce()}
-                    style={{
-                      width: inputLength + 'px',
-                      'max-width': inputWidth - 42 + 'px'
+                    style={{ width: inputLength, maxWidth: inputWidth - 42 }}
+                    value={query}
+
+
+                    onKeyDown={e => {
+                      // this.resetInputState();
+                      // onChange={this.debouncedOnInputChange}
+                      // onKeyUp={this.managePlaceholder.bind(this)}
+
+                      switch (e.keyCode) {
+                        case 27:
+                          this.setState({ visible: false }); e.preventDefault();
+                          break;
+                        case 8:
+                          this.deletePrevTag();
+                          break;
+                        case 13:
+                          this.selectOption(); e.preventDefault();
+                          break;
+                        case 38:
+                          this.navigateOptions('prev'); e.preventDefault();
+                          break;
+                        case 40:
+                          this.navigateOptions('next'); e.preventDefault();
+                          break;
+                        default:
+                          break;
+                      }
                     }}
                   />
                 )
@@ -332,28 +756,51 @@ export default class Select extends Component {
           disabled={disabled}
           readOnly={!filterable || multiple}
           icon={this.iconClass()}
+          onChange={e => this.setState({ selectedLabel: e.target.value })}
           onClick={this.toggleMenu.bind(this)}
+          onIconClick={this.toggleMenu.bind(this)}
+          onMouseEnter={this.onMouseEnter.bind(this)}
+          onMouseLeave={this.onMouseLeave.bind(this)}
+          onKeyUp={this.debouncedOnInputChange.bind(this)}
+          onKeyDown={e => {
+            switch (e.keyCode) {
+              case 9:
+              case 27:
+                this.setState({ visible: false }); e.preventDefault();
+                break;
+              case 13:
+                this.selectOption(); e.preventDefault();
+                break;
+              case 38:
+                this.navigateOptions('prev'); e.preventDefault();
+                break;
+              case 40:
+                this.navigateOptions('next'); e.preventDefault();
+                break;
+              default:
+                break;
+            }
+          }}
         />
-        <transition name="md-fade-bottom">
+        <Transition name="md-fade-bottom" duration="200">
           <View show={visible && this.emptyText() !== false}>
             <Dropdown ref="popper">
               <View show={options.length > 0 && filteredOptionsCount > 0 && !loading}>
                 <ul className="el-select-dropdown__list">
                   {this.props.children}
                 </ul>
-                { this.emptyText() && <p className="el-select-dropdown__empty">{this.emptyText()}</p> }
               </View>
+              { this.emptyText() && <p className="el-select-dropdown__empty">{this.emptyText()}</p> }
             </Dropdown>
           </View>
-        </transition>
+        </Transition>
       </div>
     )
   }
 }
 
 Select.childContextTypes = {
-  component: PropTypes.any,
-  multiple: PropTypes.bool
+  component: PropTypes.any
 };
 
 Select.propTypes = {

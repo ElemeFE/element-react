@@ -15,49 +15,32 @@ export default class Step extends Component {
     return (
       <div
         style={style}
-        className={this.classNames({
-          [directionClass]: true,
-          'el-step': true,
-        })}>
+        className={this.classNames('el-step', directionClass)}>
         <div
-          className={this.classNames({
-            [statusClass]: true,
-            'el-step__head': true,
-            'is-text': !icon,
+          className={this.classNames('el-step__head', statusClass, {
+            'is-text': !icon
           })}>
           <div
-            className={this.classNames({
-              [directionClass]: true,
-              'el-step__line': true,
-              'is-icon': icon,
+            className={this.classNames('el-step__line', directionClass, {
+              'is-icon': icon
             })}>
             <i className="el-step__line-inner" style={lineStyle}></i>
           </div>
           <span className="el-step__icon">
             {
               (status !== 'success' && status !== 'error') ? iconNode :
-                <i
-                  className={'el-icon-' + (status === 'success' ? 'check' : 'close')}>
-                </i>
+              <i className={'el-icon-' + (status === 'success' ? 'check' : 'close')}></i>
             }
           </span>
         </div>
-        <div
-          className="el-step__main"
-        >
+        <div className="el-step__main">
           <div
             ref="title"
-            className={this.classNames({
-              [statusClass]: true,
-              'el-step__title': true,
-            })}>
+            className={this.classNames('el-step__title', statusClass)}>
             {title}
           </div>
           <div
-            className={this.classNames({
-              [statusClass]: true,
-              'el-step__description': true,
-            })}>
+            className={this.classNames('el-step__description', statusClass)}>
             { description }
           </div>
         </div>
