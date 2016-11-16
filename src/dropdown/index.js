@@ -2,7 +2,7 @@ import Dropdown from './Dropdown';
 import DropdownMenu from './DropdownMenu';
 import DropdownItem from './DropdownItem';
 
-Dropdown.Body = DropdownItem;
-Dropdown.Footer = DropdownMenu;
+Dropdown.DropdownItem = DropdownItem;
+Dropdown.DropdownMenu = DropdownMenu;
 
 export default Dropdown;

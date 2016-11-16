@@ -32,6 +32,7 @@ import Dialog from './dialog';
 import Tabs from './tabs';
 import Tag from './tag';
 import Select from './select';
+import Dropdown from './dropdown';
 import Popover from './popover';
 import Form from './form';
 
@@ -75,6 +76,7 @@ const pages = {
     'menu': { title: 'NavMenu 导航菜单', component: Menu },
     'tabs': { title: 'Tabs 标签页', component: Tabs },
     'breadcrumb': { title: 'Breadcrumb 面包屑', component: Breadcrumb },
+    'dropdown': { title: 'Dropdown 下拉菜单', component: Dropdown },
     'steps': { title: 'Steps 步骤', component: Steps },
   },
   'Others': {

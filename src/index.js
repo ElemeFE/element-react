@@ -30,5 +30,6 @@ export { default as Form } from './form';
 export { default as Upload } from './upload';
 export { default as Tag } from './tag';
 export { default as Select } from './select';
+export { default as Dropdown } from './dropdown';
 export { default as Popover } from './popover';
 export { TimeSelect } from './date-picker';

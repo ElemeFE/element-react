@@ -69,7 +69,7 @@
 | data | 可选参数, 上传时附带的额外参数 | object | — | — |
 | name | 可选参数, 上传的文件字段名 | string | — | file |
 | withCredentials | 支持发送 cookie 凭证信息 | boolean | — | false |
-| show-upload-list | 是否显示已上传文件列表 | boolean | — | true |
+| showUploadList | 是否显示已上传文件列表 | boolean | — | true |
 | type | 上传控件类型 | string | select/drag | select |
 | accept | 可选参数, 接受上传的[文件类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept)（thumbnailMode 模式下此参数无效）| string | — | — |
 | onPreview | 可选参数, 点击已上传的文件链接时的钩子, 可以通过 file.response 拿到服务端返回数据 | function(file) | — | — |
