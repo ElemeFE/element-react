@@ -7,22 +7,20 @@ export default class DropdownMenu extends Component {
   }
 
   render() {
+    const { visible } = this.props;
     return (
       <Transition name="md-fade-bottom">
-        {/* <View show={}>
-          <ul className="el-dropdown-menu">
+        <View className="el-dropdown-menu" show={visible}>
           {this.props.children}
-          </ul>
-        </View> */}
+        </View>
       </Transition>
     )
   }
 }
 
 DropdownMenu.propTypes = {
-
+  visible: PropTypes.bool,
 }
 
 DropdownMenu.defaultProps = {
-
 }

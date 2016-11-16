@@ -1,55 +1,76 @@
 import React, { PropTypes } from 'react';
 import { Component, View } from '../../libs';
+import { Button } from '../../src';
 
+let triggerOverlay = null;
+let timeout = null;
 export default class Dropdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeout: null,
       visible: false,
     }
   }
 
-  componentDidMount() {
-    this.initEvent();
+  componentWillMount() {
+    const { splitButton, type, size } = this.props;
+
+    triggerOverlay = splitButton ?
+        (<Button.Group>
+          <Button type={type} size={size} onClick={() => this.props.onClick()}>
+            更多菜单
+          </Button>
+          this.triggerEvent(
+          <Button ref="trigger" type={type} size={size} class="el-dropdown__caret-button">
+            <i className="el-dropdown__icon el-icon-caret-bottom"></i>
+          </Button>)
+        </Button.Group>)
+        : this.triggerEvent(this.props.overlay);
   }
 
   show() {
-
+    clearTimeout(timeout);
+    timeout = setTimeout(() => this.setState({ visible: true }), 250);
   }
 
   hide() {
-
+    clearTimeout(timeout);
+    timeout = setTimeout(() => this.setState({ visible: false }), 150);
   }
 
   handleClick() {
-
+    const { visible } = this.state;
+    this.setState({ visible: !visible });
   }
 
-  initEvent() {
-    const { trigger, splitButton } = this.props;
-    const triggerElm = splitButton ? this.refs.trigger : this.props.children[0];
-    if (trigger === 'hover') {
-      const dropdownElm = this.$slots.dropdown[0].elm;
-      [triggerElm, dropdownElm].forEach(element => {
-        element.addEventListener('mouseenter', this.show.bind(this));
-        element.addEventListener('mouseleave', this.hide.bind(this));
-      })
-    } else {
-      triggerElm.addEventListener('click', this.handleClick.bind(this));
+  triggerEvent(element) {
+    if (!Array.isArray(element)) {
+      element = [element];
     }
-  }
-
-  handleMenuItemClick(command, instance) {
-    this.visible = false;
-    this.$emit('command', command, instance);
+    const { trigger } = this.props;
+    const triggerMap = {
+      'hover': {
+        onMouseEnter: this.show.bind(this),
+        onMouseLeave: this.hide.bind(this),
+      },
+      'click': {
+        onClick: this.handleClick.bind(this),
+      }
+    }
+    return element.map((ele, index) => React.cloneElement(ele, { ...triggerMap[trigger], key: index },));
   }
 
   render() {
+    const { visible } = this.state;
+    const dropdown = React.cloneElement(this.props.children, { visible });
     return (
-      <div className="el-dropdown" v-clickoutside={hide}>
-        {triggerElm}
-        {this.$slots.dropdown}
+      <div className="el-dropdown">
+        { triggerOverlay }
+        {
+          this.props.trigger === 'hover' ?
+          this.triggerEvent(dropdown)
+          : dropdown
+        }
       </div>
     )
   }
@@ -60,10 +81,13 @@ Dropdown.propTypes = {
   menuAlign: PropTypes.oneOf(['start', 'end']),
   type: PropTypes.string,
   size: PropTypes.string,
+  overlay: PropTypes.node,
   splitButton: PropTypes.bool,
+  onClick: PropTypes.func,
 }
 
 Dropdown.defaultProps = {
   trigger: 'hover',
-  menuAlign: 'end'
+  menuAlign: 'end',
+  onClick() {},
 }
