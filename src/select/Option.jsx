@@ -107,8 +107,7 @@ export default class Option extends Component {
 }
 
 Option.contextTypes = {
-  component: PropTypes.any,
-  disabled: PropTypes.bool
+  component: PropTypes.any
 };
 
 Option.propTypes = {

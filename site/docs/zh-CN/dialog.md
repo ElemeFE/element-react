@@ -32,47 +32,84 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
 Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下面是应用了 Element Table 和 Form 组件的两个样例。
 
 :::demo
-```html
-<Button type="text" onClick={ () => this.setState({ dialogVisible2: true }) } type="text">打开嵌套表格的 Dialog</Button>
-<Dialog title="收货地址"
-        visible={ this.state.dialogVisible2 }
-        onCancel={ () => this.setState({ dialogVisible2: false }) }
->
-  <Dialog.Body>
-    TODO: 待 Table 实现
-    <el-table data="gridData">
-      <el-table-column property="date" label="日期" width="150"></el-table-column>
-      <el-table-column property="name" label="姓名" width="200"></el-table-column>
-      <el-table-column property="address" label="地址"></el-table-column>
-    </el-table>
-  </Dialog.Body>
-</Dialog>
+```js
+let columns = [
+{
+  label: "日期",
+  prop: "date",
+  width: 150
+},
+{
+  label: "姓名",
+  prop: "name",
+  width: 100
+},
+{
+  label: "地址",
+  prop: "address",
+  width: 300
+}
+];
 
-<Button type="text" onClick={ () => this.setState({ dialogVisible3: true }) } type="text">打开嵌套表单的 Dialog</Button>
-<Dialog title="收货地址"
-        visible={ this.state.dialogVisible3 }
-        onCancel={ () => this.setState({ dialogVisible3: false }) }
->
-  <Dialog.Body>
-    TODO: 待 Form 实现
-    <el-form model="form">
-      <el-form-item label="活动名称" label-width="formLabelWidth">
-        <el-input v-model="form.name" auto-complete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="活动区域" label-width="formLabelWidth">
-        <el-select v-model="form.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
-      </el-form-item>
-    </el-form>
-  </Dialog.Body>
+let data = [{
+  date: '2016-05-02',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}, {
+  date: '2016-05-04',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1517 弄'
+}, {
+  date: '2016-05-01',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1519 弄'
+}, {
+  date: '2016-05-03',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1516 弄'
+}];
 
-  <Dialog.Footer className="dialog-footer">
-    <Button onClick={ () => this.handleDialogClose(3) }>取 消</Button>
-    <Button type="primary" onClick={ () => this.handleDialogClose(3) }>确 定</Button>
-  </Dialog.Footer>
-</Dialog>
+<div>
+  <Button type="text" onClick={ () => this.setState({ dialogVisible2: true }) } type="text">打开嵌套表格的 Dialog</Button>
+  <Dialog
+    title="收货地址"
+    visible={ this.state.dialogVisible2 }
+    onCancel={ () => this.setState({ dialogVisible2: false }) }
+  >
+    <Dialog.Body>
+      <Table
+       style={{width: '100%'}}
+       stripe={true}
+       columns={columns}
+       data={data} />
+    </Dialog.Body>
+  </Dialog>
+  <Button type="text" onClick={ () => this.setState({ dialogVisible3: true }) } type="text">打开嵌套表单的 Dialog</Button>
+  <Dialog
+    title="收货地址"
+    visible={ this.state.dialogVisible3 }
+    onCancel={ () => this.setState({ dialogVisible3: false }) }
+  >
+    <Dialog.Body>
+      <Form model={this.state.form}>
+        <Form.Item label="活动名称">
+          <Input value={this.state.form.name}></Input>
+        </Form.Item>
+        <Form.Item label="活动区域">
+          <Select value={this.state.form.region} placeholder="请选择活动区域">
+            <Select.Option label="区域一" value="shanghai"></Select.Option>
+            <Select.Option label="区域二" value="beijing"></Select.Option>
+          </Select>
+        </Form.Item>
+      </Form>
+    </Dialog.Body>
+
+    <Dialog.Footer className="dialog-footer">
+      <Button onClick={ () => this.setState({ dialogVisible3: false }) }>取 消</Button>
+      <Button type="primary" onClick={ () => this.setState({ dialogVisible3: false }) }>确 定</Button>
+    </Dialog.Footer>
+  </Dialog>
+</div>
 ```
 :::
 

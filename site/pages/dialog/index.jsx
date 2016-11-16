@@ -11,7 +11,11 @@ export default class Playground extends React.Component {
     this.state = {
       dialogVisible1: false,
       dialogVisible2: false,
-      dialogVisible3: false
+      dialogVisible3: false,
+      form: {
+        name: '',
+        region: ''
+      }
     };
   }
 
