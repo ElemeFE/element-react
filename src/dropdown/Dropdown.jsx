@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ClickOutside from 'react-click-outside';
 import { Component, PropTypes } from '../../libs';
 
 import Button from '../button';
 
-export default class Dropdown extends Component {
+class Dropdown extends Component {
   constructor(props) {
     super(props);
 
@@ -27,6 +28,10 @@ export default class Dropdown extends Component {
     if (state.visible != this.state.visible) {
       this.refs.dropdown.onVisibleChange(state.visible);
     }
+  }
+
+  handleClickOutside() {
+    this.setState({ visible: false });
   }
 
   show() {
@@ -116,3 +121,5 @@ Dropdown.defaultProps = {
   trigger: 'hover',
   menuAlign: 'end'
 }
+
+export default ClickOutside(Dropdown);

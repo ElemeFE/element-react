@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ClickOutside from 'react-click-outside';
 import Popper from '../../vendor/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
@@ -11,7 +12,7 @@ import i18n from '../locale';
 
 import Dropdown from './Dropdown';
 
-export default class Select extends Component {
+class Select extends Component {
   constructor(props) {
     super(props);
 
@@ -122,6 +123,10 @@ export default class Select extends Component {
 
   debounce() {
     return this.props.remote ? 300 : 0;
+  }
+
+  handleClickOutside() {
+    this.setState({ visible: false });
   }
 
   onVisibleChange(visible) {
@@ -824,3 +829,5 @@ Select.propTypes = {
 Select.defaultProps = {
   placeholder: i18n.t('el.select.placeholder')
 }
+
+export default ClickOutside(Select);
