@@ -12,7 +12,9 @@ export default class TableHeader extends  Component{
 
     this.state = {
       dragging: false,
-      dragState: {}
+      dragState: {},
+      sortStatus: 0, //0：没有排序 1：升序 2：降序
+      sortPropertyName: ''
     };
   }
 
@@ -120,8 +122,27 @@ export default class TableHeader extends  Component{
     body.selectAll(checked);
   }
 
+  onSort(column){
+    const { sortStatus } = this.state;
+    let  nextStatus;
+
+    switch(sortStatus){
+      case 0: nextStatus = 1;break;
+      case 1: nextStatus = 2;break;
+      case 2: nextStatus = 0;break;
+    }
+
+    this.setState({
+      sortStatus: nextStatus,
+      sortPropertyName: column.property
+    });
+    this.context.$owerTable.sortBy(nextStatus, column.property, column.sortMethod);
+  }
+
   render() {
     const { columns, style, isScrollY, fixed } = this.props;
+    const { sortPropertyName, sortStatus } = this.state;
+
     return (
       <table
         style={style}
@@ -132,20 +153,43 @@ export default class TableHeader extends  Component{
           <tr>
             {
               columns.map((column, idx)=>{
+                const className = this.classNames({
+                  'is-hidden': !this.props.fixed && column.fixed, 
+                  'ascending': (sortPropertyName == column.property && sortStatus == 1),
+                  'descending': (sortPropertyName == column.property && sortStatus == 2)
+                });
+
                 return (
                   <th
                     key={idx}
-                    className={this.classNames({'is-hidden': !this.props.fixed && column.fixed})}
+                    className={className}
                     onMouseMove={(e)=>this.handleMouseMove(e, column)}
                     onMouseDown={(e)=>this.handleMouseDown(e, column)}
                     style={{width: column.realWidth}}>
                     {
-                      column.type == 'selection' && <div className="cell" onChange={e=>this.onAllChecked(e.target.checked)}><Checkbox/></div>
+                      column.type == 'selection' && (
+                        <div className="cell" onChange={e=>this.onAllChecked(e.target.checked)}>
+                          <Checkbox/>
+                        </div>)
                     }
                     {
                       column.type == 'index' && <div className="cell">#</div>
                     }
-                    { column.type != 'selection' && column.type != 'index' && <div className="cell">{column.label}</div>}
+                    { 
+                      column.type != 'selection' && 
+                      column.type != 'index' && 
+                      <div className="cell">
+                        {column.label}
+
+                        {
+                          column.sortable ? (
+                            <span className="caret-wrapper" onClick={()=>{this.onSort(column)}}>
+                              <i className="sort-caret ascending"></i>
+                              <i className="sort-caret descending"></i>
+                            </span>) : ''
+                        }
+                      </div>
+                    }
                   </th>)
               })
             }
