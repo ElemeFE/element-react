@@ -666,8 +666,48 @@ function initConfig(){
 对表格进行排序，可快速查找或对比数据。
 
 :::demo 在列中设置`sortable`属性即可实现以该列为基准的排序，接受一个`Boolean`，默认为`false`。在本例中，我们还使用了`formatter`属性，它用于格式化指定列的值，接受一个`Function`，会传入两个参数：`row`和`column`，可以根据自己的需求进行处理。
-```html
+```javascript
+  let columns = [
+  {
+    label: "日期",
+    prop: "date",
+    width: 180,
+    sortable: true
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 180
+  },
+  {
+    label: "地址",
+    prop: "address"
+  }
+];
 
+let data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1518 弄'
+  }, {
+    date: '2016-05-04',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1517 弄'
+  }, {
+    date: '2016-05-01',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1519 弄'
+  }, {
+    date: '2016-05-03',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1516 弄'
+  }];
+
+ <Table 
+   style={{width: '100%'}}
+   columns={columns} 
+   border={true}
+   data={data}/>
 
 ```
 :::
@@ -677,8 +717,52 @@ function initConfig(){
 对表格进行筛选，可快速查找到自己想看的数据。
 
 :::demo 在列中设置`filters` `filter-method`属性即可开启该列的筛选，filters 是一个数组，`filter-method`是一个方法，它用于决定某些数据是否显示，会传入两个参数：`value`和`row`。
-```html
+```javascript
+  let columns = [
+  {
+    label: "日期",
+    prop: "date",
+    width: 180,
+    sortable: true
+  },
+  {
+    label: "姓名",
+    prop: "name",
+    width: 180
+  },
+  {
+    label: "地址",
+    prop: "address"
+  },
+  {
+    label: "地址",
+    prop: "address"
+  }
+];
 
+let data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1518 弄'
+  }, {
+    date: '2016-05-04',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1517 弄'
+  }, {
+    date: '2016-05-01',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1519 弄'
+  }, {
+    date: '2016-05-03',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1516 弄'
+  }];
+
+ <Table 
+   style={{width: '100%'}}
+   columns={columns} 
+   border={true}
+   data={data}/>
 ```
 :::
 
