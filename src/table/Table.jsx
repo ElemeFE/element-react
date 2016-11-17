@@ -24,6 +24,7 @@ export default class Table extends Component{
       fixedLeftColumns: enhCols.fixedLeftColumns,
       fixedRightColumns: enhCols.fixedRightColumns,
       data: data,
+      sortList: null,
 
       bodyWidth: '',
       bodyHeight: '',
@@ -45,6 +46,12 @@ export default class Table extends Component{
 
   componentDidMount(){
     this.initLayout();
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.data != this.props.data){
+      this.setState({data: nextProps.data});
+    }
   }
 
   initLayout(){
@@ -109,6 +116,22 @@ export default class Table extends Component{
     rightFixedBodyWrapper && (rightFixedBodyWrapper.scrollTop = target.scrollTop);
   }
 
+  sortBy(sort, prop, compare){
+    const { data } = this.state;
+    const sortList = data.slice(0);
+
+    if(sort === 0){
+      this.setState({sortList: null});
+    }else{
+      const defaultCompare = (a, b)=>{
+        if(sort == 2){ var t = b; b = a; a = t;}
+        return (a[prop] > b[prop] ? 1 : -1);
+      }
+      sortList.sort(compare ? compare : defaultCompare);
+      this.setState({sortList});
+    }
+  }
+
   render() {
     let { fit, stripe, border, highlightCurrentRow } = this.props;
     let { 
@@ -121,7 +144,8 @@ export default class Table extends Component{
       realTableHeight,
       realTableHeaderHeight,
       scrollY,
-      scrollX
+      scrollX,
+      sortList
     } = this.state;
 
     const rootClassName = this.classNames(
@@ -133,7 +157,9 @@ export default class Table extends Component{
       }
     );
 
-    const scrollYWiddth = scrollX?getScrollBarWidth() : 0;
+    data = sortList || data;
+
+    const scrollYWiddth = scrollX ? getScrollBarWidth() : 0;
 
     return (
       <div className={rootClassName}>
@@ -254,6 +280,8 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
+  columns: [],
+  data: [],
   stripe: false,
   border: false,
   fit: true,
