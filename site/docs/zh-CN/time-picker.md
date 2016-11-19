@@ -13,12 +13,12 @@ class TimeSelectDemo extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: '14:30'
+      value: new Date(2016, 9, 10, 14, 30),
     }
   }
 
   handleUpdate(value) {
-    this.setState({ value })
+    console.debug('time-select update: ', value)
   }
 
   render() {
@@ -43,6 +43,38 @@ return <TimeSelectDemo />
 ### 任意时间点
 
 可以选择任意时间
+:::demo 使用 el-time-select 标签，分别通过`star`、`end`和`step`指定可选的起始时间、结束时间和步长
+```jsfunc
+
+class TimePickerDemo extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: new Date(2016, 9, 10, 18, 40)
+    }
+  }
+
+  handleUpdate(value) {
+    console.debug('time-picker update: ', value)
+  }
+
+  render() {
+    return (
+      <TimePicker
+        onChange={this.handleUpdate.bind(this)}
+        selectableRange="18:30:00 - 20:30:00"
+        placeholder="选择时间"
+        value={this.state.value}
+        />
+    )
+  }
+}
+
+return <TimePickerDemo />
+
+```
+:::
+
 
 
 ### 固定时间范围

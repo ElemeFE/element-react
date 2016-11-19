@@ -1,7 +1,8 @@
 import {require_condition} from './assert'
 import * as ReactUtils from './react'
+import * as Errors from './errors'
 
-export {require_condition, ReactUtils}
+export {require_condition, ReactUtils, Errors}
 
 export function watchPropertyChange(target, property, cb) {
   require_condition(
