@@ -3,7 +3,7 @@ import React from 'react';
 import { PropTypes, Component } from '../../../libs';
 import { PopperReactMixin } from '../../../libs/utils'
 
-class TimeSelectPanel extends Component {
+export default class TimeSelectPanel extends Component {
   constructor(props) {
     super(props);
     PopperReactMixin.call(this, () => this.refs.root, this.props.getPopperRefElement, Object.assign({
@@ -13,8 +13,9 @@ class TimeSelectPanel extends Component {
   }
 
   handleClick(item) {
+    const {onPicked, dateParser} = this.props
     if (!item.disabled) {
-      this.props.onPicked(item.value);
+      onPicked(dateParser(item.value));
     }
   }
 
@@ -77,6 +78,8 @@ TimeSelectPanel.propTypes = {
   minTime: PropTypes.string,
   value: PropTypes.string,
   onPicked: PropTypes.func,
+  //(string)=>date
+  dateParser: PropTypes.func.isRequired,
   //()=>HtmlElement
   getPopperRefElement: PropTypes.func,
   popperMixinOption: PropTypes.object
@@ -143,7 +146,5 @@ const nextTime = function (time, step) {
 
   return formatTime(next);
 };
-
-export default TimeSelectPanel;
 
 
