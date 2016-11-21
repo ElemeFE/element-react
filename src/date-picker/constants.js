@@ -7,6 +7,7 @@ export const DEFAULT_FORMATS = {
   datetime: 'yyyy-MM-dd HH:mm:ss',
   time: 'HH:mm:ss',
   timerange: 'HH:mm:ss',
+  timeselect: 'HH:mm',
   daterange: 'yyyy-MM-dd',
   datetimerange: 'yyyy-MM-dd HH:mm:ss'
 };
@@ -14,7 +15,7 @@ export const HAVE_TRIGGER_TYPES = [
   'date',
   'datetime',
   'time',
-  'time-select',
+  'timeselect',
   'week',
   'month',
   'year',
@@ -22,6 +23,7 @@ export const HAVE_TRIGGER_TYPES = [
   'timerange',
   'datetimerange'
 ];
+
 export const DATE_FORMATTER = function (value, format) {
   return formatDate(value, format);
 };
@@ -105,6 +107,10 @@ export const TYPE_VALUE_RESOLVER_MAP = {
     parser: RANGE_PARSER
   },
   time: {
+    formatter: DATE_FORMATTER,
+    parser: DATE_PARSER
+  },
+  timeselect: {
     formatter: DATE_FORMATTER,
     parser: DATE_PARSER
   },
