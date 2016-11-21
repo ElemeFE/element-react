@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { PropTypes, Component, Locale } from '../../../libs';
+import { PropTypes, Component } from '../../../libs';
 import { limitRange } from '../utils'
 import TimeSpinner from '../basic/TimeSpinner'
 import { PopperReactMixin } from '../../../libs/utils'
+import Locale from '../../locale'
 
 export default class TimePanel extends Component {
 
@@ -21,7 +22,7 @@ export default class TimePanel extends Component {
         @param value: Date|null
         @param isKeepPannelOpen:boolean, should parent close the pannel
         */
-        onPicked: PropTypes.number.isRequired,
+        onPicked: PropTypes.func.isRequired,
         // cancel btn is clicked
         //()=>()
         onCancel: PropTypes.func.isRequired,
@@ -99,7 +100,7 @@ export default class TimePanel extends Component {
     if (pickerWidth) {
       style.width = `${pickerWidth}px`
     }
-    const $t = Locale.$t
+    const $t = Locale.t
 
     return (
       <div
