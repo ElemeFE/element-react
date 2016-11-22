@@ -25,6 +25,7 @@ export default class Table extends Component{
       fixedRightColumns: enhCols.fixedRightColumns,
       data: data,
       sortList: null,
+      filterList: null,
 
       bodyWidth: '',
       bodyHeight: '',
@@ -46,12 +47,34 @@ export default class Table extends Component{
 
   componentDidMount(){
     this.initLayout();
+
+    Object.defineProperty(this, 'filterContainer', {
+      enumerable: true,
+      configurable: true,
+      get: this._filterContainer.bind(this)
+    });
+  }
+
+  componentWillUnmount(){
+   ReactDOM.unmountComponentAtNode(this._filterContainer);
+   document.body.removeChild(this._filterContainer);
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.data != this.props.data){
       this.setState({data: nextProps.data});
     }
+  }
+
+  _filterContainer(){
+    if(!this._filterCon){
+      this._filterCon = document.createElement('div');
+      this._filterCon.style="position:absolute;left:0;top:0";
+      this._filterCon.id = "__filter__" + Math.random(32).toString().slice(2);
+      document.body.appendChild(this._filterCon);
+    }
+
+    return this._filterCon;
   }
 
   initLayout(){
@@ -117,7 +140,7 @@ export default class Table extends Component{
   }
 
   sortBy(sort, prop, compare){
-    const { data } = this.state;
+    const data = this.state.filterList || this.state.data;
     const sortList = data.slice(0);
 
     if(sort === 0){
@@ -130,6 +153,19 @@ export default class Table extends Component{
       sortList.sort(compare ? compare : defaultCompare);
       this.setState({sortList});
     }
+  }
+
+  filterBy(column, filteCondi){
+    const data = this.state.sortList || this.state.data;
+
+    const filterList = data.filter((d)=>{
+      const defaultFilterMethod = (c)=>d[column.property] == c.value;
+      return !!filteCondi.filter(column.filterMethod || defaultFilterMethod).length
+    });
+
+    this.setState({
+      filterList: filteCondi && filteCondi.length ? filterList : data
+    });
   }
 
   render() {
@@ -145,7 +181,8 @@ export default class Table extends Component{
       realTableHeaderHeight,
       scrollY,
       scrollX,
-      sortList
+      sortList,
+      filterList
     } = this.state;
 
     const rootClassName = this.classNames(
@@ -157,9 +194,9 @@ export default class Table extends Component{
       }
     );
 
-    data = sortList || data;
-
     const scrollYWiddth = scrollX ? getScrollBarWidth() : 0;
+
+    data = filterList || sortList || data;
 
     return (
       <div className={rootClassName}>
@@ -167,6 +204,7 @@ export default class Table extends Component{
           ref="headerWrapper"
           className="el-table__header-wrapper">
           <TableHeader 
+            ref="header"
             isScrollY={scrollY}
             style={{width: bodyWidth}} 
             columns={_columns}/>
