@@ -3,6 +3,7 @@ import ReactDom from 'react-dom';
 import Checkbox from '../checkbox';
 import { Component, PropTypes } from '../../libs';
 import { getScrollBarWidth } from './utils'
+import Filter from './filter'
 
 export default class TableHeader extends  Component{
   constructor(props, context){
@@ -11,10 +12,12 @@ export default class TableHeader extends  Component{
     this.$ower = context.$owerTable;
 
     this.state = {
+      allChecked: false,
       dragging: false,
       dragState: {},
       sortStatus: 0, //0：没有排序 1：升序 2：降序
-      sortPropertyName: ''
+      sortPropertyName: '',
+      filterParams: {column: null, condi: null}//存储当前的过滤条件
     };
   }
 
@@ -119,6 +122,7 @@ export default class TableHeader extends  Component{
 
   onAllChecked(checked){
     const body = this.context.$owerTable.refs.mainBody;
+    this.setState({allChecked: checked});
     body.selectAll(checked);
   }
 
@@ -137,6 +141,71 @@ export default class TableHeader extends  Component{
       sortPropertyName: column.property
     });
     this.context.$owerTable.sortBy(nextStatus, column.property, column.sortMethod);
+  }
+
+  onFilter(e, filters, columnData){
+    const { filterParams } = this.state;
+
+    e.stopPropagation();
+
+    let column = e.target.parentNode;
+    let ower = this.context.$owerTable;
+    let arrow, pos;
+
+    while(column.tagName.toLowerCase() != 'th'){
+      column = column.parentNode;
+    } 
+
+    pos = this.getPosByEle(column);
+
+    arrow = column.querySelector('.el-icon-arrow-down');
+    pos.x = this.getPosByEle(arrow).x + arrow.offsetWidth;
+    pos.y = pos.y + column.offsetHeight - 3;
+
+
+    let visible;
+    if(arrow.className.indexOf('el-icon-arrow-up') > -1){
+      arrow.className = arrow.className.replace('el-icon-arrow-up', '');
+      visible = false;
+    }else{
+      arrow.className = arrow.className + ' el-icon-arrow-up';
+      visible = true;
+    }
+
+    const onClose = ()=>{arrow.className = arrow.className.replace('el-icon-arrow-up', '')}
+
+    ReactDom.render(
+      <Filter
+        defaultCondi={filterParams.column==columnData?filterParams.condi:null}
+        onFilter={this.onFilterAction.bind(this, columnData)}
+        visible={visible}
+        onClose={onClose}
+        filters={filters}
+        position={pos} 
+        ower={ower}/>, 
+      ower.filterContainer
+    );
+  }
+
+  onFilterAction(column, filterCondi){
+    const { filterParams } = this.state;
+
+    filterParams.column = filterCondi && filterCondi.length? column : null
+    filterParams.condi = filterCondi && filterCondi.length ? filterCondi : null;
+
+    this.context.$owerTable.filterBy(column, filterCondi);
+  }
+
+  getPosByEle(el){
+    let y = el.offsetTop;
+    let x = el.offsetLeft;
+
+    while(el = el.offsetParent){
+      y += el.offsetTop;
+      x += el.offsetLeft;
+    }
+
+    return { x, y }
   }
 
   render() {
@@ -168,13 +237,17 @@ export default class TableHeader extends  Component{
                     style={{width: column.realWidth}}>
                     {
                       column.type == 'selection' && (
-                        <div className="cell" onChange={e=>this.onAllChecked(e.target.checked)}>
-                          <Checkbox/>
+                        <div className="cell">
+                          <Checkbox 
+                            checked={this.state.allChecked}
+                            onChange={e=>this.onAllChecked(e.target.checked)}/>
                         </div>)
                     }
+
                     {
                       column.type == 'index' && <div className="cell">#</div>
                     }
+
                     { 
                       column.type != 'selection' && 
                       column.type != 'index' && 
@@ -187,6 +260,16 @@ export default class TableHeader extends  Component{
                               <i className="sort-caret ascending"></i>
                               <i className="sort-caret descending"></i>
                             </span>) : ''
+                        }
+
+                        {
+                          column.filterable ? (
+                            <span 
+                              className="el-table__column-filter-trigger" 
+                              onClick={(e)=>this.onFilter(e, column.filters, column)}>
+                              <i className="el-icon-arrow-down"></i>
+                            </span>
+                          ):''
                         }
                       </div>
                     }
