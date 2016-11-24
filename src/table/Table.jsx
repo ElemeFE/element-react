@@ -231,7 +231,7 @@ export default class Table extends Component{
                 <TableHeader
                   fixed="left"
                   border="border"
-                  columns={fixedLeftColumns}
+                  columns={_columns}
                   style={{width: '100%', height: '100%'}}/>
               </div>
               <div 
@@ -242,7 +242,7 @@ export default class Table extends Component{
                   ref="fixedLeftBody"
                   fixed="left"
                   rowClassName={this.props.rowClassName}
-                  columns={fixedLeftColumns}
+                  columns={_columns}
                   data={data}
                   highlightCurrentRow={highlightCurrentRow}
                   style={{width: calculateFixedWidth(fixedLeftColumns)}}>
@@ -261,7 +261,7 @@ export default class Table extends Component{
             <TableHeader
               fixed="right"
               border="border"
-              columns={fixedRightColumns}
+              columns={_columns}
               style={{width: '100%', height: '100%'}}/>
           </div>
           <div 
@@ -272,7 +272,7 @@ export default class Table extends Component{
               ref="fixedRightBody"
               fixed="right"
               rowClassName={this.props.rowClassName}
-              columns={fixedRightColumns}
+              columns={_columns}
               data={data}
               highlightCurrentRow={highlightCurrentRow}
               style={{width: calculateFixedWidth(fixedRightColumns)}}>
