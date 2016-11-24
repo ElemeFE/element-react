@@ -243,7 +243,7 @@ class Select extends Component {
   }
 
   onSelectedChange(val) {
-    const { multiple, filterable } = this.props;
+    const { multiple, filterable, onChange } = this.props;
     let { query, hoverIndex, inputLength, selected, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
     if (multiple) {
@@ -267,6 +267,9 @@ class Select extends Component {
 
       const result = val.map(item => item.props.value);
 
+
+      onChange && onChange(val.props.value);
+
       // this.$emit('input', result);
       // this.$emit('change', result);
       // this.dispatch('form-item', 'el.form.change', val);
@@ -286,6 +289,8 @@ class Select extends Component {
           selectedInit: false
         });
       }
+      
+      onChange && onChange(val.props.value);
 
       // this.$emit('input', val.value);
       // this.$emit('change', val.value);
