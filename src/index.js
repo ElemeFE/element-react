@@ -33,3 +33,4 @@ export { default as Select } from './select';
 export { default as Dropdown } from './dropdown';
 export { default as Popover } from './popover';
 export { TimeSelect, TimePicker } from './date-picker';
+export { default as Pagination } from './pagination'

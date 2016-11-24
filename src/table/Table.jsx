@@ -49,8 +49,6 @@ export default class Table extends Component{
     this.initLayout();
 
     Object.defineProperty(this, 'filterContainer', {
-      enumerable: true,
-      configurable: true,
       get: this._filterContainer.bind(this)
     });
   }
