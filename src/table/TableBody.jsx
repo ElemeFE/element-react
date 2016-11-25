@@ -63,9 +63,15 @@ class BodyItem extends Component{
         {
           columns.map((column, idx)=>{
             let content = column.render ? column.render(itemData, column) : itemData[column.property];
+            const className = this.classNames({ 
+              'is-hidden': !this.props.fixed && column.fixed,
+              'is-center': column.align == 'center',
+              'is-right' : column.align == 'right'
+            });
             return (
               <td
                 key={idx}
+                className={className}
                 style={{width: column.realWidth}}>
                 {
                   column.type == 'selection' && <div className="cell"><Checkbox checked={selected} onChange={(e)=>this.onChange(e)}/></div>
@@ -176,6 +182,7 @@ export default class TableBody extends  Component{
               const isHiglight = (highlightRows[0] == dataItem);
               return (
                 <BodyItem 
+                  fixed={fixed}
                   onSelected={(c, d)=>{this.onSelected(c, d)}}
                   selected={selected.indexOf(dataItem) > -1}
                   key={dataIdx}
