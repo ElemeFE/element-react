@@ -6,9 +6,9 @@ export default class Checkbox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: Boolean(props.checked),
+      checked: Boolean(props.checked || props.defaultChecked),
       focus: Boolean(props.focus),
-      label: this.getLabel(props),
+      label: this.getLabel(props)
     };
   }
 
@@ -32,7 +32,7 @@ export default class Checkbox extends Component {
 
   onChange(e) {
     const { label } = this.state;
-    const { trueLabel, falseLabel} = this.props;
+    const { trueLabel, falseLabel, value} = this.props;
     const checked = e.target.checked;
     let newLabel = label;
 
@@ -42,9 +42,9 @@ export default class Checkbox extends Component {
 
     if (this.props.onChange) {
       if (this.context.isWrap) {
-        this.props.onChange(e, label);
+        this.props.onChange(e, label, value);
       } else {
-        this.props.onChange(e);
+        this.props.onChange(e, label, value);
       }
     }
 

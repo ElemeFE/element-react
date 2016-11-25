@@ -132,20 +132,23 @@ export default class TableBody extends  Component{
 
   onSelected(checked, data){
     const { selected } = this.state;
-    if(checked){
-      selected.push(data);
-    }else{
-      selected.splice(selected.indexOf(data), 1);
-    }
-
+    const dataList = this.props.data;
     const { onSelectChange } = this.context.$owerTable.props;
+
+    checked ? selected.push(data) : selected.splice(selected.indexOf(data), 1);
+
+    this.context.$owerTable.refs.header.setState({allChecked : dataList.length == selected.length});
+    this.setState({ selected });
+
     onSelectChange && onSelectChange(data, checked);
   }
 
   selectAll(checked){
+    const { data } = this.props;
     const { onSelectAll } = this.context.$owerTable.props;
-    this.setState({selected: checked?this.props.data:[]});
-    onSelectAll && onSelectAll(checked?this.props.data:[], checked);
+
+    this.setState({selected: checked ? data.slice(0) : []});
+    onSelectAll && onSelectAll(checked ? data : [], checked);
   }
 
   render() {

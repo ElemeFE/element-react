@@ -718,51 +718,72 @@ let data = [{
 
 :::demo 在列中设置`filters` `filter-method`属性即可开启该列的筛选，filters 是一个数组，`filter-method`是一个方法，它用于决定某些数据是否显示，会传入两个参数：`value`和`row`。
 ```javascript
-  let columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 180,
-    sortable: true
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 180
-  },
-  {
-    label: "地址",
-    prop: "address"
-  },
-  {
-    label: "地址",
-    prop: "address"
-  }
-];
+let columns;
+let data;
 
-let data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄'
-  }];
 
- <Table 
+initData();
+
+<Table 
    style={{width: '100%'}}
    columns={columns} 
    border={true}
    data={data}/>
+
+
+function initData(){
+  columns = [
+    {
+      label: "日期",
+      prop: "date",
+      width: 180
+    },
+    {
+      label: "姓名",
+      prop: "name",
+      width: 180
+    },
+    {
+      label: "地址",
+      prop: "address"
+    },
+    {
+      label: '标签',
+      prop: 'tag',
+      width: 100,
+      filters: [{text: '家', value: '家'}, {text: '公司', value: '公司'}],
+      render: (data, column)=>{
+        if(data['tag'] == '家'){
+          return <Tag type="primary">{data['tag']}</Tag>
+        }else if(data['tag'] == '公司'){
+          return <Tag type="success">{data['tag']}</Tag>
+        }
+      } 
+    }
+  ];
+
+  data = [{
+    date: '2016-05-02',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1518 弄',
+    tag: '家'
+  }, {
+    date: '2016-05-04',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1517 弄',
+    tag: '公司'
+  }, {
+    date: '2016-05-01',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1519 弄',
+    tag: '公司'
+  }, {
+    date: '2016-05-03',
+    name: '王小虎',
+    address: '上海市普陀区金沙江路 1516 弄',
+    tag: '家'
+  }];
+}
 ```
 :::
 

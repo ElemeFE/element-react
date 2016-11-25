@@ -7,7 +7,7 @@ export default class CheckboxGroup extends Component {
     super(props);
 
     this.state = {
-      options: this.props.options || [],
+      options: this.props.options || []
     };
   }
   
@@ -15,14 +15,14 @@ export default class CheckboxGroup extends Component {
     return { isWrap: true };
   }
 
-  onChange(e, value) {
-    const { options } = this.state;
-    let newOptions;
+  onChange(e, label, value) {
+    const { options, values } = this.state;
+    let newOptions, newValues;
 
     if (e.target.checked) {
-      newOptions = options.concat(value);
+      newOptions = options.concat(value || label);
     } else {
-      newOptions = options.filter(v => v !== value);
+      newOptions = options.filter(v =>v != value && v !== label);
     }
 
     this.setState({
@@ -42,7 +42,7 @@ export default class CheckboxGroup extends Component {
         child,
         Object.assign({}, child.props, {
           key: index,
-          checked: child.props.checked || options.indexOf(child.props.label) >= 0,
+          checked: child.props.checked || options.indexOf(child.props.value) >= 0 || options.indexOf(child.props.label) >= 0 ,
           onChange: this.onChange.bind(this),
         }),
       );

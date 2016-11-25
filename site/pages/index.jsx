@@ -35,6 +35,7 @@ import Select from './select';
 import Dropdown from './dropdown';
 import Popover from './popover';
 import Form from './form';
+import Pagination from './pagination';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -63,6 +64,7 @@ const pages = {
     'tag': { title: 'Tag 标签', component: Tag },
     'progress': { title: 'Progress 进度条', component: Progress },
     'tree': { title: 'Tree 树形控件', component: Tree },
+    'pagination': { title: 'Pagination 分页', component: Pagination},
     'badge': { title: 'Badge 标记', component: Badge },
   },
   'Notice': {
