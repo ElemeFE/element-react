@@ -223,6 +223,8 @@ export default class TableHeader extends  Component{
             {
               columns.map((column, idx)=>{
                 const className = this.classNames({
+                  'is-center': column.align == 'center',
+                  'is-right' : column.align == 'right',
                   'is-hidden': !this.props.fixed && column.fixed, 
                   'ascending': (sortPropertyName == column.property && sortStatus == 1),
                   'descending': (sortPropertyName == column.property && sortStatus == 2)

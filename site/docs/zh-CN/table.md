@@ -394,12 +394,14 @@ function initConfig(){
     label: "日期",
     prop: "date",
     width: 150,
-    fixed: 'left'
+    fixed: 'left',
+    align: 'center'
   },
   {
     label: "姓名",
     prop: "name",
-    width: 160
+    width: 160,
+    align: 'right'
   },
   {
     label: "省份",
