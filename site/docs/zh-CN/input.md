@@ -71,33 +71,65 @@
 ```
 :::
 
-### 带输入建议(TODO)
+### 带输入建议
 
 根据输入内容提供对应的输入建议, 依赖autoComplete
 
 ::: demo autocomplete 是一个可带输入建议的输入框组件，
 ```html
-add me
+<Layout.Row className="inline-input border-grid">
+  <Layout.Col span="12" className="tac">
+    <div className="text">激活即列出输入建议</div>
+    <AutoComplete
+      value={this.state.state1}
+      fetchSuggestions={this.querySearch.bind(this)}
+      placeholder="请输入内容"
+      select={this.handleSelect.bind(this)}
+    ></AutoComplete>
+  </Layout.Col>
+  <Layout.Col span="12" className="tac">
+    <div className="text">输入后匹配输入建议</div>
+    <AutoComplete
+      value={this.state.state2}
+      fetchSuggestions={this.querySearch.bind(this)}
+      placeholder="请输入内容"
+      select={this.handleSelect.bind(this)}
+      triggerOnFocus={false}
+    ></AutoComplete>
+  </Layout.Col>
+</Layout.Row>
 ```
 :::
 
-### 自定义模板(TODO)
+### 自定义模板
 
 可自定义输入建议的显示，依赖autoComplete
 
 ::: demo autocomplete 是一个可带输入建议的输入框组件，
 ```html
-add me
+<AutoComplete
+  className="my-autocomplete"
+  value={this.state.state3}
+  fetchSuggestions={this.querySearch.bind(this)}
+  customItem={this.customItem}
+  placeholder="请输入内容"
+  onSelect={this.handleSelect.bind(this)}
+></AutoComplete>
 ```
 :::
 
-### 远程搜索(TODO)
+### 远程搜索
 
 从服务端搜索数据，依赖autoComplete
 
 ::: demo autocomplete 是一个可带输入建议的输入框组件，
 ```html
-add me
+<AutoComplete
+  value={this.state.state4}
+  fetchSuggestions={this.querySearchAsync.bind(this)}
+  placeholder="请输入内容"
+  onSelect={this.handleSelect.bind(this)}
+></AutoComplete>
 ```
 :::
 
@@ -133,10 +165,10 @@ add me
 | placeholder   | 输入框占位文本   | string          | — | — |
 | disabled      | 禁用            | boolean         | — | false   |
 | value         | 必填值输入绑定值   | string  | — | — |
-| custom-item  | 通过该参数指定自定义的输入建议列表项的组件名 | string  | — | — |
-| fetch-suggestions | 返回输入建议的方法，仅当你的输入建议数据 resolve 时，通过调用 callback(data:[]) 来返回它  | Function(queryString, callback)  | — | — |
+| customItem  | 通过该参数指定自定义的输入建议列表项的组件名 | string  | — | — |
+| fetchSuggestions | 返回输入建议的方法，仅当你的输入建议数据 resolve 时，通过调用 callback(data:[]) 来返回它  | Function(queryString, callback)  | — | — |
 
 ### Autocomplete Events
 | 事件名称 | 说明 | 回调参数 |
 |---------|--------|---------|
-| select | 点击选中建议项时触发 | 选中建议项 |
+| onSelect | 点击选中建议项时触发 | 选中建议项 |
