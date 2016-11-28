@@ -83,8 +83,8 @@ export default class Playground extends React.Component {
             if (value === '') {
               callback(new Error('请输入密码'));
             } else {
-              if (this.ruleForm2.checkPass !== '') {
-                this.$refs.ruleForm2.validateField('checkPass');
+              if (this.state.ruleForm2.checkPass !== '') {
+                this.ruleForm2.validateField('checkPass');
               }
               callback();
             }
@@ -146,7 +146,7 @@ export default class Playground extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    this.refs.ruleForm.validate((valid) => {
+    this.ruleForm.validate((valid) => {
       if (valid) {
         alert('submit!');
       } else {
@@ -159,13 +159,13 @@ export default class Playground extends React.Component {
   handleReset(e) {
     e.preventDefault();
 
-    this.refs.ruleForm.resetFields();
+    this.ruleForm.resetFields();
   }
 
   handleSubmit2(e) {
     e.preventDefault();
 
-    this.refs.ruleForm2.validate((valid) => {
+    this.ruleForm2.validate((valid) => {
       if (valid) {
         alert('submit!');
       } else {
@@ -178,13 +178,13 @@ export default class Playground extends React.Component {
   handleReset2(e) {
     e.preventDefault();
 
-    this.refs.ruleForm2.resetFields();
+    this.ruleForm2.resetFields();
   }
 
   handleSubmit3(e) {
     e.preventDefault();
 
-    this.refs.ruleForm.validate((valid) => {
+    this.ruleForm.validate((valid) => {
       if (valid) {
         alert('submit!');
       } else {

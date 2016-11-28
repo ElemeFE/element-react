@@ -31,23 +31,27 @@ export default class Markdown extends Component {
   }
 
   render() {
-    this.components.clear();
+    if (typeof this.props.children === 'string') {
+      this.components.clear();
 
-    const html = marked(this.props.children.replace(/:::\s?demo\s?([^]+?):::/g, (match, p1, offset) => {
-      const id = offset.toString(36);
+      const html = marked(this.props.children.replace(/:::\s?demo\s?([^]+?):::/g, (match, p1, offset) => {
+        const id = offset.toString(36);
 
-      this.components.set(id, React.createElement(Canvas, this.props, p1));
+        this.components.set(id, React.createElement(Canvas, this.props, p1));
 
-      return `<div id=${id}></div>`;
-    }));
+        return `<div id=${id}></div>`;
+      }));
 
-    /* eslint-disable */
-    return (
-      <div dangerouslySetInnerHTML={{
-        __html: html
-      }} />
-    )
-    /* eslint-enable */
+      /* eslint-disable */
+      return (
+        <div dangerouslySetInnerHTML={{
+          __html: html
+        }} />
+      )
+      /* eslint-enable */
+    } else {
+      return <span />
+    }
   }
 }
 

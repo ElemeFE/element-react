@@ -68,6 +68,7 @@ export default class Input extends Component {
       prepend,
       append,
       icon,
+      className,
       autoComplete,
       validating,
       rows,
@@ -109,7 +110,8 @@ export default class Input extends Component {
         <input
           { ...otherProps }
           ref="input"
-          className={this.classNames("el-input__inner", this.props.className)}
+          className={this.classNames("el-input__inner", className)}
+          autoComplete={autoComplete}
           onChange={e => this.handleChange(e)}
           onFocus={e => this.handleFocus(e) }
           onBlur={e => this.handleBlur(e) }
@@ -122,7 +124,7 @@ export default class Input extends Component {
         <textarea
           { ...otherProps }
           ref="textarea"
-          className={this.classNames("el-textarea__inner", this.props.className)}
+          className={this.classNames("el-textarea__inner", className)}
           style={Object.assign({}, this.props.style, this.state.textareaStyle)}
           rows={rows}
           onChange={e => this.handleChange(e)}
