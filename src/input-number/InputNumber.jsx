@@ -9,8 +9,14 @@ export default class InputNumber extends Component {
     super(props);
 
     this.state = {
-      value: props.value
+      value: props.defaultValue
     };
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.value != this.props.value) {
+      this.setState({ value: props.value });
+    }
   }
 
   onKeyDown(e) {
@@ -72,9 +78,7 @@ export default class InputNumber extends Component {
       inputActive = false;
     }
 
-    this.setState({ value, inputActive }, () => {
-      this.onChange()
-    });
+    this.setState({ value, inputActive }, this.onChange);
   }
 
   decrease() {
@@ -89,9 +93,7 @@ export default class InputNumber extends Component {
       inputActive = false;
     }
 
-    this.setState({ value, inputActive }, () => {
-      this.onChange()
-    });
+    this.setState({ value, inputActive }, this.onChange);
   }
 
   activeInput(disabled) {
@@ -143,7 +145,8 @@ export default class InputNumber extends Component {
 }
 
 InputNumber.propTypes = {
-  value: PropTypes.number.isRequired,
+  defaultValue: PropTypes.number,
+  value: PropTypes.number,
   step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
