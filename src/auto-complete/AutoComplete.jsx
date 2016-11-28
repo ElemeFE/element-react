@@ -49,7 +49,7 @@ class AutoComplete extends Component {
     }
   }
 
-  handleBlur() {
+  handleClickOutside() {
     this.hideSuggestions();
   }
 
@@ -57,11 +57,11 @@ class AutoComplete extends Component {
     const { suggestions } = this.state;
 
     if (suggestions && suggestions[index]) {
-      const value = suggestions[index].value;
+      const item = suggestions[index];
 
-      this.setState({ value }, () => {
+      this.setState({ value: item.value }, () => {
         if (this.props.onSelect) {
-          this.props.onSelect(value);
+          this.props.onSelect(item);
         }
 
         this.hideSuggestions();
@@ -139,7 +139,6 @@ class AutoComplete extends Component {
           size={size}
           onChange={this.handleChange.bind(this)}
           onFocus={this.handleFocus.bind(this)}
-          onBlur={this.handleBlur.bind(this)}
           onKeyDown={this.onKeyDown.bind(this)}
         />
         <Transition name="md-fade-bottom">
