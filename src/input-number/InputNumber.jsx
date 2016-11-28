@@ -13,14 +13,6 @@ export default class InputNumber extends Component {
     };
   }
 
-  componentWillReceiveProps(props) {
-    if (props.value != this.props.value) {
-      this.setState({
-        value: props.value
-      });
-    }
-  }
-
   onKeyDown(e) {
     e.preventDefault();
 
@@ -34,8 +26,6 @@ export default class InputNumber extends Component {
       default:
         break;
     }
-
-    // this.refs.input.focus();
   }
 
   onBlur() {
@@ -58,7 +48,7 @@ export default class InputNumber extends Component {
         target: {
           value: this.state.value
         }
-      })
+      });
     }
   }
 
@@ -67,7 +57,7 @@ export default class InputNumber extends Component {
   }
 
   maxDisabled() {
-    return this.state.value + this.props.step > this.state.max;
+    return this.state.value + this.props.step > this.props.max;
   }
 
   increase() {
@@ -82,7 +72,9 @@ export default class InputNumber extends Component {
       inputActive = false;
     }
 
-    this.setState({ value, inputActive }, this.onChange);
+    this.setState({ value, inputActive }, () => {
+      this.onChange()
+    });
   }
 
   decrease() {
@@ -97,7 +89,9 @@ export default class InputNumber extends Component {
       inputActive = false;
     }
 
-    this.setState({ value, inputActive }, this.onChange);
+    this.setState({ value, inputActive }, () => {
+      this.onChange()
+    });
   }
 
   activeInput(disabled) {
@@ -130,8 +124,7 @@ export default class InputNumber extends Component {
           disabled={this.props.disabled}
           size={this.props.size}
           onKeyDown={this.onKeyDown.bind(this)}
-          onBlur={this.onBlur.bind(this)}
-          onChange={this.onInput.bind(this)} />
+          onBlur={this.onBlur.bind(this)} />
         <span className={this.classNames('el-input-number__decrease el-icon-minus', {
           'is-disabled': this.minDisabled()
         })}
