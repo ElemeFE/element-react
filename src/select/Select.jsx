@@ -267,11 +267,9 @@ class Select extends Component {
 
       const result = val.map(item => item.props.value);
 
-
-      onChange && onChange(val.props.value);
+      onChange && onChange(result);
 
       // this.$emit('input', result);
-      // this.$emit('change', result);
       // this.dispatch('form-item', 'el.form.change', val);
 
       if (filterable) {
@@ -289,11 +287,10 @@ class Select extends Component {
           selectedInit: false
         });
       }
-      
+
       onChange && onChange(val.props.value);
 
       // this.$emit('input', val.value);
-      // this.$emit('change', val.value);
     }
   }
 
@@ -593,8 +590,11 @@ class Select extends Component {
       visible: false
     });
 
+    if (this.props.onChange) {
+      this.props.onChange('');
+    }
+
     // this.$emit('input', '');
-    // this.$emit('change', '');
   }
 
   deleteTag(event, tag) {
@@ -727,8 +727,6 @@ class Select extends Component {
                     className="el-select__input"
                     style={{ width: inputLength, maxWidth: inputWidth - 42 }}
                     value={query}
-
-
                     onKeyDown={e => {
                       // this.resetInputState();
                       // onChange={this.debouncedOnInputChange}
@@ -828,7 +826,8 @@ Select.propTypes = {
   remoteMethod: PropTypes.func,
   filterMethod: PropTypes.func,
   multiple: PropTypes.bool,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func
 }
 
 Select.defaultProps = {
