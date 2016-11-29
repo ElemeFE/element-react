@@ -1,7 +1,9 @@
 import React from 'react';
-import { Component, PropTypes } from '../../libs';
+import { PropTypes } from '../../libs';
 
-export default class MenuItemGroup extends Component {
+import MixinComponent from './MixinComponent';
+
+export default class MenuItemGroup extends MixinComponent {
   constructor(props) {
     super(props);
 
@@ -33,10 +35,6 @@ export default class MenuItemGroup extends Component {
     });
   }
 
-  parent() {
-    return this.context.component;
-  }
-
   render() {
     return (
       <li className="el-menu-item-group">
@@ -50,10 +48,6 @@ export default class MenuItemGroup extends Component {
     )
   }
 }
-
-MenuItemGroup.contextTypes = {
-  component: PropTypes.any
-};
 
 MenuItemGroup.propTypes = {
   title: PropTypes.string.isRequired

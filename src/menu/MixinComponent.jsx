@@ -1,4 +1,3 @@
-import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class MixinComponent extends Component {
@@ -34,8 +33,4 @@ export default class MixinComponent extends Component {
 
 MixinComponent.contextTypes = {
   component: PropTypes.any
-};
-
-MixinComponent.propTypes = {
-  index: PropTypes.string.isRequired
 };
