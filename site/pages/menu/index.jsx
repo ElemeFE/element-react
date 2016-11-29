@@ -1,5 +1,5 @@
 import React from 'react';
-import { Markdown } from '../../../libs';
+import Markdown from '../../../libs/markdown';
 import template from '../../docs/zh-CN/menu.md';
 
 import './style.scss';

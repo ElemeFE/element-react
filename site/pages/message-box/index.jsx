@@ -1,7 +1,7 @@
 import React from 'react';
-import { MessageBox, Message } from '../../../src';
-import { Markdown } from '../../../libs';
+import Markdown from '../../../libs/markdown';
 import template from '../../docs/zh-CN/message-box.md';
+import { MessageBox, Message } from '../../../src';
 
 import './style.scss';
 

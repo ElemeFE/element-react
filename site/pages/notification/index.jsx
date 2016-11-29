@@ -1,7 +1,7 @@
 import React from 'react';
-import { Notification } from '../../../src';
-import { Markdown } from '../../../libs';
+import Markdown from '../../../libs/markdown';
 import template from '../../docs/zh-CN/notification.md';
+import { Notification } from '../../../src';
 
 import './style.scss';
 
