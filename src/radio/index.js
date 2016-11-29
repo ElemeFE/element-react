@@ -1,3 +1,5 @@
+import './style.scss';
+
 import Radio from './Radio';
 import RadioButton from './RadioButton';
 import RadioGroup from './RadioGroup';

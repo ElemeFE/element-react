@@ -1,0 +1,7 @@
+.el-radio-button.is-active {
+  .el-radio-button__inner {
+    border-color: rgb(32, 160, 255);
+    color: rgb(32, 160, 255);
+    z-index: 1;
+  }
+}
