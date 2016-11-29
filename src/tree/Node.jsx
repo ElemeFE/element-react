@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactTransitionGroup from 'react-addons-transition-group'
 
 import { PropTypes, Component } from '../../libs';
-import { watchPropertyChange, ReactUtils, debounce, IDGenerator } from '../../libs/utils'
+import { watchPropertyChange, debounce, IDGenerator } from '../../libs/utils'
 import CollapseTransition from './CollapseTransition'
 import Checkbox from '../checkbox'
 
@@ -51,11 +50,6 @@ export default class Node extends Component {
 
     this.loadHandler = this.enhanceLoad(nodeModel) 
     this.watchers = {
-      // NOTE: a, b could trigger twice on one-time current node state change, 
-      // we could only watch current node change made by user interaction, 
-      // but if change comes from parent, or children, or directly modified on 
-      // the underlying model layer(this is the least our concern ofc), 
-      // we could potentialy lost this event. this is the trade off has to be made. 
       [this.idGen.next()]: watchPropertyChange(nodeModel, 'indeterminate', (value) => {
         triggerChange(nodeModel.checked, value);
       }),
@@ -124,14 +118,15 @@ export default class Node extends Component {
       target.nodeName.toUpperCase() === 'LABEL') return;
     if (this.state.expanded) {
       nodeModel.collapse()
-      this.setState({ expanded: false })
+      this.setState({ expanded: false }, ()=>this.refs.collapse.triggerChange())
     } else {
       nodeModel.expand(() => {
-        this.setState({ expanded: true, childNodeRendered: true })
+        this.setState({ expanded: true, childNodeRendered: true }, ()=>this.refs.collapse.triggerChange())
       })
     }
 
     onNodeClicked(nodeModel.data, nodeModel, this)
+    
   }
 
   handleUserClick() {
@@ -170,20 +165,17 @@ export default class Node extends Component {
           {nodeModel.loading && <span className="el-tree-node__icon el-icon-loading"> </span>}
           <NodeContent nodeModel={nodeModel} renderContent={renderContent} context={this} />
         </div>
-        <ReactTransitionGroup
-          component={ReactUtils.firstChild}>
-          <CollapseTransition>
-            <div
-              className="el-tree-node__children" style={{display: expanded ? 'initial' : 'none'}}>
-              {
-                nodeModel.childNodes.map((e, idx) => {
-                  let props = Object.assign({}, this.props, { nodeModel: e })
-                  return <Node {...props} key={idx} />
-                })
-              }
-            </div>
-          </CollapseTransition>
-        </ReactTransitionGroup>
+        <CollapseTransition isShow={expanded} ref="collapse">
+          <div
+            className="el-tree-node__children">
+            {
+              nodeModel.childNodes.map((e, idx) => {
+                let props = Object.assign({}, this.props, { nodeModel: e })
+                return <Node {...props} key={idx} />
+              })
+            }
+          </div>
+        </CollapseTransition>
       </div>
     )
   }
