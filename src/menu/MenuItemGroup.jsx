@@ -1,9 +1,13 @@
 import React from 'react';
-import { Component, PropTypes } from '../../libs';
+import { PropTypes } from '../../libs';
 
-export default class MenuItemGroup extends Component {
+import MixinComponent from './MixinComponent';
+
+export default class MenuItemGroup extends MixinComponent {
   constructor(props) {
     super(props);
+
+    this.instanceType = 'MenuItemGroup';
 
     this.state = {
       paddingLeft: 20
@@ -15,7 +19,7 @@ export default class MenuItemGroup extends Component {
   }
 
   initPadding() {
-    let level = 0, parent = this.parent(), component = parent.constructor.name;
+    let level = 0, parent = this.parent(), component = parent.instanceType;
 
     while (component !== 'Menu') {
       if (component === 'SubMenu') {
@@ -23,16 +27,12 @@ export default class MenuItemGroup extends Component {
       }
 
       parent = parent.parent();
-      component = parent.constructor.name;
+      component = parent.instanceType;
     }
 
     this.setState({
       paddingLeft: this.state.paddingLeft + level * 10
     });
-  }
-
-  parent() {
-    return this.context.component;
   }
 
   render() {
@@ -48,10 +48,6 @@ export default class MenuItemGroup extends Component {
     )
   }
 }
-
-MenuItemGroup.contextTypes = {
-  component: PropTypes.any
-};
 
 MenuItemGroup.propTypes = {
   title: PropTypes.string.isRequired

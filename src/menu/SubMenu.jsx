@@ -8,6 +8,8 @@ export default class SubMenu extends MixinComponent {
   constructor(props) {
     super(props);
 
+    this.instanceType = 'SubMenu';
+
     this.state = {
       active: false
     };
@@ -67,10 +69,6 @@ export default class SubMenu extends MixinComponent {
     return this.rootMenu().state.openedMenus.indexOf(this.props.index) !== -1;
   }
 
-  parent() {
-    return this.context.component;
-  }
-
   render() {
     return (
       <li className={this.classNames('el-submenu', {
@@ -94,10 +92,6 @@ export default class SubMenu extends MixinComponent {
 }
 
 SubMenu.childContextTypes = {
-  component: PropTypes.any
-};
-
-SubMenu.contextTypes = {
   component: PropTypes.any
 };
 

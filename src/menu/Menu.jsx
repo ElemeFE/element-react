@@ -5,6 +5,8 @@ export default class Menu extends Component {
   constructor(props) {
     super(props);
 
+    this.instanceType = 'Menu';
+
     this.state = {
       activeIndex: props.defaultActive,
       openedMenus: props.defaultOpeneds ? props.defaultOpeneds.slice(0) : [],

@@ -4,6 +4,12 @@ import { PropTypes } from '../../libs';
 import MixinComponent from './MixinComponent';
 
 export default class MenuItem extends MixinComponent {
+  constructor(props) {
+    super(props);
+
+    this.instanceType = 'MenuItem';
+  }
+
   componentDidMount() {
     this.rootMenu().state.menuItems[this.props.index] = this;
   }
@@ -21,10 +27,6 @@ export default class MenuItem extends MixinComponent {
     return this.props.index === this.rootMenu().state.activeIndex;
   }
 
-  parent() {
-    return this.context.component;
-  }
-
   render() {
     return (
       <li
@@ -39,10 +41,6 @@ export default class MenuItem extends MixinComponent {
     )
   }
 }
-
-MenuItem.contextTypes = {
-  component: PropTypes.any
-};
 
 MenuItem.propTypes = {
   index: PropTypes.string.isRequired,
