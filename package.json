@@ -37,7 +37,7 @@
     "babel-preset-stage-1": "^6.3.13",
     "babel-standalone": "^6.19.0",
     "css-loader": "^0.26.0",
-    "element-theme-default": "^1.0.2",
+    "element-theme-default": "^1.0.3",
     "eslint": "^3.9.0",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",

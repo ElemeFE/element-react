@@ -1,18 +1,28 @@
 import React from 'react';
-import { Component, PropTypes } from '../../libs';
+import { PropTypes } from '../../libs';
 
-export default class MenuItem extends Component {
+import MixinComponent from './MixinComponent';
+
+export default class MenuItem extends MixinComponent {
+  componentDidMount() {
+    this.rootMenu().state.menuItems[this.props.index] = this;
+  }
+
   handleClick() {
-    this.context.onSelect(
+    this.rootMenu().handleSelect(
       this.props.index,
-      this.indexPath,
+      this.indexPath(),
       this.props.route || this.props.index,
       this
     );
   }
 
   active() {
-    return this.props.index === this.context.activeIndex;
+    return this.props.index === this.rootMenu().state.activeIndex;
+  }
+
+  parent() {
+    return this.context.component;
   }
 
   render() {
@@ -31,8 +41,7 @@ export default class MenuItem extends Component {
 }
 
 MenuItem.contextTypes = {
-  activeIndex: PropTypes.string,
-  onSelect: PropTypes.func
+  component: PropTypes.any
 };
 
 MenuItem.propTypes = {
@@ -40,7 +49,3 @@ MenuItem.propTypes = {
   route: PropTypes.object,
   disabled: PropTypes.bool
 };
-
-MenuItem.defaultProps = {
-
-}
