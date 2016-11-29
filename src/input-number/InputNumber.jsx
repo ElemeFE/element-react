@@ -9,15 +9,13 @@ export default class InputNumber extends Component {
     super(props);
 
     this.state = {
-      value: props.value
+      value: props.defaultValue
     };
   }
 
   componentWillReceiveProps(props) {
     if (props.value != this.props.value) {
-      this.setState({
-        value: props.value
-      });
+      this.setState({ value: props.value });
     }
   }
 
@@ -34,8 +32,6 @@ export default class InputNumber extends Component {
       default:
         break;
     }
-
-    // this.refs.input.focus();
   }
 
   onBlur() {
@@ -58,7 +54,7 @@ export default class InputNumber extends Component {
         target: {
           value: this.state.value
         }
-      })
+      });
     }
   }
 
@@ -67,7 +63,7 @@ export default class InputNumber extends Component {
   }
 
   maxDisabled() {
-    return this.state.value + this.props.step > this.state.max;
+    return this.state.value + this.props.step > this.props.max;
   }
 
   increase() {
@@ -130,8 +126,7 @@ export default class InputNumber extends Component {
           disabled={this.props.disabled}
           size={this.props.size}
           onKeyDown={this.onKeyDown.bind(this)}
-          onBlur={this.onBlur.bind(this)}
-          onChange={this.onInput.bind(this)} />
+          onBlur={this.onBlur.bind(this)} />
         <span className={this.classNames('el-input-number__decrease el-icon-minus', {
           'is-disabled': this.minDisabled()
         })}
@@ -150,7 +145,8 @@ export default class InputNumber extends Component {
 }
 
 InputNumber.propTypes = {
-  value: PropTypes.number.isRequired,
+  defaultValue: PropTypes.number,
+  value: PropTypes.number,
   step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

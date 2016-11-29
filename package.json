@@ -1,6 +1,6 @@
 {
   "name": "element-react",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.1",
   "description": "Element UI for React",
   "private": true,
   "main": "dist/npm/index.js",
@@ -10,7 +10,7 @@
     "test": "jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
-    "prepare": "./build/scripts/compile.sh",
+    "prepare": "./build/scripts/prepare.sh",
     "postpublish": "./build/scripts/release.sh"
   },
   "repository": {

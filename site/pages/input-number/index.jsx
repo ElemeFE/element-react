@@ -15,10 +15,8 @@ export default class Playground extends React.Component {
     }
   }
 
-  onChange(type, event) {
-    this.setState({
-      [type]: event.target.value
-    })
+  onChange(event) {
+    console.log(event.target.value);
   }
 
   render() {

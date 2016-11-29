@@ -10,12 +10,6 @@ export default class Option extends Component {
       visible: true,
       hitState: false
     }
-
-    // this.$on('resetIndex', this.resetIndex);
-  }
-
-  parent() {
-    return this.context.component;
   }
 
   componentWillMount() {
@@ -32,6 +26,10 @@ export default class Option extends Component {
 
   componentWillUnMount() {
     this.parent().onOptionDestroy(this);
+  }
+
+  parent() {
+    return this.context.component;
   }
 
   currentSelected() {
