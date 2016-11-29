@@ -68,7 +68,7 @@ export default class CollapseTransition extends React.Component {
 
   afterEnter() {
     const el = this.selfRef
-    el.style.display = '';
+    el.style.display = 'block';
     el.style.height = '';
     el.style.overflow = el.dataset.oldOverflow;
   }
