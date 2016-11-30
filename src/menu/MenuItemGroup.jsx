@@ -1,9 +1,13 @@
 import React from 'react';
-import { Component, PropTypes } from '../../libs';
+import { PropTypes } from '../../libs';
 
-export default class MenuItemGroup extends Component {
+import MixinComponent from './MixinComponent';
+
+export default class MenuItemGroup extends MixinComponent {
   constructor(props) {
     super(props);
+
+    this.instanceType = 'MenuItemGroup';
 
     this.state = {
       paddingLeft: 20
@@ -15,24 +19,27 @@ export default class MenuItemGroup extends Component {
   }
 
   initPadding() {
-    // var parent = this.$parent;
-    // var level = 0;
-    // var component = parent.$options.componentName;
-    // while (component !== 'ElMenu') {
-    //   if (component === 'ElSubmenu') {
-    //     level++;
-    //   }
-    //   parent = parent.$parent;
-    //   component = parent.$options.componentName;
-    // }
-    // this.paddingLeft += level * 10;
+    let level = 0, parent = this.parent(), component = parent.instanceType;
+
+    while (component !== 'Menu') {
+      if (component === 'SubMenu') {
+        level++;
+      }
+
+      parent = parent.parent();
+      component = parent.instanceType;
+    }
+
+    this.setState({
+      paddingLeft: this.state.paddingLeft + level * 10
+    });
   }
 
   render() {
     return (
       <li className="el-menu-item-group">
         <div className="el-menu-item-group__title" style={{
-            paddingLeft: this.state.paddingLeft + 'px'
+            paddingLeft: this.state.paddingLeft
         }}>{this.props.title}</div>
         <ul>
           {this.props.children}
@@ -45,7 +52,3 @@ export default class MenuItemGroup extends Component {
 MenuItemGroup.propTypes = {
   title: PropTypes.string.isRequired
 };
-
-MenuItemGroup.defaultProps = {
-
-}

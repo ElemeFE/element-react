@@ -1,7 +1,7 @@
 import React from 'react';
-import { Message } from '../../../src';
-import { Markdown } from '../../../libs';
+import Markdown from '../../../libs/markdown';
 import template from '../../docs/zh-CN/message.md';
+import { Message } from '../../../src';
 
 import './style.scss';
 
