@@ -1,7 +1,5 @@
-//import './style.scss';
-
 import React from 'react';
-import { Markdown } from '../../../libs';
+import Markdown from '../../../libs/markdown';
 import template from '../../docs/zh-CN/steps.md';
 
 export default class Playground extends React.Component {
