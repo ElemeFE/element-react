@@ -156,6 +156,7 @@ export default class Slider extends Component {
             <InputNumber
               ref="input"
               className="el-slider__input"
+              defaultValue={this.state.inputValue}
               value={this.state.inputValue}
               onChange={this.onInputChange.bind(this)}
               step={this.props.step}

@@ -8,7 +8,22 @@ export default class Component extends React.Component {
     super(props);
 
     this.createMethodProxy('componentDidMount', this.componentDidMountProxy);
+    this.createMethodProxy('componentWillUpdate', this.componentWillUpdateProxy);
     this.createMethodProxy('componentWillReceiveProps', this.componentWillReceivePropsProxy);
+  }
+
+  componentDidMountProxy() {
+    this.updateStyles(this.props);
+    this.updateClassName();
+  }
+
+  componentWillUpdateProxy(props) {
+    this.updateStyles(props, this.props);
+    this.updateClassName();
+  }
+
+  componentWillReceivePropsProxy(props) {
+    this.className = this.props.className;
   }
 
   createMethodProxy(name, replace) {
@@ -25,56 +40,54 @@ export default class Component extends React.Component {
     }
   }
 
-  componentDidMountProxy() {
-    this.shouldApplyProps(this.props) && this.applyProps(this.props);
-  }
+  updateStyles(newProps, oldProps = {}) {
+    if (!equal(newProps.style, oldProps.style)) {
+      const element = this.findDOMNode();
 
-  componentWillReceivePropsProxy(props) {
-    this.shouldApplyProps(props, this.props) && this.applyProps(props);
-  }
+      if (element) {
+        if (!this.style) {
+          this.style = element.style.cssText;
+        }
 
-  shouldApplyProps(newProps, oldProps = {}) {
-    const shouldApplyProps = !equal(newProps.className, oldProps.className) || !equal(newProps.style, oldProps.style);
+        if (newProps.style) {
+          const div = document.createElement('div');
 
-    if (shouldApplyProps && !this.element) {
-      this.element = ReactDOM.findDOMNode(this);
+          ReactDOM.render(React.createElement('div', {
+            style: newProps.style
+          }), div);
 
-      if (this.element) {
-        this.className = this.element.className;
-        this.style = this.element.style.cssText;
+          element.style.cssText = div.firstChild.style.cssText + ' ' + this.style;
+
+          ReactDOM.unmountComponentAtNode(div);
+        } else {
+          element.style.cssText = this.style;
+        }
       }
     }
-
-    return shouldApplyProps;
   }
 
-  applyProps(props) {
-    if (this.element) {
-      // apply new className
-      this.element.className = this.classNames(this.className, props.className);
+  updateClassName() {
+    const element = this.findDOMNode();
 
-      // apply new style
-      if (props.style) {
-        const div = document.createElement('div');
+    if (element) {
+      if (this.className) {
+        element.classList.remove.apply(element.classList, this.className.split(' '));
+      }
 
-        ReactDOM.render(React.createElement('div', {
-          style: props.style
-        }), div);
-
-        this.element.style.cssText = div.firstChild.style.cssText + ' ' + this.style;
-
-        ReactDOM.unmountComponentAtNode(div);
-      } else {
-        this.element.style.cssText = this.style;
+      if (this.props.className) {
+        element.classList.add.apply(element.classList, this.props.className.split(' '));
       }
     }
+  }
+
+  findDOMNode() {
+    return ReactDOM.findDOMNode(this);
   }
 
   classNames(...args) {
     return classnames(args);
   }
 }
-
 
 Component.propTypes = {
   className: React.PropTypes.string,
