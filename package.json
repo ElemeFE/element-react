@@ -1,16 +1,16 @@
 {
   "name": "element-react",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.3",
   "description": "Element UI for React",
   "private": true,
   "main": "dist/npm/index.js",
-  "jsnext:main": "dist/npm/next.js",
+  "jsnext:main": "next.js",
   "scripts": {
     "start": "cd site && node run.js",
     "test": "jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
-    "prepublish": "./build/scripts/prepare.sh",
+    "prepare": "./build/scripts/prepare.sh",
     "postpublish": "./build/scripts/release.sh"
   },
   "repository": {

@@ -12,4 +12,5 @@ Makefile
 jsconfig.json
 .vscode
 
-dist
+/dist
+/next.js
