@@ -13,5 +13,8 @@ babel src --out-dir dist/npm/src
 babel libs --out-dir dist/npm/libs
 babel build/npm/index.js --out-file dist/npm/index.js
 
+# copy vendor into npm
+cp -fr vendor dist/npm
+
 # aslo keep es6 for next gen
 cp build/npm/next.js dist/npm/next.js
