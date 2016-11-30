@@ -51,7 +51,7 @@ export default class Component extends React.Component {
   applyProps(props) {
     if (this.element) {
       // apply new className
-      this.element.className = this.classNames(props.className, this.className);
+      this.element.className = this.classNames(this.className, props.className);
 
       // apply new style
       if (props.style) {
