@@ -6,10 +6,5 @@ yarn.lock
 npm-debug.log
 node_modules
 
-todos.txt
-archieve
-Makefile
-jsconfig.json
-.vscode
-
-dist
+/dist
+/next.js
