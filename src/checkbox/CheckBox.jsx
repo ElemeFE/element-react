@@ -64,7 +64,7 @@ export default class Checkbox extends Component {
 
   render() {
     return (
-      <label className="el-checkbox">
+      <label style={this.style()} className={this.className('el-checkbox')}>
         <span className="el-checkbox__input">
           <span
             className={this.classNames("el-checkbox__inner", {

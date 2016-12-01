@@ -83,27 +83,25 @@ export default class Dialog extends Component {
 
     return (
       <View show={ visible }>
-        <div>
+        <div
+          style={this.style()}
+          className={this.className('el-dialog__wrapper')}
+          onClick={ e => this.handleWrapperClick(e) }
+          style={{ zIndex: 1013 }}
+          ref="wrap"
+          tabIndex={ -1 }
+          onKeyDown={ e => this.onKeyDown(e) }
+        >
           <div
-            className="el-dialog__wrapper"
-            onClick={ e => this.handleWrapperClick(e) }
-            style={{ zIndex: 1013 }}
-            ref="wrap"
-            tabIndex={ -1 }
-            onKeyDown={ e => this.onKeyDown(e) }
+            className={ this.classNames("el-dialog", sizeClass, customClass) }
+            ref="dialog"
+            style={ style }
           >
-            <div
-              className={ this.classNames("el-dialog", sizeClass, customClass) }
-              ref="dialog"
-              style={ style }
-            >
-              { header }
-              { this.props.children }
-            </div>
+            { header }
+            { this.props.children }
           </div>
-
-          { dimmer }
         </div>
+        { dimmer }
       </View>
     );
   }

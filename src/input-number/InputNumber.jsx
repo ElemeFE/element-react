@@ -114,7 +114,7 @@ export default class InputNumber extends Component {
 
   render() {
     return (
-      <div className={this.classNames('el-input-number', this.props.size && `el-input-number--${this.props.size}`, {
+      <div style={this.style()} className={this.className('el-input-number', this.props.size && `el-input-number--${this.props.size}`, {
         'is-disabled': this.props.disabled
       })}>
         <Input

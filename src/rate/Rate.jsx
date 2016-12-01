@@ -112,7 +112,7 @@ export default class Rate extends Component {
     let showWhenAllowHalf = allowHalf && pointerAtLeftHalf && ((item - 0.5).toFixed(1) === currentValue.toFixed(1));
     return showWhenDisabled || showWhenAllowHalf;
   }
-  
+
   classes() {
     const { currentValue } = this.state;
     const { allowHalf, max } = this.props;
@@ -217,7 +217,7 @@ export default class Rate extends Component {
     const { showText, textColor, disabled } = this.props;
     const { hoverIndex } = this.state;
     return (
-      <div className="el-rate">
+      <div style={this.style()} className={this.className('el-rate')}>
         {
           [...Array(5)].map((v, k) =>
             <span

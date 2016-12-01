@@ -142,7 +142,8 @@ export default class Menu extends Component {
   render() {
     return (
       <ul
-        className={this.classNames("el-menu", {
+        style={this.style()}
+        className={this.className("el-menu", {
           'el-menu--horizontal': this.props.mode === 'horizontal',
           'el-menu--dark': this.props.theme === 'dark'
         })}

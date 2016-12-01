@@ -104,7 +104,7 @@ export default class Input extends Component {
     delete otherProps.onIconClick;
 
     return type !== 'textarea' ?
-      <div className={classname} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <div style={this.style()} className={this.className(classname)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         { prependDOM }
         { iconDOM }
         <input

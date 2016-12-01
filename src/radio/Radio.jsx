@@ -52,7 +52,7 @@ export default class Radio extends Component {
 
   render() {
     return (
-      <label className="el-radio">
+      <label style={this.style()} className={this.className('el-radio')}>
         <span className="el-radio__input">
           <span className={this.classNames('el-radio__inner', {
               'is-checked': this.state.checked,
