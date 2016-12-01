@@ -69,11 +69,11 @@ export default class TimeSpinner extends Component {
       hours: 0,
       minutes: 0,
       seconds: 0,
-      selectableRange: []
     }
 
     Object.assign(this.state, propsToState(props))
-    this.ajustScrollTop = debounce(this._ajustScrollTop.bind(this), 0)
+    this.ajustScrollTop = this._ajustScrollTop.bind(this)
+    this.handleScroll = debounce(this._handleScroll.bind(this), 20)
   }
 
   componentDidMount() {
@@ -81,8 +81,7 @@ export default class TimeSpinner extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const nextState = propsToState(nextProps)
-    this.setState({ state: nextState }, () => {
+    this.setState(propsToState(nextProps), () => {
       this.ajustScrollTop(this.state)
     })
   }
@@ -98,7 +97,7 @@ export default class TimeSpinner extends Component {
     }
   }
 
-  handleScroll(type) {
+  _handleScroll(type) {
     const value = Math.min(Math.floor((this.refs[type].scrollTop - 80) / 32 + 3), 59);
     this.handleChange(type, value)
   }
@@ -113,7 +112,6 @@ export default class TimeSpinner extends Component {
       this.ajustScrollTop(this.state)
     })
     this.props.onChange(changed)
-
   }
 
   _ajustScrollTop({hours, minutes, seconds}) {
