@@ -21,19 +21,13 @@ class Select extends Component {
       isSelect: true,
       inputLength: 20,
       inputWidth: 0,
-      valueChangeBySelected: false,
       filteredOptionsCount: 0,
       optionsCount: 0,
-      dropdownUl: null,
-      visible: false,
-      selectedLabel: '',
-      selectInit: false,
       hoverIndex: -1,
-      voidRemoteQuery: false,
       bottomOverflowBeforeHidden: 0,
-      inputHovering: false,
       cachedPlaceHolder: props.placeholder,
       currentPlaceholder: props.placeholder,
+      selectedLabel: props.value,
       value: props.value
     };
 
@@ -59,13 +53,13 @@ class Select extends Component {
 
   componentDidMount() {
     const { remote, multiple } = this.props;
-    const { value } = this.state;
+    const { value, options } = this.state;
 
     this.findDOMNodes();
 
     if (remote && multiple && Array.isArray(value)) {
       this.setState({
-        selected: this.state.options.reduce((prev, curr) => {
+        selected: options.reduce((prev, curr) => {
           return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
         }, [])
       }, () => {

@@ -65,19 +65,13 @@ var Select = function (_Component) {
       isSelect: true,
       inputLength: 20,
       inputWidth: 0,
-      valueChangeBySelected: false,
       filteredOptionsCount: 0,
       optionsCount: 0,
-      dropdownUl: null,
-      visible: false,
-      selectedLabel: '',
-      selectInit: false,
       hoverIndex: -1,
-      voidRemoteQuery: false,
       bottomOverflowBeforeHidden: 0,
-      inputHovering: false,
       cachedPlaceHolder: props.placeholder,
       currentPlaceholder: props.placeholder,
+      selectedLabel: props.value,
       value: props.value
     };
 
@@ -111,14 +105,16 @@ var Select = function (_Component) {
       var _props = this.props,
           remote = _props.remote,
           multiple = _props.multiple;
-      var value = this.state.value;
+      var _state = this.state,
+          value = _state.value,
+          options = _state.options;
 
 
       this.findDOMNodes();
 
       if (remote && multiple && Array.isArray(value)) {
         this.setState({
-          selected: this.state.options.reduce(function (prev, curr) {
+          selected: options.reduce(function (prev, curr) {
             return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
           }, [])
         }, function () {
@@ -194,12 +190,12 @@ var Select = function (_Component) {
       var _props2 = this.props,
           multiple = _props2.multiple,
           filterable = _props2.filterable;
-      var _state = this.state,
-          query = _state.query,
-          dropdownUl = _state.dropdownUl,
-          selected = _state.selected,
-          selectedLabel = _state.selectedLabel,
-          bottomOverflowBeforeHidden = _state.bottomOverflowBeforeHidden;
+      var _state2 = this.state,
+          query = _state2.query,
+          dropdownUl = _state2.dropdownUl,
+          selected = _state2.selected,
+          selectedLabel = _state2.selectedLabel,
+          bottomOverflowBeforeHidden = _state2.bottomOverflowBeforeHidden;
 
 
       if (!visible) {
@@ -277,14 +273,14 @@ var Select = function (_Component) {
       var _this3 = this;
 
       var multiple = this.props.multiple;
-      var _state2 = this.state,
-          options = _state2.options,
-          valueChangeBySelected = _state2.valueChangeBySelected,
-          selectedInit = _state2.selectedInit,
-          selected = _state2.selected,
-          selectedLabel = _state2.selectedLabel,
-          currentPlaceholder = _state2.currentPlaceholder,
-          cachedPlaceHolder = _state2.cachedPlaceHolder;
+      var _state3 = this.state,
+          options = _state3.options,
+          valueChangeBySelected = _state3.valueChangeBySelected,
+          selectedInit = _state3.selectedInit,
+          selected = _state3.selected,
+          selectedLabel = _state3.selectedLabel,
+          currentPlaceholder = _state3.currentPlaceholder,
+          cachedPlaceHolder = _state3.cachedPlaceHolder;
 
 
       if (valueChangeBySelected) {
@@ -336,15 +332,15 @@ var Select = function (_Component) {
           multiple = _props3.multiple,
           filterable = _props3.filterable,
           onChange = _props3.onChange;
-      var _state3 = this.state,
-          query = _state3.query,
-          hoverIndex = _state3.hoverIndex,
-          inputLength = _state3.inputLength,
-          selected = _state3.selected,
-          selectedInit = _state3.selectedInit,
-          currentPlaceholder = _state3.currentPlaceholder,
-          cachedPlaceHolder = _state3.cachedPlaceHolder,
-          valueChangeBySelected = _state3.valueChangeBySelected;
+      var _state4 = this.state,
+          query = _state4.query,
+          hoverIndex = _state4.hoverIndex,
+          inputLength = _state4.inputLength,
+          selected = _state4.selected,
+          selectedInit = _state4.selectedInit,
+          currentPlaceholder = _state4.currentPlaceholder,
+          cachedPlaceHolder = _state4.cachedPlaceHolder,
+          valueChangeBySelected = _state4.valueChangeBySelected;
 
 
       if (multiple) {
@@ -405,11 +401,11 @@ var Select = function (_Component) {
           remote = _props4.remote,
           remoteMethod = _props4.remoteMethod,
           filterMethod = _props4.filterMethod;
-      var _state4 = this.state,
-          voidRemoteQuery = _state4.voidRemoteQuery,
-          hoverIndex = _state4.hoverIndex,
-          options = _state4.options,
-          optionsCount = _state4.optionsCount;
+      var _state5 = this.state,
+          voidRemoteQuery = _state5.voidRemoteQuery,
+          hoverIndex = _state5.hoverIndex,
+          options = _state5.options,
+          optionsCount = _state5.optionsCount;
 
       // this.broadcast('select-dropdown', 'updatePopper');
 
@@ -479,10 +475,10 @@ var Select = function (_Component) {
       var _props5 = this.props,
           loading = _props5.loading,
           filterable = _props5.filterable;
-      var _state5 = this.state,
-          voidRemoteQuery = _state5.voidRemoteQuery,
-          options = _state5.options,
-          filteredOptionsCount = _state5.filteredOptionsCount;
+      var _state6 = this.state,
+          voidRemoteQuery = _state6.voidRemoteQuery,
+          options = _state6.options,
+          filteredOptionsCount = _state6.filteredOptionsCount;
 
 
       if (loading) {
@@ -553,11 +549,11 @@ var Select = function (_Component) {
       var _props6 = this.props,
           multiple = _props6.multiple,
           remote = _props6.remote;
-      var _state6 = this.state,
-          selected = _state6.selected,
-          selectedLabel = _state6.selectedLabel,
-          hoverIndex = _state6.hoverIndex,
-          value = _state6.value;
+      var _state7 = this.state,
+          selected = _state7.selected,
+          selectedLabel = _state7.selectedLabel,
+          hoverIndex = _state7.hoverIndex,
+          value = _state7.value;
 
 
       if (multiple) {
@@ -581,9 +577,9 @@ var Select = function (_Component) {
   }, {
     key: 'managePlaceholder',
     value: function managePlaceholder() {
-      var _state7 = this.state,
-          currentPlaceholder = _state7.currentPlaceholder,
-          cachedPlaceHolder = _state7.cachedPlaceHolder;
+      var _state8 = this.state,
+          currentPlaceholder = _state8.currentPlaceholder,
+          cachedPlaceHolder = _state8.cachedPlaceHolder;
 
 
       if (currentPlaceholder !== '') {
@@ -621,10 +617,10 @@ var Select = function (_Component) {
       var _this5 = this;
 
       var multiple = this.props.multiple;
-      var _state8 = this.state,
-          hoverIndex = _state8.hoverIndex,
-          options = _state8.options,
-          selected = _state8.selected;
+      var _state9 = this.state,
+          hoverIndex = _state9.hoverIndex,
+          options = _state9.options,
+          selected = _state9.selected;
 
 
       setTimeout(function () {
@@ -649,9 +645,9 @@ var Select = function (_Component) {
       var _props7 = this.props,
           filterable = _props7.filterable,
           disabled = _props7.disabled;
-      var _state9 = this.state,
-          query = _state9.query,
-          visible = _state9.visible;
+      var _state10 = this.state,
+          query = _state10.query,
+          visible = _state10.visible;
 
 
       if (filterable && query === '' && visible) {
@@ -669,10 +665,10 @@ var Select = function (_Component) {
     value: function navigateOptions(direction) {
       var _this6 = this;
 
-      var _state10 = this.state,
-          visible = _state10.visible,
-          hoverIndex = _state10.hoverIndex,
-          options = _state10.options;
+      var _state11 = this.state,
+          visible = _state11.visible,
+          hoverIndex = _state11.hoverIndex,
+          options = _state11.options;
 
 
       if (!visible) {
@@ -741,9 +737,9 @@ var Select = function (_Component) {
   }, {
     key: 'selectOption',
     value: function selectOption() {
-      var _state11 = this.state,
-          hoverIndex = _state11.hoverIndex,
-          options = _state11.options;
+      var _state12 = this.state,
+          hoverIndex = _state12.hoverIndex,
+          options = _state12.options;
 
 
       if (options[hoverIndex]) {
@@ -826,10 +822,10 @@ var Select = function (_Component) {
       var _this8 = this;
 
       var multiple = this.props.multiple;
-      var _state12 = this.state,
-          visible = _state12.visible,
-          selected = _state12.selected,
-          selectedLabel = _state12.selectedLabel;
+      var _state13 = this.state,
+          visible = _state13.visible,
+          selected = _state13.selected,
+          selectedLabel = _state13.selectedLabel;
 
 
       if (!multiple) {
@@ -889,16 +885,16 @@ var Select = function (_Component) {
           disabled = _props8.disabled,
           filterable = _props8.filterable,
           loading = _props8.loading;
-      var _state13 = this.state,
-          selected = _state13.selected,
-          inputWidth = _state13.inputWidth,
-          inputLength = _state13.inputLength,
-          query = _state13.query,
-          selectedLabel = _state13.selectedLabel,
-          visible = _state13.visible,
-          options = _state13.options,
-          filteredOptionsCount = _state13.filteredOptionsCount,
-          currentPlaceholder = _state13.currentPlaceholder;
+      var _state14 = this.state,
+          selected = _state14.selected,
+          inputWidth = _state14.inputWidth,
+          inputLength = _state14.inputLength,
+          query = _state14.query,
+          selectedLabel = _state14.selectedLabel,
+          visible = _state14.visible,
+          options = _state14.options,
+          filteredOptionsCount = _state14.filteredOptionsCount,
+          currentPlaceholder = _state14.currentPlaceholder;
 
 
       return _react2.default.createElement(
