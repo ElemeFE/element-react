@@ -71,7 +71,7 @@ export default class SubMenu extends MixinComponent {
 
   render() {
     return (
-      <li className={this.classNames('el-submenu', {
+      <li style={this.style()} className={this.className('el-submenu', {
         'is-active': this.state.active,
         'is-opened': this.opened()
       })}>

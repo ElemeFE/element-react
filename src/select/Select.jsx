@@ -696,7 +696,7 @@ class Select extends Component {
     const { selected, inputWidth, inputLength, query, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
 
     return (
-      <div className={this.classNames('el-select', {
+      <div style={this.style()} className={this.className('el-select', {
           'is-multiple': multiple,
           'is-small': size === 'small'
         })}>

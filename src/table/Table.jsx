@@ -197,7 +197,7 @@ export default class Table extends Component{
     data = filterList || sortList || data;
 
     return (
-      <div className={rootClassName}>
+      <div style={this.style()} className={this.className(rootClassName)}>
         <div
           ref="headerWrapper"
           className="el-table__header-wrapper">

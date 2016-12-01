@@ -150,7 +150,7 @@ export default class Slider extends Component {
 
   render() {
     return (
-      <div className="el-slider">
+      <div style={this.style()} className={this.className('el-slider')}>
         {
           this.props.showInput && (
             <InputNumber

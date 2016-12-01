@@ -22,7 +22,7 @@ export default class Badge extends Component {
     }
 
     return (
-      <div className="el-badge">
+      <div style={this.style()} className={this.className('el-badge')}>
         { children }
         <sup className={ className }>{ content }</sup>
       </div>

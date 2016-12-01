@@ -46,7 +46,7 @@ export default class Tree extends Component {
     const {options, renderContent, highlightCurrent, isShowCheckbox, onCheckChange, onNodeClicked} = this.props
 
     return (
-      <div className={this.classNames('el-tree', { 'el-tree--highlight-current': highlightCurrent })}>
+      <div style={this.style()} className={this.className('el-tree', { 'el-tree--highlight-current': highlightCurrent })}>
         {
           treeModel.root.childNodes.map((e, idx) => {
             return (
@@ -81,7 +81,7 @@ Tree.propTypes = {
   highlightCurrent: PropTypes.bool,
   // (f:(resolve, reject)=>Unit)=>Unit
   load: PropTypes.func,
-  // 
+  //
   onCheckChange: PropTypes.func,
   // (nodeModel.data, nodeModel, this)=>Unit
   onNodeClicked: PropTypes.func,

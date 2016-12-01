@@ -79,7 +79,7 @@ class Dropdown extends Component {
     const { splitButton, type, size, menu } = this.props;
 
     return (
-      <div className="el-dropdown">
+      <div style={this.style()} className={this.className('el-dropdown')}>
         {
           splitButton ?  (
             <Button.Group>
