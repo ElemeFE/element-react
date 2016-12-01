@@ -54,8 +54,10 @@ export default class Table extends Component{
   }
 
   componentWillUnmount(){
-   ReactDOM.unmountComponentAtNode(this._filterContainer);
-   document.body.removeChild(this._filterContainer);
+    if (this._filterContainer instanceof HTMLElement) {
+      ReactDOM.unmountComponentAtNode(this._filterContainer);
+      document.body.removeChild(this._filterContainer);
+    }
   }
 
   componentWillReceiveProps(nextProps){

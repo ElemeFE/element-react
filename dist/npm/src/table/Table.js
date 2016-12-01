@@ -95,8 +95,10 @@ var Table = function (_Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      _reactDom2.default.unmountComponentAtNode(this._filterContainer);
-      document.body.removeChild(this._filterContainer);
+      if (this._filterContainer instanceof HTMLElement) {
+        _reactDom2.default.unmountComponentAtNode(this._filterContainer);
+        document.body.removeChild(this._filterContainer);
+      }
     }
   }, {
     key: 'componentWillReceiveProps',
