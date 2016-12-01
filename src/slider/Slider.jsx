@@ -150,12 +150,13 @@ export default class Slider extends Component {
 
   render() {
     return (
-      <div className="el-slider">
+      <div style={this.style()} className={this.className('el-slider')}>
         {
           this.props.showInput && (
             <InputNumber
               ref="input"
               className="el-slider__input"
+              defaultValue={this.state.inputValue}
               value={this.state.inputValue}
               onChange={this.onInputChange.bind(this)}
               step={this.props.step}

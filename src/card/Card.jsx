@@ -4,7 +4,7 @@ import { Component, View } from '../../libs';
 export default class Card extends Component {
   render() {
     return (
-      <div className="el-card">
+      <div style={this.style()} className={this.className('el-card')}>
         {
           this.props.header && (
             <div className="el-card__header">

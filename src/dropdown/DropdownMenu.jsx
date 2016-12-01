@@ -12,12 +12,6 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   this.popperJS = new Popper(ReactDOM.findDOMNode(this.parent()), this.refs.popper, {
-  //     placement: this.placement()
-  //   });
-  // }
-
   componentDidUpdate() {
     this.popperJS = new Popper(ReactDOM.findDOMNode(this.parent()), this.refs.popper, {
       placement: this.placement()
@@ -42,7 +36,7 @@ export default class DropdownMenu extends Component {
     return (
       <Transition name="md-fade-bottom">
         <View show={this.state.showPopper}>
-          <ul ref="popper" className="el-dropdown-menu">
+          <ul ref="popper" style={this.style()} className={this.className('el-dropdown-menu')}>
             {this.props.children}
           </ul>
         </View>

@@ -4,7 +4,7 @@ import { Component, PropTypes } from '../../libs';
 export default class TabPane extends Component {
   render() {
     return (
-      <div className="el-tab-pane">
+      <div style={this.style()} className={this.className('el-tab-pane')}>
         { this.props.children }
       </div>
     );

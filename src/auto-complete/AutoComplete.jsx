@@ -130,7 +130,7 @@ class AutoComplete extends Component {
     const { value, suggestions, suggestionVisible, loading, highlightedIndex } = this.state;
 
     return (
-      <div className="el-autocomplete">
+      <div style={this.style()} className={this.className('el-autocomplete')}>
         <Input
           value={value}
           disabled={disabled}

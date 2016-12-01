@@ -65,7 +65,7 @@ export default class Form extends Component {
 
   render() {
     return (
-      <form className={this.classNames('el-form', this.props.labelPosition && `el-form--label-${this.props.labelPosition}`, {
+      <form style={this.style()} className={this.className('el-form', this.props.labelPosition && `el-form--label-${this.props.labelPosition}`, {
         'el-form--inline': this.props.inline
       })}>{this.props.children}</form>
     )

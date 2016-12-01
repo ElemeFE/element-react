@@ -6,5 +6,5 @@ yarn.lock
 npm-debug.log
 node_modules
 
-/dist
+/dist/site
 /next.js

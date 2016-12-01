@@ -62,7 +62,6 @@
   "dependencies": {
     "async-validator": "^1.6.6",
     "classnames": "^2.2.5",
-    "is-equal": "^1.5.3",
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.4.1",
     "react-addons-transition-group": "^15.4.1",
