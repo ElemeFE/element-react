@@ -333,6 +333,12 @@ Object.defineProperty(exports, 'TimePicker', {
     return _datePicker.TimePicker;
   }
 });
+Object.defineProperty(exports, 'TimeRangePicker', {
+  enumerable: true,
+  get: function get() {
+    return _datePicker.TimeRangePicker;
+  }
+});
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

@@ -258,6 +258,7 @@ var TableBody = function (_Component2) {
         'table',
         {
           ref: 'root',
+          style: this.style(),
           className: this.classNames('el-table__body'),
           cellPadding: 0,
           cellSpacing: 0 },

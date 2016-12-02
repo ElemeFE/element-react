@@ -4,9 +4,9 @@ import { Component, PropTypes } from '../../libs';
 import calcTextareaHeight from './calcTextareaHeight'
 
 export default class Input extends Component {
-
   constructor(props) {
     super(props);
+
     this.state = {
       textareaStyle: null
     }
@@ -50,89 +50,74 @@ export default class Input extends Component {
 
   resizeTextarea() {
     const { autosize, type } = this.props;
+
     if (!autosize || type !== 'textarea') {
       return;
     }
+
     const minRows = autosize.minRows;
     const maxRows = autosize.maxRows;
+
     this.setState({
       textareaStyle: calcTextareaHeight(this.refs.textarea, minRows, maxRows)
     });
   }
 
   render() {
-    const {
-      type,
-      size,
-      disabled,
-      prepend,
-      append,
-      icon,
-      className,
-      autoComplete,
-      validating,
-      rows,
-      autosize,
-      onMouseEnter,
-      onMouseLeave,
+    const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave,
       ...otherProps
     } = this.props;
 
     const classname = this.classNames(
       type === 'textarea' ? 'el-textarea' : 'el-input',
-      size ? 'el-input--' + size : '',
-      {
-        'is-disabled': disabled,
-        'el-input-group': prepend || append
+      size && `el-input--${size}`, {
+        'el-input-group': prepend || append,
+        'is-disabled': this.props.disabled
       }
-    )
+    );
 
     if ('value' in this.props) {
       otherProps.value = this.fixControlledValue(this.props.value);
+
       delete otherProps.defaultValue;
     }
 
-    // 前置元素
-    const prependDOM = prepend ? <div className="el-input-group__prepend">{prepend}</div> : null
-    // 后置元素
-    const appendDOM = append ? <div className="el-input-group__append">{append}</div> : null
-    // input图标
-    const iconDOM = icon ? <i className={`el-input__icon el-icon-${icon}`} onClick={e => this.handleIconClick(e)}></i> : null
-    // validating状态
-    const validatingDOM = validating ? <i className="el-input__icon el-icon-loading"></i> : null
-
+    delete otherProps.style;
+    delete otherProps.autosize;
     delete otherProps.onIconClick;
 
-    return type !== 'textarea' ?
-      <div style={this.style()} className={this.className(classname)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-        { prependDOM }
-        { iconDOM }
-        <input
-          { ...otherProps }
-          ref="input"
-          className={this.classNames("el-input__inner", className)}
-          autoComplete={autoComplete}
-          onChange={e => this.handleChange(e)}
-          onFocus={e => this.handleFocus(e) }
-          onBlur={e => this.handleBlur(e) }
-        />
-        { validatingDOM }
-        { appendDOM }
-      </div>
-      :
-      <div className={classname}>
-        <textarea
-          { ...otherProps }
-          ref="textarea"
-          className={this.classNames("el-textarea__inner", className)}
-          style={Object.assign({}, this.props.style, this.state.textareaStyle)}
-          rows={rows}
-          onChange={e => this.handleChange(e)}
-          onFocus={e => this.handleFocus(e)}
-          onBlur={e => this.handleBlur(e)}
-        >
-        </textarea>
-      </div>
+    if (type === 'textarea') {
+      return (
+        <div style={this.style()} className={this.className(classname)}>
+          <textarea { ...otherProps }
+            ref="textarea"
+            className="el-textarea__inner"
+            style={this.state.textareaStyle}
+            rows={rows}
+            onChange={this.handleChange.bind(this)}
+            onFocus={this.handleFocus.bind(this)}
+            onBlur={this.handleBlur.bind(this)}
+          ></textarea>
+        </div>
+      )
+    } else {
+      return (
+        <div style={this.style()} className={this.className(classname)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+          { prepend && <div className="el-input-group__prepend">{prepend}</div> }
+          { icon && <i className={`el-input__icon el-icon-${icon}`} onClick={this.handleIconClick.bind(this)}></i> }
+          <input { ...otherProps }
+            ref="input"
+            className="el-input__inner"
+            autoComplete={autoComplete}
+            onChange={this.handleChange.bind(this)}
+            onFocus={this.handleFocus.bind(this)}
+            onBlur={this.handleBlur.bind(this)}
+          />
+          { validating && <i className="el-input__icon el-icon-loading"></i> }
+          { append && <div className="el-input-group__append">{append}</div> }
+        </div>
+      )
+    }
   }
 }
 
@@ -164,13 +149,16 @@ Input.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   onIconClick: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
 
   // autoComplete
   autoComplete: PropTypes.string,
   inputSelect: PropTypes.func,
 
   // form related
-  form: PropTypes.string
+  form: PropTypes.string,
+  validating: PropTypes.bool,
 }
 
 Input.defaultProps = {

@@ -27,7 +27,7 @@ class Select extends Component {
       bottomOverflowBeforeHidden: 0,
       cachedPlaceHolder: props.placeholder,
       currentPlaceholder: props.placeholder,
-      selectedLabel: props.value,
+      selectedLabel: '',
       value: props.value
     };
 
@@ -53,7 +53,7 @@ class Select extends Component {
 
   componentDidMount() {
     const { remote, multiple } = this.props;
-    const { value, options } = this.state;
+    const { value, options, selected } = this.state;
 
     this.findDOMNodes();
 
@@ -65,6 +65,18 @@ class Select extends Component {
       }, () => {
         this.resetInputHeight();
       });
+    } else {
+      const selected = options.filter(option => {
+         return option.props.value === value
+       })[0];
+
+       if (selected) {
+         this.state.selectedLabel = selected.props.label;
+       }
+    }
+
+    if (selected) {
+      this.onSelectedChange(selected);
     }
 
     addResizeListener(this.root, this.resetInputWidth.bind(this));
@@ -81,6 +93,16 @@ class Select extends Component {
 
     if (state.query != this.state.query) {
       this.onQueryChange(state.query);
+    }
+
+    if (Array.isArray(state.selected)) {
+      if (state.selected.length != this.state.selected.length) {
+        this.onSelectedChange(state.selected);
+      }
+    } else {
+      if (state.selected != this.state.selected) {
+        this.onSelectedChange(state.selected);
+      }
     }
   }
 
@@ -238,10 +260,10 @@ class Select extends Component {
 
   onSelectedChange(val) {
     const { multiple, filterable, onChange } = this.props;
-    let { query, hoverIndex, inputLength, selected, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
+    let { query, hoverIndex, inputLength, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
     if (multiple) {
-      if (selected.length > 0) {
+      if (val.length > 0) {
         currentPlaceholder = '';
       } else {
         currentPlaceholder = cachedPlaceHolder;
@@ -259,11 +281,8 @@ class Select extends Component {
 
       valueChangeBySelected = true;
 
-      const result = val.map(item => item.props.value);
+      onChange && onChange(val.map(item => item.props.value));
 
-      onChange && onChange(result);
-
-      // this.$emit('input', result);
       // this.dispatch('form-item', 'el.form.change', val);
 
       if (filterable) {
@@ -283,8 +302,6 @@ class Select extends Component {
       }
 
       onChange && onChange(val.props.value);
-
-      // this.$emit('input', val.value);
     }
   }
 
@@ -587,12 +604,11 @@ class Select extends Component {
     if (this.props.onChange) {
       this.props.onChange('');
     }
-
-    // this.$emit('input', '');
   }
 
-  deleteTag(event, tag) {
-    let { selected } = this.state;
+  deleteTag(tag) {
+    // let { selected } = this.state;
+    let selected = this.state.selected.slice(0);
     let index = selected.indexOf(tag);
 
     if (index > -1) {
@@ -600,8 +616,6 @@ class Select extends Component {
     }
 
     this.setState({ selected });
-
-    event.stopPropagation();
   }
 
   onInputChange() {

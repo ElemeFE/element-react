@@ -71,7 +71,7 @@ var Select = function (_Component) {
       bottomOverflowBeforeHidden: 0,
       cachedPlaceHolder: props.placeholder,
       currentPlaceholder: props.placeholder,
-      selectedLabel: props.value,
+      selectedLabel: '',
       value: props.value
     };
 
@@ -107,7 +107,8 @@ var Select = function (_Component) {
           multiple = _props.multiple;
       var _state = this.state,
           value = _state.value,
-          options = _state.options;
+          options = _state.options,
+          selected = _state.selected;
 
 
       this.findDOMNodes();
@@ -120,6 +121,18 @@ var Select = function (_Component) {
         }, function () {
           _this2.resetInputHeight();
         });
+      } else {
+        var _selected = options.filter(function (option) {
+          return option.props.value === value;
+        })[0];
+
+        if (_selected) {
+          this.state.selectedLabel = _selected.props.label;
+        }
+      }
+
+      if (selected) {
+        this.onSelectedChange(selected);
       }
 
       (0, _resizeEvent.addResizeListener)(this.root, this.resetInputWidth.bind(this));
@@ -137,6 +150,16 @@ var Select = function (_Component) {
 
       if (state.query != this.state.query) {
         this.onQueryChange(state.query);
+      }
+
+      if (Array.isArray(state.selected)) {
+        if (state.selected.length != this.state.selected.length) {
+          this.onSelectedChange(state.selected);
+        }
+      } else {
+        if (state.selected != this.state.selected) {
+          this.onSelectedChange(state.selected);
+        }
       }
     }
   }, {
@@ -336,7 +359,6 @@ var Select = function (_Component) {
           query = _state4.query,
           hoverIndex = _state4.hoverIndex,
           inputLength = _state4.inputLength,
-          selected = _state4.selected,
           selectedInit = _state4.selectedInit,
           currentPlaceholder = _state4.currentPlaceholder,
           cachedPlaceHolder = _state4.cachedPlaceHolder,
@@ -344,7 +366,7 @@ var Select = function (_Component) {
 
 
       if (multiple) {
-        if (selected.length > 0) {
+        if (val.length > 0) {
           currentPlaceholder = '';
         } else {
           currentPlaceholder = cachedPlaceHolder;
@@ -362,13 +384,10 @@ var Select = function (_Component) {
 
         valueChangeBySelected = true;
 
-        var result = val.map(function (item) {
+        onChange && onChange(val.map(function (item) {
           return item.props.value;
-        });
+        }));
 
-        onChange && onChange(result);
-
-        // this.$emit('input', result);
         // this.dispatch('form-item', 'el.form.change', val);
 
         if (filterable) {
@@ -388,8 +407,6 @@ var Select = function (_Component) {
         }
 
         onChange && onChange(val.props.value);
-
-        // this.$emit('input', val.value);
       }
     }
   }, {
@@ -760,14 +777,12 @@ var Select = function (_Component) {
       if (this.props.onChange) {
         this.props.onChange('');
       }
-
-      // this.$emit('input', '');
     }
   }, {
     key: 'deleteTag',
-    value: function deleteTag(event, tag) {
-      var selected = this.state.selected;
-
+    value: function deleteTag(tag) {
+      // let { selected } = this.state;
+      var selected = this.state.selected.slice(0);
       var index = selected.indexOf(tag);
 
       if (index > -1) {
@@ -775,8 +790,6 @@ var Select = function (_Component) {
       }
 
       this.setState({ selected: selected });
-
-      event.stopPropagation();
     }
   }, {
     key: 'onInputChange',

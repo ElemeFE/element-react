@@ -1,19 +1,16 @@
 import React, { PropTypes } from 'react';
-import { Component, View } from '../../libs';
+import { Component } from '../../libs';
 
 export default class Card extends Component {
   render() {
+    const { header, bodyStyle, children } = this.props;
     return (
       <div style={this.style()} className={this.className('el-card')}>
         {
-          this.props.header && (
-            <div className="el-card__header">
-              { this.props.header }
-            </div>
-          )
+          header && <div className="el-card__header"> { header }</div>
         }
-        <div className="el-card__body" style={ this.props.bodyStyle }>
-          { this.props.children }
+        <div className="el-card__body" style={ bodyStyle }>
+          { children }
         </div>
       </div>
     )

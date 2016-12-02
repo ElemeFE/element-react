@@ -98,17 +98,16 @@ export default class Pager extends Component{
   }
 
   render(){
-    const { currentPage, pageCount } = this.props;
-    const { quickprevIconClass, quicknextIconClass, showPrevMore, showNextMore } = this.state;
-
     const pagers = this.getPages();
+    const { currentPage, pageCount } = this.props;
+    const { quickprevIconClass, quicknextIconClass } = this.state;
 
     return (
       <ul onClick={this.onPagerClick.bind(this)} className="el-pager">
         { pageCount > 0 && <li className={this.classNames('number', {active: currentPage === 1})}>1</li> }
 
         {
-          showPrevMore && <li
+          this.state.showPrevMore && <li
             className={this.classNames("el-icon more btn-quickprev", quickprevIconClass)}
             onMouseEnter={()=>{this.setState({quickprevIconClass :'el-icon-d-arrow-left'})}}
             onMouseLeave={()=>{this.setState({quickprevIconClass :'el-icon-more'})}}>
@@ -124,7 +123,7 @@ export default class Pager extends Component{
         }
 
         {
-          showNextMore && <li
+          this.state.showNextMore && <li
             className={this.classNames("el-icon more btn-quicknext", quicknextIconClass)}
             onMouseEnter={()=>{this.setState({quicknextIconClass:'el-icon-d-arrow-right'})}}
             onMouseLeave={()=>{this.setState({quicknextIconClass:'el-icon-more'})}}>

@@ -36,8 +36,10 @@ var haveTriggerType = function haveTriggerType(type) {
   return _constants.HAVE_TRIGGER_TYPES.indexOf(type) !== -1;
 };
 
-var isDate = function isDate(date) {
-  return date instanceof Date;
+var isValidValue = function isValidValue(value) {
+  if (value instanceof Date) return true;
+  if (Array.isArray(value) && value.length !== 0 && value[0] instanceof Date) return true;
+  return false;
 };
 
 var BasePicker = function (_Component) {
@@ -54,10 +56,10 @@ var BasePicker = function (_Component) {
         placeholder: _libs.PropTypes.string,
         onFocus: _libs.PropTypes.func,
         onBlur: _libs.PropTypes.func,
-        // (date)=>()
+        // (Date|Date[])=>()
         onChange: _libs.PropTypes.func,
         // time select pannel:
-        value: _libs.PropTypes.instanceOf(Date)
+        value: _libs.PropTypes.oneOfType([_libs.PropTypes.instanceOf(Date), _libs.PropTypes.arrayOf(_libs.PropTypes.instanceOf(Date))])
       };
     }
   }, {
@@ -100,7 +102,7 @@ var BasePicker = function (_Component) {
      * onPicked should only be called from picker pannel instance
      * and should never return a null date instance
      * 
-     * @param value: Date
+     * @param value: Date|Date[]
      * @param isKeepPannel: boolean = false
      */
 
@@ -109,7 +111,7 @@ var BasePicker = function (_Component) {
     value: function onPicked(value) {
       var isKeepPannel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       //only change input value on picked triggered
-      (0, _utils.require_condition)(isDate(value));
+      (0, _utils.require_condition)(isValidValue(value));
       this.setState({
         pickerVisible: isKeepPannel,
         value: value,
@@ -124,17 +126,13 @@ var BasePicker = function (_Component) {
     key: 'dateToStr',
     value: function dateToStr(date) {
       if (!date) return '';
-
-      (0, _utils.require_condition)(isDate(date));
+      (0, _utils.require_condition)(isValidValue(date));
 
       var tdate = date;
       var formatter = (_constants.TYPE_VALUE_RESOLVER_MAP[this.type] || _constants.TYPE_VALUE_RESOLVER_MAP['default']).formatter;
       var format = _constants.DEFAULT_FORMATS[this.type];
-
       var result = formatter(tdate, this.props.format || format);
-      // if (typeof result !== 'string') {
-      //   console.warn('dateToStr return a non string result')
-      // }
+
       return result;
     }
 
@@ -262,7 +260,7 @@ var BasePicker = function (_Component) {
   }, {
     key: 'isDateValid',
     value: function isDateValid(date) {
-      return date == null || isDate(date);
+      return date == null || isValidValue(date);
     }
 
     // return true on condition
@@ -282,7 +280,6 @@ var BasePicker = function (_Component) {
         return false;
       }
       return true;
-      // return this.parseDate(value) && this.isDateValid(this.parseDate(value)) 
     }
   }, {
     key: 'handleClickOutside',
@@ -382,7 +379,7 @@ var _temp = function () {
 
   __REACT_HOT_LOADER__.register(haveTriggerType, 'haveTriggerType', 'src/date-picker/BasePicker.jsx');
 
-  __REACT_HOT_LOADER__.register(isDate, 'isDate', 'src/date-picker/BasePicker.jsx');
+  __REACT_HOT_LOADER__.register(isValidValue, 'isValidValue', 'src/date-picker/BasePicker.jsx');
 
   __REACT_HOT_LOADER__.register(BasePicker, 'BasePicker', 'src/date-picker/BasePicker.jsx');
 

@@ -41,7 +41,7 @@ export default class Playground extends React.Component {
 
   createFilter(queryString) {
     return (restaurant) => {
-      return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
+      return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
     };
   }
 
@@ -96,6 +96,10 @@ export default class Playground extends React.Component {
       { "value": "阳阳麻辣烫", "address": "天山西路389号" },
       { "value": "南拳妈妈龙虾盖浇饭", "address": "普陀区金沙江路1699号鑫乐惠美食广场A13" }
     ];
+  }
+
+  handleIconClick(ev) {
+    console.log(ev);
   }
 
   handleSelect(item) {
