@@ -172,6 +172,7 @@ export default class TableBody extends  Component{
     return (
       <table
         ref="root"
+        style={this.style()}
         className={this.classNames('el-table__body')}
         cellPadding={0}
         cellSpacing={0}>
