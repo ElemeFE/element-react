@@ -25,7 +25,7 @@ const data = {
     value: '选项5',
     label: '北京烤鸭'
   }],
-  value: ''
+  value: '选项1'
 };
 
 <Select value={data.value}>
@@ -168,7 +168,7 @@ const data = {
     value: '选项5',
     label: '北京烤鸭'
   }],
-  value: []
+  value: ['选项1', '选项2']
 };
 
 <Select value={data.value} placeholder="请选择" multiple={true}>
@@ -210,7 +210,7 @@ const data = {
   value: []
 };
 
-<Select value={data.value} placeholder="请选择" multiple={true}>
+<Select value={data.value} placeholder="请选择">
   {
     data.cities.map(el => {
       return (
