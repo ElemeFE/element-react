@@ -203,7 +203,7 @@ export default class Pagination extends Component{
         internalPageSize: val
       }, ()=>{
         const { onSizeChange } = this.props;
-        onSizeChange(val);
+        onSizeChange && onSizeChange(val);
       });
     }
   }
