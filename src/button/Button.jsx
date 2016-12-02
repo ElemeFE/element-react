@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import { Component, PropTypes } from '../../libs';
 
 export default class Button extends Component {
   onClick(e) {
@@ -10,7 +10,7 @@ export default class Button extends Component {
 
   render() {
     return (
-      <button className={this.classNames('el-button', this.props.type && `el-button--${this.props.type}`, this.props.size && `el-button--${this.props.size}`, {
+      <button style={this.style()} className={this.className('el-button', this.props.type && `el-button--${this.props.type}`, this.props.size && `el-button--${this.props.size}`, {
           'is-disabled': this.props.disabled,
           'is-loading': this.props.loading,
           'is-plain': this.props.plain

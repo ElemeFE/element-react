@@ -10,7 +10,7 @@ export default class OptionGroup extends Component {
 
   render() {
     return (
-      <ul className="el-select-group__wrap">
+      <ul style={this.style()} className={this.className('el-select-group__wrap')}>
         <li className="el-select-group__title">{this.props.label}</li>
         <li>
           <ul className="el-select-group">

@@ -87,6 +87,35 @@ return <TimePickerDemo />
 
 可选择任意的时间范围
 
+:::demo blah
+```jsfunc
+class TimeRangePickerDemo extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)]
+    }
+  }
+
+  handleUpdate(value) {
+    console.debug('time-picker update: ', value)
+  }
+
+  render() {
+    return (
+      <TimeRangePicker
+        pickerWidth={300}
+        onChange={this.handleUpdate.bind(this)}
+        placeholder="选择时间"
+        value={this.state.value}
+        />
+    )
+  }
+}
+return <TimeRangePickerDemo />
+```
+:::
+
 
 ### Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |

@@ -98,9 +98,8 @@ export default class Progress extends Component {
 
     return (
       <div
-        className={this.classNames({
-          'el-progress': true,
-          [`el-progress--${type}`]: true,
+        style={this.style()}
+        className={this.className('el-progress', `el-progress--${type}`, {
           [`is-${status}`]: !!status,
           'el-progress--without-text': !showText,
           'el-progress--text-inside': textInside,

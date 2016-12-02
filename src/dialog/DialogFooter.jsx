@@ -4,7 +4,7 @@ import { Component } from '../../libs';
 export default class DialogFooter extends Component {
   render() {
     return (
-      <div className="el-dialog__footer">
+      <div style={this.style()} className={this.className('el-dialog__footer')}>
         { this.props.children }
       </div>
     )

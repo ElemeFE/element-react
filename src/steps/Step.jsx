@@ -14,8 +14,8 @@ export default class Step extends Component {
 
     return (
       <div
-        style={style}
-        className={this.classNames('el-step', directionClass)}>
+        style={this.style(style)}
+        className={this.className('el-step', directionClass)}>
         <div
           className={this.classNames('el-step__head', statusClass, {
             'is-text': !icon

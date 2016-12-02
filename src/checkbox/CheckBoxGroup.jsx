@@ -10,7 +10,7 @@ export default class CheckboxGroup extends Component {
       options: this.props.options || []
     };
   }
-  
+
   getChildContext () {
     return { isWrap: true };
   }
@@ -28,7 +28,7 @@ export default class CheckboxGroup extends Component {
     this.setState({
       options: newOptions
     });
-    
+
     if (this.props.onChange) {
       this.props.onChange(newOptions);
     }
@@ -49,7 +49,7 @@ export default class CheckboxGroup extends Component {
     });
 
     return (
-      <div className="el-checkbox-group">
+      <div style={this.style()} className={this.className('el-checkbox-group')}>
         {children}
       </div>
     )

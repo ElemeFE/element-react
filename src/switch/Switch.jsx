@@ -58,7 +58,8 @@ export default class Switch extends Component {
     const {value, disabled, width} = this.state;
     return (
       <div
-        className={this.classNames('el-switch', {
+        style={this.style()}
+        className={this.className('el-switch', {
           'is-disabled' : disabled,
           'el-switch--wide' : this.hasText()
         })}>

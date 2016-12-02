@@ -25,7 +25,7 @@ const data = {
     value: '选项5',
     label: '北京烤鸭'
   }],
-  value: ''
+  value: '选项1'
 };
 
 <Select value={data.value}>
@@ -168,7 +168,7 @@ const data = {
     value: '选项5',
     label: '北京烤鸭'
   }],
-  value: []
+  value: ['选项1', '选项2']
 };
 
 <Select value={data.value} placeholder="请选择" multiple={true}>
@@ -210,7 +210,7 @@ const data = {
   value: []
 };
 
-<Select value={data.value} placeholder="请选择" multiple={true}>
+<Select value={data.value} placeholder="请选择">
   {
     data.cities.map(el => {
       return (
@@ -344,15 +344,15 @@ const data = {
 | name | select input 的 name 属性 | string | — | — |
 | placeholder | 占位符 | string | — | 请选择 |
 | filterable | 是否可搜索 | boolean | — | false |
-| filter-method | 自定义过滤方法 | function | — | — |
+| filterMethod | 自定义过滤方法 | function | — | — |
 | remote | 是否为远程搜索 | boolean | — | false |
-| remote-method | 远程搜索方法 | function | — | — |
+| remoteMethod | 远程搜索方法 | function | — | — |
 | loading | 是否正在从远程获取数据 | boolean | — | false |
 
 ### Select Events
 | 事件名称 | 说明 | 回调参数 |
 |---------|---------|---------|
-| change | 选中值发生变化时触发 | 目前的选中值 |
+| onChange | 选中值发生变化时触发 | 目前的选中值 |
 
 ### Option Group Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |

@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Component, View } from '../../libs';
 
-const KeyCode = { ESC: 27 };
-
 export default class Dialog extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +36,7 @@ export default class Dialog extends Component {
   }
 
   onKeyDown(e) {
-    if (this.props.closeOnPressEscape && e.keyCode === KeyCode.ESC) {
+    if (this.props.closeOnPressEscape && e.keyCode === 27) {
       this.close(e);
     }
   }
@@ -63,47 +61,34 @@ export default class Dialog extends Component {
 
   render() {
     const { visible, title, size, top, modal, customClass } = this.props;
-    const sizeClass = `el-dialog--${ size }`;
-    const style = (size === 'full') ? {} : { 'marginBottom': '50px', 'top': top };
-
-    const header = (
-      <div className="el-dialog__header">
-        <span className="el-dialog__title">{ title }</span>
-        <div className="el-dialog__headerbtn">
-          <i className="el-dialog__close el-icon el-icon-close" onClick={ e => this.close(e) }></i>
-        </div>
-      </div>
-    );
-
-    const dimmer = (
-      <View show={ modal } transition="v-modal" transitionKey="dialog-v-modal">
-        <div className="v-modal" style={{ zIndex: 1012 }}></div>
-      </View>
-    );
 
     return (
       <View show={ visible }>
-        <div>
+        <div
+          style={this.style({ zIndex: 1013 })}
+          className={this.className('el-dialog__wrapper')}
+          onClick={ e => this.handleWrapperClick(e) }
+          ref="wrap"
+          tabIndex={ -1 }
+          onKeyDown={ e => this.onKeyDown(e) }
+        >
           <div
-            className="el-dialog__wrapper"
-            onClick={ e => this.handleWrapperClick(e) }
-            style={{ zIndex: 1013 }}
-            ref="wrap"
-            tabIndex={ -1 }
-            onKeyDown={ e => this.onKeyDown(e) }
+            ref="dialog"
+            className={ this.classNames("el-dialog", `el-dialog--${ size }`, customClass) }
+            style={ size === 'full' ?  {} : { 'marginBottom': '50px', 'top': top }}
           >
-            <div
-              className={ this.classNames("el-dialog", sizeClass, customClass) }
-              ref="dialog"
-              style={ style }
-            >
-              { header }
-              { this.props.children }
+            <div className="el-dialog__header">
+              <span className="el-dialog__title">{ title }</span>
+              <div className="el-dialog__headerbtn">
+                <i className="el-dialog__close el-icon el-icon-close" onClick={ e => this.close(e) }></i>
+              </div>
             </div>
+            { this.props.children }
           </div>
-
-          { dimmer }
         </div>
+        <View show={ modal } transition="v-modal" transitionKey="dialog-v-modal">
+          <div className="v-modal" style={{ zIndex: 1012 }}></div>
+        </View>
       </View>
     );
   }

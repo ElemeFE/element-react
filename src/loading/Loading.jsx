@@ -2,7 +2,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Loading extends Component {
-  style() {
+  getStyle() {
     if (this.props.fullscreen) {
       document.body.style.setProperty('overflow', 'hidden');
 
@@ -25,7 +25,7 @@ export default class Loading extends Component {
 
   render() {
     return (
-      <div style={this.style()}>
+      <div style={this.style(this.getStyle())} className={this.className()}>
         <div
           style={{
             position: 'absolute',

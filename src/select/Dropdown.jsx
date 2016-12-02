@@ -17,16 +17,18 @@ export default class Dropdown extends Component {
 
   }
 
-  render() {
-    const parent = this.context.component;
+  parent() {
+    return this.context.component;
+  }
 
+  render() {
     return (
-      <div ref="popper" className={this.classNames('el-select-dropdown', {
-          'is-multiple': parent.props.multiple
-      })} style={{
+      <div ref="popper" className={this.className('el-select-dropdown', {
+          'is-multiple': this.parent().props.multiple
+      })} style={this.style({
         width: '100%',
         // minWidth: parent.state.inputWidth
-      }}>
+      })}>
         {this.props.children}
       </div>
     )

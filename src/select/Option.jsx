@@ -33,7 +33,9 @@ export default class Option extends Component {
   }
 
   currentSelected() {
-    return this.props.selected || (this.parent().props.multiple ? this.parent().state.value.indexOf(this.props.value) > -1 : this.parent().state.value === this.props.value);
+    return this.props.selected || (this.parent().props.multiple ?
+      this.parent().state.value.indexOf(this.props.value) > -1 :
+      this.parent().state.value === this.props.value);
   }
 
   currentLabel() {
@@ -44,12 +46,12 @@ export default class Option extends Component {
     if (Object.prototype.toString.call(this.parent().state.selected) === '[object Object]') {
       return this === this.parent().state.selected;
     } else if (Array.isArray(this.parent().state.selected)) {
-      return this.parent().state.value.indexOf(this.props.value) > -1;
+      return this.parent().state.selected.map(el => el.props.value).indexOf(this.props.value) > -1;
     }
   }
 
   hoverItem() {
-    if (!this.props.disabled && !this.context.disabled) {
+    if (!this.props.disabled && !this.parent().props.disabled) {
       this.parent().setState({
         hoverIndex: this.parent().state.options.indexOf(this)
       });
@@ -57,7 +59,7 @@ export default class Option extends Component {
   }
 
   selectOptionClick() {
-    if (this.props.disabled !== true && this.context.disabled !== true) {
+    if (this.props.disabled !== true && this.parent().props.disabled !== true) {
       this.parent().onOptionClick(this);
     }
   }
@@ -89,9 +91,10 @@ export default class Option extends Component {
     return (
       <View show={visible}>
         <li
-          className={this.classNames('el-select-dropdown__item', {
+          style={this.style()}
+          className={this.className('el-select-dropdown__item', {
             'selected': this.itemSelected(),
-            'is-disabled': this.props.disabled || this.context.disabled,
+            'is-disabled': this.props.disabled || this.parent().props.disabled,
             'hover': this.parent().state.hoverIndex === index
           })}
           onMouseEnter={this.hoverItem.bind(this)}

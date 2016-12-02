@@ -41,7 +41,7 @@
 ```html
 <Input
   type="textarea"
-  autosize
+  autosize={{ minRows: 2, maxRows: 4}}
   placeholder="请输入内容"
 />
 ```
@@ -55,6 +55,14 @@
 ```html
 <Input placeholder="请输入内容" prepend="Http://" />
 <Input placeholder="请输入内容" append=".com" />
+<Input placeholder="请输入内容" style={{width: '300px'}} prepend={
+  <Select value="">
+    {
+      ['餐厅名', '订单号', '用户电话'].map((item, index) => <Select.Option key={index} label={item} value={index} />)
+    }
+  </Select>
+} append={<Button type="primary" icon="search">搜索</Button>} />
+
 ```
 :::
 

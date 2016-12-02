@@ -123,7 +123,7 @@ export default class Pagination extends Component{
   next(){
     const oldPage = this.state.internalCurrentPage;
     const newVal = this.state.internalCurrentPage + 1;
-    
+
     this.setState({
       internalCurrentPage: this.getValidCurrentPage(newVal)
     }, ()=>{
@@ -203,7 +203,7 @@ export default class Pagination extends Component{
         internalPageSize: val
       }, ()=>{
         const { onSizeChange } = this.props;
-        onSizeChange(val);
+        onSizeChange && onSizeChange(val);
       });
     }
   }
@@ -225,25 +225,25 @@ export default class Pagination extends Component{
     const components = layout.split(',').map((item) => item.trim());
     const TEMPLATE_MAP = {
       prev:   <Pre key='pre' internalCurrentPage={ internalCurrentPage } prev={ this.pre.bind(this) }/>,
-      jumper: <Jumper 
+      jumper: <Jumper
                 key='jumper'
                 jumper={ this.jumperToPage.bind(this) }
-                internalPageCount={ this.internalPageCount() } 
+                internalPageCount={ this.internalPageCount() }
                 internalCurrentPage={ internalCurrentPage }/>,
-      pager:  <Pager 
+      pager:  <Pager
                 key='pager'
-                currentPage={ internalCurrentPage } 
-                pageCount={ this.internalPageCount() } 
+                currentPage={ internalCurrentPage }
+                pageCount={ this.internalPageCount() }
                 onChange={ this.handleCurrentChange.bind(this) }/>,
-      next:  <Next 
+      next:  <Next
                key='next'
-               internalCurrentPage={ internalCurrentPage } 
-               internalPageCount={ this.internalPageCount() } 
+               internalCurrentPage={ internalCurrentPage }
+               internalPageCount={ this.internalPageCount() }
                next={ this.next.bind(this) }/>,
-      sizes: <Sizes 
+      sizes: <Sizes
               key='sizes'
-              internalPageSize={ internalPageSize } 
-              pageSizes={ this.props.pageSizes } 
+              internalPageSize={ internalPageSize }
+              pageSizes={ this.props.pageSizes }
               onSizeChange={ this.onSizeChange.bind(this) }/>,
       total: <Total key='total' total={ this.props.total }/>
     }
@@ -255,7 +255,7 @@ export default class Pagination extends Component{
     });
 
     return (
-      <div className={className}>
+      <div style={this.style()} className={this.className(className)}>
         {children}
       </div>
     );
@@ -284,4 +284,3 @@ Pagination.defaultProps = {
   layout: 'prev, pager, next, jumper, ->, total',
   pageSizes: [10, 20, 30, 40, 50, 100]
 };
-

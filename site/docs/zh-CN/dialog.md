@@ -92,10 +92,10 @@ let data = [{
   >
     <Dialog.Body>
       <Form model={this.state.form}>
-        <Form.Item label="活动名称">
+        <Form.Item label="活动名称" labelWidth="120">
           <Input value={this.state.form.name}></Input>
         </Form.Item>
-        <Form.Item label="活动区域">
+        <Form.Item label="活动区域" labelWidth="120">
           <Select value={this.state.form.region} placeholder="请选择活动区域">
             <Select.Option label="区域一" value="shanghai"></Select.Option>
             <Select.Option label="区域二" value="beijing"></Select.Option>

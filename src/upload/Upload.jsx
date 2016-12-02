@@ -164,7 +164,7 @@ export default class Upload extends Component {
     }
     if (type === 'drag') {
       return (
-        <div className="el-upload">
+        <div style={this.style()} className={this.className('el-upload')}>
           {uploadComponent}
           {tip}
           {uploadList}

@@ -34,6 +34,8 @@ export default class Toast extends Component {
 
     this.setState({
       visible: false
+    }, () => {
+      this.props.onClose();
     });
   }
 

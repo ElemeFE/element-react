@@ -54,8 +54,10 @@ export default class Table extends Component{
   }
 
   componentWillUnmount(){
-   ReactDOM.unmountComponentAtNode(this._filterContainer);
-   document.body.removeChild(this._filterContainer);
+    if (this._filterContainer instanceof HTMLElement) {
+      ReactDOM.unmountComponentAtNode(this._filterContainer);
+      document.body.removeChild(this._filterContainer);
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -77,8 +79,9 @@ export default class Table extends Component{
 
   initLayout(){
     const { height, fit } = this.props;
-    const rootComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
-    const thisTableWidth = parseFloat(rootComputedStyle.getPropertyValue('width'));
+    const rootComputedStyle = window.getComputedStyle(this.refs.root);
+    const headerComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
+    const thisTableWidth = parseFloat(headerComputedStyle.getPropertyValue('width'));
     const realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
     const bodyWidth = scheduleLayout(this.state._columns, thisTableWidth, undefined, fit).bodyWidth;
     const headerHeight = this.refs.headerWrapper.offsetHeight;
@@ -168,13 +171,13 @@ export default class Table extends Component{
 
   render() {
     let { fit, stripe, border, highlightCurrentRow } = this.props;
-    let { 
-      bodyWidth,  
-      bodyHeight, 
-      _columns, 
-      data, 
-      fixedLeftColumns, 
-      fixedRightColumns, 
+    let {
+      bodyWidth,
+      bodyHeight,
+      _columns,
+      data,
+      fixedLeftColumns,
+      fixedRightColumns,
       realTableHeight,
       realTableHeaderHeight,
       scrollY,
@@ -197,14 +200,17 @@ export default class Table extends Component{
     data = filterList || sortList || data;
 
     return (
-      <div className={rootClassName}>
+      <div 
+        ref="root"
+        style={this.style()} 
+        className={this.className(rootClassName)}>
         <div
           ref="headerWrapper"
           className="el-table__header-wrapper">
-          <TableHeader 
+          <TableHeader
             ref="header"
             isScrollY={scrollY}
-            style={{width: bodyWidth}} 
+            style={{width: bodyWidth}}
             columns={_columns}/>
         </div>
 
@@ -223,8 +229,8 @@ export default class Table extends Component{
         </div>
         {
           !!fixedLeftColumns.length && (
-            <div 
-              className="el-table__fixed" 
+            <div
+              className="el-table__fixed"
               ref="fixedWrapper"
               style={{width: calculateFixedWidth(fixedLeftColumns), height: realTableHeight ? (realTableHeight - scrollYWiddth) : ''}}>
               <div className="el-table__fixed-header-wrapper" ref="fixedHeaderWrapper">
@@ -234,8 +240,8 @@ export default class Table extends Component{
                   columns={_columns}
                   style={{width: '100%', height: '100%'}}/>
               </div>
-              <div 
-                className="el-table__fixed-body-wrapper" 
+              <div
+                className="el-table__fixed-body-wrapper"
                 ref="fixedBodyWrapper"
                 style={{top: realTableHeaderHeight, height: bodyHeight ? (bodyHeight - scrollYWiddth) : ''}}>
                 <TableBody
@@ -245,18 +251,18 @@ export default class Table extends Component{
                   columns={_columns}
                   data={data}
                   highlightCurrentRow={highlightCurrentRow}
-                  style={{width: calculateFixedWidth(fixedLeftColumns)}}>
+                  style={{width: bodyWidth}}>
                 </TableBody>
               </div>
             </div>)
         }
 
-        <div 
-          className="el-table__fixed-right" 
+        <div
+          className="el-table__fixed-right"
           ref="rightFixedWrapper"
           style={{width: calculateFixedWidth(fixedRightColumns), height: realTableHeight ? (realTableHeight - scrollYWiddth) : '' ,right: scrollY?getScrollBarWidth() : 0}}>
-          <div 
-            className="el-table__fixed-header-wrapper" 
+          <div
+            className="el-table__fixed-header-wrapper"
             ref="rightFixedHeaderWrapper">
             <TableHeader
               fixed="right"
@@ -264,8 +270,8 @@ export default class Table extends Component{
               columns={_columns}
               style={{width: '100%', height: '100%'}}/>
           </div>
-          <div 
-            className="el-table__fixed-body-wrapper" 
+          <div
+            className="el-table__fixed-body-wrapper"
             ref="rightFixedBodyWrapper"
             style={{top: realTableHeaderHeight, height: bodyHeight? (bodyHeight - scrollYWiddth):''}}>
             <TableBody
@@ -275,14 +281,14 @@ export default class Table extends Component{
               columns={_columns}
               data={data}
               highlightCurrentRow={highlightCurrentRow}
-              style={{width: calculateFixedWidth(fixedRightColumns)}}>
+              style={{width: bodyWidth}}>
             </TableBody>
           </div>
         </div>
 
         <div
           style={{display: this.state.resizeProxyVisible?"block":"none"}}
-          className="el-table__column-resize-proxy" 
+          className="el-table__column-resize-proxy"
           ref="resizeProxy">
         </div>
 
