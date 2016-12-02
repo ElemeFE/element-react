@@ -31,7 +31,6 @@ export default class TimeRangePicker extends BasePicker {
     return (
       <TimeRangePanel
         {...props}
-        key="time-range-picker-panel"
         currentDates={state.value}
         onCancel={()=>this.setState({pickerVisible: false})}
         onPicked={this.onPicked.bind(this)}
