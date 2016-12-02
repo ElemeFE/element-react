@@ -95,11 +95,14 @@ var Input = function (_Component) {
           autosize = _props.autosize,
           type = _props.type;
 
+
       if (!autosize || type !== 'textarea') {
         return;
       }
+
       var minRows = autosize.minRows;
       var maxRows = autosize.maxRows;
+
       this.setState({
         textareaStyle: (0, _calcTextareaHeight2.default)(this.refs.textarea, minRows, maxRows)
       });
@@ -107,95 +110,74 @@ var Input = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       var _props2 = this.props,
           type = _props2.type,
           size = _props2.size,
-          disabled = _props2.disabled,
           prepend = _props2.prepend,
           append = _props2.append,
           icon = _props2.icon,
-          className = _props2.className,
           autoComplete = _props2.autoComplete,
           validating = _props2.validating,
           rows = _props2.rows,
-          autosize = _props2.autosize,
           onMouseEnter = _props2.onMouseEnter,
           onMouseLeave = _props2.onMouseLeave,
-          otherProps = _objectWithoutProperties(_props2, ['type', 'size', 'disabled', 'prepend', 'append', 'icon', 'className', 'autoComplete', 'validating', 'rows', 'autosize', 'onMouseEnter', 'onMouseLeave']);
+          otherProps = _objectWithoutProperties(_props2, ['type', 'size', 'prepend', 'append', 'icon', 'autoComplete', 'validating', 'rows', 'onMouseEnter', 'onMouseLeave']);
 
-      var classname = this.classNames(type === 'textarea' ? 'el-textarea' : 'el-input', size ? 'el-input--' + size : '', {
-        'is-disabled': disabled,
-        'el-input-group': prepend || append
+      var classname = this.classNames(type === 'textarea' ? 'el-textarea' : 'el-input', size && 'el-input--' + size, {
+        'el-input-group': prepend || append,
+        'is-disabled': this.props.disabled
       });
 
       if ('value' in this.props) {
         otherProps.value = this.fixControlledValue(this.props.value);
+
         delete otherProps.defaultValue;
       }
 
-      // 前置元素
-      var prependDOM = prepend ? _react2.default.createElement(
-        'div',
-        { className: 'el-input-group__prepend' },
-        prepend
-      ) : null;
-      // 后置元素
-      var appendDOM = append ? _react2.default.createElement(
-        'div',
-        { className: 'el-input-group__append' },
-        append
-      ) : null;
-      // input图标
-      var iconDOM = icon ? _react2.default.createElement('i', { className: 'el-input__icon el-icon-' + icon, onClick: function onClick(e) {
-          return _this2.handleIconClick(e);
-        } }) : null;
-      // validating状态
-      var validatingDOM = validating ? _react2.default.createElement('i', { className: 'el-input__icon el-icon-loading' }) : null;
-
+      delete otherProps.style;
+      delete otherProps.autosize;
       delete otherProps.onIconClick;
 
-      return type !== 'textarea' ? _react2.default.createElement(
-        'div',
-        { style: this.style(), className: this.className(classname), onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave },
-        prependDOM,
-        iconDOM,
-        _react2.default.createElement('input', _extends({}, otherProps, {
-          ref: 'input',
-          className: this.classNames("el-input__inner", className),
-          autoComplete: autoComplete,
-          onChange: function onChange(e) {
-            return _this2.handleChange(e);
-          },
-          onFocus: function onFocus(e) {
-            return _this2.handleFocus(e);
-          },
-          onBlur: function onBlur(e) {
-            return _this2.handleBlur(e);
-          }
-        })),
-        validatingDOM,
-        appendDOM
-      ) : _react2.default.createElement(
-        'div',
-        { className: classname },
-        _react2.default.createElement('textarea', _extends({}, otherProps, {
-          ref: 'textarea',
-          className: this.classNames("el-textarea__inner", className),
-          style: Object.assign({}, this.props.style, this.state.textareaStyle),
-          rows: rows,
-          onChange: function onChange(e) {
-            return _this2.handleChange(e);
-          },
-          onFocus: function onFocus(e) {
-            return _this2.handleFocus(e);
-          },
-          onBlur: function onBlur(e) {
-            return _this2.handleBlur(e);
-          }
-        }))
-      );
+      if (type === 'textarea') {
+        return _react2.default.createElement(
+          'div',
+          { style: this.style(), className: this.className(classname) },
+          _react2.default.createElement('textarea', _extends({}, otherProps, {
+            ref: 'textarea',
+            className: 'el-textarea__inner',
+            style: this.state.textareaStyle,
+            rows: rows,
+            onChange: this.handleChange.bind(this),
+            onFocus: this.handleFocus.bind(this),
+            onBlur: this.handleBlur.bind(this)
+          }))
+        );
+      } else {
+        return _react2.default.createElement(
+          'div',
+          { style: this.style(), className: this.className(classname), onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave },
+          prepend && _react2.default.createElement(
+            'div',
+            { className: 'el-input-group__prepend' },
+            prepend
+          ),
+          icon && _react2.default.createElement('i', { className: 'el-input__icon el-icon-' + icon, onClick: this.handleIconClick.bind(this) }),
+          _react2.default.createElement('input', _extends({}, otherProps, {
+            ref: 'input',
+            className: 'el-input__inner',
+            autoComplete: autoComplete,
+            onChange: this.handleChange.bind(this),
+            onFocus: this.handleFocus.bind(this),
+            onBlur: this.handleBlur.bind(this)
+          })),
+          validating && _react2.default.createElement('i', { className: 'el-input__icon el-icon-loading' }),
+          append && _react2.default.createElement(
+            'div',
+            { className: 'el-input-group__append' },
+            append
+          )
+        );
+      }
     }
   }]);
 
@@ -234,13 +216,16 @@ Input.propTypes = {
   onBlur: _libs.PropTypes.func,
   onChange: _libs.PropTypes.func,
   onIconClick: _libs.PropTypes.func,
+  onMouseEnter: _libs.PropTypes.func,
+  onMouseLeave: _libs.PropTypes.func,
 
   // autoComplete
   autoComplete: _libs.PropTypes.string,
   inputSelect: _libs.PropTypes.func,
 
   // form related
-  form: _libs.PropTypes.string
+  form: _libs.PropTypes.string,
+  validating: _libs.PropTypes.bool
 };
 
 Input.defaultProps = {
