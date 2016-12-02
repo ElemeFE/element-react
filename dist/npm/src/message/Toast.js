@@ -58,19 +58,23 @@ var Toast = function (_Component) {
   }, {
     key: 'onClose',
     value: function onClose() {
+      var _this2 = this;
+
       this.stopTimer();
 
       this.setState({
         visible: false
+      }, function () {
+        _this2.props.onClose();
       });
     }
   }, {
     key: 'startTimer',
     value: function startTimer() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.timeout = setTimeout(function () {
-        _this2.onClose();
+        _this3.onClose();
       }, this.props.duration);
     }
   }, {

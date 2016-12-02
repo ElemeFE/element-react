@@ -32,6 +32,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var mapPropsToState = function mapPropsToState(props) {
+  var state = {
+    format: props.format || 'HH:mm:ss',
+    currentDate: props.currentDate || Date() //todo: handle update.
+  };
+  state.isShowSeconds = (state.format || '').indexOf('ss') !== -1;
+  return state;
+};
+
 var TimePanel = function (_Component) {
   _inherits(TimePanel, _Component);
 
@@ -72,18 +81,7 @@ var TimePanel = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (TimePanel.__proto__ || Object.getPrototypeOf(TimePanel)).call(this, props));
 
-    var state = {
-      format: 'HH:mm:ss',
-      currentDate: props.currentDate || Date() //todo: handle update.
-    };
-
-    state.hours = state.currentDate.getHours();
-    state.minutes = state.currentDate.getMinutes();
-    state.seconds = state.currentDate.getSeconds();
-    state.isShowSeconds = (state.format || '').indexOf('ss') !== -1;
-
-    _this.state = state;
-
+    _this.state = mapPropsToState(props);
     //todo: make this dry
     _utils2.PopperReactMixin.call(_this, function () {
       return _this.refs.root;
@@ -95,11 +93,16 @@ var TimePanel = function (_Component) {
     return _this;
   }
 
-  // type: string,  one of [hours, minutes, seconds]
-  // date: {type: number}
-
-
   _createClass(TimePanel, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState(mapPropsToState(nextProps));
+    }
+
+    // type: string,  one of [hours, minutes, seconds]
+    // date: {type: number}
+
+  }, {
     key: 'handleChange',
     value: function handleChange(date) {
       var currentDate = this.state.currentDate;
@@ -107,17 +110,14 @@ var TimePanel = function (_Component) {
 
       if (date.hours !== undefined) {
         currentDate.setHours(date.hours);
-        this.state.hours = currentDate.getHours();
       }
 
       if (date.minutes !== undefined) {
         currentDate.setMinutes(date.minutes);
-        this.state.minutes = currentDate.getMinutes();
       }
 
       if (date.seconds !== undefined) {
         currentDate.setSeconds(date.seconds);
-        this.state.seconds = currentDate.getSeconds();
       }
       this.setState({});
       this.handleConfirm(true);
@@ -142,25 +142,22 @@ var TimePanel = function (_Component) {
 
       var _state = this.state,
           isShowSeconds = _state.isShowSeconds,
-          hours = _state.hours,
-          minutes = _state.minutes,
-          seconds = _state.seconds;
+          currentDate = _state.currentDate;
       var _props2 = this.props,
-          pickerWidth = _props2.pickerWidth,
           onSelectRangeChange = _props2.onSelectRangeChange,
           selectableRange = _props2.selectableRange;
 
-      var style = {};
-      if (pickerWidth) {
-        style.width = pickerWidth + 'px';
-      }
+
+      var hours = currentDate.getHours();
+      var minutes = currentDate.getMinutes();
+      var seconds = currentDate.getSeconds();
+
       var $t = _locale2.default.t;
 
       return _react2.default.createElement(
         'div',
         {
           ref: 'root',
-          style: style,
           className: 'el-time-panel' },
         _react2.default.createElement(
           'div',
@@ -215,6 +212,8 @@ var _temp = function () {
   if (typeof __REACT_HOT_LOADER__ === 'undefined') {
     return;
   }
+
+  __REACT_HOT_LOADER__.register(mapPropsToState, 'mapPropsToState', 'src/date-picker/panel/TimePanel.jsx');
 
   __REACT_HOT_LOADER__.register(TimePanel, 'TimePanel', 'src/date-picker/panel/TimePanel.jsx');
 

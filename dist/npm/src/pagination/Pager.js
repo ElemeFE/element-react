@@ -131,17 +131,14 @@ var Pager = function (_Component) {
     value: function render() {
       var _this2 = this;
 
+      var pagers = this.getPages();
       var _props = this.props,
           currentPage = _props.currentPage,
           pageCount = _props.pageCount;
       var _state = this.state,
           quickprevIconClass = _state.quickprevIconClass,
-          quicknextIconClass = _state.quicknextIconClass,
-          showPrevMore = _state.showPrevMore,
-          showNextMore = _state.showNextMore;
+          quicknextIconClass = _state.quicknextIconClass;
 
-
-      var pagers = this.getPages();
 
       return _react2.default.createElement(
         'ul',
@@ -151,7 +148,7 @@ var Pager = function (_Component) {
           { className: this.classNames('number', { active: currentPage === 1 }) },
           '1'
         ),
-        showPrevMore && _react2.default.createElement('li', {
+        this.state.showPrevMore && _react2.default.createElement('li', {
           className: this.classNames("el-icon more btn-quickprev", quickprevIconClass),
           onMouseEnter: function onMouseEnter() {
             _this2.setState({ quickprevIconClass: 'el-icon-d-arrow-left' });
@@ -166,7 +163,7 @@ var Pager = function (_Component) {
             pager
           );
         }),
-        showNextMore && _react2.default.createElement('li', {
+        this.state.showNextMore && _react2.default.createElement('li', {
           className: this.classNames("el-icon more btn-quicknext", quicknextIconClass),
           onMouseEnter: function onMouseEnter() {
             _this2.setState({ quicknextIconClass: 'el-icon-d-arrow-right' });

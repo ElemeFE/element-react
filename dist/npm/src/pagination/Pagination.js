@@ -305,7 +305,7 @@ var Pagination = function (_Component3) {
         }, function () {
           var onSizeChange = _this9.props.onSizeChange;
 
-          onSizeChange(val);
+          onSizeChange && onSizeChange(val);
         });
       }
     }

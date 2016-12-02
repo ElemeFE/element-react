@@ -22,6 +22,15 @@ Object.defineProperty(exports, 'TimePicker', {
   }
 });
 
+var _TimeRangePicker = require('./TimeRangePicker');
+
+Object.defineProperty(exports, 'TimeRangePicker', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_TimeRangePicker).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 ;

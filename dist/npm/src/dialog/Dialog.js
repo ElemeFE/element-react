@@ -14,15 +14,11 @@ var _libs = require('../../libs');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var KeyCode = { ESC: 27 };
 
 var Dialog = function (_Component) {
   _inherits(Dialog, _Component);
@@ -68,7 +64,7 @@ var Dialog = function (_Component) {
   }, {
     key: 'onKeyDown',
     value: function onKeyDown(e) {
-      if (this.props.closeOnPressEscape && e.keyCode === KeyCode.ESC) {
+      if (this.props.closeOnPressEscape && e.keyCode === 27) {
         this.close(e);
       }
     }
@@ -97,8 +93,7 @@ var Dialog = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this,
-          _React$createElement;
+      var _this2 = this;
 
       var _props = this.props,
           visible = _props.visible,
@@ -108,58 +103,55 @@ var Dialog = function (_Component) {
           modal = _props.modal,
           customClass = _props.customClass;
 
-      var sizeClass = 'el-dialog--' + size;
-      var style = size === 'full' ? {} : { 'marginBottom': '50px', 'top': top };
-
-      var header = _react2.default.createElement(
-        'div',
-        { className: 'el-dialog__header' },
-        _react2.default.createElement(
-          'span',
-          { className: 'el-dialog__title' },
-          title
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'el-dialog__headerbtn' },
-          _react2.default.createElement('i', { className: 'el-dialog__close el-icon el-icon-close', onClick: function onClick(e) {
-              return _this2.close(e);
-            } })
-        )
-      );
-
-      var dimmer = _react2.default.createElement(
-        _libs.View,
-        { show: modal, transition: 'v-modal', transitionKey: 'dialog-v-modal' },
-        _react2.default.createElement('div', { className: 'v-modal', style: { zIndex: 1012 } })
-      );
 
       return _react2.default.createElement(
         _libs.View,
         { show: visible },
         _react2.default.createElement(
           'div',
-          (_React$createElement = {
-            style: this.style(),
+          {
+            style: this.style({ zIndex: 1013 }),
             className: this.className('el-dialog__wrapper'),
             onClick: function onClick(e) {
               return _this2.handleWrapperClick(e);
+            },
+            ref: 'wrap',
+            tabIndex: -1,
+            onKeyDown: function onKeyDown(e) {
+              return _this2.onKeyDown(e);
             }
-          }, _defineProperty(_React$createElement, 'style', { zIndex: 1013 }), _defineProperty(_React$createElement, 'ref', 'wrap'), _defineProperty(_React$createElement, 'tabIndex', -1), _defineProperty(_React$createElement, 'onKeyDown', function onKeyDown(e) {
-            return _this2.onKeyDown(e);
-          }), _React$createElement),
+          },
           _react2.default.createElement(
             'div',
             {
-              className: this.classNames("el-dialog", sizeClass, customClass),
               ref: 'dialog',
-              style: style
+              className: this.classNames("el-dialog", 'el-dialog--' + size, customClass),
+              style: size === 'full' ? {} : { 'marginBottom': '50px', 'top': top }
             },
-            header,
+            _react2.default.createElement(
+              'div',
+              { className: 'el-dialog__header' },
+              _react2.default.createElement(
+                'span',
+                { className: 'el-dialog__title' },
+                title
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'el-dialog__headerbtn' },
+                _react2.default.createElement('i', { className: 'el-dialog__close el-icon el-icon-close', onClick: function onClick(e) {
+                    return _this2.close(e);
+                  } })
+              )
+            ),
             this.props.children
           )
         ),
-        dimmer
+        _react2.default.createElement(
+          _libs.View,
+          { show: modal, transition: 'v-modal', transitionKey: 'dialog-v-modal' },
+          _react2.default.createElement('div', { className: 'v-modal', style: { zIndex: 1012 } })
+        )
       );
     }
   }]);
@@ -210,8 +202,6 @@ var _temp = function () {
   if (typeof __REACT_HOT_LOADER__ === 'undefined') {
     return;
   }
-
-  __REACT_HOT_LOADER__.register(KeyCode, 'KeyCode', 'src/dialog/Dialog.jsx');
 
   __REACT_HOT_LOADER__.register(Dialog, 'Dialog', 'src/dialog/Dialog.jsx');
 

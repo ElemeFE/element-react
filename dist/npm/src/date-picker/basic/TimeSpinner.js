@@ -114,12 +114,12 @@ var TimeSpinner = function (_Component) {
     _this.state = {
       hours: 0,
       minutes: 0,
-      seconds: 0,
-      selectableRange: []
+      seconds: 0
     };
 
     Object.assign(_this.state, propsToState(props));
-    _this.ajustScrollTop = (0, _utils.debounce)(_this._ajustScrollTop.bind(_this), 0);
+    _this.ajustScrollTop = _this._ajustScrollTop.bind(_this);
+    _this.handleScroll = (0, _utils.debounce)(_this._handleScroll.bind(_this), 20);
     return _this;
   }
 
@@ -133,8 +133,7 @@ var TimeSpinner = function (_Component) {
     value: function componentWillReceiveProps(nextProps) {
       var _this2 = this;
 
-      var nextState = propsToState(nextProps);
-      this.setState({ state: nextState }, function () {
+      this.setState(propsToState(nextProps), function () {
         _this2.ajustScrollTop(_this2.state);
       });
     }
@@ -152,8 +151,8 @@ var TimeSpinner = function (_Component) {
       }
     }
   }, {
-    key: 'handleScroll',
-    value: function handleScroll(type) {
+    key: '_handleScroll',
+    value: function _handleScroll(type) {
       var value = Math.min(Math.floor((this.refs[type].scrollTop - 80) / 32 + 3), 59);
       this.handleChange(type, value);
     }

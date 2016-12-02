@@ -75,13 +75,15 @@ var Option = function (_Component) {
       if (Object.prototype.toString.call(this.parent().state.selected) === '[object Object]') {
         return this === this.parent().state.selected;
       } else if (Array.isArray(this.parent().state.selected)) {
-        return this.parent().state.value.indexOf(this.props.value) > -1;
+        return this.parent().state.selected.map(function (el) {
+          return el.props.value;
+        }).indexOf(this.props.value) > -1;
       }
     }
   }, {
     key: 'hoverItem',
     value: function hoverItem() {
-      if (!this.props.disabled && !this.context.disabled) {
+      if (!this.props.disabled && !this.parent().props.disabled) {
         this.parent().setState({
           hoverIndex: this.parent().state.options.indexOf(this)
         });
@@ -90,7 +92,7 @@ var Option = function (_Component) {
   }, {
     key: 'selectOptionClick',
     value: function selectOptionClick() {
-      if (this.props.disabled !== true && this.context.disabled !== true) {
+      if (this.props.disabled !== true && this.parent().props.disabled !== true) {
         this.parent().onOptionClick(this);
       }
     }
@@ -134,7 +136,7 @@ var Option = function (_Component) {
             style: this.style(),
             className: this.className('el-select-dropdown__item', {
               'selected': this.itemSelected(),
-              'is-disabled': this.props.disabled || this.context.disabled,
+              'is-disabled': this.props.disabled || this.parent().props.disabled,
               'hover': this.parent().state.hoverIndex === index
             }),
             onMouseEnter: this.hoverItem.bind(this),
