@@ -44,14 +44,17 @@ var Dropdown = function (_Component) {
     key: 'destroyPopper',
     value: function destroyPopper() {}
   }, {
+    key: 'parent',
+    value: function parent() {
+      return this.context.component;
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var parent = this.context.component;
-
       return _react2.default.createElement(
         'div',
         { ref: 'popper', className: this.className('el-select-dropdown', {
-            'is-multiple': parent.props.multiple
+            'is-multiple': this.parent().props.multiple
           }), style: this.style({
             width: '100%'
           }) },

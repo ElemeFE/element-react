@@ -128,8 +128,9 @@ var Table = function (_Component) {
           height = _props.height,
           fit = _props.fit;
 
-      var rootComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
-      var thisTableWidth = parseFloat(rootComputedStyle.getPropertyValue('width'));
+      var rootComputedStyle = window.getComputedStyle(this.refs.root);
+      var headerComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
+      var thisTableWidth = parseFloat(headerComputedStyle.getPropertyValue('width'));
       var realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
       var bodyWidth = (0, _mixins.scheduleLayout)(this.state._columns, thisTableWidth, undefined, fit).bodyWidth;
       var headerHeight = this.refs.headerWrapper.offsetHeight;
@@ -270,7 +271,10 @@ var Table = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { style: this.style(), className: this.className(rootClassName) },
+        {
+          ref: 'root',
+          style: this.style(),
+          className: this.className(rootClassName) },
         _react2.default.createElement(
           'div',
           {
@@ -327,7 +331,7 @@ var Table = function (_Component) {
               columns: _columns,
               data: data,
               highlightCurrentRow: highlightCurrentRow,
-              style: { width: (0, _mixins.calculateFixedWidth)(fixedLeftColumns) } })
+              style: { width: bodyWidth } })
           )
         ),
         _react2.default.createElement(
@@ -360,7 +364,7 @@ var Table = function (_Component) {
               columns: _columns,
               data: data,
               highlightCurrentRow: highlightCurrentRow,
-              style: { width: (0, _mixins.calculateFixedWidth)(fixedRightColumns) } })
+              style: { width: bodyWidth } })
           )
         ),
         _react2.default.createElement('div', {
