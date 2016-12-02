@@ -91,6 +91,9 @@ export default class Input extends Component {
       otherProps.value = fixControlledValue(this.props.value);
       delete otherProps.defaultValue;
     }
+    if ('style' in this.props) {
+      delete otherProps.style;
+    }
 
     // 前置元素
     const prependDOM = prepend ? <div className="el-input-group__prepend">{prepend}</div> : null
@@ -125,7 +128,7 @@ export default class Input extends Component {
           { ...otherProps }
           ref="textarea"
           className={this.classNames("el-textarea__inner", className)}
-          style={Object.assign({}, this.props.style, this.state.textareaStyle)}
+          style={this.state.textareaStyle}
           rows={rows}
           onChange={e => this.handleChange(e)}
           onFocus={e => this.handleFocus(e)}
