@@ -75,7 +75,9 @@ class Select extends Component {
        }
     }
 
-    this.onSelectedChange(selected);
+    if (selected) {
+      this.onSelectedChange(selected);
+    }
 
     addResizeListener(this.root, this.resetInputWidth.bind(this));
   }
