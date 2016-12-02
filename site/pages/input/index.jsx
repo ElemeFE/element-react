@@ -98,6 +98,10 @@ export default class Playground extends React.Component {
     ];
   }
 
+  handleIconClick(ev) {
+    console.log(ev);
+  }
+
   handleSelect(item) {
     console.log(item);
   }

@@ -32,18 +32,24 @@ var Card = function (_Component) {
   _createClass(Card, [{
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          header = _props.header,
+          bodyStyle = _props.bodyStyle,
+          children = _props.children;
+
       return _react2.default.createElement(
         'div',
         { style: this.style(), className: this.className('el-card') },
-        this.props.header && _react2.default.createElement(
+        header && _react2.default.createElement(
           'div',
           { className: 'el-card__header' },
-          this.props.header
+          ' ',
+          header
         ),
         _react2.default.createElement(
           'div',
-          { className: 'el-card__body', style: this.props.bodyStyle },
-          this.props.children
+          { className: 'el-card__body', style: bodyStyle },
+          children
         )
       );
     }
