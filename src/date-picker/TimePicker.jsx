@@ -52,7 +52,6 @@ export default class TimePicker extends BasePicker {
     return (
       <TimePanel
         {...props}
-        key="time-picker-panel"
         currentDate={state.value}
         onCancel={()=>this.setState({pickerVisible: false})}
         onPicked={this.onPicked.bind(this)}
