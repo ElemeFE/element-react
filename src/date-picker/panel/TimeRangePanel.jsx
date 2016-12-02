@@ -6,8 +6,6 @@ import TimeSpinner from '../basic/TimeSpinner'
 import { PopperReactMixin } from '../../../libs/utils'
 import Locale from '../../locale'
 
-import './range-panel.scss'
-
 const MIN_TIME = parseDate('00:00:00', 'HH:mm:ss');
 const MAX_TIME = parseDate('23:59:59', 'HH:mm:ss');
 
@@ -156,7 +154,7 @@ export default class TimeRangePanel extends Component {
     return (
       <div
         ref="root"
-        className="el-time-range-picker el-picker-panel">
+        className="el-time-range-picker el-picker-panel" style={{minWidth: '330px'}}>
         <div className="el-time-range-picker__content">
           <div className="el-time-range-picker__cell">
             <div className="el-time-range-picker__header">{$t('el.datepicker.startTime')}</div>
