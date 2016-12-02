@@ -4,17 +4,52 @@ import React from 'react'
 const ANIMATION_DURATION = 300
 
 export default class CollapseTransition extends React.Component {
-  componentWillEnter(cb){
+  static get propTypes(){
+    return {
+      isShow: React.PropTypes.bool
+    }
+  }
+
+  componentDidMount(){
+    this.beforeEnter()
+    if (this.props.isShow){
+      this.enter()
+    }
+  }
+
+  componentWillUnmount(){
+    this.beforeLeave()
+    this.leave()
+  }
+
+
+  triggerChange(){
+    clearTimeout(this.enterTimer)
+    clearTimeout(this.leaveTimer)
+    if (this.props.isShow){
+      this.beforeEnter()
+      this.enter()
+    }else{
+      this.beforeLeave()
+      this.leave() 
+    }
+  }
+
+  beforeEnter(){
     const el = this.selfRef
     //prepare
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
+    el.dataset.oldOverflow = el.style.overflow;
     el.style.height = '0';
     el.style.paddingTop = 0;
     el.style.paddingBottom = 0;
-    el.dataset.oldOverflow = el.style.overflow;
+  }
 
-    //start
+  
+  enter(){
+    const el = this.selfRef
+      //start
     el.style.display = 'block';
     if (el.scrollHeight !== 0) {
       el.style.height = el.scrollHeight + 'px';
@@ -28,42 +63,42 @@ export default class CollapseTransition extends React.Component {
 
     el.style.overflow = 'hidden';
 
-    setTimeout(cb, ANIMATION_DURATION) 
+    this.enterTimer = setTimeout(()=>this.afterEnter(), ANIMATION_DURATION) 
   }
 
-
-  componentDidEnter() {
+  afterEnter() {
     const el = this.selfRef
-    el.style.display = '';
+    el.style.display = 'block';
     el.style.height = '';
     el.style.overflow = el.dataset.oldOverflow;
   }
 
-  componentWillLeave(cb) {
+  beforeLeave() {
     const el = this.selfRef
-
-    //prepare
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
     el.dataset.oldOverflow = el.style.overflow;
+
     el.style.display = 'block';
     if (el.scrollHeight !== 0) {
       el.style.height = el.scrollHeight + 'px';
     }
     el.style.overflow = 'hidden';
-    // start
+  }
+
+  leave() {
+    const el = this.selfRef
     if (el.scrollHeight !== 0) {
       el.style.height = 0;
       el.style.paddingTop = 0;
       el.style.paddingBottom = 0;
-      setTimeout(cb, ANIMATION_DURATION)
-    } else {
-      cb()
     }
+    this.leaveTimer = setTimeout(()=>this.afterLeave(), ANIMATION_DURATION)
   }
 
-  componentDidLeave() {
+  afterLeave() {
     const el = this.selfRef
+
     el.style.display = el.style.height = '';
     el.style.overflow = el.dataset.oldOverflow;
     el.style.paddingTop = el.dataset.oldPaddingTop;

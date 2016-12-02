@@ -1,16 +1,16 @@
 {
   "name": "element-react",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.3",
   "description": "Element UI for React",
   "private": true,
   "main": "dist/npm/index.js",
-  "jsnext:main": "dist/npm/next.js",
+  "jsnext:main": "next.js",
   "scripts": {
     "start": "cd site && node run.js",
     "test": "jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
-    "prepare": "./build/scripts/compile.sh",
+    "prepare": "./build/scripts/prepare.sh",
     "postpublish": "./build/scripts/release.sh"
   },
   "repository": {
@@ -37,12 +37,12 @@
     "babel-preset-stage-1": "^6.3.13",
     "babel-standalone": "^6.19.0",
     "css-loader": "^0.26.0",
-    "element-theme-default": "^1.0.2",
+    "element-theme-default": "^1.0.3",
     "eslint": "^3.9.0",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.3.0",
+    "eslint-plugin-react": "^6.6.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.24.1",
@@ -62,7 +62,6 @@
   "dependencies": {
     "async-validator": "^1.6.6",
     "classnames": "^2.2.5",
-    "is-equal": "^1.5.3",
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.4.1",
     "react-addons-transition-group": "^15.4.1",

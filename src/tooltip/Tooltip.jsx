@@ -57,7 +57,7 @@ export default class Tooltip extends Component {
     const { effect, content, disabled, transition, visibleArrow } = this.props;
 
     return (
-      <div className="el-tooltip" onMouseEnter={this.showPopper.bind(this)} onMouseLeave={this.hidePopper.bind(this)}>
+      <div style={this.style()} className={this.className('el-tooltip')} onMouseEnter={this.showPopper.bind(this)} onMouseLeave={this.hidePopper.bind(this)}>
         <div ref="reference" className="el-tooltip__rel">
           <div>{ this.props.children }</div>
         </div>

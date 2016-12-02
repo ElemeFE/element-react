@@ -67,7 +67,7 @@ export default class Popover extends Component {
     if (this.refs.arrow) {
       this.refs.arrow.setAttribute('x-arrow', '');
     }
-    
+
     this.popperJS = new Popper(this.reference, this.refs.popper, {
       placement: this.props.placement
     });
@@ -96,7 +96,7 @@ export default class Popover extends Component {
       <span>
         <Transition name={transition}>
           <View show={this.state.showPopper}>
-            <div ref="popper" className={this.classNames('el-popover', popperClass)} style={{ width: Number(width) }}>
+            <div ref="popper" className={this.className('el-popover', popperClass)} style={this.style({ width: Number(width) })}>
               { title && <div className="el-popover__title">{title}</div> }
               { content }
               { visibleArrow && <div ref="arrow" className="popper__arrow"></div>}

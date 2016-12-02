@@ -4,7 +4,7 @@ import { Component } from '../../libs';
 export default class DialogBody extends Component {
   render() {
     return (
-      <div className="el-dialog__body">
+      <div style={this.style()} className={this.className('el-dialog__body')}>
         { this.props.children }
       </div>
     )

@@ -21,19 +21,13 @@ class Select extends Component {
       isSelect: true,
       inputLength: 20,
       inputWidth: 0,
-      valueChangeBySelected: false,
       filteredOptionsCount: 0,
       optionsCount: 0,
-      dropdownUl: null,
-      visible: false,
-      selectedLabel: '',
-      selectInit: false,
       hoverIndex: -1,
-      voidRemoteQuery: false,
       bottomOverflowBeforeHidden: 0,
-      inputHovering: false,
       cachedPlaceHolder: props.placeholder,
       currentPlaceholder: props.placeholder,
+      selectedLabel: '',
       value: props.value
     };
 
@@ -59,18 +53,30 @@ class Select extends Component {
 
   componentDidMount() {
     const { remote, multiple } = this.props;
-    const { value } = this.state;
+    const { value, options, selected } = this.state;
 
     this.findDOMNodes();
 
     if (remote && multiple && Array.isArray(value)) {
       this.setState({
-        selected: this.state.options.reduce((prev, curr) => {
+        selected: options.reduce((prev, curr) => {
           return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
         }, [])
       }, () => {
         this.resetInputHeight();
       });
+    } else {
+      const selected = options.filter(option => {
+         return option.props.value === value
+       })[0];
+
+       if (selected) {
+         this.state.selectedLabel = selected.props.label;
+       }
+    }
+
+    if (selected) {
+      this.onSelectedChange(selected);
     }
 
     addResizeListener(this.root, this.resetInputWidth.bind(this));
@@ -87,6 +93,16 @@ class Select extends Component {
 
     if (state.query != this.state.query) {
       this.onQueryChange(state.query);
+    }
+
+    if (Array.isArray(state.selected)) {
+      if (state.selected.length != this.state.selected.length) {
+        this.onSelectedChange(state.selected);
+      }
+    } else {
+      if (state.selected != this.state.selected) {
+        this.onSelectedChange(state.selected);
+      }
     }
   }
 
@@ -244,10 +260,10 @@ class Select extends Component {
 
   onSelectedChange(val) {
     const { multiple, filterable, onChange } = this.props;
-    let { query, hoverIndex, inputLength, selected, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
+    let { query, hoverIndex, inputLength, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
     if (multiple) {
-      if (selected.length > 0) {
+      if (val.length > 0) {
         currentPlaceholder = '';
       } else {
         currentPlaceholder = cachedPlaceHolder;
@@ -265,13 +281,8 @@ class Select extends Component {
 
       valueChangeBySelected = true;
 
-      const result = val.map(item => item.props.value);
+      onChange && onChange(val.map(item => item.props.value));
 
-
-      onChange && onChange(val.props.value);
-
-      // this.$emit('input', result);
-      // this.$emit('change', result);
       // this.dispatch('form-item', 'el.form.change', val);
 
       if (filterable) {
@@ -289,11 +300,8 @@ class Select extends Component {
           selectedInit: false
         });
       }
-      
-      onChange && onChange(val.props.value);
 
-      // this.$emit('input', val.value);
-      // this.$emit('change', val.value);
+      onChange && onChange(val.props.value);
     }
   }
 
@@ -593,12 +601,14 @@ class Select extends Component {
       visible: false
     });
 
-    // this.$emit('input', '');
-    // this.$emit('change', '');
+    if (this.props.onChange) {
+      this.props.onChange('');
+    }
   }
 
-  deleteTag(event, tag) {
-    let { selected } = this.state;
+  deleteTag(tag) {
+    // let { selected } = this.state;
+    let selected = this.state.selected.slice(0);
     let index = selected.indexOf(tag);
 
     if (index > -1) {
@@ -606,8 +616,6 @@ class Select extends Component {
     }
 
     this.setState({ selected });
-
-    event.stopPropagation();
   }
 
   onInputChange() {
@@ -696,7 +704,7 @@ class Select extends Component {
     const { selected, inputWidth, inputLength, query, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
 
     return (
-      <div className={this.classNames('el-select', {
+      <div style={this.style()} className={this.className('el-select', {
           'is-multiple': multiple,
           'is-small': size === 'small'
         })}>
@@ -727,8 +735,6 @@ class Select extends Component {
                     className="el-select__input"
                     style={{ width: inputLength, maxWidth: inputWidth - 42 }}
                     value={query}
-
-
                     onKeyDown={e => {
                       // this.resetInputState();
                       // onChange={this.debouncedOnInputChange}
@@ -828,7 +834,8 @@ Select.propTypes = {
   remoteMethod: PropTypes.func,
   filterMethod: PropTypes.func,
   multiple: PropTypes.bool,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func
 }
 
 Select.defaultProps = {

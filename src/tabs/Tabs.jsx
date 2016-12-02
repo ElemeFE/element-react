@@ -106,7 +106,7 @@ export default class Tabs extends Component {
     this.tabs = [];
 
     return (
-      <div className={ tabsCls }>
+      <div style={this.style()} className={this.className(tabsCls)}>
         <div className="el-tabs__header">
           {
             React.Children.map(children, (item, index) => {

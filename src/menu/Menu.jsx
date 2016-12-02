@@ -5,6 +5,8 @@ export default class Menu extends Component {
   constructor(props) {
     super(props);
 
+    this.instanceType = 'Menu';
+
     this.state = {
       activeIndex: props.defaultActive,
       openedMenus: props.defaultOpeneds ? props.defaultOpeneds.slice(0) : [],
@@ -15,96 +17,133 @@ export default class Menu extends Component {
 
   getChildContext() {
     return {
-      mode: this.props.mode,
-      menuTrigger: this.props.menuTrigger,
-      activeIndex: this.state.activeIndex,
-      openedMenus: this.state.openedMenus,
-      openMenu: this.openMenu.bind(this),
-      closeMenu: this.closeMenu.bind(this),
-      onSubMenuClick: this.onSubMenuClick.bind(this),
-      onSelect: this.onSelect.bind(this)
+      component: this
     };
   }
 
-  onSubMenuClick(index, indexPath) {
-    let isOpened = this.state.openedMenus.indexOf(index) !== -1;
-
-    if (isOpened) {
-      this.closeMenu(index, indexPath);
-      // this.$emit('close', index, indexPath);
-    } else {
-      this.openMenu(index, indexPath);
-      // this.$emit('open', index, indexPath);
-    }
+  componentDidMount() {
+    this.openActiveItemMenus();
   }
 
-  onSelect(index, indexPath, route, instance) {
-    let { activeIndex, openedMenus } = this.state;
-
-    activeIndex = index;
-
-    // this.$emit('select', index, indexPath, instance);
-
-    if (this.props.mode === 'horizontal') {
-      // this.broadcast('ElSubmenu', 'item-select', [index, indexPath]);
-      openedMenus = [];
-    } else {
-      this.openActiveItemMenus();
+  componentWillReceiveProps(props) {
+    if (props.defaultActive != this.props.defaultActive) {
+      this.defaultActiveChanged(props.defaultActive);
     }
 
-    // if (this.router && route) {
-    //   try {
-    //     this.$router.push(route);
-    //   } catch (e) {
-    //     console.error(e);
-    //   }
-    // }
-
-    this.setState({ activeIndex, openedMenus });
+    if (props.defaultOpeneds != this.props.defaultOpeneds) {
+      this.defaultOpenedsChanged(props.defaultOpeneds);
+    }
   }
 
   openMenu(index, indexPath) {
-    const { openedMenus } = this.state;
+    let { openedMenus } = this.state;
 
-    if (openedMenus.indexOf(index) === -1) {
-      // if (this.props.uniqueOpened) {
-      //   this.state.openedMenus = this.state.openedMenus.filter(index => {
-      //     return indexPath.indexOf(index) !== -1;
-      //   });
-      // }
-
-      this.setState({
-        openedMenus: openedMenus.concat(index)
-      })
+    if (openedMenus.indexOf(index) !== -1) return;
+    // 将不在该菜单路径下的其余菜单收起
+    if (this.props.uniqueOpened) {
+      openedMenus = openedMenus.filter(index => {
+        return indexPath.indexOf(index) !== -1;
+      });
     }
+
+    openedMenus.push(index);
+
+    this.setState({ openedMenus });
   }
 
-  closeMenu(index, indexPath) {
-    const { openedMenus } = this.state;
+  closeMenu(index) {
+    let { openedMenus } = this.state;
 
     openedMenus.splice(openedMenus.indexOf(index), 1);
 
     this.setState({ openedMenus });
   }
 
-  openActiveItemMenus() {
-    let index = this.state.activeIndex;
+  handleSubmenuClick(index, indexPath) {
+    let isOpened = this.state.openedMenus.indexOf(index) !== -1;
 
-    if (!this.state.menuItems[index]) return;
-    if (index && this.props.mode === 'vertical') {
-      let indexPath = this.sttae.menuItems[index].indexPath;
+    if (isOpened) {
+      this.closeMenu(index, indexPath);
+
+      if (this.props.onClose) {
+        this.props.onClose(index, indexPath);
+      }
+    } else {
+      this.openMenu(index, indexPath);
+
+      if (this.props.onOpen) {
+        this.props.onOpen(index, indexPath);
+      }
+    }
+  }
+
+  handleSelect(index, indexPath, route, instance) {
+    let { activeIndex, openedMenus, submenus } = this.state;
+
+    activeIndex = index;
+
+    if (this.props.onSelect) {
+      this.props.onSelect(index, indexPath, instance);
+    }
+
+    if (this.props.mode === 'horizontal') {
+      for (const key in submenus) {
+        submenus[key].onItemSelect(index, indexPath);
+      }
+
+      openedMenus = [];
+    }
+
+    if (this.props.router && route) {
+      history.pushState(null, null, route);
+    }
+
+    this.setState({ activeIndex, openedMenus }, () => {
+      if (this.props.mode === 'vertical') {
+        this.openActiveItemMenus();
+      }
+    });
+  }
+
+  openActiveItemMenus() {
+    let { activeIndex, menuItems, submenus } = this.state;
+
+    if (!menuItems[activeIndex]) return;
+    if (activeIndex && this.props.mode === 'vertical') {
+      let indexPath = menuItems[activeIndex].indexPath();
       // 展开该菜单项的路径上所有子菜单
       indexPath.forEach(index => {
-        let submenu = this.state.submenus[index];
-        submenu && this.openMenu(index, submenu.indexPath);
+        const submenu = submenus[index];
+
+        submenu && this.openMenu(index, submenu.indexPath());
       });
     }
+  }
+
+  defaultActiveChanged(value) {
+    const { menuItems } = this.state;
+
+    this.setState({ activeIndex: value }, () => {
+      if (!menuItems[value]) return;
+
+      let menuItem = menuItems[value];
+      let indexPath = menuItem.indexPath();
+
+      this.handleSelect(value, indexPath, null, menuItem);
+    });
+  }
+
+  defaultOpenedsChanged(value) {
+    this.setState({
+      openedMenus: value
+    });
   }
 
   render() {
     return (
       <ul
-        className={this.classNames("el-menu", {
+        style={this.style()}
+        className={this.className("el-menu", {
           'el-menu--horizontal': this.props.mode === 'horizontal',
           'el-menu--dark': this.props.theme === 'dark'
         })}
@@ -116,14 +155,7 @@ export default class Menu extends Component {
 }
 
 Menu.childContextTypes = {
-  mode: PropTypes.string,
-  activeIndex: PropTypes.string,
-  menuTrigger: PropTypes.string,
-  openedMenus: PropTypes.array,
-  openMenu: PropTypes.func,
-  closeMenu: PropTypes.func,
-  onSubMenuClick: PropTypes.func,
-  onSelect: PropTypes.func
+  component: PropTypes.any
 };
 
 Menu.propTypes = {
@@ -133,7 +165,10 @@ Menu.propTypes = {
   theme: PropTypes.string,
   uniqueOpened: PropTypes.bool,
   router: PropTypes.bool,
-  menuTrigger: PropTypes.string
+  menuTrigger: PropTypes.string,
+  onSelect: PropTypes.func,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func
 };
 
 Menu.defaultProps = {

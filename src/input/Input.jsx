@@ -3,13 +3,6 @@ import { Component, PropTypes } from '../../libs';
 
 import calcTextareaHeight from './calcTextareaHeight'
 
-function fixControlledValue(value) {
-  if (typeof value === 'undefined' || value === null) {
-    return '';
-  }
-  return value;
-}
-
 export default class Input extends Component {
 
   constructor(props) {
@@ -21,6 +14,13 @@ export default class Input extends Component {
 
   componentDidMount() {
     this.resizeTextarea();
+  }
+
+  fixControlledValue(value) {
+    if (typeof value === 'undefined' || value === null) {
+      return '';
+    }
+    return value;
   }
 
   handleChange(e) {
@@ -88,7 +88,7 @@ export default class Input extends Component {
     )
 
     if ('value' in this.props) {
-      otherProps.value = fixControlledValue(this.props.value);
+      otherProps.value = this.fixControlledValue(this.props.value);
       delete otherProps.defaultValue;
     }
     if ('style' in this.props) {
@@ -107,7 +107,7 @@ export default class Input extends Component {
     delete otherProps.onIconClick;
 
     return type !== 'textarea' ?
-      <div className={classname} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <div style={this.style()} className={this.className(classname)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         { prependDOM }
         { iconDOM }
         <input

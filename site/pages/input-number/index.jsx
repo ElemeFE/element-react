@@ -1,5 +1,5 @@
 import React from 'react';
-import { Markdown } from '../../../libs';
+import Markdown from '../../../libs/markdown';
 import template from '../../docs/zh-CN/input-number.md';
 
 import './style.scss';
@@ -15,10 +15,8 @@ export default class Playground extends React.Component {
     }
   }
 
-  onChange(type, event) {
-    this.setState({
-      [type]: event.target.value
-    })
+  onChange(event) {
+    console.log(event.target.value);
   }
 
   render() {

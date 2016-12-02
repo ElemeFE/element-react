@@ -6,9 +6,11 @@ import Radio from './Radio';
 export default class RadioButton extends Radio {
   render() {
     return (
-      <label className={this.classNames('el-radio-button', this.props.size && `el-radio-button-${this.props.size}`, {
-        'is-active': this.state.checked
-      })}>
+      <label style={this.style()} className={this.className('el-radio-button',
+        this.props.size && `el-radio-button--${this.props.size}`, {
+          'is-active': this.state.checked
+        })
+      }>
         <input
           type="radio"
           className="el-radio-button__orig-radio"

@@ -6,6 +6,15 @@ import TimeSpinner from '../basic/TimeSpinner'
 import { PopperReactMixin } from '../../../libs/utils'
 import Locale from '../../locale'
 
+const mapPropsToState = (props) => {
+  const state = {
+    format: props.format || 'HH:mm:ss',
+    currentDate: props.currentDate || Date()//todo: handle update.
+  };
+  state.isShowSeconds = (state.format || '').indexOf('ss') !== -1
+  return state
+}
+
 export default class TimePanel extends Component {
 
   static get propTypes() {
@@ -41,24 +50,17 @@ export default class TimePanel extends Component {
   constructor(props) {
     super(props)
 
-    const state = {
-      format: 'HH:mm:ss',
-      currentDate: props.currentDate || Date()//todo: handle update.
-    };
-
-    state.hours = state.currentDate.getHours();
-    state.minutes = state.currentDate.getMinutes();
-    state.seconds = state.currentDate.getSeconds();
-    state.isShowSeconds = (state.format || '').indexOf('ss') !== -1
-
-    this.state = state
-
+    this.state = mapPropsToState(props)
     //todo: make this dry
     PopperReactMixin.call(this, () => this.refs.root, props.getPopperRefElement, Object.assign({
       boundariesPadding: 0,
       gpuAcceleration: false
     }, props.popperMixinOption));
 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(mapPropsToState(nextProps))
   }
 
   // type: string,  one of [hours, minutes, seconds]
@@ -68,17 +70,14 @@ export default class TimePanel extends Component {
 
     if (date.hours !== undefined) {
       currentDate.setHours(date.hours);
-      this.state.hours = currentDate.getHours();
     }
 
     if (date.minutes !== undefined) {
       currentDate.setMinutes(date.minutes);
-      this.state.minutes = currentDate.getMinutes();
     }
 
     if (date.seconds !== undefined) {
       currentDate.setSeconds(date.seconds);
-      this.state.seconds = currentDate.getSeconds();
     }
     this.setState({})
     this.handleConfirm(true);
@@ -94,18 +93,18 @@ export default class TimePanel extends Component {
   }
 
   render() {
-    const {isShowSeconds, hours, minutes, seconds } = this.state
-    const {pickerWidth, onSelectRangeChange, selectableRange} = this.props
-    const style = {}
-    if (pickerWidth) {
-      style.width = `${pickerWidth}px`
-    }
+    const {isShowSeconds, currentDate } = this.state
+    const {onSelectRangeChange, selectableRange} = this.props
+
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const seconds = currentDate.getSeconds();
+
     const $t = Locale.t
 
     return (
       <div
         ref="root"
-        style={style}
         className="el-time-panel">
         <div className="el-time-panel__content">
           <TimeSpinner

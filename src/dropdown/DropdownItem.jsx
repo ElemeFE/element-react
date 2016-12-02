@@ -11,7 +11,8 @@ export default class DropdownItem extends Component {
 
     return (
       <li
-        className={this.classNames('el-dropdown-menu__item', {
+        style={this.style()}
+        className={this.className('el-dropdown-menu__item', {
           'is-disabled': disabled,
           'el-dropdown-menu__item--divided': divided
         })} onClick={this.handleClick.bind(this)}

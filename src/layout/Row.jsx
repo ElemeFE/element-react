@@ -21,7 +21,15 @@ export default class Row extends Component {
 
   render() {
     return (
-      <div className={this.classNames('el-row', this.props.justify !== 'start' && `is-justify-${this.props.justify}`, this.props.align !== 'top' && `is-align-${this.props.align}`, {'el-row--flex': this.props.type === 'flex'})} style={this.getStyle()}>
+      <div
+        className={this.className('el-row',
+          this.props.justify !== 'start' && `is-justify-${this.props.justify}`,
+          this.props.align !== 'top' && `is-align-${this.props.align}`, {
+            'el-row--flex': this.props.type === 'flex'
+          }
+        )}
+        style={this.style(this.getStyle())}
+      >
         { this.props.children }
       </div>
     )

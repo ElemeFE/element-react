@@ -1,74 +1,85 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import ReactDOM from 'react-dom';
+import { PropTypes, View } from '../../libs';
 
-export default class SubMenu extends Component {
+import MixinComponent from './MixinComponent';
+
+export default class SubMenu extends MixinComponent {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.instanceType = 'SubMenu';
+
+    this.state = {
+      active: false
+    };
+  }
+
+  getChildContext() {
+    return {
+      component: this
+    };
   }
 
   componentDidMount() {
-    this.updateActive(this.props);
+    this.rootMenu().state.submenus[this.props.index] = this;
+    this.initEvents();
   }
 
-  componentWillReceiveProps(props) {
-    this.updateActive(props);
-  }
-
-  onClick() {
-    if (!this.mouseEvent()) {
-      this.context.onSubMenuClick(this.props.index, this.indexPath);
-    }
-  }
-
-  onMouseEnter() {
-    if (this.mouseEvent()) {
-      clearTimeout(this.timeout);
-
-      this.timeout = setTimeout(() => {
-        this.context.openMenu(this.props.index, this.indexPath);
-      }, 300);
-    }
-  }
-
-  onMouseLeave() {
-    if (this.mouseEvent()) {
-      clearTimeout(this.timeout);
-
-      this.timeout = setTimeout(() => {
-        this.context.closeMenu(this.props.index, this.indexPath);
-      }, 300);
-    }
-  }
-
-  mouseEvent() {
-    return this.context.mode === 'horizontal' && this.context.menuTrigger === 'hover';
-  }
-
-  updateActive(props) {
+  onItemSelect(index, indexPath) {
     this.setState({
-      active: props.index === this.context.activeIndex
-    })
+      active: indexPath.indexOf(this.props.index) !== -1
+    });
+  }
+
+  handleClick() {
+    this.rootMenu().handleSubmenuClick(this.props.index, this.indexPath());
+  }
+
+  handleMouseenter() {
+    clearTimeout(this.timeout);
+
+    this.timeout = setTimeout(() => {
+      this.rootMenu().openMenu(this.props.index, this.indexPath());
+    }, 300);
+  }
+
+  handleMouseleave() {
+    clearTimeout(this.timeout);
+
+    this.timeout = setTimeout(() => {
+      this.rootMenu().closeMenu(this.props.index, this.indexPath());
+    }, 300);
+  }
+
+  initEvents() {
+    if (this.rootMenu().props.mode === 'horizontal' && this.rootMenu().props.menuTrigger === 'hover') {
+      const triggerElm = ReactDOM.findDOMNode(this);
+
+      triggerElm.addEventListener('mouseenter', this.handleMouseenter.bind(this));
+      triggerElm.addEventListener('mouseleave', this.handleMouseleave.bind(this));
+    } else {
+      const triggerElm = this.refs['submenu-title'];
+
+      triggerElm.addEventListener('click', this.handleClick.bind(this));
+    }
   }
 
   opened() {
-    return this.context.openedMenus.indexOf(this.props.index) !== -1;
+    return this.rootMenu().state.openedMenus.indexOf(this.props.index) !== -1;
   }
 
   render() {
     return (
-      <li className={this.classNames({
-        'el-submenu': true,
+      <li style={this.style()} className={this.className('el-submenu', {
         'is-active': this.state.active,
         'is-opened': this.opened()
-      })} onClick={this.onClick.bind(this)} onMouseEnter={this.onMouseEnter.bind(this)} onMouseLeave={this.onMouseLeave.bind(this)}>
-        <div className="el-submenu__title">
+      })}>
+        <div ref="submenu-title" className="el-submenu__title">
           {this.props.title}
-          <i className={this.classNames({
-              'el-submenu__icon-arrow': true,
-              'el-icon-arrow-down': this.context.mode === 'vertical',
-              'el-icon-caret-bottom': this.context.mode === 'horizontal'
+          <i className={this.classNames('el-submenu__icon-arrow', {
+              'el-icon-arrow-down': this.rootMenu().props.mode === 'vertical',
+              'el-icon-caret-bottom': this.rootMenu().props.mode === 'horizontal'
             })}>
           </i>
         </div>
@@ -80,20 +91,10 @@ export default class SubMenu extends Component {
   }
 }
 
-SubMenu.propTypes = {
-  index: PropTypes.string.isRequired,
-  title: PropTypes.any
+SubMenu.childContextTypes = {
+  component: PropTypes.any
 };
 
-SubMenu.defaultProps = {
-
-}
-
-SubMenu.contextTypes = {
-  mode: PropTypes.string,
-  menuTrigger: PropTypes.string,
-  openedMenus: PropTypes.array,
-  onSubMenuClick: PropTypes.func,
-  openMenu: PropTypes.func,
-  closeMenu: PropTypes.func
+SubMenu.propTypes = {
+  index: PropTypes.string.isRequired
 };

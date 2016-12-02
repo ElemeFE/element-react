@@ -162,7 +162,7 @@ export default class FormItem extends Component {
     const { label, required } = this.props;
 
     return (
-      <div className={this.classNames('el-form-item', {
+      <div style={this.style()} className={this.className('el-form-item', {
         'is-error': error !== '',
         'is-validating': validating,
         'is-required': isRequired || required

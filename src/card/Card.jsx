@@ -5,8 +5,10 @@ export default class Card extends Component {
   render() {
     const { header, bodyStyle, children } = this.props;
     return (
-      <div className="el-card">
-        { header && <div className="el-card__header">{ header }</div> }
+      <div style={this.style()} className={this.className('el-card')}>
+        {
+          header && <div className="el-card__header"> { header }</div>
+        }
         <div className="el-card__body" style={ bodyStyle }>
           { children }
         </div>
