@@ -16,7 +16,11 @@ const haveTriggerType = (type) => {
   return HAVE_TRIGGER_TYPES.indexOf(type) !== -1
 }
 
-const isDate = (date) => date instanceof Date
+const isValidValue = (value) => {
+  if (value instanceof Date) return true
+  if (Array.isArray(value) && value.length !== 0 && value[0] instanceof Date) return true
+  return false
+}
 
 export default class BasePicker extends Component {
   static get propTypes() {
@@ -28,10 +32,13 @@ export default class BasePicker extends Component {
       placeholder: PropTypes.string,
       onFocus: PropTypes.func,
       onBlur: PropTypes.func,
-      // (date)=>()
+      // (Date|Date[])=>()
       onChange: PropTypes.func,
       // time select pannel:
-      value: PropTypes.instanceOf(Date),
+      value: PropTypes.oneOfType([
+        PropTypes.instanceOf(Date),
+        PropTypes.arrayOf(PropTypes.instanceOf(Date))
+      ]),
     }
   }
 
@@ -64,11 +71,11 @@ export default class BasePicker extends Component {
    * onPicked should only be called from picker pannel instance
    * and should never return a null date instance
    * 
-   * @param value: Date
+   * @param value: Date|Date[]
    * @param isKeepPannel: boolean = false
    */
   onPicked(value, isKeepPannel = false) {//only change input value on picked triggered
-    require_condition(isDate(value))
+    require_condition(isValidValue(value))
     this.setState({
       pickerVisible: isKeepPannel,
       value,
@@ -80,8 +87,7 @@ export default class BasePicker extends Component {
   // (date: Date|null)=>string
   dateToStr(date) {
     if (!date) return ''
-
-    require_condition(isDate(date))
+    require_condition(isValidValue(date))
 
     const tdate = date
     const formatter = (
@@ -89,11 +95,8 @@ export default class BasePicker extends Component {
       TYPE_VALUE_RESOLVER_MAP['default']
     ).formatter;
     const format = DEFAULT_FORMATS[this.type];
-
     const result = formatter(tdate, this.props.format || format);
-    // if (typeof result !== 'string') {
-    //   console.warn('dateToStr return a non string result')
-    // }
+
     return result;
   }
 
@@ -205,7 +208,7 @@ export default class BasePicker extends Component {
 
   // (Date|null)=>bool
   isDateValid(date) {
-    return date == null || isDate(date)
+    return date == null || isValidValue(date)
   }
 
   // return true on condition
@@ -222,7 +225,6 @@ export default class BasePicker extends Component {
       return false
     }
     return true
-    // return this.parseDate(value) && this.isDateValid(this.parseDate(value)) 
   }
 
   handleClickOutside() {
