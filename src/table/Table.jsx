@@ -79,8 +79,9 @@ export default class Table extends Component{
 
   initLayout(){
     const { height, fit } = this.props;
-    const rootComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
-    const thisTableWidth = parseFloat(rootComputedStyle.getPropertyValue('width'));
+    const rootComputedStyle = window.getComputedStyle(this.refs.root);
+    const headerComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
+    const thisTableWidth = parseFloat(headerComputedStyle.getPropertyValue('width'));
     const realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
     const bodyWidth = scheduleLayout(this.state._columns, thisTableWidth, undefined, fit).bodyWidth;
     const headerHeight = this.refs.headerWrapper.offsetHeight;
@@ -199,7 +200,10 @@ export default class Table extends Component{
     data = filterList || sortList || data;
 
     return (
-      <div style={this.style()} className={this.className(rootClassName)}>
+      <div 
+        ref="root"
+        style={this.style()} 
+        className={this.className(rootClassName)}>
         <div
           ref="headerWrapper"
           className="el-table__header-wrapper">
@@ -247,7 +251,7 @@ export default class Table extends Component{
                   columns={_columns}
                   data={data}
                   highlightCurrentRow={highlightCurrentRow}
-                  style={{width: calculateFixedWidth(fixedLeftColumns)}}>
+                  style={{width: bodyWidth}}>
                 </TableBody>
               </div>
             </div>)
@@ -277,7 +281,7 @@ export default class Table extends Component{
               columns={_columns}
               data={data}
               highlightCurrentRow={highlightCurrentRow}
-              style={{width: calculateFixedWidth(fixedRightColumns)}}>
+              style={{width: bodyWidth}}>
             </TableBody>
           </div>
         </div>
