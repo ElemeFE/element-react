@@ -68,7 +68,6 @@ var TimeRangePicker = function (_BasePicker) {
       var _this2 = this;
 
       return _react2.default.createElement(_TimeRangePanel2.default, _extends({}, props, {
-        key: 'time-range-picker-panel',
         currentDates: state.value,
         onCancel: function onCancel() {
           return _this2.setState({ pickerVisible: false });

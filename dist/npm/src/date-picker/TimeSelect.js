@@ -44,7 +44,7 @@ var TimeSelect = function (_BasePicker) {
         start: _libs.PropTypes.string,
         end: _libs.PropTypes.string,
         step: _libs.PropTypes.string,
-        minTime: _libs.PropTypes.string
+        minTime: _libs.PropTypes.instanceOf(Date)
       }, _BasePicker3.default.propTypes);
     }
   }, {
@@ -64,7 +64,13 @@ var TimeSelect = function (_BasePicker) {
   _createClass(TimeSelect, [{
     key: 'isDateValid',
     value: function isDateValid(value) {
-      return _get(TimeSelect.prototype.__proto__ || Object.getPrototypeOf(TimeSelect.prototype), 'isDateValid', this).call(this, value) && _TimeSelectPanel2.default.isValid(this.dateToStr(value), this.props);
+      return _get(TimeSelect.prototype.__proto__ || Object.getPrototypeOf(TimeSelect.prototype), 'isDateValid', this).call(this, value) && _TimeSelectPanel2.default.isValid(this.dateToStr(value), this.panelProps());
+    }
+  }, {
+    key: 'panelProps',
+    value: function panelProps() {
+      var minTime = this.dateToStr(this.props.minTime);
+      return _extends({}, this.props, { minTime: minTime });
     }
   }, {
     key: 'pickerPannel',
@@ -72,8 +78,8 @@ var TimeSelect = function (_BasePicker) {
       var _this2 = this;
 
       var value = this.dateToStr(state.value);
-      return _react2.default.createElement(_TimeSelectPanel2.default, _extends({}, props, {
-        key: 'time-select-panel',
+
+      return _react2.default.createElement(_TimeSelectPanel2.default, _extends({}, this.panelProps(), {
         value: value,
         onPicked: this.onPicked.bind(this),
         getPopperRefElement: function getPopperRefElement() {
