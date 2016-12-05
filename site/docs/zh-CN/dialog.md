@@ -46,8 +46,7 @@ let columns = [
 },
 {
   label: "地址",
-  prop: "address",
-  width: 300
+  prop: "address"
 }
 ];
 
