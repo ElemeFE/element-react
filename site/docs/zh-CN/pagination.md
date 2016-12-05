@@ -35,7 +35,8 @@
 
 :::demo 此例是一个完整的用例，使用了`size-change`和`current-change`事件来处理页码大小和当前页变动时候触发的事件。`page-sizes`接受一个整型数组，数组元素为展示的选择每页显示个数的选项，`[100, 200, 300, 400]`表示四个选项，每页显示 100 个，200 个，300 个或者 400 个。
 
-```html
+```javascript
+
 <div className="last">
 <div className="block">
   <span className="demonstration">显示总数</span>
