@@ -62,7 +62,9 @@ export default class Table extends Component{
 
   componentWillReceiveProps(nextProps){
     if(nextProps.data != this.props.data){
-      this.setState({data: nextProps.data});
+      this.setState({data: nextProps.data}, ()=>{
+        this.initLayout();
+      });
     }
   }
 
@@ -85,7 +87,7 @@ export default class Table extends Component{
     const realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
     const bodyWidth = scheduleLayout(this.state._columns, thisTableWidth, undefined, fit).bodyWidth;
     const headerHeight = this.refs.headerWrapper.offsetHeight;
-    const bodyHeight = height ? height - headerHeight : this.state.headerHeight;
+    const bodyHeight = height ? height - headerHeight : '';
 
     this.setState({
       bodyWidth,
@@ -93,7 +95,7 @@ export default class Table extends Component{
       headerHeight,
       realTableHeaderHeight: headerHeight,
       realTableWidth: thisTableWidth,
-      realTableHeight: this.props.height || realTableHeight || 'auto'
+      realTableHeight: this.props.height || realTableHeight || ''
     }, ()=>{
       this.adjustScrollState();
     });
@@ -122,7 +124,6 @@ export default class Table extends Component{
 
   getBodyWrapperStyle(){
     const { bodyHeight } = this.state;
-    const { height } = this.props;
     const style = {};
 
     style.height = bodyHeight;
