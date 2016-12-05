@@ -93,7 +93,6 @@ var TimePicker = function (_BasePicker) {
       var _this2 = this;
 
       return _react2.default.createElement(_TimePanel2.default, _extends({}, props, {
-        key: 'time-picker-panel',
         currentDate: state.value,
         onCancel: function onCancel() {
           return _this2.setState({ pickerVisible: false });

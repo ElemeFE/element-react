@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Pagination$propTypes;
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -31,8 +29,6 @@ var _locale = require('../locale');
 var _locale2 = _interopRequireDefault(_locale);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -174,7 +170,9 @@ var Pagination = function (_Component3) {
     var _this4$props = _this4.props,
         currentPage = _this4$props.currentPage,
         pageSizes = _this4$props.pageSizes,
-        pageSize = _this4$props.pageSize;
+        pageSize = _this4$props.pageSize,
+        total = _this4$props.total,
+        pageCount = _this4$props.pageCount;
 
     var internalPageSize = 0;
 
@@ -183,16 +181,49 @@ var Pagination = function (_Component3) {
     }
 
     _this4.state = {
-      internalPageSize: internalPageSize
+      internalPageSize: internalPageSize,
+      total: total,
+      pageCount: pageCount
     };
     _this4.state.internalCurrentPage = currentPage ? _this4.getValidCurrentPage(currentPage) : 1;
     return _this4;
   }
 
   _createClass(Pagination, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      var _this5 = this;
+
+      var _props2 = this.props,
+          currentPage = _props2.currentPage,
+          pageSizes = _props2.pageSizes,
+          pageSize = _props2.pageSize,
+          total = _props2.total,
+          pageCount = _props2.pageCount;
+
+
+      if (nextProps.currentPage != currentPage || nextProps.pageSizes != pageSizes || nextProps.pageSize != pageSize || nextProps.total != total || nextProps.pageCount != pageCount) {
+
+        var internalPageSize = this.state.internalPageSize;
+        if (Array.isArray(nextProps.pageSizes)) {
+          internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1 ? nextProps.pageSize : nextProps.pageSizes[0];
+        }
+
+        this.setState({
+          internalPageSize: internalPageSize,
+          total: nextProps.total,
+          pageCount: nextProps.pageCount
+        }, function () {
+          _this5.setState({
+            internalCurrentPage: nextProps.currentPage ? _this5.getValidCurrentPage(nextProps.currentPage) : 1
+          });
+        });
+      }
+    }
+  }, {
     key: 'pre',
     value: function pre() {
-      var _this5 = this;
+      var _this6 = this;
 
       var oldPage = this.state.internalCurrentPage;
       var newVal = this.state.internalCurrentPage - 1;
@@ -200,16 +231,16 @@ var Pagination = function (_Component3) {
       this.setState({
         internalCurrentPage: this.getValidCurrentPage(newVal)
       }, function () {
-        if (_this5.state.internalCurrentPage !== oldPage) {
-          var onCurrentChange = _this5.props.onCurrentChange;
-          onCurrentChange && onCurrentChange(_this5.state.internalCurrentPage);
+        if (_this6.state.internalCurrentPage !== oldPage) {
+          var onCurrentChange = _this6.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(_this6.state.internalCurrentPage);
         }
       });
     }
   }, {
     key: 'next',
     value: function next() {
-      var _this6 = this;
+      var _this7 = this;
 
       var oldPage = this.state.internalCurrentPage;
       var newVal = this.state.internalCurrentPage + 1;
@@ -217,9 +248,9 @@ var Pagination = function (_Component3) {
       this.setState({
         internalCurrentPage: this.getValidCurrentPage(newVal)
       }, function () {
-        if (_this6.state.internalCurrentPage !== oldPage) {
-          var onCurrentChange = _this6.props.onCurrentChange;
-          onCurrentChange && onCurrentChange(_this6.state.internalCurrentPage);
+        if (_this7.state.internalCurrentPage !== oldPage) {
+          var onCurrentChange = _this7.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(_this7.state.internalCurrentPage);
         }
       });
     }
@@ -254,25 +285,25 @@ var Pagination = function (_Component3) {
   }, {
     key: 'internalPageCount',
     value: function internalPageCount() {
-      if (typeof this.props.total === 'number') {
-        return Math.ceil(this.props.total / this.state.internalPageSize);
-      } else if (typeof this.props.pageCount === 'number') {
-        return this.props.pageCount;
+      if (typeof this.state.total === 'number') {
+        return Math.ceil(this.state.total / this.state.internalPageSize);
+      } else if (typeof this.state.pageCount === 'number') {
+        return this.state.pageCount;
       }
       return null;
     }
   }, {
     key: 'jumperToPage',
     value: function jumperToPage(page) {
-      var _this7 = this;
+      var _this8 = this;
 
       var oldPage = this.state.internalCurrentPage;
       this.setState({
         internalCurrentPage: this.getValidCurrentPage(page)
       }, function () {
-        if (oldPage !== _this7.state.internalCurrentPage) {
-          var onCurrentChange = _this7.props.onCurrentChange;
-          onCurrentChange && onCurrentChange(_this7.state.internalCurrentPage);
+        if (oldPage !== _this8.state.internalCurrentPage) {
+          var onCurrentChange = _this8.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(_this8.state.internalCurrentPage);
         }
       });
 
@@ -281,29 +312,33 @@ var Pagination = function (_Component3) {
   }, {
     key: 'handleCurrentChange',
     value: function handleCurrentChange(val) {
-      var _this8 = this;
+      var _this9 = this;
 
       var oldPage = this.state.internalCurrentPage;
       this.setState({
         internalCurrentPage: this.getValidCurrentPage(val)
       }, function () {
-        if (oldPage !== _this8.state.internalCurrentPage) {
-          var onCurrentChange = _this8.props.onCurrentChange;
-          onCurrentChange && onCurrentChange(_this8.state.internalCurrentPage);
+        if (oldPage !== _this9.state.internalCurrentPage) {
+          var onCurrentChange = _this9.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(_this9.state.internalCurrentPage);
         }
       });
     }
   }, {
     key: 'onSizeChange',
     value: function onSizeChange(val) {
-      var _this9 = this;
+      var _this10 = this;
 
       if (val !== this.state.internalPageSize) {
         val = parseInt(val, 10);
+
         this.setState({
           internalPageSize: val
         }, function () {
-          var onSizeChange = _this9.props.onSizeChange;
+          _this10.setState({
+            internalCurrentPage: _this10.getValidCurrentPage(_this10.state.internalCurrentPage)
+          });
+          var onSizeChange = _this10.props.onSizeChange;
 
           onSizeChange && onSizeChange(val);
         });
@@ -353,7 +388,7 @@ var Pagination = function (_Component3) {
           internalPageSize: internalPageSize,
           pageSizes: this.props.pageSizes,
           onSizeChange: this.onSizeChange.bind(this) }),
-        total: _react2.default.createElement(Total, { key: 'total', total: this.props.total })
+        total: _react2.default.createElement(Total, { key: 'total', total: this.state.total })
       };
 
       components.forEach(function (compo) {
@@ -377,15 +412,19 @@ var _default = Pagination;
 exports.default = _default;
 
 
-Pagination.propTypes = (_Pagination$propTypes = {
+Pagination.propTypes = {
   pageSize: _libs.PropTypes.number,
   small: _libs.PropTypes.bool,
   total: _libs.PropTypes.number,
   pageCount: _libs.PropTypes.number,
   currentPage: _libs.PropTypes.number,
   layout: _libs.PropTypes.string,
-  pageSizes: _libs.PropTypes.array
-}, _defineProperty(_Pagination$propTypes, 'small', _libs.PropTypes.bool), _defineProperty(_Pagination$propTypes, 'onCurrentChange', _libs.PropTypes.func), _defineProperty(_Pagination$propTypes, 'onSizeChange', _libs.PropTypes.func), _Pagination$propTypes);
+  pageSizes: _libs.PropTypes.array,
+
+  //Event
+  onCurrentChange: _libs.PropTypes.func,
+  onSizeChange: _libs.PropTypes.func
+};
 
 Pagination.defaultProps = {
   small: false,
