@@ -47,7 +47,6 @@
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.24.1",
     "jest": "^17.0.3",
-    "js-beautify": "^1.6.4",
     "marked": "^0.3.6",
     "node-sass": "^3.13.0",
     "raw-loader": "^0.5.1",

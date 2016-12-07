@@ -103,8 +103,12 @@ var Table = function (_Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
+      var _this2 = this;
+
       if (nextProps.data != this.props.data) {
-        this.setState({ data: nextProps.data });
+        this.setState({ data: nextProps.data }, function () {
+          _this2.initLayout();
+        });
       }
     }
   }, {
@@ -122,7 +126,7 @@ var Table = function (_Component) {
   }, {
     key: 'initLayout',
     value: function initLayout() {
-      var _this2 = this;
+      var _this3 = this;
 
       var _props = this.props,
           height = _props.height,
@@ -134,7 +138,7 @@ var Table = function (_Component) {
       var realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
       var bodyWidth = (0, _mixins.scheduleLayout)(this.state._columns, thisTableWidth, undefined, fit).bodyWidth;
       var headerHeight = this.refs.headerWrapper.offsetHeight;
-      var bodyHeight = height ? height - headerHeight : this.state.headerHeight;
+      var bodyHeight = height ? height - headerHeight : '';
 
       this.setState({
         bodyWidth: bodyWidth,
@@ -142,15 +146,15 @@ var Table = function (_Component) {
         headerHeight: headerHeight,
         realTableHeaderHeight: headerHeight,
         realTableWidth: thisTableWidth,
-        realTableHeight: this.props.height || realTableHeight || 'auto'
+        realTableHeight: this.props.height || realTableHeight || ''
       }, function () {
-        _this2.adjustScrollState();
+        _this3.adjustScrollState();
       });
     }
   }, {
     key: 'scheduleLayout',
     value: function scheduleLayout() {
-      var _this3 = this;
+      var _this4 = this;
 
       var _state = this.state,
           _columns = _state._columns,
@@ -162,8 +166,8 @@ var Table = function (_Component) {
       this.setState({
         bodyWidth: layout.bodyWidth
       }, function () {
-        _this3.onScrollBodyWrapper();
-        _this3.adjustScrollState();
+        _this4.onScrollBodyWrapper();
+        _this4.adjustScrollState();
       });
     }
   }, {
@@ -180,7 +184,6 @@ var Table = function (_Component) {
     key: 'getBodyWrapperStyle',
     value: function getBodyWrapperStyle() {
       var bodyHeight = this.state.bodyHeight;
-      var height = this.props.height;
 
       var style = {};
 
@@ -237,7 +240,7 @@ var Table = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       var _props2 = this.props,
           fit = _props2.fit,
@@ -292,7 +295,7 @@ var Table = function (_Component) {
             style: this.getBodyWrapperStyle(),
             className: 'el-table__body-wrapper',
             onScroll: function onScroll(e) {
-              _this4.onScrollBodyWrapper(e);
+              _this5.onScrollBodyWrapper(e);
             },
             ref: 'bodyWrapper' },
           _react2.default.createElement(_TableBody2.default, {
