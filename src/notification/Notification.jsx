@@ -62,7 +62,8 @@ export default class Notification extends Component {
       <Transition name="el-notification-fade" duration="300">
         <View key={Math.random()} show={this.state.visible}>
           <div className="el-notification" style={{
-              top: this.props.top
+              top: this.props.top,
+              zIndex: 9999
           }} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
             {
               this.props.type && <i className={this.classNames('el-notification__icon', this.typeClass())} />
