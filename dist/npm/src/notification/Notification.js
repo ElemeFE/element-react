@@ -101,7 +101,8 @@ var Notification = function (_Component) {
           _react2.default.createElement(
             'div',
             { className: 'el-notification', style: {
-                top: this.props.top
+                top: this.props.top,
+                zIndex: 9999
               }, onMouseEnter: this.stopTimer.bind(this), onMouseLeave: this.startTimer.bind(this) },
             this.props.type && _react2.default.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass()) }),
             _react2.default.createElement(
