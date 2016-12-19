@@ -66,6 +66,10 @@ export default class Table extends Component{
         this.initLayout();
       });
     }
+    
+    if(nextProps.height != this.props.height){
+      this.initLayout();
+    }
   }
 
   _filterContainer(){
