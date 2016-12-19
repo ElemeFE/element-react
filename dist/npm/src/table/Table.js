@@ -110,6 +110,10 @@ var Table = function (_Component) {
           _this2.initLayout();
         });
       }
+
+      if (nextProps.height != this.props.height) {
+        this.initLayout();
+      }
     }
   }, {
     key: '_filterContainer',

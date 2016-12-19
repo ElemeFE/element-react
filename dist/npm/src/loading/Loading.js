@@ -41,7 +41,7 @@ var Loading = function (_Component) {
           right: 0,
           bottom: 0,
           left: 0,
-          zIndex: 10002
+          zIndex: 99999
         };
       } else {
         document.body.style.removeProperty('overflow');
@@ -69,7 +69,7 @@ var Loading = function (_Component) {
             style: {
               display: 'block',
               position: 'absolute',
-              zIndex: 10001,
+              zIndex: 657,
               backgroundColor: 'rgba(255, 255, 255, 0.901961)',
               margin: 0,
               top: 0,
