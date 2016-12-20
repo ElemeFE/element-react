@@ -124,8 +124,10 @@ var Input = function (_Component) {
           otherProps = _objectWithoutProperties(_props2, ['type', 'size', 'prepend', 'append', 'icon', 'autoComplete', 'validating', 'rows', 'onMouseEnter', 'onMouseLeave']);
 
       var classname = this.classNames(type === 'textarea' ? 'el-textarea' : 'el-input', size && 'el-input--' + size, {
+        'is-disabled': this.props.disabled,
         'el-input-group': prepend || append,
-        'is-disabled': this.props.disabled
+        'el-input-group--append': !!append,
+        'el-input-group--prepend': !!prepend
       });
 
       if ('value' in this.props) {
