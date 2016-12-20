@@ -131,7 +131,7 @@ export default class TimeSpinner extends Component {
     const {isShowSeconds} = this.props
 
     return (
-      <div className="el-time-spinner">
+      <div className={this.classNames('el-time-spinner', {'has-seconds': isShowSeconds})}>
         <div
           onMouseEnter={() => this.emitSelectRange('hours')}
           onWheel={() => this.handleScroll('hours')}
