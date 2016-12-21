@@ -5,8 +5,6 @@ import { debounce } from '../../libs/utils'
 import BasePicker from './BasePicker'
 import TimeRangePanel from './panel/TimeRangePanel'
 
-import { PLACEMENT_MAP} from './constants'
-
 
 export default class TimeRangePicker extends BasePicker {
   static get propTypes() {
@@ -23,11 +21,11 @@ export default class TimeRangePicker extends BasePicker {
   }
 
   onSelectionChange(start, end) {
-    this.refs.reference.setSelectionRange(start, end);
-    this.refs.reference.focus();
+    this.refs.inputRoot.refs.input.setSelectionRange(start, end);
+    this.refs.inputRoot.refs.input.focus();
   }
 
-  pickerPannel(state, props) {
+  pickerPanel(state, props) {
     return (
       <TimeRangePanel
         {...props}
@@ -35,12 +33,7 @@ export default class TimeRangePicker extends BasePicker {
         onCancel={()=>this.setState({pickerVisible: false})}
         onPicked={this.onPicked.bind(this)}
         onSelectRangeChange={this._onSelectionChange}
-        getPopperRefElement={() => this.refs.reference}
-        popperMixinOption={
-          {
-            placement: PLACEMENT_MAP[props.align] || PLACEMENT_MAP.left
-          }
-        } />
+        />
     )
   }
 }

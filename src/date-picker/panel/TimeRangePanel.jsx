@@ -158,7 +158,7 @@ export default class TimeRangePanel extends Component {
         <div className="el-time-range-picker__content">
           <div className="el-time-range-picker__cell">
             <div className="el-time-range-picker__header">{$t('el.datepicker.startTime')}</div>
-            <div className="el-time-range-picker__body el-time-panel__content">
+            <div className={this.classNames('el-time-range-picker__body el-time-panel__content', {'has-seconds': isShowSeconds})}>
               <TimeSpinner
                 ref="minSpinner"
                 onChange={(date) => this.handleChange(date, 'minTime')}
@@ -173,7 +173,7 @@ export default class TimeRangePanel extends Component {
           </div>
           <div className="el-time-range-picker__cell">
             <div className="el-time-range-picker__header">{$t('el.datepicker.endTime')}</div>
-            <div className="el-time-range-picker__body el-time-panel__content">
+            <div className={this.classNames('el-time-range-picker__body el-time-panel__content', {'has-seconds': isShowSeconds})}>
               <TimeSpinner
                 ref="maxSpinner"
                 onChange={(date) => this.handleChange(date, 'maxTime')}

@@ -64,7 +64,7 @@ export default class Input extends Component {
   }
 
   render() {
-    const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave,
+    const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave, iconSlot,
       ...otherProps
     } = this.props;
 
@@ -88,6 +88,12 @@ export default class Input extends Component {
     delete otherProps.autosize;
     delete otherProps.onIconClick;
 
+    const createIconSlot = ()=>{
+      if (iconSlot) return iconSlot
+      else if (icon) return <i className={`el-input__icon el-icon-${icon}`}>{prepend}</i>
+      return null
+    }
+
     if (type === 'textarea') {
       return (
         <div style={this.style()} className={this.className(classname)}>
@@ -106,7 +112,7 @@ export default class Input extends Component {
       return (
         <div style={this.style()} className={this.className(classname)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
           { prepend && <div className="el-input-group__prepend">{prepend}</div> }
-          { icon && <i className={`el-input__icon el-icon-${icon}`} onClick={this.handleIconClick.bind(this)}></i> }
+          { createIconSlot() }
           <input { ...otherProps }
             ref="input"
             className="el-input__inner"
@@ -127,6 +133,7 @@ Input.propTypes = {
   // base
   type: PropTypes.string,
   icon: PropTypes.string,
+  iconSlot: React.PropTypes.element,
   disabled: PropTypes.bool,
   name: PropTypes.string,
   placeholder: PropTypes.string,
