@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import marked from 'marked';
 
 import Canvas from './canvas';
 
-export default class Markdown extends Component {
+export default class Markdown extends React.Component {
   constructor(props) {
     super(props);
 
