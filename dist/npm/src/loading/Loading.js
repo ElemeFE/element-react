@@ -30,10 +30,15 @@ var Loading = function (_Component) {
   }
 
   _createClass(Loading, [{
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.enableScroll();
+    }
+  }, {
     key: 'getStyle',
     value: function getStyle() {
       if (this.props.fullscreen) {
-        document.body.style.setProperty('overflow', 'hidden');
+        this.disableScroll();
 
         return {
           position: 'fixed',
@@ -44,12 +49,22 @@ var Loading = function (_Component) {
           zIndex: 99999
         };
       } else {
-        document.body.style.removeProperty('overflow');
+        this.enableScroll();
 
         return {
           position: 'relative'
         };
       }
+    }
+  }, {
+    key: 'disableScroll',
+    value: function disableScroll() {
+      document.body.style.setProperty('overflow', 'hidden');
+    }
+  }, {
+    key: 'enableScroll',
+    value: function enableScroll() {
+      document.body.style.removeProperty('overflow');
     }
   }, {
     key: 'render',
