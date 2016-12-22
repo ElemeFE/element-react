@@ -29,7 +29,7 @@ export default function NotificationCenter(props = {}, type) {
   props.top += 16;
 
   const component = React.createElement(Notification, Object.assign({}, props, {
-    onClose: () => {
+    willUnmount: () => {
       ReactDOM.unmountComponentAtNode(div);
       document.body.removeChild(div);
 

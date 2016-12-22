@@ -65,7 +65,7 @@ var Toast = function (_Component) {
       this.setState({
         visible: false
       }, function () {
-        _this2.props.onClose();
+        _this2.props.willUnmount();
       });
     }
   }, {
@@ -85,6 +85,11 @@ var Toast = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          iconClass = _props.iconClass,
+          customClass = _props.customClass;
+
+
       return _react2.default.createElement(
         _libs.Transition,
         { name: 'el-message-fade', duration: '300' },
@@ -93,11 +98,12 @@ var Toast = function (_Component) {
           { key: Math.random(), show: this.state.visible },
           _react2.default.createElement(
             'div',
-            { className: 'el-message', onMouseEnter: this.stopTimer.bind(this), onMouseLeave: this.startTimer.bind(this) },
-            _react2.default.createElement('img', { className: 'el-message__icon', src: icons[this.props.type] }),
+            { className: this.classNames('el-message', customClass), onMouseEnter: this.stopTimer.bind(this), onMouseLeave: this.startTimer.bind(this) },
+            !iconClass && _react2.default.createElement('img', { className: 'el-message__img', src: icons[this.props.type] }),
             _react2.default.createElement(
               'div',
-              { className: 'el-message__group' },
+              { className: this.classNames('el-message__group', { 'is-with-icon': iconClass }) },
+              iconClass && _react2.default.createElement('i', { className: this.classNames('el-message__icon', iconClass) }),
               _react2.default.createElement(
                 'p',
                 null,
@@ -123,9 +129,8 @@ Toast.propTypes = {
   message: _libs.PropTypes.string.isRequired,
   duration: _libs.PropTypes.number,
   showClose: _libs.PropTypes.bool,
-  /* eslint-disable */
-  onClose: _libs.PropTypes.func
-  /* eslint-enable */
+  customClass: _libs.PropTypes.string,
+  iconClass: _libs.PropTypes.string
 };
 
 Toast.defaultProps = {

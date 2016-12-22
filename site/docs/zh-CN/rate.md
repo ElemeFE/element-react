@@ -5,21 +5,25 @@
 ### 基本用法
 
 ::: demo 评分被分为三个等级，可以利用颜色对分数及情感倾向进行分级（默认情况下不区分颜色）。三个等级所对应的颜色用过`colors`属性设置，而它们对应的两个阈值则通过 `lowThreshold` 和 `highThreshold` 设定， change可监听分值改变。
-```html
-<div className="intro-block">
-  <div className="block">
-    <span className="demonstration">默认不区分颜色</span>
-    <span className="wrapper">
-      <Rate change={(val) => alert(val)} />
-    </span>
-  </div>
-  <div className="block">
-    <span className="demonstration">区分颜色</span>
-    <span className="wrapper">
-      <Rate colors={['#99A9BF', '#F7BA2A', '#FF9900']} />
-    </span>
-  </div>
-</div>
+```js
+render() {
+  return (
+    <div className="intro-block">
+      <div className="block">
+        <span className="demonstration">默认不区分颜色</span>
+        <span className="wrapper">
+          <Rate change={(val) => alert(val)} />
+        </span>
+      </div>
+      <div className="block">
+        <span className="demonstration">区分颜色</span>
+        <span className="wrapper">
+          <Rate colors={['#99A9BF', '#F7BA2A', '#FF9900']} />
+        </span>
+      </div>
+    </div>
+  )
+}
 ```
 :::
 
@@ -28,8 +32,10 @@
 用辅助文字直接地表达对应分数
 
 ::: demo 为组件设置 `showText` 属性会在右侧显示辅助文字。通过设置 `texts` 可以为每一个分值指定对应的辅助文字。`texts` 为一个数组，长度应等于最大值 `max`。
-```html
-<Rate showText={true} />
+```js
+render() {
+  return <Rate showText={true} />
+}
 ```
 :::
 
@@ -40,8 +46,10 @@
 只读的评分用来展示分数，允许出现半星
 
 ::: demo 为组件设置 `disabled` 属性表示组件为只读，支持小数分值。此时若设置 `showText`，则会在右侧显示目前的分值。可以提供 `textTemplate` 作为显示模板，模板为一个包含了` {value} `的字符串，`{value}` 会被解析为分值。
-```html
-<Rate disabled={true} value={3.9} showText={true} />
+```js
+render() {
+  return <Rate disabled={true} value={3.9} showText={true} />
+}
 ```
 :::
 

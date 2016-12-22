@@ -1,11 +1,12 @@
-import React from 'react';
 import Markdown from '../../../libs/markdown';
-import template from '../../docs/zh-CN/button.md';
 
 import './style.scss';
 
-export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="Button">{template}</Markdown>
+export default class Button extends Markdown {
+  document(locale) {
+    switch (locale) {
+      default:
+        return require('../../docs/zh-CN/button.md');
+    }
   }
 }

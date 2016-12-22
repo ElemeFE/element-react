@@ -8,8 +8,14 @@
 
 :::demo Message 在配置上与 Notification 非常类似，所以部分 options 在此不做详尽解释，文末有 options 列表，可以结合 Notification 的文档理解它们。Element 注册了一个`$message`方法用于调用，Message 可以接收一个字符串作为参数，它会被显示为正文内容。
 
-```html
-<Button plain={true} onClick={this.onClick.bind(this, 'alpha', 'info')}>打开消息提示</Button>
+```js
+open() {
+  Message('这是一条消息提示');
+}
+
+render() {
+  return <Button plain={true} onClick={this.open.bind(this)}>打开消息提示</Button>
+}
 ```
 :::
 
@@ -19,11 +25,39 @@
 
 :::demo 当需要自定义更多属性时，Message 也可以接收一个对象为参数。比如，设置`type`字段可以定义不同的状态，默认为`info`。此时正文内容以`message`的值传入。同时，我们也为 Message 的各种 type 注册了方法，可以在不传入`type`字段的情况下像`open4`那样直接调用。
 
-```html
-<Button plain={true} onClick={this.onClick.bind(this, 'beta', 'success')}>成功</Button>
-<Button plain={true} onClick={this.onClick.bind(this, 'beta', 'warning')}>警告</Button>
-<Button plain={true} onClick={this.onClick.bind(this, 'beta', 'info')}>消息</Button>
-<Button plain={true} onClick={this.onClick.bind(this, 'beta', 'error')}>错误</Button>
+```js
+open() {
+  Message('这是一条消息提示');
+}
+
+open2() {
+  Message({
+    message: '恭喜你，这是一条成功消息',
+    type: 'success'
+  });
+}
+
+open3() {
+  Message({
+    message: '警告哦，这是一条警告消息',
+    type: 'warning'
+  });
+}
+
+open4() {
+  Message.error('错了哦，这是一条错误消息');
+}
+
+render() {
+  return (
+    <div>
+      <Button plain={true} onClick={this.open.bind(this)}>成功</Button>
+      <Button plain={true} onClick={this.open2.bind(this)}>警告</Button>
+      <Button plain={true} onClick={this.open3.bind(this)}>消息</Button>
+      <Button plain={true} onClick={this.open4.bind(this)}>错误</Button>
+    </div>
+  )
+}
 ```
 :::
 
@@ -33,11 +67,48 @@
 
 :::demo 默认的 Message 是不可以被人工关闭的，如果需要可手动关闭的 Message，可以使用`showClose`字段。此外，和 Notification 一样，Message 拥有可控的`duration`，设置`0`为不会被自动关闭，默认为 3000 毫秒。
 
-```html
-<Button plain={true} onClick={this.onClick.bind(this, 'charlie', 'success', true)}>成功</Button>
-<Button plain={true} onClick={this.onClick.bind(this, 'charlie', 'warning', true)}>警告</Button>
-<Button plain={true} onClick={this.onClick.bind(this, 'charlie', 'info', true)}>消息</Button>
-<Button plain={true} onClick={this.onClick.bind(this, 'charlie', 'error', true)}>错误</Button>
+```js
+open5() {
+  Message({
+    showClose: true,
+    message: '这是一条消息提示'
+  });
+}
+
+open6() {
+  Message({
+    showClose: true,
+    message: '恭喜你，这是一条成功消息',
+    type: 'success'
+  });
+}
+
+open7() {
+  Message({
+    showClose: true,
+    message: '警告哦，这是一条警告消息',
+    type: 'warning'
+  });
+}
+
+open8() {
+  Message({
+    showClose: true,
+    message: '错了哦，这是一条错误消息',
+    type: 'error'
+  });
+}
+
+render() {
+  return (
+    <div>
+      <Button plain={true} onClick={this.open5.bind(this)}>成功</Button>
+      <Button plain={true} onClick={this.open6.bind(this)}>警告</Button>
+      <Button plain={true} onClick={this.open7.bind(this)}>消息</Button>
+      <Button plain={true} onClick={this.open8.bind(this)}>错误</Button>
+    </div>
+  )
+}
 ```
 :::
 
@@ -60,6 +131,15 @@ import { Message } from 'element-ui';
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | message | 消息文字 | string | — | — |
 | type | 主题 | string | success/warning/info/error | info |
+| iconClass | 自定义图标的类名，会覆盖 `type` | string | — | — |
+| customClass | 自定义类名 | string | — | — |
 | duration | 显示时间, 毫秒。设为 0 则不会自动关闭 | number | — | 3000 |
 | showClose | 是否显示关闭按钮 | boolean | — | false |
 | onClose | 关闭时的回调函数, 参数为被关闭的 message 实例 | function | — | — |
+
+### 方法
+调用 `Message` 或 `this.$message` 会返回当前 Message 的实例。如果需要手动关闭实例，可以调用它的 `close` 方法。
+
+| 方法名 | 说明 |
+| ---- | ---- |
+| close | 关闭当前的 Message |

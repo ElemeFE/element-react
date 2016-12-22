@@ -161,7 +161,7 @@ var TimePanel = function (_Component) {
           className: 'el-time-panel' },
         _react2.default.createElement(
           'div',
-          { className: 'el-time-panel__content' },
+          { className: this.classNames('el-time-panel__content', { 'has-seconds': isShowSeconds }) },
           _react2.default.createElement(_TimeSpinner2.default, {
             ref: 'spinner',
             onChange: this.handleChange.bind(this),

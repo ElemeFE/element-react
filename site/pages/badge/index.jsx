@@ -1,11 +1,12 @@
-import React from 'react';
 import Markdown from '../../../libs/markdown';
-import template from '../../docs/zh-CN/badge.md';
 
 import './style.scss';
 
-export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="Badge">{template}</Markdown>
+export default class Badge extends Markdown {
+  document(locale) {
+    switch (locale) {
+      default:
+        return require('../../docs/zh-CN/badge.md');
+    }
   }
 }

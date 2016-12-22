@@ -34,11 +34,9 @@ export default class Notification extends Component {
 
     this.setState({
       visible: false
+    }, () => {
+      this.props.willUnmount();
     });
-
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
   }
 
   startTimer() {
@@ -87,10 +85,7 @@ Notification.propTypes = {
   title: PropTypes.string,
   message: PropTypes.string,
   duration: PropTypes.number,
-  top: PropTypes.number,
-/* eslint-disable */
-  onClose: PropTypes.func
-/* eslint-enable */
+  top: PropTypes.number
 }
 
 Notification.defaultProps = {

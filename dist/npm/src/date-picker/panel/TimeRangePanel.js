@@ -226,7 +226,7 @@ var TimeRangePanel = function (_Component) {
             ),
             _react2.default.createElement(
               'div',
-              { className: 'el-time-range-picker__body el-time-panel__content' },
+              { className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds }) },
               _react2.default.createElement(_TimeSpinner2.default, {
                 ref: 'minSpinner',
                 onChange: function onChange(date) {
@@ -251,7 +251,7 @@ var TimeRangePanel = function (_Component) {
             ),
             _react2.default.createElement(
               'div',
-              { className: 'el-time-range-picker__body el-time-panel__content' },
+              { className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds }) },
               _react2.default.createElement(_TimeSpinner2.default, {
                 ref: 'maxSpinner',
                 onChange: function onChange(date) {

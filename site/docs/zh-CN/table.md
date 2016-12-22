@@ -7,46 +7,56 @@
 基础的表格展示用法。
 
 :::demo 当`Table`元素中注入`data`和`columns` 对象数组后，在`column`中用`prop`属性来对应对象中的键名即可填入数据，用`label`属性来定义表格的列名。可以使用`width`属性来定义列宽。
-```javascript
-let columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 180
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 180
-  },
-  {
-    label: "地址",
-    prop: "address"
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 180
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 180
+      },
+      {
+        label: "地址",
+        prop: "address"
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄'
+    }]
   }
-];
+}
 
-let data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄'
-  }];
-
- <Table 
-   style={{width: '100%'}}
-   columns={columns} 
-   data={data}/>
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+    />
+  )
+}
 ```
 :::
 
@@ -55,95 +65,114 @@ let data = [{
 使用带斑马纹的表格，可以更容易区分出不同行的数据。
 
 :::demo `stripe`属性可以创建带斑马纹的表格。它接受一个`Boolean`，默认为`false`，设置为`true`即为启用。
-```javascript
-  let columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 180
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 180
-  },
-  {
-    label: "地址",
-    prop: "address"
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 180
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 180
+      },
+      {
+        label: "地址",
+        prop: "address"
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄'
+    }]
   }
-];
+}
 
-let data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄'
-  }];
-
- <Table 
-   style={{width: '100%'}}
-   stripe={true}
-   columns={columns} 
-   data={data}/>
-
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      stripe={true}
+    />
+  )
+}
 ```
 :::
 
 ### 带边框表格
 
 :::demo 默认情况下，Table 组件是不具有竖直方向的边框的，如果需要，可以使用`border`属性，它接受一个`Boolean`，设置为`true`即可启用。
-```javascript
-  let columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 180
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 180
-  },
-  {
-    label: "地址",
-    prop: "address"
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 180
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 180
+      },
+      {
+        label: "地址",
+        prop: "address"
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄'
+    }]
   }
-];
+}
 
-let data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄'
-  }];
-
- <Table 
-   style={{width: '100%'}}
-   border={true}
-   columns={columns} 
-   data={data}/>
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      border={true}
+    />
+  )
+}
 
 ```
 :::
@@ -153,57 +182,78 @@ let data = [{
 可将表格内容 highlight 显示，方便区分「成功、信息、警告、危险」等内容。
 
 :::demo 可以通过指定 Table 组件的 rowClassName 属性来为 Table 中的某一行添加 class，表明该行处于某种状态。
-```javascript
-  let columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 180
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 180
-  },
-  {
-    label: "地址",
-    prop: "address"
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 180
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 180
+      },
+      {
+        label: "地址",
+        prop: "address"
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄'
+    }]
   }
-];
+}
 
-let data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄'
-  }];
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      stripe={true}
+    />
+  )
+}
 
- const rowClassName = function(row, index){
+rowClassName(row, index) {
   if (index === 1) {
     return 'info-row';
   } else if (index === 3) {
     return 'positive-row';
   }
+
   return '';
- }
+}
 
- <Table 
-   style={{width: '100%'}}
-   rowClassName={rowClassName}
-   columns={columns} 
-   data={data}/>
-
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      rowClassName={this.rowClassName.bind(this)}
+      columns={this.state.columns}
+      data={this.state.data}
+    />
+  )
+}
 ```
 :::
 
@@ -212,65 +262,74 @@ let data = [{
 纵向内容过多时，可选择固定表头。
 
 :::demo 只要在`el-table`元素中定义了`height`属性，即可实现固定表头的表格，而不需要额外的代码。
-```javascript
-   let columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 180
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 180
-  },
-  {
-    label: "地址",
-    prop: "address"
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 180
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 180
+      },
+      {
+        label: "地址",
+        prop: "address"
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄'
+    },{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄'
+    }]
   }
-];
+}
 
-let data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄'
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄'
-  }];
-
- <Table 
-   style={{width: '100%'}}
-   border={true}
-   height={250}
-   columns={columns} 
-   data={data}/>
-
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      border={true}
+      height={250}
+    />
+ )
+}
 ```
 :::
 
@@ -279,95 +338,98 @@ let data = [{
 横向内容过多时，可选择固定列。
 
 :::demo 固定列需要使用`fixed`属性，它接受 Boolean 值或者`left` `right`，表示左边固定还是右边固定。
-```javascript
-var columns;
-var data;
-initConfig();
+```js
+constructor(props) {
+  super(props);
 
-  <Table 
-   style={{width: '100%'}}
-   border={true}
-   height={255}
-   columns={columns} 
-   data={data}/>
-
-function initConfig(){
-    columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 150,
-    fixed: 'left'
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 160
-  },
-  {
-    label: "省份",
-    prop: "province",
-    width: 160
-  },
-  {
-    label: "地址",
-    prop: "address",
-    width: 400
-  },
-  {
-    label: "邮编",
-    prop: "zip",
-    width: 120
-  },
-  {
-    label: "操作",
-    prop: "zip",
-    fixed: 'right',
-    width: 100,
-    render: ()=>{
-      return <span><Button type="text" size="small">查看</Button><Button type="text" size="small">编辑</Button></span>
-    }
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 150,
+        fixed: 'left'
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 160
+      },
+      {
+        label: "省份",
+        prop: "province",
+        width: 160
+      },
+      {
+        label: "地址",
+        prop: "address",
+        width: 400
+      },
+      {
+        label: "邮编",
+        prop: "zip",
+        width: 120
+      },
+      {
+        label: "操作",
+        prop: "zip",
+        fixed: 'right',
+        width: 100,
+        render: ()=>{
+          return <span><Button type="text" size="small">查看</Button><Button type="text" size="small">编辑</Button></span>
+        }
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    },{
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    },{
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    },{
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    },{
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    }]
   }
-];
-
-
- data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  }];
 }
+
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      border={true}
+      height={255}
+    />
+  )
+}    
 ```
 :::
 
@@ -376,101 +438,104 @@ function initConfig(){
 横纵内容过多时，可选择固定列和表头。
 
 :::demo 固定列和表头可以同时使用，只需要将上述两个属性分别设置好即可。
-```javascript
-var columns;
-var data;
-initConfig();
+```js
+constructor(props) {
+  super(props);
 
-  <Table 
-   style={{width: '100%'}}
-   border={true}
-   height={250}
-   columns={columns} 
-   data={data}/>
-
-function initConfig(){
-    columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 150,
-    fixed: 'left',
-    align: 'center'
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 160,
-    align: 'right'
-  },
-  {
-    label: "省份",
-    prop: "province",
-    width: 160
-  },
-  {
-    label: "地址",
-    prop: "address",
-    width: 400
-  },
-  {
-    label: "邮编",
-    prop: "zip",
-    width: 120
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 150,
+        fixed: 'left',
+        align: 'center'
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 160,
+        align: 'right'
+      },
+      {
+        label: "省份",
+        prop: "province",
+        width: 160
+      },
+      {
+        label: "地址",
+        prop: "address",
+        width: 400
+      },
+      {
+        label: "邮编",
+        prop: "zip",
+        width: 120
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+    }]
   }
-];
+}
 
-
- data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  }];
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      border={true}
+      height={250}
+    />
+  )
 }
 ```
 :::
@@ -480,91 +545,95 @@ function initConfig(){
 选择单行数据时使用色块表示
 
 :::demo 实现多选非常简单: 手动添加一个`el-table-column`，设`type`属性为`selection`即可。在本例中，为了方便说明其他属性，我们还使用了`inline-template`和`show-tooltip-when-overflow`：设置了`inline-template`属性后，可以通过调用`row`对象中的值取代`prop`属性的设置；默认情况下若内容过多会折行显示，若需要单行显示可以使用`show-tooltip-when-overflow`属性，它接受一个`Boolean`，为`true`时多余的内容会在 hover 时以 tooltip 的形式显示出来。
-```javascript
-var columns;
-var data;
-initConfig();
+```js
+constructor(props) {
+  super(props);
 
-<Table 
-  style={{width: '100%'}}
-  border={true}
-  height={250}
-  columns={columns} 
-  highlightCurrentRow={true}
-  onCurrentChange={item=>{console.log(item)}}
-  data={data}/>
-
-function initConfig(){
-    columns = [
-  { 
-    type: 'index'
-  },
-  {
-    label: "日期",
-    prop: "date",
-    width: 150
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 160
-  },
-  {
-    label: "地址",
-    prop: "address"
+  this.state = {
+    columns: [
+      {
+        type: 'index'
+      },
+      {
+        label: "日期",
+        prop: "date",
+        width: 150
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 160
+      },
+      {
+        label: "地址",
+        prop: "address"
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }]
   }
-];
+}
 
- data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  }];
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      border={true}
+      height={250}
+      highlightCurrentRow={true}
+      onCurrentChange={item=>{console.log(item)}}
+    />
+  )
 }
 ```
 :::
@@ -574,91 +643,95 @@ function initConfig(){
 选择多行数据时使用 Checkbox。
 
 :::demo 实现多选非常简单: 手动添加一个`el-table-column`，设`type`属性为`selection`即可。在本例中，为了方便说明其他属性，我们还使用了`inline-template`和`show-tooltip-when-overflow`：设置了`inline-template`属性后，可以通过调用`row`对象中的值取代`prop`属性的设置；默认情况下若内容过多会折行显示，若需要单行显示可以使用`show-tooltip-when-overflow`属性，它接受一个`Boolean`，为`true`时多余的内容会在 hover 时以 tooltip 的形式显示出来。
-```javascript
-var columns;
-var data;
-initConfig();
+```js
+constructor(props) {
+  super(props);
 
-<Table 
-  style={{width: '100%'}}
-  border={true}
-  height={250}
-  columns={columns} 
-  onSelectChange={(dataItem, checked)=>{console.log(dataItem, checked)}}
-  onSelectAll={(dataList, checked)=>{console.log(dataList, checked);}}
-  data={data}/>
-
-function initConfig(){
-    columns = [
-  { 
-    type: 'selection'
-  },
-  {
-    label: "日期",
-    prop: "date",
-    width: 150
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 160
-  },
-  {
-    label: "地址",
-    prop: "address"
+  this.state = {
+    columns: [
+      {
+        type: 'selection'
+      },
+      {
+        label: "日期",
+        prop: "date",
+        width: 150
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 160
+      },
+      {
+        label: "地址",
+        prop: "address"
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }, {
+      date: '2016-05-02',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1518 弄',
+      zip: 200333
+     }]
   }
-];
+}
 
- data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  },{
-    date: '2016-05-02',
-    name: '王小虎',
-    province: '上海',
-    city: '普陀区',
-    address: '上海市普陀区金沙江路 1518 弄',
-    zip: 200333
-  }];
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      border={true}
+      height={250}
+      onSelectChange={(dataItem, checked)=>{console.log(dataItem, checked)}}
+      onSelectAll={(dataList, checked)=>{console.log(dataList, checked);}}
+    />
+  )
 }
 ```
 :::
@@ -668,49 +741,58 @@ function initConfig(){
 对表格进行排序，可快速查找或对比数据。
 
 :::demo 在列中设置`sortable`属性即可实现以该列为基准的排序，接受一个`Boolean`，默认为`false`。在本例中，我们还使用了`formatter`属性，它用于格式化指定列的值，接受一个`Function`，会传入两个参数：`row`和`column`，可以根据自己的需求进行处理。
-```javascript
-  let columns = [
-  {
-    label: "日期",
-    prop: "date",
-    width: 180,
-    sortable: true
-  },
-  {
-    label: "姓名",
-    prop: "name",
-    width: 180
-  },
-  {
-    label: "地址",
-    prop: "address"
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 180,
+        sortable: true
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 180
+      },
+      {
+        label: "地址",
+        prop: "address"
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄'
+    }]
   }
-];
+}
 
-let data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄'
-  }];
-
- <Table 
-   style={{width: '100%'}}
-   columns={columns} 
-   border={true}
-   data={data}/>
-
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      border={true}
+    />
+  )
+}
 ```
 :::
 
@@ -719,72 +801,73 @@ let data = [{
 对表格进行筛选，可快速查找到自己想看的数据。
 
 :::demo 在列中设置`filters` `filter-method`属性即可开启该列的筛选，filters 是一个数组，`filter-method`是一个方法，它用于决定某些数据是否显示，会传入两个参数：`value`和`row`。
-```javascript
-let columns;
-let data;
+```js
+constructor(props) {
+  super(props);
 
-
-initData();
-
-<Table 
-   style={{width: '100%'}}
-   columns={columns} 
-   border={true}
-   data={data}/>
-
-
-function initData(){
-  columns = [
-    {
-      label: "日期",
-      prop: "date",
-      width: 180
-    },
-    {
-      label: "姓名",
-      prop: "name",
-      width: 180
-    },
-    {
-      label: "地址",
-      prop: "address"
-    },
-    {
-      label: '标签',
-      prop: 'tag',
-      width: 100,
-      filters: [{text: '家', value: '家'}, {text: '公司', value: '公司'}],
-      render: (data, column)=>{
-        if(data['tag'] == '家'){
-          return <Tag type="primary">{data['tag']}</Tag>
-        }else if(data['tag'] == '公司'){
-          return <Tag type="success">{data['tag']}</Tag>
+  this.state = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 180
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 180
+      },
+      {
+        label: "地址",
+        prop: "address"
+      },
+      {
+        label: '标签',
+        prop: 'tag',
+        width: 100,
+        filters: [{text: '家', value: '家'}, {text: '公司', value: '公司'}],
+        render: (data, column)=>{
+          if(data['tag'] == '家'){
+            return <Tag type="primary">{data['tag']}</Tag>
+          }else if(data['tag'] == '公司'){
+            return <Tag type="success">{data['tag']}</Tag>
+          }
         }
-      } 
-    }
-  ];
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄',
+      tag: '家'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄',
+      tag: '公司'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄',
+      tag: '公司'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄',
+      tag: '家'
+    }]
+  }
+}
 
-  data = [{
-    date: '2016-05-02',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1518 弄',
-    tag: '家'
-  }, {
-    date: '2016-05-04',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1517 弄',
-    tag: '公司'
-  }, {
-    date: '2016-05-01',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1519 弄',
-    tag: '公司'
-  }, {
-    date: '2016-05-03',
-    name: '王小虎',
-    address: '上海市普陀区金沙江路 1516 弄',
-    tag: '家'
-  }];
+render() {
+  return (
+    <Table
+      style={{width: '100%'}}
+      columns={this.state.columns}
+      data={this.state.data}
+      border={true}
+    />
+  )
 }
 ```
 :::

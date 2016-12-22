@@ -1,25 +1,12 @@
-import React from 'react';
 import Markdown from '../../../libs/markdown';
-import template from '../../docs/zh-CN/input-number.md';
 
 import './style.scss';
 
-export default class Playground extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      alpha: 1,
-      beta: 1,
-      charlie: 5
+export default class InputNumber extends Markdown {
+  document(locale) {
+    switch (locale) {
+      default:
+        return require('../../docs/zh-CN/input-number.md');
     }
-  }
-
-  onChange(event) {
-    console.log(event.target.value);
-  }
-
-  render() {
-    return <Markdown context={this} component="InputNumber">{template}</Markdown>
   }
 }

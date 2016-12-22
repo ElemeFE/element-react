@@ -2,4 +2,26 @@
   .el-badge {
     margin-right: 40px;
   }
+
+  .el-dropdown {
+    vertical-align: middle !important;
+  }
+
+  .share-button {
+    width: 36px;
+    padding: 10px;
+  }
+
+  .mark {
+    margin-right: 0;
+  }
+
+  .clearfix {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 1;
+    padding: 7px;
+  }
 }

@@ -6,11 +6,17 @@
 
 :::demo Progress 组件设置`percentage`属性即可，表示进度条对应的百分比，**必填**，必须在 0-100。
 
-```html
-<Progress percentage={0} />
-<Progress percentage={70} />
-<Progress percentage={100} status="success" />
-<Progress percentage={50} status="exception" />
+```js
+render() {
+  return (
+    <div>
+      <Progress percentage={0} />
+      <Progress percentage={70} />
+      <Progress percentage={100} status="success" />
+      <Progress percentage={50} status="exception" />
+    </div>
+  )
+}
 ```
 :::
 
@@ -20,11 +26,17 @@
 
 :::demo Progress 组件可通过 `strokeWidth` 属性更改进度条的高度，并可通过 `textInside` 属性来将进度条描述置于进度条内部。
 
-```html
-<Progress strokeWidth={18} percentage={0} textInside />
-<Progress strokeWidth={18} percentage={70} textInside />
-<Progress strokeWidth={18} percentage={100} status="success" textInside />
-<Progress strokeWidth={18} percentage={50} status="exception" textInside />
+```js
+render() {
+  return (
+    <div>
+      <Progress strokeWidth={18} percentage={0} textInside />
+      <Progress strokeWidth={18} percentage={70} textInside />
+      <Progress strokeWidth={18} percentage={100} status="success" textInside />
+      <Progress strokeWidth={18} percentage={50} status="exception" textInside />
+    </div>
+  )
+}
 ```
 :::
 
@@ -32,11 +44,17 @@
 
 :::demo Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形进度条中，还可以通过 `width` 属性来设置其大小。
 
-```html
-<Progress type="circle" percentage={0} />
-<Progress type="circle" percentage={25} />
-<Progress type="circle" percentage={100} status="success" />
-<Progress type="circle" percentage={50} status="exception" />
+```js
+render() {
+  return (
+    <div>
+      <Progress type="circle" percentage={0} />
+      <Progress type="circle" percentage={25} />
+      <Progress type="circle" percentage={100} status="success" />
+      <Progress type="circle" percentage={50} status="exception" />
+    </div>
+  )
+}
 ```
 :::
 

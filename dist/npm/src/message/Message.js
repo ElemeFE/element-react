@@ -38,7 +38,7 @@ function Message() {
   }
 
   var component = _react2.default.createElement(_Toast2.default, Object.assign(props, {
-    onClose: function onClose() {
+    willUnmount: function willUnmount() {
       _reactDom2.default.unmountComponentAtNode(div);
       document.body.removeChild(div);
 
