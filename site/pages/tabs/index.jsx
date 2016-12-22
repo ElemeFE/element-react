@@ -1,9 +1,10 @@
-import React from 'react';
 import Markdown from '../../../libs/markdown';
-import template from '../../docs/zh-CN/tabs.md';
 
-export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="Tabs">{template}</Markdown>
+export default class Tabs extends Markdown {
+  document(locale) {
+    switch (locale) {
+      default:
+        return require('../../docs/zh-CN/tabs.md');
+    }
   }
 }

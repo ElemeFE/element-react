@@ -7,51 +7,78 @@
 包括各种表单项，比如输入框、选择器、开关、单选框、多选框等。
 
 ::: demo 在 Form 组件中，每一个表单域由一个 Form-Item 组件构成，表单域中可以放置各种类型的表单控件，包括 Input、Select、Checkbox、Radio、Switch、DatePicker、TimePicker
-```html
-<Form model={this.state.form} labelWidth="80" onSubmit={this.onSubmit.bind(this)}>
-  <Form.Item label="活动名称">
-    <Input value={this.state.form.name}></Input>
-  </Form.Item>
-  <Form.Item label="活动区域">
-    <Select value={this.state.form.region} placeholder="请选择活动区域">
-      <Select.Option label="区域一" value="shanghai"></Select.Option>
-      <Select.Option label="区域二" value="beijing"></Select.Option>
-    </Select>
-  </Form.Item>
-  <Form.Item label="活动时间">
-    <Layout.Col span="11">
+```js
+constructor(props) {
+  super(props);
 
-    </Layout.Col>
-    <Layout.Col class="line" span="2">-</Layout.Col>
-    <Layout.Col span="11">
+  this.state = {
+    form: {
+      name: '',
+      region: '',
+      date1: '',
+      date2: '',
+      delivery: false,
+      type: [],
+      resource: '',
+      desc: ''
+    }
+  };
+}
 
-    </Layout.Col>
-  </Form.Item>
-  <Form.Item label="即时配送">
-    <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
-  </Form.Item>
-  <Form.Item label="活动性质">
-    <Checkbox.Group value={this.state.form.type}>
-      <Checkbox label="美食/餐厅线上活动" name="type"></Checkbox>
-      <Checkbox label="地推活动" name="type"></Checkbox>
-      <Checkbox label="线下主题活动" name="type"></Checkbox>
-      <Checkbox label="单纯品牌曝光" name="type"></Checkbox>
-    </Checkbox.Group>
-  </Form.Item>
-  <Form.Item label="特殊资源">
-    <Radio.Group value={this.state.form.resource}>
-      <Radio value="线上品牌商赞助"></Radio>
-      <Radio value="线下场地免费"></Radio>
-    </Radio.Group>
-  </Form.Item>
-  <Form.Item label="活动形式">
-    <Input type="textarea" value={this.state.form.desc}></Input>
-  </Form.Item>
-  <Form.Item>
-    <Button type="primary" nativeType="submit">立即创建</Button>
-    <Button>取消</Button>
-  </Form.Item>
-</Form>
+onSubmit(e) {
+  e.preventDefault();
+
+  console.log('submit!');
+}
+
+render() {
+  return (
+    <Form model={this.state.form} labelWidth="80" onSubmit={this.onSubmit.bind(this)}>
+      <Form.Item label="活动名称">
+        <Input value={this.state.form.name}></Input>
+      </Form.Item>
+      <Form.Item label="活动区域">
+        <Select value={this.state.form.region} placeholder="请选择活动区域">
+          <Select.Option label="区域一" value="shanghai"></Select.Option>
+          <Select.Option label="区域二" value="beijing"></Select.Option>
+        </Select>
+      </Form.Item>
+      <Form.Item label="活动时间">
+        <Layout.Col span="11">
+
+        </Layout.Col>
+        <Layout.Col className="line" span="2">-</Layout.Col>
+        <Layout.Col span="11">
+
+        </Layout.Col>
+      </Form.Item>
+      <Form.Item label="即时配送">
+        <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
+      </Form.Item>
+      <Form.Item label="活动性质">
+        <Checkbox.Group value={this.state.form.type}>
+          <Checkbox label="美食/餐厅线上活动" name="type"></Checkbox>
+          <Checkbox label="地推活动" name="type"></Checkbox>
+          <Checkbox label="线下主题活动" name="type"></Checkbox>
+          <Checkbox label="单纯品牌曝光" name="type"></Checkbox>
+        </Checkbox.Group>
+      </Form.Item>
+      <Form.Item label="特殊资源">
+        <Radio.Group value={this.state.form.resource}>
+          <Radio value="线上品牌商赞助"></Radio>
+          <Radio value="线下场地免费"></Radio>
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item label="活动形式">
+        <Input type="textarea" value={this.state.form.desc}></Input>
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" nativeType="submit">立即创建</Button>
+        <Button>取消</Button>
+      </Form.Item>
+    </Form>
+  )
+}
 ```
 :::
 
@@ -60,21 +87,42 @@
 当垂直方向空间受限且表单较简单时，可以在一行内放置表单。
 
 ::: demo Form 组件的 `type` 属性可以控制表单的类型，当设为 `inline` 时可以让表单域变为行内的表单域
-```html
-<Form inline={true} model={this.state.formInline} onSubmit={this.onSubmit.bind(this)} className="demo-form-inline">
-  <Form.Item>
-    <Input value={this.state.formInline.user} placeholder="审批人"></Input>
-  </Form.Item>
-  <Form.Item>
-    <Select value={this.state.formInline.region} placeholder="活动区域">
-      <Select.Option label="区域一" value="shanghai"></Select.Option>
-      <Select.Option label="区域二" value="beijing"></Select.Option>
-    </Select>
-  </Form.Item>
-  <Form.Item>
-    <Button nativeType="submit" type="primary">查询</Button>
-  </Form.Item>
-</Form>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    form: {
+      user: '',
+      region: ''
+    }
+  };
+}
+
+onSubmit(e) {
+  e.preventDefault();
+
+  console.log('submit!');
+}
+
+render() {
+  return (
+    <Form inline={true} model={this.state.form} onSubmit={this.onSubmit.bind(this)} className="demo-form-inline">
+      <Form.Item>
+        <Input value={this.state.form.user} placeholder="审批人"></Input>
+      </Form.Item>
+      <Form.Item>
+        <Select value={this.state.form.region} placeholder="活动区域">
+          <Select.Option label="区域一" value="shanghai"></Select.Option>
+          <Select.Option label="区域二" value="beijing"></Select.Option>
+        </Select>
+      </Form.Item>
+      <Form.Item>
+        <Button nativeType="submit" type="primary">查询</Button>
+      </Form.Item>
+    </Form>
+  )
+}
 ```
 :::
 
@@ -85,54 +133,108 @@
 顶部对齐
 
 ::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `top` 时标签会置于表单域的顶部
-```html
-<Form labelPosition="top" model={this.state.formStacked} className="demo-form-stacked">
-  <Form.Item label="名称">
-    <Input value={this.state.formStacked.name}></Input>
-  </Form.Item>
-  <Form.Item label="活动区域">
-    <Input value={this.state.formStacked.region}></Input>
-  </Form.Item>
-  <Form.Item label="活动展开形式">
-    <Input value={this.state.formStacked.type}></Input>
-  </Form.Item>
-</Form>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    form: {
+      name: '',
+      region: '',
+      type: ''
+    }
+  };
+}
+
+render() {
+  return (
+    <Form labelPosition="top" model={this.state.form} className="demo-form-stacked">
+      <Form.Item label="名称">
+        <Input value={this.state.form.name}></Input>
+      </Form.Item>
+      <Form.Item label="活动区域">
+        <Input value={this.state.form.region}></Input>
+      </Form.Item>
+      <Form.Item label="活动展开形式">
+        <Input value={this.state.form.type}></Input>
+      </Form.Item>
+    </Form>
+  )
+}
 ```
 :::
 
 右对齐
 
 ::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，默认不设置的情况下标签是右对齐的
-```html
-<Form model={this.state.formAlignRight} labelWidth="80">
-  <Form.Item label="活动名称">
-    <Input value={this.state.formAlignRight.name}></Input>
-  </Form.Item>
-  <Form.Item label="推广地">
-    <Input value={this.state.formAlignRight.region}></Input>
-  </Form.Item>
-  <Form.Item label="活动形式">
-    <Input value={this.state.formAlignRight.type}></Input>
-  </Form.Item>
-</Form>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    form: {
+      name: '',
+      region: '',
+      type: ''
+    }
+  };
+}
+
+render() {
+  return (
+    <Form model={this.state.form} labelWidth="80">
+      <Form.Item label="活动名称">
+        <Input value={this.state.form.name}></Input>
+      </Form.Item>
+      <Form.Item label="推广地">
+        <Input value={this.state.form.region}></Input>
+      </Form.Item>
+      <Form.Item label="活动形式">
+        <Input value={this.state.form.type}></Input>
+      </Form.Item>
+    </Form>
+  )
+}
 ```
 :::
 
 左对齐
 
 ::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `left` 时标签会变为左对齐
-```html
-<Form model={this.state.formAlignLeft} labelPosition="left" onSubmit={this.onSubmit.bind(this)} labelWidth="80">
-  <Form.Item label="活动名称">
-    <Input value={this.state.formAlignLeft.name}></Input>
-  </Form.Item>
-  <Form.Item label="推广地">
-    <Input value={this.state.formAlignLeft.region}></Input>
-  </Form.Item>
-  <Form.Item label="活动形式">
-    <Input value={this.state.formAlignLeft.type}></Input>
-  </Form.Item>
-</Form>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    form: {
+      name: '',
+      region: '',
+      type: ''
+    }
+  };
+}
+
+onSubmit(e) {
+  e.preventDefault();
+
+  console.log('submit!');
+}
+
+render() {
+  return (
+    <Form model={this.state.form} labelPosition="left" onSubmit={this.onSubmit.bind(this)} labelWidth="80">
+      <Form.Item label="活动名称">
+        <Input value={this.state.form.name}></Input>
+      </Form.Item>
+      <Form.Item label="推广地">
+        <Input value={this.state.form.region}></Input>
+      </Form.Item>
+      <Form.Item label="活动形式">
+        <Input value={this.state.form.type}></Input>
+      </Form.Item>
+    </Form>
+  )
+}
 ```
 :::
 
@@ -141,113 +243,315 @@
 在防止用户犯错的前提下，尽可能让用户更早地发现并纠正错误。
 
 ::: demo Form 组件提供了表单验证的功能，只需要通过 `rule` 属性传入约定的验证规则，并 Form-Item 的 `prop` 属相设置为需校验的字段名即可。校验规则参见 [async-validator](https://github.com/yiminghe/async-validator)
-```html
-<Form ref={e => this.ruleForm = e} model={this.state.ruleForm} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
-  <Form.Item label="活动名称" prop="name">
-    <Input value={this.state.ruleForm.name}></Input>
-  </Form.Item>
-  <Form.Item label="活动区域" prop="region">
-    <Select value={this.state.ruleForm.region} placeholder="请选择活动区域">
-      <Select.Option label="区域一" value="shanghai"></Select.Option>
-      <Select.Option label="区域二" value="beijing"></Select.Option>
-    </Select>
-  </Form.Item>
-  <Form.Item label="活动时间" required={true}>
-    <Layout.Col span="11">
-      <Form.Item prop="date1">
+```js
+constructor(props) {
+  super(props);
 
-      </Form.Item>
-    </Layout.Col>
-    <Layout.Col className="line" span="2">-</Layout.Col>
-    <Layout.Col span="11">
-      <Form.Item prop="date2">
+  this.state = {
+    form: {
+      name: '',
+      region: '',
+      date1: '',
+      date2: '',
+      delivery: false,
+      type: [],
+      resource: '',
+      desc: ''
+    },
+    rules: {
+      name: [
+        { required: true, message: '请输入活动名称', trigger: 'blur' }
+      ],
+      region: [
+        { required: true, message: '请选择活动区域', trigger: 'change' }
+      ],
+      date1: [
+        { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+      ],
+      date2: [
+        { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+      ],
+      type: [
+        { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+      ],
+      resource: [
+        { required: true, message: '请选择活动资源', trigger: 'change' }
+      ],
+      desc: [
+        { required: true, message: '请填写活动形式', trigger: 'blur' }
+      ]
+    }
+  };
+}
 
+handleSubmit(e) {
+  e.preventDefault();
+
+  this.refs.form.validate((valid) => {
+    if (valid) {
+      alert('submit!');
+    } else {
+      console.log('error submit!!');
+      return false;
+    }
+  });
+}
+
+handleReset(e) {
+  e.preventDefault();
+
+  this.refs.form.resetFields();
+}
+
+render() {
+  return (
+    <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
+      <Form.Item label="活动名称" prop="name">
+        <Input value={this.state.form.name}></Input>
       </Form.Item>
-    </Layout.Col>
-  </Form.Item>
-  <Form.Item label="即时配送">
-    <Switch onText="" offText="" value={this.state.ruleForm.delivery}></Switch>
-  </Form.Item>
-  <Form.Item label="活动性质" prop="type">
-    <Checkbox.Group value={this.state.ruleForm.type}>
-      <Checkbox label="美食/餐厅线上活动" name="type"></Checkbox>
-      <Checkbox label="地推活动" name="type"></Checkbox>
-      <Checkbox label="线下主题活动" name="type"></Checkbox>
-      <Checkbox label="单纯品牌曝光" name="type"></Checkbox>
-    </Checkbox.Group>
-  </Form.Item>
-  <Form.Item label="特殊资源" prop="resource">
-    <Radio.Group value={this.state.ruleForm.resource}>
-      <Radio value="线上品牌商赞助"></Radio>
-      <Radio value="线下场地免费"></Radio>
-    </Radio.Group>
-  </Form.Item>
-  <Form.Item label="活动形式" prop="desc">
-    <Input type="textarea" value={this.state.ruleForm.desc}></Input>
-  </Form.Item>
-  <Form.Item>
-    <Button type="primary" onClick={this.handleSubmit.bind(this)}>立即创建</Button>
-    <Button onClick={this.handleReset.bind(this)}>重置</Button>
-  </Form.Item>
-</Form>
+      <Form.Item label="活动区域" prop="region">
+        <Select value={this.state.form.region} placeholder="请选择活动区域">
+          <Select.Option label="区域一" value="shanghai"></Select.Option>
+          <Select.Option label="区域二" value="beijing"></Select.Option>
+        </Select>
+      </Form.Item>
+      <Form.Item label="活动时间" required={true}>
+        <Layout.Col span="11">
+          <Form.Item prop="date1">
+
+          </Form.Item>
+        </Layout.Col>
+        <Layout.Col className="line" span="2">-</Layout.Col>
+        <Layout.Col span="11">
+          <Form.Item prop="date2">
+
+          </Form.Item>
+        </Layout.Col>
+      </Form.Item>
+      <Form.Item label="即时配送">
+        <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
+      </Form.Item>
+      <Form.Item label="活动性质" prop="type">
+        <Checkbox.Group value={this.state.form.type}>
+          <Checkbox label="美食/餐厅线上活动" name="type"></Checkbox>
+          <Checkbox label="地推活动" name="type"></Checkbox>
+          <Checkbox label="线下主题活动" name="type"></Checkbox>
+          <Checkbox label="单纯品牌曝光" name="type"></Checkbox>
+        </Checkbox.Group>
+      </Form.Item>
+      <Form.Item label="特殊资源" prop="resource">
+        <Radio.Group value={this.state.form.resource}>
+          <Radio value="线上品牌商赞助"></Radio>
+          <Radio value="线下场地免费"></Radio>
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item label="活动形式" prop="desc">
+        <Input type="textarea" value={this.state.form.desc}></Input>
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" onClick={this.handleSubmit.bind(this)}>立即创建</Button>
+        <Button onClick={this.handleReset.bind(this)}>重置</Button>
+      </Form.Item>
+    </Form>
+  )
+}
 ```
 :::
 
 ### 自定义校验规则
 
 ::: demo 这个例子中展示了如何使用自定义验证规则来完成密码的二次验证
-```html
-<Form ref={e => this.ruleForm2 = e} model={this.state.ruleForm2} rules={this.state.rules2} labelWidth="100" className="demo-ruleForm">
-  <Form.Item label="密码" prop="pass">
-    <Input type="password" value={this.state.ruleForm2.pass} autoComplete="off"></Input>
-  </Form.Item>
-  <Form.Item label="确认密码" prop="checkPass">
-    <Input type="password" value={this.state.ruleForm2.checkPass} autoComplete="off"></Input>
-  </Form.Item>
-  <Form.Item label="年龄" prop="age">
-    <Input value={this.state.ruleForm2.age}></Input>
-  </Form.Item>
-  <Form.Item>
-    <Button type="primary" onClick={this.handleSubmit2.bind(this)}>提交</Button>
-    <Button onClick={this.handleReset2.bind(this)}>重置</Button>
-  </Form.Item>
-</Form>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    form: {
+      pass: '',
+      checkPass: '',
+      age: ''
+    },
+    rules: {
+      pass: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { validator: (rule, value, callback) => {
+          if (value === '') {
+            callback(new Error('请输入密码'));
+          } else {
+            if (this.state.ruleForm2.checkPass !== '') {
+              this.ruleForm2.validateField('checkPass');
+            }
+            callback();
+          }
+        } }
+      ],
+      checkPass: [
+        { required: true, message: '请再次输入密码', trigger: 'blur' },
+        { validator: (rule, value, callback) => {
+          if (value === '') {
+            callback(new Error('请再次输入密码'));
+          } else if (value !== this.ruleForm2.pass) {
+            callback(new Error('两次输入密码不一致!'));
+          } else {
+            callback();
+          }
+        } }
+      ],
+      age: [
+        { required: true, message: '请填写年龄', trigger: 'blur' },
+        { validator: (rule, value, callback) => {
+          var age = parseInt(value, 10);
+
+          setTimeout(() => {
+            if (!Number.isInteger(age)) {
+              callback(new Error('请输入数字值'));
+            } else{
+              if (age < 18) {
+                callback(new Error('必须年满18岁'));
+              } else {
+                callback();
+              }
+            }
+          }, 1000);
+        }, trigger: 'change' }
+      ]
+    }
+  };
+}
+
+handleSubmit(e) {
+  e.preventDefault();
+
+  this.refs.form.validate((valid) => {
+    if (valid) {
+      alert('submit!');
+    } else {
+      console.log('error submit!!');
+      return false;
+    }
+  });
+}
+
+handleReset(e) {
+  e.preventDefault();
+
+  this.refs.form.resetFields();
+}
+
+render() {
+  return (
+    <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
+      <Form.Item label="密码" prop="pass">
+        <Input type="password" value={this.state.form.pass} autoComplete="off"></Input>
+      </Form.Item>
+      <Form.Item label="确认密码" prop="checkPass">
+        <Input type="password" value={this.state.form.checkPass} autoComplete="off"></Input>
+      </Form.Item>
+      <Form.Item label="年龄" prop="age">
+        <Input value={this.state.form.age}></Input>
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" onClick={this.handleSubmit.bind(this)}>提交</Button>
+        <Button onClick={this.handleReset.bind(this)}>重置</Button>
+      </Form.Item>
+    </Form>
+  )
+}
 ```
 :::
 
 ### 动态增减表单项
 
 ::: demo 除了在 Form 组件上一次性传递所有的验证规则外还可以在单个的表单域上传递属性的验证规则
-```html
-<Form model={this.state.dynamicForm} rules={this.state.dynamicRule} labelWidth="100" className="demo-dynamic">
-  <Form.Item prop="email" label="邮箱">
-    <Input value={this.state.dynamicForm.email}></Input>
-  </Form.Item>
-  {
-    this.state.dynamicForm.domains.map((domain, index) => {
-      return (
-        <Form.Item
-          key={index}
-          label={`域名${index}`}
-          prop={`domains:${index}`}
-          rules={{
-            type: 'object', required: true,
-            fields: {
-              value: { required: true, message: '域名不能为空', trigger: 'blur' }
-            }
-          }}
-        >
-          <Input value={domain.value}></Input>
-          <Button onClick={this.removeDomain.bind(this, domain)}>删除</Button>
-        </Form.Item>
-      )
-    })
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    form: {
+      domains: [{
+        key: 1,
+        value: ''
+      }],
+      email: ''
+    },
+    rules: {
+      email: [
+        { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+        { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
+      ]
+    }
+  };
+}
+
+handleSubmit(e) {
+  e.preventDefault();
+
+  this.refs.form.validate((valid) => {
+    if (valid) {
+      alert('submit!');
+    } else {
+      console.log('error submit!!');
+      return false;
+    }
+  });
+}
+
+removeDomain(item, e) {
+  var index = this.state.form.domains.indexOf(item);
+
+  if (index !== -1) {
+    this.state.form.domains.splice(index, 1);
+    this.forceUpdate();
   }
-  <Form.Item>
-    <Button type="primary" onClick={this.handleSubmit3.bind(this)}>提交</Button>
-    <Button onClick={this.addDomain.bind(this)}>新增域名</Button>
-  </Form.Item>
-</Form>
+
+  e.preventDefault();
+}
+
+addDomain(e) {
+  e.preventDefault();
+
+  this.state.form.domains.push({
+    key: this.state.form.domains.length,
+    value: ''
+  });
+
+  this.forceUpdate();
+}
+
+render() {
+  return (
+    <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-dynamic">
+      <Form.Item prop="email" label="邮箱">
+        <Input value={this.state.form.email}></Input>
+      </Form.Item>
+      {
+        this.state.form.domains.map((domain, index) => {
+          return (
+            <Form.Item
+              key={index}
+              label={`域名${index}`}
+              prop={`domains:${index}`}
+              rules={{
+                type: 'object', required: true,
+                fields: {
+                  value: { required: true, message: '域名不能为空', trigger: 'blur' }
+                }
+              }}
+            >
+              <Input value={domain.value}></Input>
+              <Button onClick={this.removeDomain.bind(this, domain)}>删除</Button>
+            </Form.Item>
+          )
+        })
+      }
+      <Form.Item>
+        <Button type="primary" onClick={this.handleSubmit.bind(this)}>提交</Button>
+        <Button onClick={this.addDomain.bind(this)}>新增域名</Button>
+      </Form.Item>
+    </Form>
+  )
+}
 ```
 :::
 

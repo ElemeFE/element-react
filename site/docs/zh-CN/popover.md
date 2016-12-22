@@ -4,16 +4,22 @@
 Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的，因此对于重复属性，请参考 Tooltip 的文档，在此文档中不做详尽解释。
 
 :::demo 设置索引`ref`，在按钮中，我们注册了自定义指令`v-popover`，指向索引ID。`trigger`属性用于设置何时触发 Popover ，提供三种触发方式：`hover`, `click` 和 `focus`。第二种用法通过 `slot` 指定 reference。
-```html
-<Popover placement="top-start" title="标题" width="200" trigger="hover" content="这是一段容,这是一段容,这是一段容,这是一段容。">
-  <Button>hover 激活</Button>
-</Popover>
-<Popover placement="bottom" title="标题" width="200" trigger="click" content="这是一段容,这是一段容,这是一段容,这是一段容。">
-  <Button>click 激活</Button>
-</Popover>
-<Popover placement="right" title="标题" width="200" trigger="focus" content="这是一段容,这是一段容,这是一段容,这是一段容。">
-  <Button>focus 激活</Button>
-</Popover>
+```js
+render() {
+  return (
+    <div>
+      <Popover placement="top-start" title="标题" width="200" trigger="hover" content="这是一段容,这是一段容,这是一段容,这是一段容。">
+        <Button>hover 激活</Button>
+      </Popover>
+      <Popover placement="bottom" title="标题" width="200" trigger="click" content="这是一段容,这是一段容,这是一段容,这是一段容。">
+        <Button>click 激活</Button>
+      </Popover>
+      <Popover placement="right" title="标题" width="200" trigger="focus" content="这是一段容,这是一段容,这是一段容,这是一段容。">
+        <Button>focus 激活</Button>
+      </Popover>
+    </div>
+  )
+}
 ```
 :::
 
@@ -23,51 +29,60 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
 
 :::demo 利用分发取代`content`属性
 ```js
-let columns = [
-{
-  label: "日期",
-  prop: "date",
-  width: 150
-},
-{
-  label: "姓名",
-  prop: "name",
-  width: 100
-},
-{
-  label: "地址",
-  prop: "address",
-  width: 300
+constructor(props){
+  super(props);
+
+  this.table = {
+    columns: [
+      {
+        label: "日期",
+        prop: "date",
+        width: 150
+      },
+      {
+        label: "姓名",
+        prop: "name",
+        width: 100
+      },
+      {
+        label: "地址",
+        prop: "address",
+        width: 300
+      }
+    ],
+    data: [{
+      date: '2016-05-02',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1518 弄'
+    }, {
+      date: '2016-05-04',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1517 弄'
+    }, {
+      date: '2016-05-01',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1519 弄'
+    }, {
+      date: '2016-05-03',
+      name: '王小虎',
+      address: '上海市普陀区金沙江路 1516 弄'
+    }]
+  }
 }
-];
 
-let data = [{
-  date: '2016-05-02',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-04',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1517 弄'
-}, {
-  date: '2016-05-01',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1519 弄'
-}, {
-  date: '2016-05-03',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1516 弄'
-}];
-
-<Popover placement="right" title="标题" width="400" trigger="click" content={(
-  <Table
-   style={{width: '100%'}}
-   stripe={true}
-   columns={columns}
-   data={data} />
-)}>
-  <Button>click 激活</Button>
-</Popover>
+render() {
+  return (
+    <Popover placement="right" title="标题" width="400" trigger="click" content={(
+      <Table
+       style={{width: '100%'}}
+       stripe={true}
+       columns={this.table.columns}
+       data={this.table.data} />
+    )}>
+      <Button>click 激活</Button>
+    </Popover>
+  )
+}
 ```
 :::
 
@@ -77,17 +92,33 @@ let data = [{
 
 :::demo
 ```js
-<Popover placement="top" width="160" trigger="click" visible={this.state.visible} content={(
-  <div>
-    <p>这是一段内容这是一段内容确定删除吗？</p>
-    <div style={{textAlign: 'right', margin: 0}}>
-      <Button size="mini" type="text" onClick={this.onDismiss.bind(this)}>取消</Button>
-      <Button type="primary" size="mini" onClick={this.onDismiss.bind(this)}>确定</Button>
-    </div>
-  </div>
-)}>
-  <Button>删除</Button>
-</Popover>
+constructor(props){
+  super(props);
+
+  this.state = {};
+}
+
+onDismiss() {
+  this.setState({
+    visible: false
+  });
+}
+
+render() {
+  return (
+    <Popover placement="top" width="160" trigger="click" visible={this.state.visible} content={(
+      <div>
+        <p>这是一段内容这是一段内容确定删除吗？</p>
+        <div style={{textAlign: 'right', margin: 0}}>
+          <Button size="mini" type="text" onClick={this.onDismiss.bind(this)}>取消</Button>
+          <Button type="primary" size="mini" onClick={this.onDismiss.bind(this)}>确定</Button>
+        </div>
+      </div>
+    )}>
+      <Button>删除</Button>
+    </Popover>
+  )
+}
 ```
 :::
 

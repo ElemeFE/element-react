@@ -7,10 +7,16 @@
 
 :::demo Button 组件默认提供7种主题，由`type`属性来定义，默认为`default`。
 
-```html
-<Button>默认按钮</Button>
-<Button type="primary">主要按钮</Button>
-<Button type="text">文字按钮</Button>
+```js
+render() {
+  return (
+    <div>
+      <Button>默认按钮</Button>
+      <Button type="primary">主要按钮</Button>
+      <Button type="text">文字按钮</Button>
+    </div>
+  )
+}
 ```
 :::
 
@@ -20,10 +26,16 @@
 
 :::demo 你可以使用`disabled`属性来定义按钮是否可用，它接受一个`Boolean`值。
 
-```html
-<Button plain={true} disabled={true}>主要按钮</Button>
-<Button type="primary" disabled={true}>主要按钮</Button>
-<Button type="text" disabled={true}>文字按钮</Button>
+```js
+render() {
+  return (
+    <div>
+      <Button plain={true} disabled={true}>主要按钮</Button>
+      <Button type="primary" disabled={true}>主要按钮</Button>
+      <Button type="text" disabled={true}>文字按钮</Button>
+    </div>
+  )
+}
 ```
 :::
 
@@ -33,27 +45,31 @@
 
 :::demo 朴素按钮同样设置了不同的`type`属性对应的样式（可选值同上），默认为`info`。设置`plain`属性，它接受一个`Boolean`。注意，在该情况下，`type`虽然可以为`text`，但是是没有意义的，会显示为`text button`的样式。
 
-```html
-<div className="intro-block">
-  <div className="block">
-    <span className="demonstration">默认显示颜色</span>
-    <span className="wrapper">
-      <Button type="success">成功按钮</Button>
-      <Button type="warning">警告按钮</Button>
-      <Button type="danger">危险按钮</Button>
-      <Button type="info">信息按钮</Button>
-    </span>
-  </div>
-  <div className="block">
-    <span className="demonstration">hover 显示颜色</span>
-    <span className="wrapper">
-      <Button plain={true} type="success">成功按钮</Button>
-      <Button plain={true} type="warning">警告按钮</Button>
-      <Button plain={true} type="danger">危险按钮</Button>
-      <Button plain={true} type="info">信息按钮</Button>
-    </span>
-  </div>
-</div>
+```js
+render() {
+  return (
+    <div className="intro-block">
+      <div className="block">
+        <span className="demonstration">默认显示颜色</span>
+        <span className="wrapper">
+          <Button type="success">成功按钮</Button>
+          <Button type="warning">警告按钮</Button>
+          <Button type="danger">危险按钮</Button>
+          <Button type="info">信息按钮</Button>
+        </span>
+      </div>
+      <div className="block">
+        <span className="demonstration">hover 显示颜色</span>
+        <span className="wrapper">
+          <Button plain={true} type="success">成功按钮</Button>
+          <Button plain={true} type="warning">警告按钮</Button>
+          <Button plain={true} type="danger">危险按钮</Button>
+          <Button plain={true} type="info">信息按钮</Button>
+        </span>
+      </div>
+    </div>
+  )
+}
 ```
 :::
 
@@ -63,12 +79,18 @@
 
 :::demo 设置`icon`属性即可，icon 的列表可以参考 Element 的 icon 组件，也可以设置在文字右边的 icon ，只要使用`i`标签即可，可以使用自定义图标。
 
-```html
-<Button type="primary" icon="edit"></Button>
-<Button type="primary" icon="share"></Button>
-<Button type="primary" icon="delete"></Button>
-<Button type="primary" icon="search">搜索</Button>
-<Button type="primary">上传<i className="el-icon-upload el-icon-right"></i></Button>
+```js
+render() {
+  return (
+    <div>
+      <Button type="primary" icon="edit"></Button>
+      <Button type="primary" icon="share"></Button>
+      <Button type="primary" icon="delete"></Button>
+      <Button type="primary" icon="search">搜索</Button>
+      <Button type="primary">上传<i className="el-icon-upload el-icon-right"></i></Button>
+    </div>
+  )
+}
 ```
 :::
 
@@ -78,16 +100,22 @@
 
 :::demo 使用`<el-button-group>`标签来嵌套你的按钮。
 
-```html
-<Button.Group>
-    <Button type="primary" icon="arrow-left">上一页</Button>
-    <Button type="primary">下一页<i className="el-icon-arrow-right el-icon-right"></i></Button>
-</Button.Group>
-<Button.Group>
-    <Button type="primary" icon="edit"></Button>
-    <Button type="primary" icon="share"></Button>
-    <Button type="primary" icon="delete"></Button>
-</Button.Group>
+```js
+render() {
+  return (
+    <div>
+      <Button.Group>
+          <Button type="primary" icon="arrow-left">上一页</Button>
+          <Button type="primary">下一页<i className="el-icon-arrow-right el-icon-right"></i></Button>
+      </Button.Group>
+      <Button.Group>
+          <Button type="primary" icon="edit"></Button>
+          <Button type="primary" icon="share"></Button>
+          <Button type="primary" icon="delete"></Button>
+      </Button.Group>
+    </div>
+  )
+}
 ```
 :::
 
@@ -97,8 +125,10 @@
 
 :::demo 要设置为 loading 状态，只要设置`loading`属性为`true`即可。
 
-```html
-<Button type="primary" loading={true}>加载中</Button>
+```js
+render() {
+  return <Button type="primary" loading={true}>加载中</Button>
+}
 ```
 :::
 
@@ -108,11 +138,17 @@ Button 组件提供除了默认值以外的三种尺寸，可以在不同场景�
 
 :::demo 额外的尺寸：`large`、`small`、`mini`，通过设置`size`属性来配置它们。
 
-```html
-<Button type="primary" size="large">大型按钮</Button>
-<Button type="primary">正常按钮</Button>
-<Button type="primary" size="small">小型按钮</Button>
-<Button type="primary" size="mini">超小按钮</Button>
+```js
+render() {
+  return (
+    <div>
+      <Button type="primary" size="large">大型按钮</Button>
+      <Button type="primary">正常按钮</Button>
+      <Button type="primary" size="small">小型按钮</Button>
+      <Button type="primary" size="mini">超小按钮</Button>
+    </div>
+  )
+}
 ```
 :::
 

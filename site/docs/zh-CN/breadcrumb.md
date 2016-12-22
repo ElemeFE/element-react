@@ -7,13 +7,17 @@
 
 :::demo 在`el-breadcrumb`中使用`el-breadcrumb-item`标签表示从首页开始的每一级。Element 提供了一个`separator`属性，在`el-breadcrumb`标签中设置它来决定分隔符，它只能是字符串，默认为斜杠`/`。
 
-```html
-<Breadcrumb separator="/">
-  <Breadcrumb.Item to='#layout'>首页</Breadcrumb.Item>
-  <Breadcrumb.Item>活动管理</Breadcrumb.Item>
-  <Breadcrumb.Item>活动列表</Breadcrumb.Item>
-  <Breadcrumb.Item>活动详情</Breadcrumb.Item>
-</Breadcrumb>
+```js
+render() {
+  return (
+    <Breadcrumb separator="/">
+      <Breadcrumb.Item to='#layout'>首页</Breadcrumb.Item>
+      <Breadcrumb.Item>活动管理</Breadcrumb.Item>
+      <Breadcrumb.Item>活动列表</Breadcrumb.Item>
+      <Breadcrumb.Item>活动详情</Breadcrumb.Item>
+    </Breadcrumb>
+  )
+}
 ```
 :::
 
