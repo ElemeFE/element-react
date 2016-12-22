@@ -25,7 +25,7 @@ const data = {
     value: '选项5',
     label: '北京烤鸭'
   }],
-  value: '选项1'
+  value: ''
 };
 
 <Select value={data.value}>
@@ -168,7 +168,7 @@ const data = {
     value: '选项5',
     label: '北京烤鸭'
   }],
-  value: ['选项1', '选项2']
+  value: []
 };
 
 <Select value={data.value} placeholder="请选择" multiple={true}>
