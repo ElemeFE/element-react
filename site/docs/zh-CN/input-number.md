@@ -5,8 +5,24 @@
 ### 基础用法
 
 :::demo 要使用它，只需要在`el-input-number`元素中使用`v-model`绑定变量即可，变量的初始值即为默认值。
-```html
-<InputNumber defaultValue={this.state.alpha} onChange={this.onChange.bind(this)} min="1" max="10"></InputNumber>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: 1
+  }
+}
+
+onChange(event) {
+  console.log(event.target.value);
+}
+
+render() {
+  return (
+    <InputNumber defaultValue={this.state.value} onChange={this.onChange.bind(this)} min="1" max="10"></InputNumber>
+  )
+}
 ```
 :::
 
@@ -14,8 +30,24 @@
 
 :::demo `disabled`属性接受一个`Boolean`，设置为`true`即可禁用整个组件，如果你只需要控制数值在某一范围内，可以设置`min`属性和`max`属性，不设置`min`和`max`时，最小值为 0。
 
-```html
-<InputNumber defaultValue={this.state.beta} onChange={this.onChange.bind(this)} disabled={true}></InputNumber>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: 1
+  }
+}
+
+onChange(event) {
+  console.log(event.target.value);
+}
+
+render() {
+  return (
+    <InputNumber defaultValue={this.state.value} onChange={this.onChange.bind(this)} disabled={true}></InputNumber>
+  )
+}
 ```
 :::
 
@@ -25,8 +57,24 @@
 
 :::demo 设置`step`属性可以控制步长，接受一个`Number`。
 
-```html
-<InputNumber defaultValue={this.state.charlie} onChange={this.onChange.bind(this)} step="2"></InputNumber>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: 5
+  }
+}
+
+onChange(event) {
+  console.log(event.target.value);
+}
+
+render() {
+  return (
+    <InputNumber defaultValue={this.state.value} onChange={this.onChange.bind(this)} step="2"></InputNumber>
+  )
+}
 ```
 :::
 

@@ -8,21 +8,25 @@
 
 :::demo 通过组件`slot`来设置下拉触发的元素以及需要通过具名`slot`为`dropdown` 来设置下拉菜单。默认情况下，下拉按钮只要`hover`即可，无需点击也会显示下拉菜单。
 
-```html
-<Dropdown menu={(
-  <Dropdown.Menu>
-    <Dropdown.Item>黄金糕</Dropdown.Item>
-    <Dropdown.Item>狮子头</Dropdown.Item>
-    <Dropdown.Item>螺蛳粉</Dropdown.Item>
-    <Dropdown.Item disabled>双皮奶</Dropdown.Item>
-    <Dropdown.Item divided>蚵仔煎</Dropdown.Item>
-  </Dropdown.Menu>
-  )}
->
-  <span className="el-dropdown-link">
-    下拉菜单<i className="el-icon-caret-bottom el-icon--right"></i>
-  </span>
-</Dropdown>
+```js
+render() {
+  return (
+    <Dropdown menu={(
+      <Dropdown.Menu>
+        <Dropdown.Item>黄金糕</Dropdown.Item>
+        <Dropdown.Item>狮子头</Dropdown.Item>
+        <Dropdown.Item>螺蛳粉</Dropdown.Item>
+        <Dropdown.Item disabled>双皮奶</Dropdown.Item>
+        <Dropdown.Item divided>蚵仔煎</Dropdown.Item>
+      </Dropdown.Menu>
+      )}
+    >
+      <span className="el-dropdown-link">
+        下拉菜单<i className="el-icon-caret-bottom el-icon--right"></i>
+      </span>
+    </Dropdown>
+  )
+}
 ```
 :::
 
@@ -32,32 +36,41 @@
 
 :::demo 设置`split-button`属性来让触发下拉元素呈现为按钮组，左边是功能按钮，右边是触发下拉菜单的按钮，设置为`true`即可。
 
-```html
-<Dropdown menu={(
-  <Dropdown.Menu>
-    <Dropdown.Item>黄金糕</Dropdown.Item>
-    <Dropdown.Item>狮子头</Dropdown.Item>
-    <Dropdown.Item>螺蛳粉</Dropdown.Item>
-    <Dropdown.Item>双皮奶</Dropdown.Item>
-    <Dropdown.Item>蚵仔煎</Dropdown.Item>
-  </Dropdown.Menu>
-)}>
-  <Button type="primary">
-    更多菜单<i className="el-icon-caret-bottom el-icon--right"></i>
-  </Button>
-</Dropdown>
-<Dropdown splitButton={true} type="primary" onClick={this.handleClick.bind(this)} menu={(
-  <Dropdown.Menu>
-    <Dropdown.Item>黄金糕</Dropdown.Item>
-    <Dropdown.Item>狮子头</Dropdown.Item>
-    <Dropdown.Item>螺蛳粉</Dropdown.Item>
-    <Dropdown.Item>双皮奶</Dropdown.Item>
-    <Dropdown.Item>蚵仔煎</Dropdown.Item>
-  </Dropdown.Menu>
-)}>
-  更多菜单
-</Dropdown>
+```js
+render() {
+  return (
+    <div>
+      <Dropdown menu={(
+        <Dropdown.Menu>
+          <Dropdown.Item>黄金糕</Dropdown.Item>
+          <Dropdown.Item>狮子头</Dropdown.Item>
+          <Dropdown.Item>螺蛳粉</Dropdown.Item>
+          <Dropdown.Item>双皮奶</Dropdown.Item>
+          <Dropdown.Item>蚵仔煎</Dropdown.Item>
+        </Dropdown.Menu>
+      )}>
+        <Button type="primary">
+          更多菜单<i className="el-icon-caret-bottom el-icon--right"></i>
+        </Button>
+      </Dropdown>
+      <Dropdown splitButton={true} type="primary" onClick={this.handleClick.bind(this)} menu={(
+        <Dropdown.Menu>
+          <Dropdown.Item>黄金糕</Dropdown.Item>
+          <Dropdown.Item>狮子头</Dropdown.Item>
+          <Dropdown.Item>螺蛳粉</Dropdown.Item>
+          <Dropdown.Item>双皮奶</Dropdown.Item>
+          <Dropdown.Item>蚵仔煎</Dropdown.Item>
+        </Dropdown.Menu>
+      )}>
+        更多菜单
+      </Dropdown>
+    </div>
+  )
+}
 
+handleClick() {
+  alert('button click');
+}
 ```
 :::
 
@@ -66,41 +79,45 @@
 可以配置 click 激活或者 hover 激活。
 
 :::demo 在`trigger`属性设置为`click`即可。
-```html
-<Layout.Row className="block-col-2">
-  <Layout.Col span="12">
-    <span className="demonstration">hover 激活</span>
-    <Dropdown menu={(
-      <Dropdown.Menu>
-        <Dropdown.Item>黄金糕</Dropdown.Item>
-        <Dropdown.Item>狮子头</Dropdown.Item>
-        <Dropdown.Item>螺蛳粉</Dropdown.Item>
-        <Dropdown.Item>双皮奶</Dropdown.Item>
-        <Dropdown.Item>蚵仔煎</Dropdown.Item>
-      </Dropdown.Menu>
-    )}>
-      <span className="el-dropdown-link">
-        下拉菜单<i className="el-icon-caret-bottom el-icon--right"></i>
-      </span>
-    </Dropdown>
-  </Layout.Col>
-  <Layout.Col span="12">
-    <span className="demonstration">click 激活</span>
-    <Dropdown trigger="click" menu={(
-      <Dropdown.Menu>
-        <Dropdown.Item>黄金糕</Dropdown.Item>
-        <Dropdown.Item>狮子头</Dropdown.Item>
-        <Dropdown.Item>螺蛳粉</Dropdown.Item>
-        <Dropdown.Item>双皮奶</Dropdown.Item>
-        <Dropdown.Item>蚵仔煎</Dropdown.Item>
-      </Dropdown.Menu>
-    )}>
-      <span className="el-dropdown-link">
-        下拉菜单<i className="el-icon-caret-bottom el-icon--right"></i>
-      </span>
-    </Dropdown>
-  </Layout.Col>
-</Layout.Row>
+```js
+render() {
+  return (
+    <Layout.Row className="block-col-2">
+      <Layout.Col span="12">
+        <span className="demonstration">hover 激活</span>
+        <Dropdown menu={(
+          <Dropdown.Menu>
+            <Dropdown.Item>黄金糕</Dropdown.Item>
+            <Dropdown.Item>狮子头</Dropdown.Item>
+            <Dropdown.Item>螺蛳粉</Dropdown.Item>
+            <Dropdown.Item>双皮奶</Dropdown.Item>
+            <Dropdown.Item>蚵仔煎</Dropdown.Item>
+          </Dropdown.Menu>
+        )}>
+          <span className="el-dropdown-link">
+            下拉菜单<i className="el-icon-caret-bottom el-icon--right"></i>
+          </span>
+        </Dropdown>
+      </Layout.Col>
+      <Layout.Col span="12">
+        <span className="demonstration">click 激活</span>
+        <Dropdown trigger="click" menu={(
+          <Dropdown.Menu>
+            <Dropdown.Item>黄金糕</Dropdown.Item>
+            <Dropdown.Item>狮子头</Dropdown.Item>
+            <Dropdown.Item>螺蛳粉</Dropdown.Item>
+            <Dropdown.Item>双皮奶</Dropdown.Item>
+            <Dropdown.Item>蚵仔煎</Dropdown.Item>
+          </Dropdown.Menu>
+        )}>
+          <span className="el-dropdown-link">
+            下拉菜单<i className="el-icon-caret-bottom el-icon--right"></i>
+          </span>
+        </Dropdown>
+      </Layout.Col>
+    </Layout.Row>
+  )
+}
 ```
 :::
 

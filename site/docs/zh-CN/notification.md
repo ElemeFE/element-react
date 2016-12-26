@@ -7,9 +7,30 @@
 适用性广泛的通知栏
 
 ::: demo Notification 组件提供通知功能，Element 注册了`$notify`方法，接收一个`options`字面量参数，在最简单的情况下，你可以设置`title`字段和`message`字段，用于设置通知的标题和正文。默认情况下，经过一段时间后 Notification 组件会自动关闭，但是通过设置`duration`，可以控制关闭的时间间隔，特别的是，如果设置为`0`，则不会自动关闭。注意：`duration`接收一个`Number`，单位为毫秒，默认为`4500`。
-```html
-<Button plain={true} onClick={this.onOpen.bind(this, '1')}>可自动关闭</Button>
-<Button plain={true} onClick={this.onOpen.bind(this, '2')}>不会自动关闭</Button>
+```js
+render() {
+  return (
+    <div>
+      <Button plain={true} onClick={this.open.bind(this)}>可自动关闭</Button>
+      <Button plain={true} onClick={this.open2.bind(this)}>不会自动关闭</Button>
+    </div>
+  )
+}
+
+open() {
+  Notification({
+    title: '标题名称',
+    message: '这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案'
+  });
+}
+
+open2() {
+  Notification({
+    title: '提示',
+    message: '这是一条不会自动关闭的消息',
+    duration: 0
+  });
+}
 ```
 :::
 
@@ -18,11 +39,47 @@
 带有 icon，常用来显示「成功、警告、消息、错误」类的系统消息
 
 ::: demo Element 为 Notification 组件准备了四种通知类型：`success`, `warning`, `info`, `error`。通过`type`字段来设置，除此以外的值将被忽略。同时，我们也为 Notification 的各种 type 注册了方法，可以在不传入`type`字段的情况下像`open5`和`open6`那样直接调用。
-```html
-<Button plain={true} onClick={this.onOpen.bind(this, '3')}>成功</Button>
-<Button plain={true} onClick={this.onOpen.bind(this, '4')}>警告</Button>
-<Button plain={true} onClick={this.onOpen.bind(this, '5')}>消息</Button>
-<Button plain={true} onClick={this.onOpen.bind(this, '6')}>错误</Button>
+```js
+render() {
+  return (
+    <div>
+      <Button plain={true} onClick={this.open3.bind(this)}>成功</Button>
+      <Button plain={true} onClick={this.open4.bind(this)}>警告</Button>
+      <Button plain={true} onClick={this.open5.bind(this)}>消息</Button>
+      <Button plain={true} onClick={this.open6.bind(this)}>错误</Button>
+    </div>
+  )
+}
+
+open3() {
+  Notification({
+    title: '成功',
+    message: '这是一条成功的提示消息',
+    type: 'success'
+  });
+}
+
+open4() {
+  Notification({
+    title: '警告',
+    message: '这是一条警告的提示消息',
+    type: 'warning'
+  });
+}
+
+open5() {
+  Notification.info({
+    title: '消息',
+    message: '这是一条消息的提示消息'
+  });
+}
+
+open6() {
+  Notification.error({
+    title: '错误',
+    message: '这是一条错误的提示消息'
+  });
+}
 ```
 :::
 

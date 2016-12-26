@@ -1,9 +1,11 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import { PropTypes, Component } from '../../libs';
 import { EventRegister } from '../../libs/internal'
 
-import { HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
+import Input from '../input'
+import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
 import { Errors, require_condition, IDGenerator } from '../../libs/utils';
 
 /*
@@ -29,10 +31,11 @@ export default class BasePicker extends Component {
       format: PropTypes.string,
       isShowTrigger: PropTypes.bool,
       isReadOnly: PropTypes.bool,
+      isDisabled: PropTypes.bool,
       placeholder: PropTypes.string,
       onFocus: PropTypes.func,
       onBlur: PropTypes.func,
-      // (Date|Date[])=>()
+      // (Date|Date[]|null)=>(), null when click on clear icon
       onChange: PropTypes.func,
       // time select pannel:
       value: PropTypes.oneOfType([
@@ -44,7 +47,7 @@ export default class BasePicker extends Component {
 
   static get defaultProps() {
     return {
-      value: '',
+      value: new Date(),
       // (thisReactElement)=>Unit
       onFocus() { },
       onBlur() { },
@@ -202,7 +205,7 @@ export default class BasePicker extends Component {
   }
 
   // (state, props)=>ReactElement
-  pickerPannel() {
+  pickerPanel() {
     throw new Errors.MethodImplementationRequiredError()
   }
 
@@ -241,9 +244,61 @@ export default class BasePicker extends Component {
     }
   }
 
+  handleClickIcon(){
+    const {isReadOnly, isDisabled} = this.props
+    const {text} = this.state
+
+    if (isReadOnly || isDisabled) return 
+    if (!text){
+      this.togglePickerVisible()
+    }else{
+      this.setState({text: '', value: null, pickerVisible: false})
+      this.props.onChange(null)
+    }
+  }
+
   render() {
-    const {isReadOnly, placeholder} = this.props;
-    const {pickerVisible, value, text} = this.state;
+    const {isReadOnly, placeholder, isDisabled} = this.props;
+    const {pickerVisible, value, text, isShowClose} = this.state;
+
+    const createIconSlot = ()=>{
+      if (this.calcIsShowTrigger()){
+        const cls = isShowClose ? 'el-icon-close' : this.triggerClass()
+        return (
+          <i
+            className={this.classNames('el-input__icon', cls)}
+            onClick={this.handleClickIcon.bind(this)}
+            onMouseEnter={()=>{
+              if (isReadOnly || isDisabled) return 
+              if (text){
+                this.setState({isShowClose: true})
+              }
+            }}
+            onMouseLeave={()=>{
+              this.setState({isShowClose: false})
+            }}
+            ></i>
+        )
+      } else {
+        return null
+      }
+    }
+
+    const createPickerPanel = ()=>{
+      if (pickerVisible){
+        return this.pickerPanel(
+          this.state, 
+          Object.assign({}, this.props, {
+            getPopperRefElement: ()=>ReactDOM.findDOMNode(this.refs.inputRoot),
+            popperMixinOption:{
+              placement: PLACEMENT_MAP[this.props.align] || PLACEMENT_MAP.left
+            }
+          })
+        )
+      }else{
+        return null
+      }
+    }
 
     return (
       <span
@@ -264,10 +319,11 @@ export default class BasePicker extends Component {
           target={document}
           eventName="click"
           func={this.handleClickOutside.bind(this)} />
-
-        <input
-          className="el-date-editor__editor"
+        
+        <Input
+          className="el-date-editor"
           readOnly={isReadOnly}
+          disabled={isDisabled}
           type="text"
           placeholder={placeholder}
           onFocus={this.handleFocus.bind(this)}
@@ -283,20 +339,12 @@ export default class BasePicker extends Component {
             }
             this.setState(nstate)
           } }
-          ref="reference"
+          ref="inputRoot"
           value={text}
+          iconSlot={createIconSlot()}
           />
-
-        {
-          this.calcIsShowTrigger() && <span
-            onClick={this.togglePickerVisible.bind(this)}
-            className={this.classNames('el-date-editor__trigger', 'el-icon', this.triggerClass())}
-            />
-        }
-
-        {
-          pickerVisible && this.pickerPannel(this.state, this.props)
-        }
+          
+        { createPickerPanel() }
       </span>
     )
   }

@@ -1,4 +1,4 @@
-const list = [
+module.exports = [
   "arrow-down",
   "arrow-left",
   "arrow-right",
@@ -38,6 +38,4 @@ const list = [
   "delete2",
   "upload2",
   "view"
-]
-
-export default list
+];

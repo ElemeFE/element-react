@@ -106,7 +106,7 @@ export default class TimePanel extends Component {
       <div
         ref="root"
         className="el-time-panel">
-        <div className="el-time-panel__content">
+        <div className={this.classNames('el-time-panel__content', { 'has-seconds': isShowSeconds })}>
           <TimeSpinner
             ref="spinner"
             onChange={this.handleChange.bind(this)}

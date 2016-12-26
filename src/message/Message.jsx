@@ -19,7 +19,7 @@ export default function Message(props = {}, type) {
   }
 
   const component = React.createElement(Toast, Object.assign(props, {
-    onClose: () => {
+    willUnmount: () => {
       ReactDOM.unmountComponentAtNode(div);
       document.body.removeChild(div);
 

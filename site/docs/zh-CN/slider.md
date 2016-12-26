@@ -7,19 +7,35 @@
 在拖动滑块时，显示当前值
 
 :::demo 通过设置绑定值自定义滑块的初始值
-```html
-<div className="block">
-  <span className="demonstration">默认</span>
-  <Slider value={this.state.value1} />
-</div>
-<div className="block">
-  <span className="demonstration">自定义初始值</span>
-  <Slider value={this.state.value2} />
-</div>
-<div className="block">
-  <span className="demonstration">禁用</span>
-  <Slider value={this.state.value3} disabled={true} />
-</div>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value1: 0,
+    value2: 50,
+    value3: 42
+  }
+}
+
+render() {
+  return (
+    <div>
+      <div className="block">
+        <span className="demonstration">默认</span>
+        <Slider value={this.state.value1} />
+      </div>
+      <div className="block">
+        <span className="demonstration">自定义初始值</span>
+        <Slider value={this.state.value2} />
+      </div>
+      <div className="block">
+        <span className="demonstration">禁用</span>
+        <Slider value={this.state.value3} disabled={true} />
+      </div>
+    </div>
+  )
+}
 ```
 :::
 
@@ -28,15 +44,30 @@
 选项可以是离散的
 
 :::demo 改变`step`的值可以改变步长，通过设置`show-step`属性可以显示间断点
-```html
-<div className="block">
-  <span className="demonstration">不显示间断点</span>
-  <Slider value={this.state.value4} step="10" />
-</div>
-<div className="block">
-  <span className="demonstration">显示间断点</span>
-  <Slider value={this.state.value5} step="10" showStops={true} />
-</div>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value4: 0,
+    value5: 0
+  }
+}
+
+render() {
+  return (
+    <div>
+      <div className="block">
+        <span className="demonstration">不显示间断点</span>
+        <Slider value={this.state.value4} step="10" />
+      </div>
+      <div className="block">
+        <span className="demonstration">显示间断点</span>
+        <Slider value={this.state.value5} step="10" showStops={true} />
+      </div>
+    </div>
+  )
+}
 ```
 :::
 
@@ -45,10 +76,22 @@
 通过输入框设置精确数值
 
 :::demo 设置`show-input`属性会在右侧显示一个输入框
-```html
-<div className="block">
-  <Slider value={this.state.value6} showInput={true} />
-</div>
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: 0
+  }
+}
+
+render() {
+  return (
+    <div className="block">
+      <Slider value={this.state.value} showInput={true} />
+    </div>
+  )
+}
 ```
 :::
 

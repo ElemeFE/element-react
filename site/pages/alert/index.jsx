@@ -1,11 +1,14 @@
-import React from 'react';
 import Markdown from '../../../libs/markdown';
-import template from '../../docs/zh-CN/alert.md';
 
 import './style.scss';
 
-export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="Alert">{template}</Markdown>
+export default class Alert extends Markdown {
+  document(locale) {
+    switch (locale) {
+      case 'en-US':
+        return require('../../docs/en-US/alert.md');
+      default:
+        return require('../../docs/zh-CN/alert.md');
+    }
   }
 }
