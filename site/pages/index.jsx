@@ -27,6 +27,7 @@ import Slider from './slider';
 import Table from './table';
 import Switch from './switch';
 import TimePicker from './time-picker';
+import DatePicker from './date-picker';
 import Upload from './upload';
 import Dialog from './dialog';
 import Tabs from './tabs';
@@ -55,6 +56,7 @@ const pages = {
     'switch': { title: 'Switch 开关', component: Switch },
     'slider': { title: 'Slider 滑块', component: Slider },
     'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },
+    'date-picker': { title: 'Date Picker 日期选择器', component: DatePicker },
     'upload': { title: 'Upload 上传', component: Upload },
     'rate': { title: 'Rate 评分', component: Rate },
     'form': { title: 'Form 表单', component: Form },

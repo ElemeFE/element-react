@@ -1,9 +1,10 @@
-import { formatDate, parseDate, getWeekNumber } from './utils';
+import { formatDate, parseDate, getWeekNumber, getDateOfISOWeek, deconstructDate } from './utils';
 
 export const RANGE_SEPARATOR = ' - ';
 export const DEFAULT_FORMATS = {
   date: 'yyyy-MM-dd',
   month: 'yyyy-MM',
+  year: 'yyyy',
   datetime: 'yyyy-MM-dd HH:mm:ss',
   time: 'HH:mm:ss',
   timerange: 'HH:mm:ss',
@@ -54,6 +55,7 @@ export const RANGE_PARSER = function (text, format) {
   }
   return [];
 };
+
 export const TYPE_VALUE_RESOLVER_MAP = {
   default: {
     formatter(value) {
@@ -66,24 +68,54 @@ export const TYPE_VALUE_RESOLVER_MAP = {
     }
   },
   week: {
-    formatter(value) {
+    formatter(value, format) {
       if (value instanceof Date) {
-        const weekNumber = getWeekNumber(value);
-        return value.getFullYear() + 'w' + (weekNumber > 9 ? weekNumber : '0' + weekNumber);
-      }
-      return value;
-    },
-    parser(text) {
-      const array = (text || '').split('w');
-      if (array.length === 2) {
-        const year = Number(array[0]);
-        const month = Number(array[1]);
-
-        if (!isNaN(year) && !isNaN(month) && month < 54) {
-          return text;
+        if (!format) {
+          const weekNumber = getWeekNumber(value);
+          return value.getFullYear() + 'w' + (weekNumber > 9 ? weekNumber : '0' + weekNumber);
+        } else {
+          let str = DATE_FORMATTER(value, format)
+          if (str != '') {
+            let weekno = deconstructDate(value).week
+            str = /WW/.test(str) ? str.replace(/WW/, weekno < 10 ? `0${weekno}` : weekno) : str.replace(/W/, weekno)
+          }
+          return str
         }
       }
-      return null;
+
+      return ''
+    },
+    parser(text, format) {
+      const weekno = (matcher, src) => {
+        let str = src.substr(matcher.index, matcher.length);
+        if (/\d\d?/.test(str)) {
+          return { week: Number(str), isValid: true }
+        } else {
+          return { week: -1, isValid: false }
+        }
+      }
+
+      let date = DATE_PARSER(text)
+      let matcher = format.match(/(WW?)/)
+      let wn = null
+
+      if (!matcher) return date
+      else {
+        if (text.length > format.length) return ''
+
+        switch (matcher.length) {
+          case 1:
+            wn = weekno(matcher, text)
+            if (!wn.isValid) return ''
+            break;
+          case 2:
+            wn = weekno(matcher, text)
+            if (!wn.isValid) return ''
+            break;
+          default: throw new Error('never reach here')
+        }
+        return getDateOfISOWeek(wn.week, date.getFullYear())
+      }
     }
   },
   date: {
@@ -119,16 +151,8 @@ export const TYPE_VALUE_RESOLVER_MAP = {
     parser: DATE_PARSER
   },
   year: {
-    formatter(value) {
-      if (!value) return '';
-      return '' + value;
-    },
-    parser(text) {
-      const year = Number(text);
-      if (!isNaN(year)) return year;
-
-      return null;
-    }
+    formatter: DATE_FORMATTER,
+    parser: DATE_FORMATTER
   },
   number: {
     formatter(value) {
