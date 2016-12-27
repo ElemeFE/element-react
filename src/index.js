@@ -34,4 +34,4 @@ export { default as Dropdown } from './dropdown';
 export { default as Popover } from './popover';
 export { default as Pagination } from './pagination';
 export { default as AutoComplete } from './auto-complete';
-export { TimeSelect, TimePicker, TimeRangePicker } from './date-picker';
+export { TimeSelect, TimePicker, TimeRangePicker, DatePicker } from './date-picker';

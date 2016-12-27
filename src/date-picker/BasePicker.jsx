@@ -97,8 +97,7 @@ export default class BasePicker extends Component {
       TYPE_VALUE_RESOLVER_MAP[this.type] ||
       TYPE_VALUE_RESOLVER_MAP['default']
     ).formatter;
-    const format = DEFAULT_FORMATS[this.type];
-    const result = formatter(tdate, this.props.format || format);
+    const result = formatter(tdate, this.getFormat());
 
     return result;
   }
@@ -111,7 +110,11 @@ export default class BasePicker extends Component {
       TYPE_VALUE_RESOLVER_MAP[type] ||
       TYPE_VALUE_RESOLVER_MAP['default']
     ).parser;
-    return parser(dateStr, this.props.format || DEFAULT_FORMATS[type]);
+    return parser(dateStr, this.getFormat());
+  }
+
+  getFormat(){
+    return this.props.format || DEFAULT_FORMATS[this.type]
   }
 
   propsToState(props) {
@@ -123,6 +126,11 @@ export default class BasePicker extends Component {
       state.text = ''
       state.value = null
     }
+
+    if (state.value == null){
+      state.value = new Date()
+    }
+    
     return state
   }
 
