@@ -15,6 +15,3 @@ babel build/npm/index.js --out-file dist/npm/index.js
 
 # keep es6 for next.js
 cp build/npm/next.js next.js
-
-# copy vendor into npm
-cp -fr vendor dist/npm

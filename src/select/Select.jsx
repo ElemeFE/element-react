@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
-import Popper from '../../vendor/popper';
+import Popper from 'popper.js';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 import { debounce } from '../../libs/utils';
@@ -134,7 +134,17 @@ class Select extends Component {
     this.input = ReactDOM.findDOMNode(this.refs.input);
     this.root = ReactDOM.findDOMNode(this);
 
-    this.popperJS = new Popper(this.reference, this.popper);
+    this.popperJS = new Popper(this.reference, this.popper, {
+      // modifiersIgnored: ['applyStyle']
+    }).onCreate(() => {
+      // this.popperJS.modifiers.applyStyle = data => {
+      //   data.offsets.popper.position = 'absolute';
+      //
+      //   return data;
+      // }
+    }).onUpdate(data => {
+
+    });
   }
 
   debounce() {
@@ -190,7 +200,7 @@ class Select extends Component {
         }
       }
 
-      // this.broadcast('select-dropdown', 'updatePopper');
+      this.popperJS.update();
 
       if (filterable) {
         query = selectedLabel;
@@ -309,7 +319,7 @@ class Select extends Component {
     const { multiple, filterable, remote, remoteMethod, filterMethod } = this.props;
     let { voidRemoteQuery, hoverIndex, options, optionsCount } = this.state;
 
-    // this.broadcast('select-dropdown', 'updatePopper');
+    this.popperJS.update();
 
     if (multiple && filterable) {
       this.resetInputHeight();
@@ -477,7 +487,7 @@ class Select extends Component {
 
     input.style.height = Math.max(this.refs.tags.clientHeight + 6, this.size === 'small' ? 28 : 36) + 'px';
 
-    // this.broadcast('select-dropdown', 'updatePopper');
+    this.popperJS.update();
   }
 
   resetHoverIndex() {

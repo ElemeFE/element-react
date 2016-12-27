@@ -12,6 +12,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _libs = require('../../libs');
 
+require('./style.scss');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56,7 +58,7 @@ var Dropdown = function (_Component) {
         { ref: 'popper', className: this.className('el-select-dropdown', {
             'is-multiple': this.parent().props.multiple
           }), style: this.style({
-            width: '100%'
+            minWidth: this.parent().state.inputWidth
           }) },
         this.props.children
       );
