@@ -1,7 +1,12 @@
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
+import style from '../../libs/utils/style';
 
-import './style.scss';
+style.reset(`
+  .el-select-dropdown {
+    position: absolute !important;
+  }
+`)
 
 export default class Dropdown extends Component {
   componentDidMount() {
