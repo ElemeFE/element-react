@@ -1,5 +1,12 @@
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
+import style from '../../libs/utils/style';
+
+style.reset(`
+  .el-select-dropdown {
+    position: absolute !important;
+  }
+`)
 
 export default class Dropdown extends Component {
   componentDidMount() {
@@ -26,8 +33,7 @@ export default class Dropdown extends Component {
       <div ref="popper" className={this.className('el-select-dropdown', {
           'is-multiple': this.parent().props.multiple
       })} style={this.style({
-        width: '100%',
-        // minWidth: parent.state.inputWidth
+        minWidth: this.parent().state.inputWidth,
       })}>
         {this.props.children}
       </div>

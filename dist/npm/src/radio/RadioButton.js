@@ -34,6 +34,15 @@ var RadioButton = function (_Radio) {
   }
 
   _createClass(RadioButton, [{
+    key: 'activeStyle',
+    value: function activeStyle() {
+      return {
+        backgroundColor: this.props.fill,
+        borderColor: this.props.fill,
+        color: this.props.textColor
+      };
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -50,7 +59,7 @@ var RadioButton = function (_Radio) {
         }),
         _react2.default.createElement(
           'span',
-          { className: 'el-radio-button__inner' },
+          { className: 'el-radio-button__inner', style: this.state.checked ? this.activeStyle() : {} },
           this.props.children || this.props.value
         )
       );
@@ -66,7 +75,14 @@ exports.default = _default;
 
 RadioButton.propTypes = {
   value: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]).isRequired,
-  disabled: _libs.PropTypes.bool
+  disabled: _libs.PropTypes.bool,
+  textColor: _libs.PropTypes.string,
+  fill: _libs.PropTypes.string
+};
+
+RadioButton.defaultProps = {
+  textColor: '#ffffff',
+  fill: '#20a0ff'
 };
 ;
 

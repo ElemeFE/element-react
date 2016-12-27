@@ -1,5 +1,5 @@
 import React from 'react';
-import Popper from '../../vendor/popper';
+import Popper from 'popper.js';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
 export default class Tooltip extends Component {
