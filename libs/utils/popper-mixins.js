@@ -1,4 +1,4 @@
-import PopperJS from '../../vendor/popper';
+import PopperJS from 'popper.js';
 import {require_condition} from './assert'
 
 const MixinMethods = {
@@ -28,7 +28,7 @@ const MixinMethods = {
       this._poperJS.destroy();
     }
 
-    // these options are perserved only for smooth the migiration from eleme/element  
+    // these options are perserved only for smooth the migiration from eleme/element
     if (!popperOptions.placement) {
       popperOptions.placement = placement;
     }
@@ -82,7 +82,7 @@ const MixinMethods = {
   }
 }
 
-/** 
+/**
  * @param {object} config
     * @param {String} [placement=button] - Placement of the popper accepted values: top(-start, -end), right(-start, -end), bottom(-start, -right), left(-start, -end)
     * @param {Number} [offset=0] - Amount of pixels the popper will be shifted (can be negative).
@@ -108,7 +108,7 @@ export function PopperMixin(config) {
 
 const PopperReactMixinMethods = {
   hookReactLifeCycle(getPopperRootDom, getRefDom) {
-    
+
     const componentDidMount = this.componentDidMount
     const componentWillUnmount = this.componentWillUnmount
 
@@ -117,10 +117,10 @@ const PopperReactMixinMethods = {
       const ref = getRefDom()
       require_condition(root, 'method `getPopperRootDom()` require a HTMLElement instance when componentDidMount is called')
       require_condition(ref, 'method `getRefDom()` require a HTMLElement instance when componentDidMount is called')
-      
+
       this.createPopper(root, ref)
       this._animateRef = window.requestAnimationFrame(this.updatePopper.bind(this));
-      
+
       if (typeof componentDidMount === 'function') {
         componentDidMount.apply(this, args)
       }
@@ -140,7 +140,7 @@ const PopperReactMixinMethods = {
 
 /**
  * this Mixin provide utility method to hook reactjs component lifecycle
- * 
+ *
  * @param getPopperRootDom: ()=>HTMLElement, return your popper root HTMLElement when componentDidMout is called
  * @param {args} @see PopperMixin
  */
@@ -160,4 +160,3 @@ export function PopperReactMixin(getPopperRootDom, getRefDom, ...args) {
 }
 
 PopperReactMixin.prototype = PopperMixin.prototype
-

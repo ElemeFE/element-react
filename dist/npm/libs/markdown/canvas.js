@@ -14,13 +14,13 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _babelStandalone = require('babel-standalone');
-
 var _marked = require('marked');
 
 var _marked2 = _interopRequireDefault(_marked);
 
-var _highlight2 = require('../../vendor/highlight');
+var _babelStandalone = require('babel-standalone');
+
+var _highlight2 = require('./highlight');
 
 var _highlight3 = _interopRequireDefault(_highlight2);
 
@@ -32,8 +32,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Canvas = function (_Component) {
-  _inherits(Canvas, _Component);
+var Canvas = function (_React$Component) {
+  _inherits(Canvas, _React$Component);
 
   function Canvas(props) {
     _classCallCheck(this, Canvas);
@@ -157,7 +157,7 @@ var Canvas = function (_Component) {
   }]);
 
   return Canvas;
-}(_react.Component);
+}(_react2.default.Component);
 
 var _default = Canvas;
 exports.default = _default;

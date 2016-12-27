@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PopperMixin = PopperMixin;
 exports.PopperReactMixin = PopperReactMixin;
 
-var _popper = require('../../vendor/popper');
+var _popper = require('popper.js');
 
 var _popper2 = _interopRequireDefault(_popper);
 
@@ -48,7 +48,7 @@ var MixinMethods = {
       this._poperJS.destroy();
     }
 
-    // these options are perserved only for smooth the migiration from eleme/element  
+    // these options are perserved only for smooth the migiration from eleme/element
     if (!popperOptions.placement) {
       popperOptions.placement = placement;
     }
@@ -98,7 +98,7 @@ var MixinMethods = {
   }
 };
 
-/** 
+/**
  * @param {object} config
     * @param {String} [placement=button] - Placement of the popper accepted values: top(-start, -end), right(-start, -end), bottom(-start, -right), left(-start, -end)
     * @param {Number} [offset=0] - Amount of pixels the popper will be shifted (can be negative).
@@ -161,7 +161,7 @@ var PopperReactMixinMethods = {
 
 /**
  * this Mixin provide utility method to hook reactjs component lifecycle
- * 
+ *
  * @param getPopperRootDom: ()=>HTMLElement, return your popper root HTMLElement when componentDidMout is called
  * @param {args} @see PopperMixin
  */

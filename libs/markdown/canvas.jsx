@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { transform } from 'babel-standalone';
 import marked from 'marked';
+import { transform } from 'babel-standalone';
 
-import highlight from '../../vendor/highlight';
+import highlight from './highlight';
 
-export default class Canvas extends Component {
+export default class Canvas extends React.Component {
   constructor(props) {
     super(props);
 

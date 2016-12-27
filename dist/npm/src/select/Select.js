@@ -18,7 +18,7 @@ var _reactClickOutside = require('react-click-outside');
 
 var _reactClickOutside2 = _interopRequireDefault(_reactClickOutside);
 
-var _popper = require('../../vendor/popper');
+var _popper = require('popper.js');
 
 var _popper2 = _interopRequireDefault(_popper);
 
@@ -195,7 +195,15 @@ var Select = function (_Component) {
       this.input = _reactDom2.default.findDOMNode(this.refs.input);
       this.root = _reactDom2.default.findDOMNode(this);
 
-      this.popperJS = new _popper2.default(this.reference, this.popper);
+      this.popperJS = new _popper2.default(this.reference, this.popper, {
+        // modifiersIgnored: ['applyStyle']
+      }).onCreate(function () {
+        // this.popperJS.modifiers.applyStyle = data => {
+        //   data.offsets.popper.position = 'absolute';
+        //
+        //   return data;
+        // }
+      }).onUpdate(function (data) {});
     }
   }, {
     key: 'debounce',
@@ -262,7 +270,7 @@ var Select = function (_Component) {
           }
         }
 
-        // this.broadcast('select-dropdown', 'updatePopper');
+        this.popperJS.update();
 
         if (filterable) {
           query = selectedLabel;
@@ -424,7 +432,8 @@ var Select = function (_Component) {
           options = _state5.options,
           optionsCount = _state5.optionsCount;
 
-      // this.broadcast('select-dropdown', 'updatePopper');
+
+      this.popperJS.update();
 
       if (multiple && filterable) {
         this.resetInputHeight();
@@ -626,7 +635,7 @@ var Select = function (_Component) {
 
       input.style.height = Math.max(this.refs.tags.clientHeight + 6, this.size === 'small' ? 28 : 36) + 'px';
 
-      // this.broadcast('select-dropdown', 'updatePopper');
+      this.popperJS.update();
     }
   }, {
     key: 'resetHoverIndex',

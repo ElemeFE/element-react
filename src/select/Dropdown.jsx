@@ -1,6 +1,8 @@
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
+import './style.scss';
+
 export default class Dropdown extends Component {
   componentDidMount() {
     // this.referenceElm = this.$parent.$refs.reference.$el;
@@ -26,8 +28,7 @@ export default class Dropdown extends Component {
       <div ref="popper" className={this.className('el-select-dropdown', {
           'is-multiple': this.parent().props.multiple
       })} style={this.style({
-        width: '100%',
-        // minWidth: parent.state.inputWidth
+        minWidth: this.parent().state.inputWidth,
       })}>
         {this.props.children}
       </div>
