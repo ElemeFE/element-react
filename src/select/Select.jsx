@@ -12,6 +12,12 @@ import i18n from '../locale';
 
 import Dropdown from './Dropdown';
 
+const sizeMap = {
+  'large': 42,
+  'small': 30,
+  'mini': 22
+};
+
 class Select extends Component {
   constructor(props) {
     super(props);
@@ -134,17 +140,7 @@ class Select extends Component {
     this.input = ReactDOM.findDOMNode(this.refs.input);
     this.root = ReactDOM.findDOMNode(this);
 
-    this.popperJS = new Popper(this.reference, this.popper, {
-      // modifiersIgnored: ['applyStyle']
-    }).onCreate(() => {
-      // this.popperJS.modifiers.applyStyle = data => {
-      //   data.offsets.popper.position = 'absolute';
-      //
-      //   return data;
-      // }
-    }).onUpdate(data => {
-
-    });
+    this.popperJS = new Popper(this.reference, this.popper);
   }
 
   debounce() {
@@ -303,7 +299,9 @@ class Select extends Component {
         this.refs.input.focus();
       }
 
-      this.setState({ valueChangeBySelected, query, hoverIndex, inputLength });
+      this.setState({ valueChangeBySelected, query, hoverIndex, inputLength }, () => {
+        this.refs.input.value = '';
+      });
     } else {
       if (selectedInit) {
         return this.setState({
@@ -485,7 +483,7 @@ class Select extends Component {
     let inputChildNodes = this.reference.childNodes;
     let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0];
 
-    input.style.height = Math.max(this.refs.tags.clientHeight + 6, this.size === 'small' ? 28 : 36) + 'px';
+    input.style.height = Math.max(this.refs.tags.clientHeight + 6, sizeMap[this.props.size] || 36) + 'px';
 
     this.popperJS.update();
   }
@@ -617,7 +615,6 @@ class Select extends Component {
   }
 
   deleteTag(tag) {
-    // let { selected } = this.state;
     let selected = this.state.selected.slice(0);
     let index = selected.indexOf(tag);
 
@@ -655,8 +652,10 @@ class Select extends Component {
     }
 
     this.setState(this.state, () => {
-      this.state.options.forEach(option => {
-        option.resetIndex();
+      this.state.options.forEach(el => {
+        if (el != option) {
+          el.resetIndex();
+        }
       });
     });
   }
@@ -744,18 +743,28 @@ class Select extends Component {
                     type="text"
                     className="el-select__input"
                     style={{ width: inputLength, maxWidth: inputWidth - 42 }}
-                    value={query}
+                    defaultValue={query}
+                    onKeyUp={this.managePlaceholder.bind(this)}
+                    onChange={e => {
+                      clearTimeout(this.timeout);
+
+                      this.timeout = setTimeout(() => {
+                        this.setState({
+                          query: this.state.value
+                        });
+                      }, this.debounce());
+
+                      this.state.value = e.target.value;
+                    }}
                     onKeyDown={e => {
-                      // this.resetInputState();
-                      // onChange={this.debouncedOnInputChange}
-                      // onKeyUp={this.managePlaceholder.bind(this)}
+                      this.resetInputState(e);
 
                       switch (e.keyCode) {
                         case 27:
                           this.setState({ visible: false }); e.preventDefault();
                           break;
                         case 8:
-                          this.deletePrevTag();
+                          this.deletePrevTag(e);
                           break;
                         case 13:
                           this.selectOption(); e.preventDefault();

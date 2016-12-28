@@ -10,11 +10,11 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _libs = require('../../libs');
-
 var _style = require('../../libs/utils/style');
 
 var _style2 = _interopRequireDefault(_style);
+
+var _libs = require('../../libs');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
