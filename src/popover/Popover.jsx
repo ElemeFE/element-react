@@ -94,7 +94,7 @@ export default class Popover extends Component {
 
     return (
       <span>
-        <Transition name={transition}>
+        <Transition name={transition} duration={200}>
           <View show={this.state.showPopper}>
             <div ref="popper" className={this.className('el-popover', popperClass)} style={this.style({ width: Number(width) })}>
               { title && <div className="el-popover__title">{title}</div> }
