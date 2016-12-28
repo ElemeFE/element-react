@@ -58,7 +58,7 @@ export default class Notification extends Component {
   render() {
     return (
       <Transition name="el-notification-fade" duration="300">
-        <View key={Math.random()} show={this.state.visible}>
+        <View key={this.state.visible} show={this.state.visible}>
           <div className="el-notification" style={{
               top: this.props.top,
               zIndex: 9999

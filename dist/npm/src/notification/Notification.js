@@ -97,7 +97,7 @@ var Notification = function (_Component) {
         { name: 'el-notification-fade', duration: '300' },
         _react2.default.createElement(
           _libs.View,
-          { key: Math.random(), show: this.state.visible },
+          { key: this.state.visible, show: this.state.visible },
           _react2.default.createElement(
             'div',
             { className: 'el-notification', style: {

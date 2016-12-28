@@ -1,8 +1,8 @@
 import React from 'react';
+import StyleSheet from '../../libs/utils/style';
 import { Component, PropTypes } from '../../libs';
-import style from '../../libs/utils/style';
 
-style.reset(`
+StyleSheet.reset(`
   .el-select-dropdown {
     position: absolute !important;
   }
