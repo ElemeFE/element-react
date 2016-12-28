@@ -28,6 +28,8 @@ var Tag = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Tag.__proto__ || Object.getPrototypeOf(Tag)).call(this, props));
 
+    _this.duration = 200;
+
     _this.state = {
       visible: true
     };
@@ -42,9 +44,11 @@ var Tag = function (_Component) {
       this.setState({
         visible: false
       }, function () {
-        if (_this2.props.onClose) {
-          _this2.props.onClose();
-        }
+        setTimeout(function () {
+          if (_this2.props.onClose) {
+            _this2.props.onClose();
+          }
+        }, _this2.duration);
       });
     }
   }, {
@@ -59,10 +63,10 @@ var Tag = function (_Component) {
 
       return _react2.default.createElement(
         _libs.Transition,
-        { name: closeTransition ? '' : 'md-fade-center', duration: '200' },
+        { name: closeTransition ? '' : 'el-zoom-in-center', duration: this.duration },
         _react2.default.createElement(
           _libs.View,
-          { key: 'el-tag', show: this.state.visible },
+          { key: this.state.visible, show: this.state.visible },
           _react2.default.createElement(
             'span',
             { style: this.style(), className: this.className('el-tag', type && 'el-tag--' + type, {

@@ -153,7 +153,7 @@ var Popover = function (_Component) {
         null,
         _react2.default.createElement(
           _libs.Transition,
-          { name: transition },
+          { name: transition, duration: 200 },
           _react2.default.createElement(
             _libs.View,
             { show: this.state.showPopper },
