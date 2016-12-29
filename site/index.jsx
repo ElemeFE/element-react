@@ -2,6 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
+import 'core-js';
+
 /* eslint-disable */
 import 'element-theme-default';
 /* eslint-enable */
