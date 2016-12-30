@@ -430,7 +430,6 @@ DatePanel.propTypes = {
   showTime: PropTypes.bool,
   showWeekNumber: PropTypes.bool,
   format: PropTypes.string,
-  // todo: constrait onClick method ? change to type: ()=>() ?
   // Array[{text: String, onClick: (picker)=>()}]
   shortcuts: PropTypes.arrayOf(
     React.PropTypes.shape({

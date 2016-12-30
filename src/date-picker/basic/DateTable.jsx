@@ -210,6 +210,7 @@ export default class DateTable extends Component {
 
   isWeekActive(cell) {
     if (this.props.selectionMode !== SELECTION_MODES.WEEK) return false;
+    if (!this.props.value) return false;
 
     const newDate = new Date(this.props.date.getTime())// date view
     const year = newDate.getFullYear();
@@ -360,7 +361,6 @@ export default class DateTable extends Component {
   render() {
     const $t = Locale.t
     const {selectionMode, showWeekNumber} = this.props
-    const {value} = this.state
 
     return (
       <table
@@ -386,7 +386,7 @@ export default class DateTable extends Component {
               return (
                 <tr
                   key={idx}
-                  className={this.classNames('el-date-table__row', { current: value && row.isWeekActive })}>
+                  className={this.classNames('el-date-table__row', { 'current': row.isWeekActive })}>
                   {
                     row.map((cell, idx) => (
                       <td className={this.getCellClasses(cell)} key={idx}>
