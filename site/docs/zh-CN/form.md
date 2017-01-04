@@ -31,11 +31,17 @@ onSubmit(e) {
   console.log('submit!');
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form model={this.state.form} labelWidth="80" onSubmit={this.onSubmit.bind(this)}>
       <Form.Item label="活动名称">
-        <Input value={this.state.form.name}></Input>
+        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
       </Form.Item>
       <Form.Item label="活动区域">
         <Select value={this.state.form.region} placeholder="请选择活动区域">
@@ -45,18 +51,31 @@ render() {
       </Form.Item>
       <Form.Item label="活动时间">
         <Layout.Col span="11">
-
+          <Form.Item prop="date1">
+            <DatePicker
+              value={this.state.form.date1}
+              placeholder="选择日期"
+              onChange={this.onChange.bind(this, 'date1')}
+            />
+          </Form.Item>
         </Layout.Col>
         <Layout.Col className="line" span="2">-</Layout.Col>
         <Layout.Col span="11">
-
+          <Form.Item prop="date2">
+            <TimePicker
+              value={this.state.form.date2}
+              selectableRange="18:30:00 - 20:30:00"
+              placeholder="选择时间"
+              onChange={this.onChange.bind(this, 'date2')}
+            />
+          </Form.Item>
         </Layout.Col>
       </Form.Item>
       <Form.Item label="即时配送">
         <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
       </Form.Item>
       <Form.Item label="活动性质">
-        <Checkbox.Group value={this.state.form.type}>
+        <Checkbox.Group value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}>
           <Checkbox label="美食/餐厅线上活动" name="type"></Checkbox>
           <Checkbox label="地推活动" name="type"></Checkbox>
           <Checkbox label="线下主题活动" name="type"></Checkbox>
@@ -70,7 +89,7 @@ render() {
         </Radio.Group>
       </Form.Item>
       <Form.Item label="活动形式">
-        <Input type="textarea" value={this.state.form.desc}></Input>
+        <Input type="textarea" value={this.state.form.desc} onChange={this.onChange.bind(this, 'desc')}></Input>
       </Form.Item>
       <Form.Item>
         <Button type="primary" nativeType="submit">立即创建</Button>
@@ -105,11 +124,17 @@ onSubmit(e) {
   console.log('submit!');
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form inline={true} model={this.state.form} onSubmit={this.onSubmit.bind(this)} className="demo-form-inline">
       <Form.Item>
-        <Input value={this.state.form.user} placeholder="审批人"></Input>
+        <Input value={this.state.form.user} placeholder="审批人" onChange={this.onChange.bind(this, 'user')}></Input>
       </Form.Item>
       <Form.Item>
         <Select value={this.state.form.region} placeholder="活动区域">
@@ -146,17 +171,23 @@ constructor(props) {
   };
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form labelPosition="top" model={this.state.form} className="demo-form-stacked">
       <Form.Item label="名称">
-        <Input value={this.state.form.name}></Input>
+        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
       </Form.Item>
       <Form.Item label="活动区域">
-        <Input value={this.state.form.region}></Input>
+        <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')}></Input>
       </Form.Item>
       <Form.Item label="活动展开形式">
-        <Input value={this.state.form.type}></Input>
+        <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}></Input>
       </Form.Item>
     </Form>
   )
@@ -180,17 +211,23 @@ constructor(props) {
   };
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form model={this.state.form} labelWidth="80">
-      <Form.Item label="活动名称">
-        <Input value={this.state.form.name}></Input>
+      <Form.Item label="名称">
+        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
       </Form.Item>
-      <Form.Item label="推广地">
-        <Input value={this.state.form.region}></Input>
+      <Form.Item label="活动区域">
+        <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')}></Input>
       </Form.Item>
       <Form.Item label="活动形式">
-        <Input value={this.state.form.type}></Input>
+        <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}></Input>
       </Form.Item>
     </Form>
   )
@@ -220,17 +257,23 @@ onSubmit(e) {
   console.log('submit!');
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form model={this.state.form} labelPosition="left" onSubmit={this.onSubmit.bind(this)} labelWidth="80">
-      <Form.Item label="活动名称">
-        <Input value={this.state.form.name}></Input>
+      <Form.Item label="名称">
+        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
       </Form.Item>
-      <Form.Item label="推广地">
-        <Input value={this.state.form.region}></Input>
+      <Form.Item label="活动区域">
+        <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')}></Input>
       </Form.Item>
       <Form.Item label="活动形式">
-        <Input value={this.state.form.type}></Input>
+        <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}></Input>
       </Form.Item>
     </Form>
   )
@@ -303,14 +346,20 @@ handleReset(e) {
   this.refs.form.resetFields();
 }
 
+onChange(key, e) {
+  // this.setState({
+  //   form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  // });
+}
+
 render() {
   return (
     <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
       <Form.Item label="活动名称" prop="name">
-        <Input value={this.state.form.name}></Input>
+        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
       </Form.Item>
       <Form.Item label="活动区域" prop="region">
-        <Select value={this.state.form.region} placeholder="请选择活动区域">
+        <Select value={this.state.form.region} placeholder="请选择活动区域" onChange={this.onChange.bind(this, 'region')}>
           <Select.Option label="区域一" value="shanghai"></Select.Option>
           <Select.Option label="区域二" value="beijing"></Select.Option>
         </Select>
@@ -318,21 +367,34 @@ render() {
       <Form.Item label="活动时间" required={true}>
         <Layout.Col span="11">
           <Form.Item prop="date1">
-
+            <Form.Item>
+              <DatePicker
+                value={this.state.form.date1}
+                placeholder="选择日期"
+                onChange={this.onChange.bind(this, 'date1')}
+              />
+            </Form.Item>
           </Form.Item>
         </Layout.Col>
         <Layout.Col className="line" span="2">-</Layout.Col>
         <Layout.Col span="11">
           <Form.Item prop="date2">
-
+            <Form.Item>
+              <TimePicker
+                value={this.state.form.date2}
+                selectableRange="18:30:00 - 20:30:00"
+                placeholder="选择时间"
+                onChange={this.onChange.bind(this, 'date2')}
+              />
+            </Form.Item>
           </Form.Item>
         </Layout.Col>
       </Form.Item>
       <Form.Item label="即时配送">
-        <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
+        <Switch onText="" offText="" value={this.state.form.delivery} onChange={this.onChange.bind(this, 'delivery')}></Switch>
       </Form.Item>
       <Form.Item label="活动性质" prop="type">
-        <Checkbox.Group value={this.state.form.type}>
+        <Checkbox.Group value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}>
           <Checkbox label="美食/餐厅线上活动" name="type"></Checkbox>
           <Checkbox label="地推活动" name="type"></Checkbox>
           <Checkbox label="线下主题活动" name="type"></Checkbox>
@@ -340,13 +402,13 @@ render() {
         </Checkbox.Group>
       </Form.Item>
       <Form.Item label="特殊资源" prop="resource">
-        <Radio.Group value={this.state.form.resource}>
+        <Radio.Group value={this.state.form.resource} onChange={this.onChange.bind(this, 'resource')}>
           <Radio value="线上品牌商赞助"></Radio>
           <Radio value="线下场地免费"></Radio>
         </Radio.Group>
       </Form.Item>
       <Form.Item label="活动形式" prop="desc">
-        <Input type="textarea" value={this.state.form.desc}></Input>
+        <Input type="textarea" value={this.state.form.desc} onChange={this.onChange.bind(this, 'desc')}></Input>
       </Form.Item>
       <Form.Item>
         <Button type="primary" onClick={this.handleSubmit.bind(this)}>立即创建</Button>
