@@ -159,7 +159,6 @@ body {
 
 .content {
   flex: 1;
-  overflow: hidden;
 
   h2 {
     font-size: 28px;
@@ -215,7 +214,7 @@ body {
 }
 
 .side-nav {
-  width: 240px;
+  min-width: 240px;
 
   li {
     list-style: none;
