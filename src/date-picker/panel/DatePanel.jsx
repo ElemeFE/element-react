@@ -275,7 +275,7 @@ export default class DatePanel extends Component {
   }
 
   render() {
-    const {showTime, shortcuts, sidebar} = this.props
+    const {showTime, shortcuts} = this.props
     const {currentView, date} = this.state
     const {month} = deconstructDate(date)
     const t = Locale.t
@@ -285,13 +285,11 @@ export default class DatePanel extends Component {
       <div
         ref="root"
         className={this.classNames('el-picker-panel el-date-picker', {
-          'has-sidebar': !!sidebar || shortcuts,
+          'has-sidebar': shortcuts,
           'has-time': showTime
         })}>
 
         <div className="el-picker-panel__body-wrapper">
-          {/* this slot is presented in vue element src code, but not used anywhere.*/}
-          {/*<slot name="sidebar" className="el-picker-panel__sidebar"></slot>*/}
           {
             Array.isArray(shortcuts) && (
               <div className="el-picker-panel__sidebar">
@@ -437,7 +435,6 @@ DatePanel.propTypes = {
       // ()=>()
       onClick: PropTypes.func.isRequired
     })
-
   ),
   selectionMode: PropTypes.oneOf(Object.keys(SELECTION_MODES).map(e => SELECTION_MODES[e])),
   // (Date)=>bool, if true, disabled
