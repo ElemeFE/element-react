@@ -61,7 +61,7 @@ var Alert = function (_Component) {
         { name: 'el-alert-fade', duration: '200' },
         _react2.default.createElement(
           _libs.View,
-          { key: Math.random(), show: this.state.visible },
+          { key: this.state.visible, show: this.state.visible },
           _react2.default.createElement(
             'div',
             { style: this.style(), className: this.className('el-alert', 'el-alert--' + this.props.type) },

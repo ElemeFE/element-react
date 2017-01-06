@@ -6,7 +6,7 @@ export default class Card extends Markdown {
   document(locale) {
     switch (locale) {
       default:
-        return require('../../docs/zh-CN/alert.md');
+        return require('../../docs/zh-CN/card.md');
     }
   }
 }

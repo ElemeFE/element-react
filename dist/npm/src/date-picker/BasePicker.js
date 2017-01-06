@@ -139,8 +139,7 @@ var BasePicker = function (_Component) {
 
       var tdate = date;
       var formatter = (_constants.TYPE_VALUE_RESOLVER_MAP[this.type] || _constants.TYPE_VALUE_RESOLVER_MAP['default']).formatter;
-      var format = _constants.DEFAULT_FORMATS[this.type];
-      var result = formatter(tdate, this.props.format || format);
+      var result = formatter(tdate, this.getFormat());
 
       return result;
     }
@@ -153,7 +152,12 @@ var BasePicker = function (_Component) {
       if (!dateStr) return null;
       var type = this.type;
       var parser = (_constants.TYPE_VALUE_RESOLVER_MAP[type] || _constants.TYPE_VALUE_RESOLVER_MAP['default']).parser;
-      return parser(dateStr, this.props.format || _constants.DEFAULT_FORMATS[type]);
+      return parser(dateStr, this.getFormat());
+    }
+  }, {
+    key: 'getFormat',
+    value: function getFormat() {
+      return this.props.format || _constants.DEFAULT_FORMATS[this.type];
     }
   }, {
     key: 'propsToState',
@@ -166,6 +170,11 @@ var BasePicker = function (_Component) {
         state.text = '';
         state.value = null;
       }
+
+      if (state.value == null) {
+        state.value = new Date();
+      }
+
       return state;
     }
   }, {

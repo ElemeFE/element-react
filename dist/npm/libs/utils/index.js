@@ -8,6 +8,7 @@ exports.watchPropertyChange = watchPropertyChange;
 exports.createPropType = createPropType;
 exports.hashCode = hashCode;
 exports.debounce = debounce;
+exports.pick = pick;
 
 var _date = require('./date');
 
@@ -141,6 +142,16 @@ function debounce(func, delayms) {
   };
 }
 
+function pick(obj, keys) {
+  (0, _assert.require_condition)(obj != null && Array.isArray(keys));
+
+  var r = {};
+  keys.forEach(function (e) {
+    return r[e] = obj[e];
+  });
+  return r;
+}
+
 ;
 
 var _temp = function () {
@@ -155,6 +166,8 @@ var _temp = function () {
   __REACT_HOT_LOADER__.register(hashCode, 'hashCode', 'libs/utils/index.js');
 
   __REACT_HOT_LOADER__.register(debounce, 'debounce', 'libs/utils/index.js');
+
+  __REACT_HOT_LOADER__.register(pick, 'pick', 'libs/utils/index.js');
 }();
 
 ;

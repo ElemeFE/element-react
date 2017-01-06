@@ -31,6 +31,15 @@ Object.defineProperty(exports, 'TimeRangePicker', {
   }
 });
 
+var _DatePicker = require('./DatePicker');
+
+Object.defineProperty(exports, 'DatePicker', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_DatePicker).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 ;

@@ -3,7 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.limitRange = exports.getRangeHours = exports.nextMonth = exports.prevMonth = exports.getWeekNumber = exports.getStartDateOfMonth = exports.DAY_DURATION = exports.getFirstDayOfMonth = exports.getDayCountOfMonth = exports.parseDate = exports.formatDate = exports.toDate = undefined;
+exports.SELECTION_MODES = exports.limitRange = exports.getRangeHours = exports.nextMonth = exports.prevMonth = exports.getWeekNumber = exports.getStartDateOfMonth = exports.DAY_DURATION = exports.getFirstDayOfMonth = exports.getDayCountOfMonth = exports.parseDate = exports.formatDate = exports.toDate = undefined;
+exports.getDateOfISOWeek = getDateOfISOWeek;
+exports.hasClass = hasClass;
+exports.deconstructDate = deconstructDate;
 
 var _utils = require('../../../libs/utils');
 
@@ -78,6 +81,15 @@ var getWeekNumber = exports.getWeekNumber = function getWeekNumber(src) {
   // Adjust to Thursday in week 1 and count number of weeks from date to week 1.
   return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
 };
+
+// http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-number
+function getDateOfISOWeek(w, y) {
+  var simple = new Date(y, 0, 1 + (w - 1) * 7);
+  var dow = simple.getDay();
+  var ISOweekStart = simple;
+  if (dow <= 4) ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);else ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+  return ISOweekStart;
+}
 
 var prevMonth = exports.prevMonth = function prevMonth(src) {
   var year = src.getFullYear();
@@ -166,6 +178,26 @@ var limitRange = exports.limitRange = function limitRange(date, ranges) {
 
   return date < minDate ? minDate : maxDate;
 };
+
+function hasClass(target, classname) {
+  return target.classList.contains(classname);
+}
+
+var SELECTION_MODES = exports.SELECTION_MODES = {
+  YEAR: 'year',
+  MONTH: 'month',
+  WEEK: 'week',
+  DAY: 'day',
+  RANGE: 'range'
+};
+
+function deconstructDate(date) {
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth(),
+    week: getWeekNumber(date)
+  };
+}
 ;
 
 var _temp = function () {
@@ -191,6 +223,8 @@ var _temp = function () {
 
   __REACT_HOT_LOADER__.register(getWeekNumber, 'getWeekNumber', 'src/date-picker/utils/index.js');
 
+  __REACT_HOT_LOADER__.register(getDateOfISOWeek, 'getDateOfISOWeek', 'src/date-picker/utils/index.js');
+
   __REACT_HOT_LOADER__.register(prevMonth, 'prevMonth', 'src/date-picker/utils/index.js');
 
   __REACT_HOT_LOADER__.register(nextMonth, 'nextMonth', 'src/date-picker/utils/index.js');
@@ -198,6 +232,12 @@ var _temp = function () {
   __REACT_HOT_LOADER__.register(getRangeHours, 'getRangeHours', 'src/date-picker/utils/index.js');
 
   __REACT_HOT_LOADER__.register(limitRange, 'limitRange', 'src/date-picker/utils/index.js');
+
+  __REACT_HOT_LOADER__.register(hasClass, 'hasClass', 'src/date-picker/utils/index.js');
+
+  __REACT_HOT_LOADER__.register(SELECTION_MODES, 'SELECTION_MODES', 'src/date-picker/utils/index.js');
+
+  __REACT_HOT_LOADER__.register(deconstructDate, 'deconstructDate', 'src/date-picker/utils/index.js');
 }();
 
 ;

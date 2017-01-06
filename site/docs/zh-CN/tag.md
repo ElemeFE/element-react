@@ -1,10 +1,10 @@
-Tag 标签
+## Tag 标签
 
 用于标记和选择。
 
-基础用法
+### 基础用法
 
-:::demo 由type属性来定义，该属性可选填。
+:::demo 由`type`属性来选择tag的类型，也可以通过`color`属性来自定义背景色。
 
 ```js
 render() {
@@ -22,9 +22,9 @@ render() {
 ```
 :::
 
-可移除标签
+### 可移除标签
 
-:::demo 设置closable属性来定义一个可移除的标签，接受一个Boolean，设置为true即可。默认的标签移除时会附带渐变动画，如果不想使用，可以设置close-transition属性，它接受一个Boolean，true 为关闭。设置close事件可以处理关闭后的回调函数。
+:::demo 设置`closable`属性来定义一个可移除的标签，接受一个`Boolean`，设置为`true`即可。默认的标签移除时会附带渐变动画，如果不想使用，可以设置`close-transition`属性，它接受一个`Boolean`，true 为关闭。设置`close`事件可以处理关闭后的回调函数。
 
 ```js
 constructor(props) {
@@ -76,11 +76,11 @@ render() {
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | type | 主题 | string | 'primary', 'gray', 'success', 'warning', 'danger' | — |
 | closable | 是否可关闭 | boolean | — | false |
-| close-transition | 是否禁用关闭时的渐变动画 | boolean | — | false |
+| closeTransition | 是否禁用关闭时的渐变动画 | boolean | — | false |
 | hit | 是否有边框描边 | boolean | — | false |
 
 
 ### Events
 | 事件名称 | 说明 | 回调参数 |
 |---------- |-------- |---------- |
-| close | 关闭tag时触发的事件 | — |
+| onClose | 关闭tag时触发的事件 | — |
