@@ -140,27 +140,97 @@ render() {
 :::
 
 
+###  选择日期范围
 
-### Attributes
+可在一个选择器中便捷地选择一个时间范围
+
+:::demo
+```js
+constructor(props) {
+  super(props)
+  this.state = {}
+}
+
+render() {
+  const {value1, value2} = this.state
+
+  return (
+    <div className="source">
+      <div className="block">
+        <span className="demonstration">默认</span>
+        <DateRangePicker
+          value={value1}
+          placeholder="选择日期范围"
+          onChange={date=>{
+            console.debug('DateRangePicker1 changed: ', date)
+            this.setState({value1: date})
+          }}
+          />
+      </div>
+      <div className="block">
+        <span className="demonstration">带快捷选项</span>
+        <DateRangePicker
+          value={value2}
+          placeholder="选择日期范围"
+          align="right"
+          ref={e=>this.daterangepicker2 = e}
+          onChange={date=>{
+            console.debug('DateRangePicker2 changed: ', date)
+            this.setState({value2: date})
+          }}
+          shortcuts={[{
+            text: '最近一周',
+            onClick: ()=> {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+
+              this.setState({value2: [start, end]})
+              this.daterangepicker2.togglePickerVisible()
+            }
+          }, {
+            text: '最近一个月',
+            onClick: ()=> {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+
+              this.setState({value2: [start, end]})
+              this.daterangepicker2.togglePickerVisible()
+            }
+          }, {
+            text: '最近三个月',
+            onClick: ()=> {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              this.setState({value2: [start, end]})
+              this.daterangepicker2.togglePickerVisible()
+            }
+          }]}
+          />
+      </div>
+    </div>
+  )
+}
+
+```
+:::
+
+
+### DateRangePanel
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| readonly | 完全只读 | boolean | — | false |
-| disabled | 禁用 | boolean | - | false |
-| editable | 文本框可输入 | boolean | - | true |
-| placeholder | 占位内容 | string | — | — |
-| type | 显示类型 | string | year/month/date/week/<br>datetime/datetimerange/daterange | date |
-| format | 时间日期格式化 | string | 年 `yyyy`，月 `MM`，日 `dd`，<br>小时 `HH`，分 `mm`，秒 `ss` | yyyy-MM-dd |
-| align | 对齐方式 | string | left, center, right | left |
-|picker-options | 当前时间日期选择器特有的选项<br>参考下表 | object |  — | {} |
+| value | - | Date[]/null | — | false |
+| shortcuts | 快捷选项 | {text: string, onClick: ()=>() } | - | false |
+| showWeekNumber | 是否展示周数 | boolean | - | false |
 
-### Picker Options
+
+### DatePicker
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| shortcuts | 设置快捷选项，需要传入 { text, onClick } 对象<br>用法参考 demo 或下表 | Object[] | - | - |
-| disabledDate | 设置禁用状态，参数为当前日期，要求返回 Boolean | Function | - | - |
-
-### Shortcuts
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
-|---------- |-------------- |---------- |--------------------------------  |-------- |
-| text | 标题文本 | string | — | — |
-| onClick | 选中后的回调函数，参数是 vm，可通过触发 'pick' 事件设置<br>选择器的值。例如 vm.$emit('pick', new Date()) | function | — | — |
+| value | - | Date/null | — | false |
+| shortcuts | 快捷选项 | {text: string, onClick: ()=>() } | - | false |
+| selectionMode | 日期类型 | string, one of ['year', 'month', 'week', 'day'] | - | 'day' |
+| disabledDate | 是否禁用日期 | (Date)=>boolean | - | - |
+| showWeekNumber | 是否展示周数 | boolean | - | false |

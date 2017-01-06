@@ -95,7 +95,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
         }
       }
 
-      let date = DATE_PARSER(text)
+      let date = DATE_PARSER(text, format)
       let matcher = format.match(/(WW?)/)
       let wn = null
 
