@@ -140,7 +140,7 @@ class Select extends Component {
     this.input = ReactDOM.findDOMNode(this.refs.input);
     this.root = ReactDOM.findDOMNode(this);
 
-    this.popperJS = new Popper(this.reference, this.popper);
+    this.popperJS = this.popperJS || new Popper(this.reference, this.popper);
   }
 
   debounce() {

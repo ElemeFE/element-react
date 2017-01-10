@@ -111,7 +111,7 @@ var BasePicker = function (_Component) {
      * onPicked should only be called from picker pannel instance
      * and should never return a null date instance
      * 
-     * @param value: Date|Date[]
+     * @param value: Date|Date[]|null
      * @param isKeepPannel: boolean = false
      */
 

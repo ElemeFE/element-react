@@ -201,7 +201,7 @@ var Select = function (_Component) {
       this.input = _reactDom2.default.findDOMNode(this.refs.input);
       this.root = _reactDom2.default.findDOMNode(this);
 
-      this.popperJS = new _popper2.default(this.reference, this.popper);
+      this.popperJS = this.popperJS || new _popper2.default(this.reference, this.popper);
     }
   }, {
     key: 'debounce',
