@@ -97,7 +97,7 @@ var TYPE_VALUE_RESOLVER_MAP = exports.TYPE_VALUE_RESOLVER_MAP = {
         }
       };
 
-      var date = DATE_PARSER(text);
+      var date = DATE_PARSER(text, format);
       var matcher = format.match(/(WW?)/);
       var wn = null;
 
