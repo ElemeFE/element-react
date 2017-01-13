@@ -11,10 +11,10 @@
 render() {
   return (
     <Tabs activeName="1" onTabClick={ (tab) => console.log(tab.props.name) }>
-      <Tabs.Pane label="用户管理" name="1" />
-      <Tabs.Pane label="配置管理" name="2" />
-      <Tabs.Pane label="角色管理" name="3" />
-      <Tabs.Pane label="定时补偿任务" name="4" />
+      <Tabs.Pane label="用户管理" name="1">用户管理</Tabs.Pane>
+      <Tabs.Pane label="配置管理" name="2">配置管理</Tabs.Pane>
+      <Tabs.Pane label="角色管理" name="3">角色管理</Tabs.Pane>
+      <Tabs.Pane label="定时补偿任务" name="4">定时补偿任务</Tabs.Pane>
     </Tabs>
   )
 }
@@ -30,10 +30,10 @@ render() {
 render() {
   return (
     <Tabs type="card" activeName="1">
-      <Tabs.Pane label="用户管理" name="1" />
-      <Tabs.Pane label="配置管理" name="2" />
-      <Tabs.Pane label="角色管理" name="3" />
-      <Tabs.Pane label="定时补偿任务" name="4" />
+      <Tabs.Pane label="用户管理" name="1">用户管理</Tabs.Pane>
+      <Tabs.Pane label="配置管理" name="2">配置管理</Tabs.Pane>
+      <Tabs.Pane label="角色管理" name="3">角色管理</Tabs.Pane>
+      <Tabs.Pane label="定时补偿任务" name="4">定时补偿任务</Tabs.Pane>
     </Tabs>
   )
 }
@@ -49,10 +49,10 @@ render() {
 render() {
   return (
     <Tabs type="card" closable activeName="1" onTabRemove={ (tab) => console.log(tab.props.name) }>
-      <Tabs.Pane label="用户管理" name="1" />
-      <Tabs.Pane label="配置管理" name="2" />
-      <Tabs.Pane label="角色管理" name="3" />
-      <Tabs.Pane label="定时补偿任务" name="4" />
+      <Tabs.Pane label="用户管理" name="1">用户管理</Tabs.Pane>
+      <Tabs.Pane label="配置管理" name="2">配置管理</Tabs.Pane>
+      <Tabs.Pane label="角色管理" name="3">角色管理</Tabs.Pane>
+      <Tabs.Pane label="定时补偿任务" name="4">定时补偿任务</Tabs.Pane>
     </Tabs>
   )
 }
@@ -68,10 +68,10 @@ render() {
 render() {
   return (
     <Tabs type="border-card" activeName="1">
-      <Tabs.Pane label="用户管理" name="1" />
-      <Tabs.Pane label="配置管理" name="2" />
-      <Tabs.Pane label="角色管理" name="3" />
-      <Tabs.Pane label="定时补偿任务" name="4" />
+      <Tabs.Pane label="用户管理" name="1">用户管理</Tabs.Pane>
+      <Tabs.Pane label="配置管理" name="2">配置管理</Tabs.Pane>
+      <Tabs.Pane label="角色管理" name="3">角色管理</Tabs.Pane>
+      <Tabs.Pane label="定时补偿任务" name="4">定时补偿任务</Tabs.Pane>
     </Tabs>
   )
 }

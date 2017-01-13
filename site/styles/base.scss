@@ -105,7 +105,6 @@ body {
   }
 
   .main {
-    overflow: hidden;
     padding-top: 60px;
     padding-bottom: 95px;
   }
@@ -158,7 +157,8 @@ body {
 }
 
 .content {
-  float: left;
+  display: inline-block;
+  vertical-align: top;
   width: 75%;
 
   h2 {
@@ -215,7 +215,8 @@ body {
 }
 
 .side-nav {
-  float: left;
+  display: inline-block;
+  vertical-align: top;
   width: 25%;
 
   li {
