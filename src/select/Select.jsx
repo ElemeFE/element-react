@@ -58,34 +58,26 @@ class Select extends Component {
   }
 
   componentDidMount() {
-    const { remote, multiple } = this.props;
-    const { value, options, selected } = this.state;
-
     this.findDOMNodes();
+    this.handleValueChange();
 
-    if (remote && multiple && Array.isArray(value)) {
+    addResizeListener(this.refs.root, this.resetInputWidth.bind(this));
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.placeholder != this.props.placeholder) {
       this.setState({
-        selected: options.reduce((prev, curr) => {
-          return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
-        }, [])
-      }, () => {
-        this.resetInputHeight();
+        currentPlaceholder: props.placeholder
       });
-    } else {
-      const selected = options.filter(option => {
-         return option.props.value === value
-       })[0];
-
-       if (selected) {
-         this.state.selectedLabel = selected.props.label;
-       }
     }
 
-    if (selected) {
-      this.onSelectedChange(selected);
+    if (props.value != this.props.value) {
+      this.setState({
+        value: props.value
+      }, () => {
+        this.handleValueChange();
+      });
     }
-
-    addResizeListener(this.root, this.resetInputWidth.bind(this));
   }
 
   componentWillUpdate(props, state) {
@@ -120,25 +112,15 @@ class Select extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    if (props.placeholder != this.props.placeholder) {
-      this.setState({
-        currentPlaceholder: props.placeholder
-      });
-    }
-  }
-
   componentWillUnMount() {
     if (this.resetInputWidth()){
-      removeResizeListener(this.root, this.resetInputWidth.bind(this));
+      removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
     }
   }
 
   findDOMNodes() {
     this.reference = ReactDOM.findDOMNode(this.refs.reference);
     this.popper = ReactDOM.findDOMNode(this.refs.popper);
-    this.input = ReactDOM.findDOMNode(this.refs.input);
-    this.root = ReactDOM.findDOMNode(this);
 
     this.popperJS = this.popperJS || new Popper(this.reference, this.popper);
   }
@@ -151,6 +133,33 @@ class Select extends Component {
     this.setState({ visible: false });
   }
 
+  handleValueChange() {
+    const { remote, multiple } = this.props;
+    const { value, options, selected } = this.state;
+
+    if (remote && multiple && Array.isArray(value)) {
+      this.setState({
+        selected: options.reduce((prev, curr) => {
+          return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
+        }, [])
+      }, () => {
+        this.resetInputHeight();
+      });
+    } else {
+      const selected = options.filter(option => {
+         return option.props.value === value
+       })[0];
+
+       if (selected) {
+         this.state.selectedLabel = selected.props.label;
+       }
+    }
+
+    if (selected) {
+      this.onSelectedChange(selected);
+    }
+  }
+
   onVisibleChange(visible) {
     const { multiple, filterable } = this.props;
     let { query, dropdownUl, selected, selectedLabel, bottomOverflowBeforeHidden } = this.state;
@@ -158,8 +167,8 @@ class Select extends Component {
     if (!visible) {
       this.reference.querySelector('input').blur();
 
-      if (this.root.querySelector('.el-input__icon')) {
-        const elements = this.root.querySelector('.el-input__icon');
+      if (this.refs.root.querySelector('.el-input__icon')) {
+        const elements = this.refs.root.querySelector('.el-input__icon');
 
         for (let i = 0; i < elements.length; i++) {
           elements[i].classList.remove('is-reverse');
@@ -169,7 +178,7 @@ class Select extends Component {
       // this.broadcast('select-dropdown', 'destroyPopper');
 
       if (this.refs.input) {
-        this.input.blur();
+        this.refs.input.blur();
       }
 
       this.resetHoverIndex();
@@ -186,10 +195,10 @@ class Select extends Component {
         this.setState({ bottomOverflowBeforeHidden, selectedLabel });
       }
     } else {
-      let icon = this.root.querySelector('.el-input__icon');
+      let icon = this.refs.root.querySelector('.el-input__icon');
 
       if (icon && !icon.classList.contains('el-icon-circle-close')) {
-        const elements = this.root.querySelector('.el-input__icon');
+        const elements = this.refs.root.querySelector('.el-input__icon');
 
         for (let i = 0; i < elements.length; i++) {
           elements[i].classList.add('is-reverse');
@@ -202,7 +211,7 @@ class Select extends Component {
         query = selectedLabel;
 
         if (multiple) {
-          this.input.focus();
+          this.refs.input.focus();
         } else {
           // this.broadcast('input', 'inputSelect');
         }
@@ -300,7 +309,9 @@ class Select extends Component {
       }
 
       this.setState({ valueChangeBySelected, query, hoverIndex, inputLength }, () => {
-        this.refs.input.value = '';
+        if (this.refs.input) {
+          this.refs.input.value = '';
+        }
       });
     } else {
       if (selectedInit) {
@@ -358,9 +369,9 @@ class Select extends Component {
   showCloseIcon() {
     let criteria = this.props.clearable && this.state.inputHovering && !this.props.multiple && this.state.options.indexOf(this.state.selected) > -1;
 
-    if (!this.root) return false;
+    if (!this.refs.root) return false;
 
-    let icon = this.root.querySelector('.el-input__icon');
+    let icon = this.refs.root.querySelector('.el-input__icon');
 
     if (icon) {
       if (criteria) {
@@ -713,7 +724,7 @@ class Select extends Component {
     const { selected, inputWidth, inputLength, query, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
 
     return (
-      <div style={this.style()} className={this.className('el-select', {
+      <div ref="root" style={this.style()} className={this.className('el-select', {
           'is-multiple': multiple,
           'is-small': size === 'small'
         })}>
