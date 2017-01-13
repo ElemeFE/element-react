@@ -415,8 +415,5 @@ DateTable.propTypes = {
 
 //todo: remove redundant
 DateTable.defaultProps = {
-  selectionMode: "day",
-  showWeekNumber: false,
-
-  value: {}
+  selectionMode: 'day',
 }

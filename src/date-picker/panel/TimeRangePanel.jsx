@@ -64,7 +64,7 @@ export default class TimeRangePanel extends Component {
         // (start, end)=>(), index range indicate which field [hours, minutes, seconds] changes
         onSelectRangeChange: TimeSpinner.propTypes.onSelectRangeChange,
         //()=>HtmlElement
-        getPopperRefElement: PropTypes.func,//todo: make this dry
+        getPopperRefElement: PropTypes.func,
         popperMixinOption: PropTypes.object
       })
   }
