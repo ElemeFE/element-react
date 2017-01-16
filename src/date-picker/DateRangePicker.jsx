@@ -12,7 +12,7 @@ export default class DateRangePicker extends BasePicker {
       {},
       BasePicker.propTypes,
       pick(DateRangePanel.propTypes,
-        ['value', 'showTime', 'shortcuts', 'showWeekNumber']))
+        ['value', 'showTime', 'shortcuts']))
   }
 
   static get defaultProps() {
@@ -24,10 +24,14 @@ export default class DateRangePicker extends BasePicker {
   }
 
   pickerPanel(state, props) {
+    let value = state.value
+    if (value instanceof Date){
+      value = [value, null] 
+    }
     return (
       <DateRangePanel
         {...props}
-        value={state.value}
+        value={value}
         onPick={this.onPicked.bind(this)}
         />
     )
