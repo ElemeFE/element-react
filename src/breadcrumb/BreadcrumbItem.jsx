@@ -5,9 +5,7 @@ export default class BreadcrumbItem extends Component {
   render() {
     return (
       <span style={this.style()} className={this.className('el-breadcrumb__item')}>
-        <a className="el-breadcrumb__item__inner" href={this.props.to} style={{
-          textDecoration: 'none'
-        }}>{this.props.children}</a>
+        <span className="el-breadcrumb__item__inner" ref="link">{this.props.children}</span>
         <span className="el-breadcrumb__separator">{this.context.separator}</span>
       </span>
     )
@@ -17,7 +15,3 @@ export default class BreadcrumbItem extends Component {
 BreadcrumbItem.contextTypes = {
   separator: PropTypes.string
 };
-
-BreadcrumbItem.propTypes = {
-  to: PropTypes.string
-}

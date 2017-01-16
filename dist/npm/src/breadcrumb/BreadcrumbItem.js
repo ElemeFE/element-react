@@ -36,10 +36,8 @@ var BreadcrumbItem = function (_Component) {
         'span',
         { style: this.style(), className: this.className('el-breadcrumb__item') },
         _react2.default.createElement(
-          'a',
-          { className: 'el-breadcrumb__item__inner', href: this.props.to, style: {
-              textDecoration: 'none'
-            } },
+          'span',
+          { className: 'el-breadcrumb__item__inner', ref: 'link' },
           this.props.children
         ),
         _react2.default.createElement(
@@ -60,10 +58,6 @@ exports.default = _default;
 
 BreadcrumbItem.contextTypes = {
   separator: _libs.PropTypes.string
-};
-
-BreadcrumbItem.propTypes = {
-  to: _libs.PropTypes.string
 };
 ;
 
