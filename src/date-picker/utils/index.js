@@ -48,18 +48,23 @@ export const getFirstDayOfMonth = function (date) {
 
 export const DAY_DURATION = 86400000;
 
-export const getStartDateOfMonth = function (year, month) {
+export const getStartDateOfMonth = function (year, month, offsetWeek=0) {
   const result = new Date(year, month, 1);
   const day = result.getDay();
 
-  if (day === 0) {
+  if (day === offsetWeek) {
     result.setTime(result.getTime() - DAY_DURATION * 7);
   } else {
-    result.setTime(result.getTime() - DAY_DURATION * day);
+    const offset = getOffsetToWeekOrigin(day, offsetWeek);
+    result.setTime(result.getTime() - DAY_DURATION * offset);
   }
 
   return result;
 };
+
+export function getOffsetToWeekOrigin(day, offsetWeek=0){
+  return day >= offsetWeek ? day - offsetWeek : (7 - offsetWeek) + day;
+}
 
 export const getWeekNumber = function (src) {
   const date = new Date(src.getTime());

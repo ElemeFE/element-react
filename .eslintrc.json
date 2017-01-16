@@ -24,7 +24,7 @@
     "import/prefer-default-export": 0,
     "no-empty": 1,
     "no-console": 1,
-    "react/sort-comp": 1,
+    "react/sort-comp": 0,
     "react/prefer-stateless-function": 0,
     "react/prop-types": [1, { "ignore": ["children", "key"] }],
     "react/no-find-dom-node": 1,
