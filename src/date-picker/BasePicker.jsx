@@ -329,7 +329,7 @@ export default class BasePicker extends Component {
           func={this.handleClickOutside.bind(this)} />
         
         <Input
-          className="el-date-editor"
+          className={this.classNames(`el-date-editor el-date-editor--${this.type}`)}
           readOnly={isReadOnly}
           disabled={isDisabled}
           type="text"

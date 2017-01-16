@@ -2,6 +2,7 @@ import React from 'react';
 
 import { PropTypes, Component } from '../../../libs';
 import { PopperReactMixin } from '../../../libs/utils'
+import {Scrollbar} from '../../scrollbar'
 
 export default class TimeSelectPanel extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ export default class TimeSelectPanel extends Component {
   items() {
     return TimeSelectPanel.items(this.props)
   }
-
+  
   render() {
     const {value} = this.props
 
@@ -30,7 +31,7 @@ export default class TimeSelectPanel extends Component {
       <div
         ref="root"
         className="el-picker-panel time-select">
-        <div className="el-picker-panel__content">
+        <Scrollbar wrapClass="el-picker-panel__content">
           {
             this.items().map((item, idx) => {
               return (
@@ -42,7 +43,7 @@ export default class TimeSelectPanel extends Component {
                   onClick={() => this.handleClick(item)}>{item.value}</div>)
             })
           }
-        </div>
+        </Scrollbar>
       </div>
     )
   }
