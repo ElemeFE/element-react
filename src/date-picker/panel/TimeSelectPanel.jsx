@@ -31,7 +31,7 @@ export default class TimeSelectPanel extends Component {
       <div
         ref="root"
         className="el-picker-panel time-select">
-        <Scrollbar wrapClass="el-picker-panel__content">
+        <Scrollbar wrapClass="el-picker-panel__content" noresize={true}>
           {
             this.items().map((item, idx) => {
               return (
@@ -49,12 +49,12 @@ export default class TimeSelectPanel extends Component {
   }
 }
 
-TimeSelectPanel.isValid = (value, {start, end, step, minTime}) => {
-  const items = TimeSelectPanel.items({ start, end, step, minTime })
+TimeSelectPanel.isValid = (value, {start, end, step, minTime, maxTime}) => {
+  const items = TimeSelectPanel.items({ start, end, step, minTime, maxTime })
   return !!items.filter(e => !e.disabled).find(e => e.value === value)
 }
 
-TimeSelectPanel.items = ({start, end, step, minTime}) => {
+TimeSelectPanel.items = ({start, end, step, minTime, maxTime}) => {
   const result = [];
 
   if (start && end && step) {
@@ -62,7 +62,7 @@ TimeSelectPanel.items = ({start, end, step, minTime}) => {
     while (compareTime(current, end) <= 0) {
       result.push({
         value: current,
-        disabled: compareTime(current, minTime || '00:00') <= 0
+        disabled: compareTime(current, minTime || '00:00') <= 0 || compareTime(current, maxTime || '100:100') >= 0
 
       });
       current = nextTime(current, step);
@@ -77,6 +77,7 @@ TimeSelectPanel.propTypes = {
   end: PropTypes.string,
   step: PropTypes.string,
   minTime: PropTypes.string,
+  maxTime: PropTypes.string,
   value: PropTypes.string,
   onPicked: PropTypes.func,
   //(string)=>date

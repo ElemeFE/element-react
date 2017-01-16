@@ -29,10 +29,6 @@ export const DATE_FORMATTER = function (value, format) {
   return formatDate(value, format);
 };
 export const DATE_PARSER = function (text, format) {
-  text = text.split(':');
-  if (text.length > 1) text = text.map(item => item.slice(-2));
-  text = text.join(':');
-
   return parseDate(text, format);
 };
 export const RANGE_FORMATTER = function (value, format) {
@@ -49,8 +45,8 @@ export const RANGE_FORMATTER = function (value, format) {
 export const RANGE_PARSER = function (text, format) {
   const array = text.split(RANGE_SEPARATOR);
   if (array.length === 2) {
-    const range1 = array[0].split(':').map(item => item.slice(-2)).join(':');
-    const range2 = array[1].split(':').map(item => item.slice(-2)).join(':');
+    const range1 = array[0];
+    const range2 = array[1];
     return [parseDate(range1, format), parseDate(range2, format)];
   }
   return [];

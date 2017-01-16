@@ -26,6 +26,7 @@ render() {
       start="08:30"
       step="00:15"
       end="18:30"
+      maxTime="12:30"
       onChange={this.handleUpdate.bind(this)}
       value={this.state.value}
       placeholder="选择时间"
@@ -172,6 +173,7 @@ render() {
 | end | 结束时间 | string | — | 18:00 |
 | step | 间隔时间 | string | — | 00:30 |
 | minTime | 最小时间 | date | — | - |
+| maxTime | 最大时间 | date | — | - |
 
 ### TimePicker
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
