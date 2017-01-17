@@ -226,7 +226,10 @@ export default class DatePanel extends Component {
     const yearTranslation = Locale.t('el.datepicker.year');
     if (currentView === 'year') {
       const startYear = Math.floor(year / 10) * 10;
-      return startYear + ' ' + yearTranslation + '-' + (startYear + 9) + ' ' + yearTranslation;
+      if (yearTranslation){
+        return startYear + ' ' + yearTranslation + '-' + (startYear + 9) + ' ' + yearTranslation;
+      }
+      return startYear + ' - ' + (startYear + 9);
     }
     return year + ' ' + yearTranslation;
   }

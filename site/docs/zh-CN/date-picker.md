@@ -148,7 +148,7 @@ render() {
 ```js
 constructor(props) {
   super(props)
-  this.state = {}
+  this.state = {value1: null, value2: null}
 }
 
 render() {

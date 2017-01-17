@@ -17,15 +17,6 @@ export default class YearTable extends Component {
     return style;
   }
 
-  // todo: remove me
-  // nextTenYear() {
-  //   this.$emit('pick', this.year + 10, false);
-  // }
-
-  // prevTenYear() {
-  //   this.$emit('pick', this.year - 10, false);
-  // }
-
   handleYearTableClick(event) {
     const target = event.target;
     if (target.tagName === 'A') {

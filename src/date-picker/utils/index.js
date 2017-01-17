@@ -8,10 +8,18 @@ const newArray = function (start, end) {
   return result;
 };
 
+export const equalDate = function (dateA, dateB) {
+  return dateA === dateB || new Date(dateA).getTime() === new Date(dateB).getTime();
+};
+
 export const toDate = function (date) {
+  return isDate(date) ? new Date(date) : null;
+};
+
+export const isDate = function (date) {
   date = new Date(date);
-  if (isNaN(date.getTime())) return null;
-  return date;
+  if (isNaN(date.getTime())) return false;
+  return true;
 };
 
 export const formatDate = function (date, format) {
@@ -48,18 +56,23 @@ export const getFirstDayOfMonth = function (date) {
 
 export const DAY_DURATION = 86400000;
 
-export const getStartDateOfMonth = function (year, month) {
+export const getStartDateOfMonth = function (year, month, offsetWeek = 0) {
   const result = new Date(year, month, 1);
   const day = result.getDay();
 
-  if (day === 0) {
+  if (day === offsetWeek) {
     result.setTime(result.getTime() - DAY_DURATION * 7);
   } else {
-    result.setTime(result.getTime() - DAY_DURATION * day);
+    const offset = getOffsetToWeekOrigin(day, offsetWeek);
+    result.setTime(result.getTime() - DAY_DURATION * offset);
   }
 
   return result;
 };
+
+export function getOffsetToWeekOrigin(day, offsetWeek = 0) {
+  return day >= offsetWeek ? day - offsetWeek : (7 - offsetWeek) + day;
+}
 
 export const getWeekNumber = function (src) {
   const date = new Date(src.getTime());
@@ -74,14 +87,14 @@ export const getWeekNumber = function (src) {
 
 // http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-number
 export function getDateOfISOWeek(w, y) {
-    var simple = new Date(y, 0, 1 + (w - 1) * 7);
-    var dow = simple.getDay();
-    var ISOweekStart = simple;
-    if (dow <= 4)
-        ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
-    else
-        ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
-    return ISOweekStart;
+  var simple = new Date(y, 0, 1 + (w - 1) * 7);
+  var dow = simple.getDay();
+  var ISOweekStart = simple;
+  if (dow <= 4)
+    ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+  else
+    ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+  return ISOweekStart;
 }
 
 export const prevMonth = function (src) {

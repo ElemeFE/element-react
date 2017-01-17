@@ -21,26 +21,26 @@ const nextYear = (date) => {
 
 const mapPropsToState = (props) => {
   const {value} = props
-  let state = {}
+  let state = {
+    rangeState: {
+      endDate: null,
+      selecting: false,
+    }
+  }
   if (!value) {
     state = {
       minDate: null,
       maxDate: null,
-      rangeState: {
-        endDate: null,
-        selecting: false,
-      },
       date: new Date()
     }
   } else {
-    state = {
-      minDate: value[0] ? toDate(value[0]) : null,
-      maxDate: value[1] ? toDate(value[1]) : null,
-      rangeState:{}
+    if (value[0] && value[1]) {
+      state.minDate = toDate(value[0]);
+      state.maxDate = toDate(value[1])
     }
-    if (state.minDate){
-      state.date = toDate(state.minDate)
-    }else {
+    if (value[0]) {
+      state.date = toDate(value[0])
+    } else {
       state.date = new Date()
     }
   }
@@ -65,7 +65,6 @@ export default class DateRangePanel extends Component {
   }
 
   handleRangePick({minDate, maxDate}, isClose) {
-    console.debug('handleRangePick', minDate, maxDate, isClose)
     const {showTime, onPick} = this.props
     this.setState({ minDate, maxDate })
     if (!isClose) return;
@@ -136,8 +135,8 @@ export default class DateRangePanel extends Component {
 
 
     const t = Locale.t
-    const leftLabel = `${date.getFullYear()} ${t('el.datepicker.year')} ` +  t(`el.datepicker.month${date.getMonth() + 1}`)
-    const rightLabel = `${date.getFullYear()} ${t('el.datepicker.year')} ` +  t(`el.datepicker.month${rightDate.getMonth() + 1}`);
+    const leftLabel = `${date.getFullYear()} ${t('el.datepicker.year')} ` + t(`el.datepicker.month${date.getMonth() + 1}`)
+    const rightLabel = `${date.getFullYear()} ${t('el.datepicker.year')} ` + t(`el.datepicker.month${rightDate.getMonth() + 1}`);
 
 
     return (
@@ -202,7 +201,7 @@ export default class DateRangePanel extends Component {
                   type="button"
                   onClick={this.nextMonth.bind(this)}
                   className="el-picker-panel__icon-btn el-icon-arrow-right"></button>
-                <div>{ rightLabel }</div>
+                <div>{rightLabel}</div>
               </div>
               <DateTable
                 selectionMode={SELECTION_MODES.RANGE}
