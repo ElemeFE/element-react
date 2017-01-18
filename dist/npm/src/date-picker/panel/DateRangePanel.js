@@ -45,25 +45,25 @@ var _nextYear = function _nextYear(date) {
 var mapPropsToState = function mapPropsToState(props) {
   var value = props.value;
 
-  var state = {};
+  var state = {
+    rangeState: {
+      endDate: null,
+      selecting: false
+    }
+  };
   if (!value) {
     state = {
       minDate: null,
       maxDate: null,
-      rangeState: {
-        endDate: null,
-        selecting: false
-      },
       date: new Date()
     };
   } else {
-    state = {
-      minDate: value[0] ? (0, _utils.toDate)(value[0]) : null,
-      maxDate: value[1] ? (0, _utils.toDate)(value[1]) : null,
-      rangeState: {}
-    };
-    if (state.minDate) {
-      state.date = (0, _utils.toDate)(state.minDate);
+    if (value[0] && value[1]) {
+      state.minDate = (0, _utils.toDate)(value[0]);
+      state.maxDate = (0, _utils.toDate)(value[1]);
+    }
+    if (value[0]) {
+      state.date = (0, _utils.toDate)(value[0]);
     } else {
       state.date = new Date();
     }
@@ -101,8 +101,6 @@ var DateRangePanel = function (_Component) {
     value: function handleRangePick(_ref, isClose) {
       var minDate = _ref.minDate,
           maxDate = _ref.maxDate;
-
-      console.debug('handleRangePick', minDate, maxDate, isClose);
       var _props = this.props,
           showTime = _props.showTime,
           onPick = _props.onPick;

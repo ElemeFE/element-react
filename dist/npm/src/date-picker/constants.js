@@ -25,12 +25,6 @@ var DATE_FORMATTER = exports.DATE_FORMATTER = function DATE_FORMATTER(value, for
   return (0, _utils.formatDate)(value, format);
 };
 var DATE_PARSER = exports.DATE_PARSER = function DATE_PARSER(text, format) {
-  text = text.split(':');
-  if (text.length > 1) text = text.map(function (item) {
-    return item.slice(-2);
-  });
-  text = text.join(':');
-
   return (0, _utils.parseDate)(text, format);
 };
 var RANGE_FORMATTER = exports.RANGE_FORMATTER = function RANGE_FORMATTER(value, format) {
@@ -47,12 +41,8 @@ var RANGE_FORMATTER = exports.RANGE_FORMATTER = function RANGE_FORMATTER(value, 
 var RANGE_PARSER = exports.RANGE_PARSER = function RANGE_PARSER(text, format) {
   var array = text.split(RANGE_SEPARATOR);
   if (array.length === 2) {
-    var range1 = array[0].split(':').map(function (item) {
-      return item.slice(-2);
-    }).join(':');
-    var range2 = array[1].split(':').map(function (item) {
-      return item.slice(-2);
-    }).join(':');
+    var range1 = array[0];
+    var range2 = array[1];
     return [(0, _utils.parseDate)(range1, format), (0, _utils.parseDate)(range2, format)];
   }
   return [];

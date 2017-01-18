@@ -48,16 +48,6 @@ var YearTable = function (_Component) {
 
       return style;
     }
-
-    // todo: remove me
-    // nextTenYear() {
-    //   this.$emit('pick', this.year + 10, false);
-    // }
-
-    // prevTenYear() {
-    //   this.$emit('pick', this.year - 10, false);
-    // }
-
   }, {
     key: 'handleYearTableClick',
     value: function handleYearTableClick(event) {

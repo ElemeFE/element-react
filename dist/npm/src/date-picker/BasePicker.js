@@ -212,49 +212,10 @@ var BasePicker = function (_Component) {
   }, {
     key: 'handleKeydown',
     value: function handleKeydown(evt) {
-      var _this3 = this;
-
       var keyCode = evt.keyCode;
-      var target = evt.target;
-      var selectionStart = target.selectionStart;
-      var selectionEnd = target.selectionEnd;
-      var length = target.value.length;
-
-      var hidePicker = function hidePicker() {
-        _this3.setState({ pickerVisible: false });
-      };
-
       // tab
       if (keyCode === 9) {
-        hidePicker();
-
-        // enter
-      } else if (keyCode === 13) {
-        hidePicker();
-        evt.target.blur(); //this trigger's handleBlur func
-        // left
-      } else if (keyCode === 37) {
-        evt.preventDefault();
-
-        if (selectionEnd === length && selectionStart === length) {
-          target.selectionStart = length - 2;
-        } else if (selectionStart >= 3) {
-          target.selectionStart -= 3;
-        } else {
-          target.selectionStart = 0;
-        }
-        target.selectionEnd = target.selectionStart + 2;
-        // right
-      } else if (keyCode === 39) {
-        evt.preventDefault();
-        if (selectionEnd === 0 && selectionStart === 0) {
-          target.selectionEnd = 2;
-        } else if (selectionEnd <= length - 3) {
-          target.selectionEnd += 3;
-        } else {
-          target.selectionEnd = length;
-        }
-        target.selectionStart = target.selectionEnd - 2;
+        this.setState({ pickerVisible: false });
       }
     }
   }, {
@@ -337,7 +298,7 @@ var BasePicker = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this3 = this;
 
       var _props2 = this.props,
           isReadOnly = _props2.isReadOnly,
@@ -351,19 +312,19 @@ var BasePicker = function (_Component) {
 
 
       var createIconSlot = function createIconSlot() {
-        if (_this4.calcIsShowTrigger()) {
-          var cls = isShowClose ? 'el-icon-close' : _this4.triggerClass();
+        if (_this3.calcIsShowTrigger()) {
+          var cls = isShowClose ? 'el-icon-close' : _this3.triggerClass();
           return _react2.default.createElement('i', {
-            className: _this4.classNames('el-input__icon', cls),
-            onClick: _this4.handleClickIcon.bind(_this4),
+            className: _this3.classNames('el-input__icon', cls),
+            onClick: _this3.handleClickIcon.bind(_this3),
             onMouseEnter: function onMouseEnter() {
               if (isReadOnly || isDisabled) return;
               if (text) {
-                _this4.setState({ isShowClose: true });
+                _this3.setState({ isShowClose: true });
               }
             },
             onMouseLeave: function onMouseLeave() {
-              _this4.setState({ isShowClose: false });
+              _this3.setState({ isShowClose: false });
             }
           });
         } else {
@@ -373,12 +334,12 @@ var BasePicker = function (_Component) {
 
       var createPickerPanel = function createPickerPanel() {
         if (pickerVisible) {
-          return _this4.pickerPanel(_this4.state, Object.assign({}, _this4.props, {
+          return _this3.pickerPanel(_this3.state, Object.assign({}, _this3.props, {
             getPopperRefElement: function getPopperRefElement() {
-              return _reactDom2.default.findDOMNode(_this4.refs.inputRoot);
+              return _reactDom2.default.findDOMNode(_this3.refs.inputRoot);
             },
             popperMixinOption: {
-              placement: _constants.PLACEMENT_MAP[_this4.props.align] || _constants.PLACEMENT_MAP.left
+              placement: _constants.PLACEMENT_MAP[_this3.props.align] || _constants.PLACEMENT_MAP.left
             }
           }));
         } else {
@@ -406,7 +367,7 @@ var BasePicker = function (_Component) {
           eventName: 'click',
           func: this.handleClickOutside.bind(this) }),
         _react2.default.createElement(_input2.default, {
-          className: 'el-date-editor',
+          className: this.classNames('el-date-editor el-date-editor--' + this.type),
           readOnly: isReadOnly,
           disabled: isDisabled,
           type: 'text',
@@ -419,11 +380,11 @@ var BasePicker = function (_Component) {
             var nstate = { text: iptxt };
             if (iptxt.trim() === '') {
               nstate.value = null;
-            } else if (_this4.isInputValid(iptxt)) {
+            } else if (_this3.isInputValid(iptxt)) {
               //only set value on a valid date input
-              nstate.value = _this4.parseDate(iptxt);
+              nstate.value = _this3.parseDate(iptxt);
             }
-            _this4.setState(nstate);
+            _this3.setState(nstate);
           },
           ref: 'inputRoot',
           value: text,

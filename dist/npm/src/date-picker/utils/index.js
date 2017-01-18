@@ -3,7 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SELECTION_MODES = exports.limitRange = exports.getRangeHours = exports.nextMonth = exports.prevMonth = exports.getWeekNumber = exports.getStartDateOfMonth = exports.DAY_DURATION = exports.getFirstDayOfMonth = exports.getDayCountOfMonth = exports.parseDate = exports.formatDate = exports.toDate = undefined;
+exports.SELECTION_MODES = exports.limitRange = exports.getRangeHours = exports.nextMonth = exports.prevMonth = exports.getWeekNumber = exports.getStartDateOfMonth = exports.DAY_DURATION = exports.getFirstDayOfMonth = exports.getDayCountOfMonth = exports.parseDate = exports.formatDate = exports.isDate = exports.toDate = exports.equalDate = undefined;
+exports.getOffsetToWeekOrigin = getOffsetToWeekOrigin;
 exports.getDateOfISOWeek = getDateOfISOWeek;
 exports.hasClass = hasClass;
 exports.deconstructDate = deconstructDate;
@@ -18,10 +19,18 @@ var newArray = function newArray(start, end) {
   return result;
 };
 
+var equalDate = exports.equalDate = function equalDate(dateA, dateB) {
+  return dateA === dateB || new Date(dateA).getTime() === new Date(dateB).getTime();
+};
+
 var toDate = exports.toDate = function toDate(date) {
+  return isDate(date) ? new Date(date) : null;
+};
+
+var isDate = exports.isDate = function isDate(date) {
   date = new Date(date);
-  if (isNaN(date.getTime())) return null;
-  return date;
+  if (isNaN(date.getTime())) return false;
+  return true;
 };
 
 var formatDate = exports.formatDate = function formatDate(date, format) {
@@ -59,17 +68,26 @@ var getFirstDayOfMonth = exports.getFirstDayOfMonth = function getFirstDayOfMont
 var DAY_DURATION = exports.DAY_DURATION = 86400000;
 
 var getStartDateOfMonth = exports.getStartDateOfMonth = function getStartDateOfMonth(year, month) {
+  var offsetWeek = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
   var result = new Date(year, month, 1);
   var day = result.getDay();
 
-  if (day === 0) {
+  if (day === offsetWeek) {
     result.setTime(result.getTime() - DAY_DURATION * 7);
   } else {
-    result.setTime(result.getTime() - DAY_DURATION * day);
+    var offset = getOffsetToWeekOrigin(day, offsetWeek);
+    result.setTime(result.getTime() - DAY_DURATION * offset);
   }
 
   return result;
 };
+
+function getOffsetToWeekOrigin(day) {
+  var offsetWeek = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+  return day >= offsetWeek ? day - offsetWeek : 7 - offsetWeek + day;
+}
 
 var getWeekNumber = exports.getWeekNumber = function getWeekNumber(src) {
   var date = new Date(src.getTime());
@@ -207,7 +225,11 @@ var _temp = function () {
 
   __REACT_HOT_LOADER__.register(newArray, 'newArray', 'src/date-picker/utils/index.js');
 
+  __REACT_HOT_LOADER__.register(equalDate, 'equalDate', 'src/date-picker/utils/index.js');
+
   __REACT_HOT_LOADER__.register(toDate, 'toDate', 'src/date-picker/utils/index.js');
+
+  __REACT_HOT_LOADER__.register(isDate, 'isDate', 'src/date-picker/utils/index.js');
 
   __REACT_HOT_LOADER__.register(formatDate, 'formatDate', 'src/date-picker/utils/index.js');
 
@@ -220,6 +242,8 @@ var _temp = function () {
   __REACT_HOT_LOADER__.register(DAY_DURATION, 'DAY_DURATION', 'src/date-picker/utils/index.js');
 
   __REACT_HOT_LOADER__.register(getStartDateOfMonth, 'getStartDateOfMonth', 'src/date-picker/utils/index.js');
+
+  __REACT_HOT_LOADER__.register(getOffsetToWeekOrigin, 'getOffsetToWeekOrigin', 'src/date-picker/utils/index.js');
 
   __REACT_HOT_LOADER__.register(getWeekNumber, 'getWeekNumber', 'src/date-picker/utils/index.js');
 
