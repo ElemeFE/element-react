@@ -14,6 +14,8 @@ var _libs = require('../../../libs');
 
 var _utils = require('../../../libs/utils');
 
+var _scrollbar = require('../../scrollbar');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -69,8 +71,8 @@ var TimeSelectPanel = function (_Component) {
           ref: 'root',
           className: 'el-picker-panel time-select' },
         _react2.default.createElement(
-          'div',
-          { className: 'el-picker-panel__content' },
+          _scrollbar.Scrollbar,
+          { wrapClass: 'el-picker-panel__content', noresize: true },
           this.items().map(function (item, idx) {
             return _react2.default.createElement(
               'div',
@@ -99,9 +101,10 @@ TimeSelectPanel.isValid = function (value, _ref) {
   var start = _ref.start,
       end = _ref.end,
       step = _ref.step,
-      minTime = _ref.minTime;
+      minTime = _ref.minTime,
+      maxTime = _ref.maxTime;
 
-  var items = TimeSelectPanel.items({ start: start, end: end, step: step, minTime: minTime });
+  var items = TimeSelectPanel.items({ start: start, end: end, step: step, minTime: minTime, maxTime: maxTime });
   return !!items.filter(function (e) {
     return !e.disabled;
   }).find(function (e) {
@@ -113,7 +116,8 @@ TimeSelectPanel.items = function (_ref2) {
   var start = _ref2.start,
       end = _ref2.end,
       step = _ref2.step,
-      minTime = _ref2.minTime;
+      minTime = _ref2.minTime,
+      maxTime = _ref2.maxTime;
 
   var result = [];
 
@@ -122,7 +126,7 @@ TimeSelectPanel.items = function (_ref2) {
     while (compareTime(current, end) <= 0) {
       result.push({
         value: current,
-        disabled: compareTime(current, minTime || '00:00') <= 0
+        disabled: compareTime(current, minTime || '00:00') <= 0 || compareTime(current, maxTime || '100:100') >= 0
 
       });
       current = nextTime(current, step);
@@ -136,6 +140,7 @@ TimeSelectPanel.propTypes = {
   end: _libs.PropTypes.string,
   step: _libs.PropTypes.string,
   minTime: _libs.PropTypes.string,
+  maxTime: _libs.PropTypes.string,
   value: _libs.PropTypes.string,
   onPicked: _libs.PropTypes.func,
   //(string)=>date

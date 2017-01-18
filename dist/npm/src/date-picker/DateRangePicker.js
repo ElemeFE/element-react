@@ -36,7 +36,7 @@ var DateRangePicker = function (_BasePicker) {
   _createClass(DateRangePicker, null, [{
     key: 'propTypes',
     get: function get() {
-      return Object.assign({}, _BasePicker3.default.propTypes, (0, _utils.pick)(_DateRangePanel2.default.propTypes, ['value', 'showTime', 'shortcuts', 'showWeekNumber']));
+      return Object.assign({}, _BasePicker3.default.propTypes, (0, _utils.pick)(_DateRangePanel2.default.propTypes, ['value', 'showTime', 'shortcuts']));
     }
   }, {
     key: 'defaultProps',
@@ -54,8 +54,12 @@ var DateRangePicker = function (_BasePicker) {
   _createClass(DateRangePicker, [{
     key: 'pickerPanel',
     value: function pickerPanel(state, props) {
+      var value = state.value;
+      if (value instanceof Date) {
+        value = [value, null];
+      }
       return _react2.default.createElement(_DateRangePanel2.default, _extends({}, props, {
-        value: state.value,
+        value: value,
         onPick: this.onPicked.bind(this)
       }));
     }

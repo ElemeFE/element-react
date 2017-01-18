@@ -16,6 +16,8 @@ var _utils = require('../../../libs/utils');
 
 var _utils2 = require('../utils');
 
+var _scrollbar = require('../../scrollbar');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72,6 +74,8 @@ function propsToState(props) {
   state.secondsList = withIndex(range(60));
   return state;
 }
+
+var SCROLL_AJUST_VALUE = 85;
 
 var TimeSpinner = function (_Component) {
   _inherits(TimeSpinner, _Component);
@@ -153,7 +157,7 @@ var TimeSpinner = function (_Component) {
   }, {
     key: '_handleScroll',
     value: function _handleScroll(type) {
-      var value = Math.min(Math.floor((this.refs[type].scrollTop - 80) / 32 + 3), 59);
+      var value = Math.min(Math.floor((this.refs[type].refs.wrap.scrollTop - SCROLL_AJUST_VALUE) / 32 + 3), 59);
       this.handleChange(type, value);
     }
 
@@ -181,13 +185,13 @@ var TimeSpinner = function (_Component) {
           seconds = _ref.seconds;
 
       if (hours != null) {
-        this.refs.hours.scrollTop = Math.max(0, (hours - 2.5) * 32 + 80);
+        this.refs.hours.refs.wrap.scrollTop = Math.max(0, (hours - 2.5) * 32 + SCROLL_AJUST_VALUE);
       }
       if (minutes != null) {
-        this.refs.minutes.scrollTop = Math.max(0, (minutes - 2.5) * 32 + 80);
+        this.refs.minutes.refs.wrap.scrollTop = Math.max(0, (minutes - 2.5) * 32 + SCROLL_AJUST_VALUE);
       }
       if (seconds != null) {
-        this.refs.seconds.scrollTop = Math.max(0, (seconds - 2.5) * 32 + 80);
+        this.refs.seconds.refs.wrap.scrollTop = Math.max(0, (seconds - 2.5) * 32 + SCROLL_AJUST_VALUE);
       }
     }
   }, {
@@ -209,40 +213,40 @@ var TimeSpinner = function (_Component) {
         'div',
         { className: this.classNames('el-time-spinner', { 'has-seconds': isShowSeconds }) },
         _react2.default.createElement(
-          'div',
+          _scrollbar.Scrollbar,
           {
             onMouseEnter: function onMouseEnter() {
               return _this4.emitSelectRange('hours');
             },
             onWheel: function onWheel() {
-              return _this4.handleScroll('hours');
+              _this4.handleScroll('hours');
             },
+            ref: 'hours',
             className: 'el-time-spinner__wrapper',
-            ref: 'hours' },
-          _react2.default.createElement(
-            'ul',
-            { className: 'el-time-spinner__list' },
-            hoursList.map(function (disabled, idx) {
+            wrapStyle: { maxHeight: 'inherit' },
+            viewClass: 'el-time-spinner__list',
+            viewComponent: 'ul'
+          },
+          hoursList.map(function (disabled, idx) {
 
-              return _react2.default.createElement(
-                'li',
-                {
-                  key: idx,
-                  onClick: function onClick() {
-                    return _this4.handleChange('hours', idx, disabled);
-                  },
-                  className: _this4.classNames('el-time-spinner__item', {
-                    'active': idx === hours,
-                    'disabled': disabled
-                  })
+            return _react2.default.createElement(
+              'li',
+              {
+                key: idx,
+                onClick: function onClick() {
+                  return _this4.handleChange('hours', idx, disabled);
                 },
-                idx
-              );
-            })
-          )
+                className: _this4.classNames('el-time-spinner__item', {
+                  'active': idx === hours,
+                  'disabled': disabled
+                })
+              },
+              idx
+            );
+          })
         ),
         _react2.default.createElement(
-          'div',
+          _scrollbar.Scrollbar,
           {
             onMouseEnter: function onMouseEnter() {
               return _this4.emitSelectRange('minutes');
@@ -250,30 +254,30 @@ var TimeSpinner = function (_Component) {
             onWheel: function onWheel() {
               return _this4.handleScroll('minutes');
             },
+            ref: 'minutes',
             className: 'el-time-spinner__wrapper',
-            ref: 'minutes' },
-          _react2.default.createElement(
-            'ul',
-            { className: 'el-time-spinner__list' },
-            minutesLisit.map(function (disabled, idx) {
-              return _react2.default.createElement(
-                'li',
-                {
-                  key: idx,
-                  onClick: function onClick() {
-                    return _this4.handleChange('minutes', idx);
-                  },
-                  className: _this4.classNames('el-time-spinner__item', {
-                    'active': idx === minutes
-                  })
+            wrapStyle: { maxHeight: 'inherit' },
+            viewClass: 'el-time-spinner__list',
+            viewComponent: 'ul'
+          },
+          minutesLisit.map(function (disabled, idx) {
+            return _react2.default.createElement(
+              'li',
+              {
+                key: idx,
+                onClick: function onClick() {
+                  return _this4.handleChange('minutes', idx);
                 },
-                idx
-              );
-            })
-          )
+                className: _this4.classNames('el-time-spinner__item', {
+                  'active': idx === minutes
+                })
+              },
+              idx
+            );
+          })
         ),
         isShowSeconds && _react2.default.createElement(
-          'div',
+          _scrollbar.Scrollbar,
           {
             onMouseEnter: function onMouseEnter() {
               return _this4.emitSelectRange('seconds');
@@ -281,8 +285,12 @@ var TimeSpinner = function (_Component) {
             onWheel: function onWheel() {
               return _this4.handleScroll('seconds');
             },
+            ref: 'seconds',
             className: 'el-time-spinner__wrapper',
-            ref: 'seconds' },
+            wrapStyle: { maxHeight: 'inherit' },
+            viewClass: 'el-time-spinner__list',
+            viewComponent: 'ul'
+          },
           _react2.default.createElement(
             'ul',
             { className: 'el-time-spinner__list' },
@@ -330,6 +338,8 @@ var _temp = function () {
   __REACT_HOT_LOADER__.register(validateMinOrSec, 'validateMinOrSec', 'src/date-picker/basic/TimeSpinner.jsx');
 
   __REACT_HOT_LOADER__.register(propsToState, 'propsToState', 'src/date-picker/basic/TimeSpinner.jsx');
+
+  __REACT_HOT_LOADER__.register(SCROLL_AJUST_VALUE, 'SCROLL_AJUST_VALUE', 'src/date-picker/basic/TimeSpinner.jsx');
 
   __REACT_HOT_LOADER__.register(TimeSpinner, 'TimeSpinner', 'src/date-picker/basic/TimeSpinner.jsx');
 

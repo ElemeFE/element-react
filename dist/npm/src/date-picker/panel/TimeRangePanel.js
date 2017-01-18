@@ -97,7 +97,7 @@ var TimeRangePanel = function (_Component) {
         // (start, end)=>(), index range indicate which field [hours, minutes, seconds] changes
         onSelectRangeChange: _TimeSpinner2.default.propTypes.onSelectRangeChange,
         //()=>HtmlElement
-        getPopperRefElement: _libs.PropTypes.func, //todo: make this dry
+        getPopperRefElement: _libs.PropTypes.func,
         popperMixinOption: _libs.PropTypes.object
       });
     }

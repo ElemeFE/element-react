@@ -40,6 +40,8 @@ var clearHours = function clearHours(time) {
   return cloneDate.getTime();
 };
 
+var _WEEKS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+
 var DateTable = function (_Component) {
   _inherits(DateTable, _Component);
 
@@ -55,10 +57,22 @@ var DateTable = function (_Component) {
   }
 
   _createClass(DateTable, [{
+    key: 'WEEKS',
+    value: function WEEKS() {
+      // 0-6
+      var week = this.getOffsetWeek();
+      return _WEEKS.slice(week).concat(_WEEKS.slice(0, week));
+    }
+  }, {
+    key: 'getOffsetWeek',
+    value: function getOffsetWeek() {
+      return this.props.firstDayOfWeek % 7;
+    }
+  }, {
     key: 'getStartDate',
     value: function getStartDate() {
       var ds = (0, _utils.deconstructDate)(this.props.date);
-      return (0, _utils.getStartDateOfMonth)(ds.year, ds.month);
+      return (0, _utils.getStartDateOfMonth)(ds.year, ds.month, this.getOffsetWeek());
     }
   }, {
     key: 'getRows',
@@ -69,7 +83,8 @@ var DateTable = function (_Component) {
           showWeekNumber = _props.showWeekNumber,
           minDate = _props.minDate,
           maxDate = _props.maxDate,
-          selectionMode = _props.selectionMode;
+          selectionMode = _props.selectionMode,
+          firstDayOfWeek = _props.firstDayOfWeek;
       var tableRows = this.state.tableRows;
 
 
@@ -79,7 +94,8 @@ var DateTable = function (_Component) {
       // dates count in december is always 31, so offset year is not neccessary
       var dateCountOfLastMonth = (0, _utils.getDayCountOfMonth)(ndate.getFullYear(), ndate.getMonth() === 0 ? 11 : ndate.getMonth() - 1);
 
-      day = day === 0 ? 7 : day;
+      var offsetDaysToWeekOrigin = (0, _utils.getOffsetToWeekOrigin)(day, firstDayOfWeek);
+
       //tableRows: [ [], [], [], [], [], [] ]
       var rows = tableRows;
       var count = 1;
@@ -130,13 +146,13 @@ var DateTable = function (_Component) {
 
           if (i === 0) {
             //handle first row of date, this row only contains all or some pre-month dates
-            if (j >= day) {
+            if (j >= (offsetDaysToWeekOrigin === 0 ? 7 : offsetDaysToWeekOrigin)) {
               cell.text = count++;
               if (count === 2) {
                 firstDayPosition = i * 7 + j;
               }
             } else {
-              cell.text = dateCountOfLastMonth - (day - j % 7) + 1;
+              cell.text = dateCountOfLastMonth - offsetDaysToWeekOrigin + j + 1;
               cell.type = 'prev-month';
             }
           } else {
@@ -278,7 +294,8 @@ var DateTable = function (_Component) {
       var _props4 = this.props,
           showWeekNumber = _props4.showWeekNumber,
           onChangeRange = _props4.onChangeRange,
-          rangeState = _props4.rangeState;
+          rangeState = _props4.rangeState,
+          selectionMode = _props4.selectionMode;
 
 
       var getDateOfCell = function getDateOfCell(row, column, showWeekNumber) {
@@ -286,7 +303,7 @@ var DateTable = function (_Component) {
         return new Date(startDate.getTime() + (row * 7 + (column - (showWeekNumber ? 1 : 0))) * _utils.DAY_DURATION);
       };
 
-      if (!rangeState.selecting) return;
+      if (!(selectionMode === _utils.SELECTION_MODES.RANGE && rangeState.selecting)) return;
 
       var target = event.target;
       if (target.tagName !== 'TD') return;
@@ -330,8 +347,6 @@ var DateTable = function (_Component) {
 
       var newDate = new Date(year, month, 1);
 
-      var clickNormalCell = className.indexOf('prev') === -1 && className.indexOf('next') === -1;
-
       if (className.indexOf('prev') !== -1) {
         if (month === 0) {
           newDate.setFullYear(year - 1);
@@ -349,7 +364,7 @@ var DateTable = function (_Component) {
       }
 
       newDate.setDate(parseInt(text, 10));
-      if (clickNormalCell && selectionMode === 'range') {
+      if (selectionMode === _utils.SELECTION_MODES.RANGE) {
         if (rangeState.selecting) {
           if (newDate < minDate) {
             rangeState.selecting = true;
@@ -368,9 +383,7 @@ var DateTable = function (_Component) {
             onPick({ minDate: (0, _utils.toDate)(newDate), maxDate: null }, false);
           }
         }
-      }
-
-      if (selectionMode === 'day' || selectionMode === 'week') {
+      } else if (selectionMode === _utils.SELECTION_MODES.DAY || selectionMode === _utils.SELECTION_MODES.WEEK) {
         onPick({ date: newDate });
       }
     }
@@ -404,41 +417,13 @@ var DateTable = function (_Component) {
               null,
               $t('el.datepicker.week')
             ),
-            _react2.default.createElement(
-              'th',
-              null,
-              $t('el.datepicker.weeks.sun')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              $t('el.datepicker.weeks.mon')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              $t('el.datepicker.weeks.tue')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              $t('el.datepicker.weeks.wed')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              $t('el.datepicker.weeks.thu')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              $t('el.datepicker.weeks.fri')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              $t('el.datepicker.weeks.sat')
-            )
+            this.WEEKS().map(function (e, idx) {
+              return _react2.default.createElement(
+                'th',
+                { key: idx },
+                $t('el.datepicker.weeks.' + e)
+              );
+            })
           ),
           this.getMarkedRangeRows().map(function (row, idx) {
             return _react2.default.createElement(
@@ -508,15 +493,13 @@ DateTable.propTypes = {
   rangeState: _libs.PropTypes.shape({
     endDate: _libs.PropTypes.date,
     selecting: _libs.PropTypes.bool
-  })
+  }),
+  firstDayOfWeek: _libs.PropTypes.range(0, 6)
 };
 
-//todo: remove redundant
 DateTable.defaultProps = {
-  selectionMode: "day",
-  showWeekNumber: false,
-
-  value: {}
+  selectionMode: 'day',
+  firstDayOfWeek: 0
 };
 ;
 
@@ -528,6 +511,8 @@ var _temp = function () {
   __REACT_HOT_LOADER__.register(isFunction, 'isFunction', 'src/date-picker/basic/DateTable.jsx');
 
   __REACT_HOT_LOADER__.register(clearHours, 'clearHours', 'src/date-picker/basic/DateTable.jsx');
+
+  __REACT_HOT_LOADER__.register(_WEEKS, 'WEEKS', 'src/date-picker/basic/DateTable.jsx');
 
   __REACT_HOT_LOADER__.register(DateTable, 'DateTable', 'src/date-picker/basic/DateTable.jsx');
 

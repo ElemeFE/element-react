@@ -38,7 +38,7 @@
     "babel-standalone": "^6.21.1",
     "core-js": "^2.4.1",
     "css-loader": "^0.26.1",
-    "element-theme-default": "^1.1.4",
+    "element-theme-default": "^1.1.5",
     "eslint": "^3.13.1",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",

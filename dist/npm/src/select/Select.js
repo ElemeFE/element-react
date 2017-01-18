@@ -177,7 +177,9 @@ var Select = function (_Component) {
       this.reference = _reactDom2.default.findDOMNode(this.refs.reference);
       this.popper = _reactDom2.default.findDOMNode(this.refs.popper);
 
-      this.popperJS = this.popperJS || new _popper2.default(this.reference, this.popper);
+      this.popperJS = this.popperJS || new _popper2.default(this.reference, this.popper, {
+        gpuAcceleration: false
+      });
     }
   }, {
     key: 'debounce',
@@ -486,7 +488,7 @@ var Select = function (_Component) {
   }, {
     key: 'iconClass',
     value: function iconClass() {
-      return this.showCloseIcon() ? 'circle-close' : this.props.remote && this.props.filterable ? '' : 'caret-top';
+      return this.showCloseIcon() ? 'circle-close' : this.props.remote && this.props.filterable ? '' : 'caret-top ' + (this.state.visible ? 'is-reverse' : '');
     }
   }, {
     key: 'showCloseIcon',

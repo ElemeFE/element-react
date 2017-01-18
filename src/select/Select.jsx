@@ -122,7 +122,9 @@ class Select extends Component {
     this.reference = ReactDOM.findDOMNode(this.refs.reference);
     this.popper = ReactDOM.findDOMNode(this.refs.popper);
 
-    this.popperJS = this.popperJS || new Popper(this.reference, this.popper);
+    this.popperJS = this.popperJS || new Popper(this.reference, this.popper, {
+      gpuAcceleration: false
+    });
   }
 
   debounce() {
@@ -363,7 +365,7 @@ class Select extends Component {
   }
 
   iconClass() {
-    return this.showCloseIcon() ? 'circle-close' : (this.props.remote && this.props.filterable ? '' : 'caret-top');
+    return this.showCloseIcon() ? 'circle-close' : (this.props.remote && this.props.filterable ? '' : `caret-top ${this.state.visible ? 'is-reverse' : ''}`);
   }
 
   showCloseIcon() {

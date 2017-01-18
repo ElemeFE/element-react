@@ -38,7 +38,7 @@ render() {
     <Input
       icon="time"
       placeholder="请选择日期"
-      onClick={e => this.handleIconClick(e)}
+      onIconClick={e => this.handleIconClick(e)}
     />
   )
 }
@@ -419,8 +419,7 @@ render() {
 | placeholder   | 输入框占位文本    | string          | — | — |
 | disabled      | 禁用            | boolean         | — | false   |
 | size          | 输入框尺寸，只在 `type!="textarea"` 时有效      | string          | large, small, mini  | — |
-| icon          | 输入框尾部图标    | string          | — | — |
-| iconSlot      | 输入框尾部图标    | ReactElement          | — | — |
+| icon          | 输入框尾部图标    | string/ReactElement          | — | — |
 | rows          | 输入框行数，只对 `type="textarea"` 有效  |  number | — |  2   |
 | autosize      | 自适应内容高度，只对 `type="textarea"` 有效，可传入对象，如，{ minRows: 2, maxRows: 6 }  |  boolean/object | — |  false   |
 
