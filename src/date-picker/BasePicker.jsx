@@ -9,7 +9,7 @@ import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FOR
 import { Errors, require_condition, IDGenerator } from '../../libs/utils';
 
 /*
-todo: 
+todo:
   handle animation popup
 */
 
@@ -73,7 +73,7 @@ export default class BasePicker extends Component {
   /**
    * onPicked should only be called from picker pannel instance
    * and should never return a null date instance
-   * 
+   *
    * @param value: Date|Date[]|null
    * @param isKeepPannel: boolean = false
    */
@@ -187,7 +187,7 @@ export default class BasePicker extends Component {
 
   // return true on condition
   //  * input is parsable to date
-  //  * also meet your other condition 
+  //  * also meet your other condition
   isInputValid(value) {
     const parseable = this.parseDate(value)
     if (!parseable) {
@@ -312,7 +312,7 @@ export default class BasePicker extends Component {
           } }
           ref="inputRoot"
           value={text}
-          iconSlot={createIconSlot()}
+          icon={createIconSlot()}
           />
 
         {createPickerPanel()}
@@ -320,4 +320,3 @@ export default class BasePicker extends Component {
     )
   }
 }
-

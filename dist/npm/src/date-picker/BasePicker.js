@@ -35,7 +35,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /*
-todo: 
+todo:
   handle animation popup
 */
 
@@ -110,7 +110,7 @@ var BasePicker = function (_Component) {
     /**
      * onPicked should only be called from picker pannel instance
      * and should never return a null date instance
-     * 
+     *
      * @param value: Date|Date[]|null
      * @param isKeepPannel: boolean = false
      */
@@ -244,7 +244,7 @@ var BasePicker = function (_Component) {
 
     // return true on condition
     //  * input is parsable to date
-    //  * also meet your other condition 
+    //  * also meet your other condition
 
   }, {
     key: 'isInputValid',
@@ -388,7 +388,7 @@ var BasePicker = function (_Component) {
           },
           ref: 'inputRoot',
           value: text,
-          iconSlot: createIconSlot()
+          icon: createIconSlot()
         }),
         createPickerPanel()
       );
