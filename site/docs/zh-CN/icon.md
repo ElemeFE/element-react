@@ -7,21 +7,31 @@
 直接通过设置类名为 `el-icon-iconName` 来使用即可。例如：
 
 :::demo
-```html
-<i className="el-icon-edit"></i>
-<i className="el-icon-share"></i>
-<i className="el-icon-delete"></i>
-<Button type="primary" icon="search">搜索</Button>
+```js
+render() {
+  return (
+    <div>
+      <i className="el-icon-edit"></i>
+      <i className="el-icon-share"></i>
+      <i className="el-icon-delete"></i>
+      <Button type="primary" icon="search">搜索</Button>
+    </div>
+  )
+}
 ```
 :::
 
 ### 图标集合
 :::demo
-```html
-<ul className="icon-list">
-  {this.state.list.map((v, i) =>
-    <li key={i}><span><Icon name={v} />{v}</span></li>
-  )}
-</ul>
+```js
+render() {
+  return (
+    <ul className="icon-list">
+      {this.props.iconList.map((v, i) =>
+        <li key={i}><span><Icon name={v} />{v}</span></li>
+      )}
+    </ul>
+  )
+}
 ```
 :::

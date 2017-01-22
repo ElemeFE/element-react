@@ -6,17 +6,23 @@
 
 :::demo 绑定`value`到一个`Boolean`类型的变量。可以使用`onText`属性与`offText`属性来设置开关的文字描述，使用`onColor`属性与`offColor`属性来设置开关的背景色。
 
-```html
-<Switch
-  value={true}
-  onText=""
-  offText="">
-</Switch>
-<Switch
-  value={true}
-  onColor="#13ce66"
-  offColor="#ff4949">
-</Switch>
+```js
+render() {
+  return (
+    <div>
+      <Switch
+        value={true}
+        onText=""
+        offText="">
+      </Switch>
+      <Switch
+        value={true}
+        onColor="#13ce66"
+        offColor="#ff4949">
+      </Switch>
+    </div>
+  )
+}
 ```
 :::
 
@@ -24,17 +30,23 @@
 
 :::demo 设置`disabled`属性，接受一个`Boolean`，设置`true`即可禁用。
 
-```html
-<Switch
-  value={true}
-  onText=""
-  offText=""
-  disabled>
-</Switch>
-<Switch
-  value={true}
-  disabled>
-</Switch>
+```js
+render() {
+  return (
+    <div>
+      <Switch
+        value={true}
+        onText=""
+        offText=""
+        disabled>
+      </Switch>
+      <Switch
+        value={true}
+        disabled>
+      </Switch>
+    </div>
+  )
+}
 ```
 :::
 
@@ -42,13 +54,17 @@
 
 :::demo 设置`change`回调事件，当开关状态发生了改变，会回调此函数，并返回当前`value`值。
 
-```html
-<Switch
-  value={true}
-  onText=""
-  offText=""
-  onChange={(value)=>{console.log('switch ---> ' + value)}}>
-</Switch>
+```js
+render() {
+  return (
+    <Switch
+      value={true}
+      onText=""
+      offText=""
+      onChange={(value)=>{console.log('switch ---> ' + value)}}>
+    </Switch>
+  )
+}
 ```
 :::
 

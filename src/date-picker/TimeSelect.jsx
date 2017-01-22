@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { PropTypes } from '../../libs';
-import { PLACEMENT_MAP } from './constants'
 import BasePicker from './BasePicker'
 
 import TimeSelectPanel from './panel/TimeSelectPanel'
@@ -12,7 +11,7 @@ export default class TimeSelect extends BasePicker {
       start: PropTypes.string,
       end: PropTypes.string,
       step: PropTypes.string,
-      minTime: PropTypes.string,
+      minTime: PropTypes.instanceOf(Date),
     },
       BasePicker.propTypes)
   }
@@ -28,27 +27,27 @@ export default class TimeSelect extends BasePicker {
   }
 
   isDateValid(value) {
-    return super.isDateValid(value) && TimeSelectPanel.isValid(this.dateToStr(value), this.props)
+    return super.isDateValid(value) && TimeSelectPanel.isValid(this.dateToStr(value), this.panelProps())
   }
 
-  pickerPannel(state, props) {
+  panelProps(props){
+    const ps = props || this.props
+    const minTime = this.dateToStr(this.props.minTime)
+    return {...ps, minTime}
+  }
+
+  pickerPanel(state, props) {
     const value = this.dateToStr(state.value)
     return (
       <TimeSelectPanel
-        {...props}
-        key="time-select-panel"
+        {...this.panelProps(props)}
         value={value}
         onPicked={this.onPicked.bind(this)}
-        getPopperRefElement={() => this.refs.reference}
         dateParser={(str) => {
           const r = this.parseDate(str)
           return r
         } }
-        popperMixinOption={
-          {
-            placement: PLACEMENT_MAP[props.align] || PLACEMENT_MAP.left
-          }
-        } />
+        />
     )
   }
 }

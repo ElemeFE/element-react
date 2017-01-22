@@ -58,24 +58,24 @@ var Notification = function (_Component) {
   }, {
     key: 'onClose',
     value: function onClose() {
+      var _this2 = this;
+
       this.stopTimer();
 
       this.setState({
         visible: false
+      }, function () {
+        _this2.props.willUnmount();
       });
-
-      if (this.props.onClose) {
-        this.props.onClose();
-      }
     }
   }, {
     key: 'startTimer',
     value: function startTimer() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.props.duration) {
         this.timeout = setTimeout(function () {
-          _this2.onClose();
+          _this3.onClose();
         }, this.props.duration);
       }
     }
@@ -97,11 +97,12 @@ var Notification = function (_Component) {
         { name: 'el-notification-fade', duration: '300' },
         _react2.default.createElement(
           _libs.View,
-          { key: Math.random(), show: this.state.visible },
+          { key: this.state.visible, show: this.state.visible },
           _react2.default.createElement(
             'div',
             { className: 'el-notification', style: {
-                top: this.props.top
+                top: this.props.top,
+                zIndex: 9999
               }, onMouseEnter: this.stopTimer.bind(this), onMouseLeave: this.startTimer.bind(this) },
             this.props.type && _react2.default.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass()) }),
             _react2.default.createElement(
@@ -139,10 +140,7 @@ Notification.propTypes = {
   title: _libs.PropTypes.string,
   message: _libs.PropTypes.string,
   duration: _libs.PropTypes.number,
-  top: _libs.PropTypes.number,
-  /* eslint-disable */
-  onClose: _libs.PropTypes.func
-  /* eslint-enable */
+  top: _libs.PropTypes.number
 };
 
 Notification.defaultProps = {

@@ -32,8 +32,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Markdown = function (_Component) {
-  _inherits(Markdown, _Component);
+var Markdown = function (_React$Component) {
+  _inherits(Markdown, _React$Component);
 
   function Markdown(props) {
     _classCallCheck(this, Markdown);
@@ -94,22 +94,24 @@ var Markdown = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      if (typeof this.props.children === 'string') {
+      var document = this.document(navigator.language);
+
+      if (typeof document === 'string') {
         this.components.clear();
 
-        var html = (0, _marked2.default)(this.props.children.replace(/:::\s?demo\s?([^]+?):::/g, function (match, p1, offset) {
+        var html = (0, _marked2.default)(document.replace(/:::\s?demo\s?([^]+?):::/g, function (match, p1, offset) {
           var id = offset.toString(36);
 
-          _this2.components.set(id, _react2.default.createElement(_canvas2.default, _this2.props, p1));
+          _this2.components.set(id, _react2.default.createElement(_canvas2.default, Object.assign({
+            name: _this2.constructor.name.toLowerCase()
+          }, _this2.props), p1));
 
           return '<div id=' + id + '></div>';
         }));
 
-        /* eslint-disable */
         return _react2.default.createElement('div', { dangerouslySetInnerHTML: {
             __html: html
           } });
-        /* eslint-enable */
       } else {
         return _react2.default.createElement('span', null);
       }
@@ -117,19 +119,10 @@ var Markdown = function (_Component) {
   }]);
 
   return Markdown;
-}(_react.Component);
-
-/* eslint-disable */
-
+}(_react2.default.Component);
 
 var _default = Markdown;
 exports.default = _default;
-Markdown.propTypes = {
-  component: _react.PropTypes.string.isRequired,
-  context: _react.PropTypes.any
-};
-/* eslint-enable */
-
 ;
 
 var _temp = function () {
@@ -137,9 +130,9 @@ var _temp = function () {
     return;
   }
 
-  __REACT_HOT_LOADER__.register(Markdown, 'Markdown', 'libs/markdown/index.js');
+  __REACT_HOT_LOADER__.register(Markdown, 'Markdown', 'libs/markdown/index.jsx');
 
-  __REACT_HOT_LOADER__.register(_default, 'default', 'libs/markdown/index.js');
+  __REACT_HOT_LOADER__.register(_default, 'default', 'libs/markdown/index.jsx');
 }();
 
 ;

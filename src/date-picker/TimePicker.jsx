@@ -6,7 +6,7 @@ import { debounce } from '../../libs/utils'
 import BasePicker from './BasePicker'
 import TimePanel from './panel/TimePanel'
 
-import { PLACEMENT_MAP, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
+import { TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
 
 function converSelectRange(props) {
   let selectableRange = []
@@ -44,26 +44,20 @@ export default class TimePicker extends BasePicker {
   }
 
   onSelectionChange(start, end) {
-    this.refs.reference.setSelectionRange(start, end);
-    this.refs.reference.focus();
+    this.refs.inputRoot.refs.input.setSelectionRange(start, end);
+    this.refs.inputRoot.refs.input.focus();
   }
 
-  pickerPannel(state, props) {
+  pickerPanel(state, props) {
     return (
       <TimePanel
         {...props}
-        key="time-picker-panel"
         currentDate={state.value}
         onCancel={()=>this.setState({pickerVisible: false})}
         onPicked={this.onPicked.bind(this)}
         onSelectRangeChange={this._onSelectionChange}
         selectableRange={converSelectRange(props)}
-        getPopperRefElement={() => this.refs.reference}
-        popperMixinOption={
-          {
-            placement: PLACEMENT_MAP[props.align] || PLACEMENT_MAP.left
-          }
-        } />
+        />
     )
   }
 }

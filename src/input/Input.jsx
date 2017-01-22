@@ -71,8 +71,10 @@ export default class Input extends Component {
     const classname = this.classNames(
       type === 'textarea' ? 'el-textarea' : 'el-input',
       size && `el-input--${size}`, {
+        'is-disabled': this.props.disabled,
         'el-input-group': prepend || append,
-        'is-disabled': this.props.disabled
+        'el-input-group--append': !!append,
+        'el-input-group--prepend': !!prepend
       }
     );
 
@@ -104,7 +106,7 @@ export default class Input extends Component {
       return (
         <div style={this.style()} className={this.className(classname)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
           { prepend && <div className="el-input-group__prepend">{prepend}</div> }
-          { icon && <i className={`el-input__icon el-icon-${icon}`} onClick={this.handleIconClick.bind(this)}></i> }
+          { typeof icon != 'string' ? icon : <i className={`el-input__icon el-icon-${icon}`} onClick={this.handleIconClick.bind(this)}>{prepend}</i> }
           <input { ...otherProps }
             ref="input"
             className="el-input__inner"
@@ -124,7 +126,7 @@ export default class Input extends Component {
 Input.propTypes = {
   // base
   type: PropTypes.string,
-  icon: PropTypes.string,
+  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   disabled: PropTypes.bool,
   name: PropTypes.string,
   placeholder: PropTypes.string,

@@ -93,7 +93,7 @@ export default class Pagination extends Component{
   constructor(props, context){
     super(props, context);
 
-    const { currentPage, pageSizes,  pageSize} = this.props;
+    const { currentPage, pageSizes,  pageSize, total, pageCount} = this.props;
     let internalPageSize = 0;
 
     if (Array.isArray(pageSizes)) {
@@ -101,9 +101,37 @@ export default class Pagination extends Component{
     }
 
     this.state = {
-      internalPageSize: internalPageSize
+      internalPageSize: internalPageSize,
+      total,
+      pageCount
     }
     this.state.internalCurrentPage =  currentPage ? this.getValidCurrentPage(currentPage) : 1
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { currentPage, pageSizes,  pageSize, total, pageCount} = this.props;
+
+    if(nextProps.currentPage != currentPage || 
+      nextProps.pageSizes != pageSizes || 
+      nextProps.pageSize != pageSize ||
+      nextProps.total != total ||
+      nextProps.pageCount != pageCount){
+
+      let internalPageSize = this.state.internalPageSize;
+      if (Array.isArray(nextProps.pageSizes)) {
+        internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1 ?nextProps.pageSize : nextProps.pageSizes[0];
+      }
+      
+      this.setState({
+        internalPageSize: internalPageSize,
+        total: nextProps.total,
+        pageCount: nextProps.pageCount
+      }, ()=>{
+        this.setState({
+          internalCurrentPage: nextProps.currentPage ? this.getValidCurrentPage(nextProps.currentPage) : 1
+        });
+      });
+    }
   }
 
   pre(){
@@ -162,10 +190,10 @@ export default class Pagination extends Component{
   }
 
   internalPageCount(){
-    if (typeof this.props.total === 'number') {
-      return Math.ceil(this.props.total / this.state.internalPageSize);
-    } else if (typeof this.props.pageCount === 'number') {
-      return this.props.pageCount;
+    if (typeof this.state.total === 'number') {
+      return Math.ceil(this.state.total / this.state.internalPageSize);
+    } else if (typeof this.state.pageCount === 'number') {
+      return this.state.pageCount;
     }
     return null;
   }
@@ -199,9 +227,13 @@ export default class Pagination extends Component{
   onSizeChange(val){
     if (val !== this.state.internalPageSize) {
       val = parseInt(val, 10);
+
       this.setState({
         internalPageSize: val
       }, ()=>{
+        this.setState({
+          internalCurrentPage: this.getValidCurrentPage(this.state.internalCurrentPage)
+        });
         const { onSizeChange } = this.props;
         onSizeChange && onSizeChange(val);
       });
@@ -245,7 +277,7 @@ export default class Pagination extends Component{
               internalPageSize={ internalPageSize }
               pageSizes={ this.props.pageSizes }
               onSizeChange={ this.onSizeChange.bind(this) }/>,
-      total: <Total key='total' total={ this.props.total }/>
+      total: <Total key='total' total={ this.state.total }/>
     }
 
     components.forEach(compo => {
@@ -270,7 +302,6 @@ Pagination.propTypes = {
   currentPage: PropTypes.number,
   layout: PropTypes.string,
   pageSizes: PropTypes.array,
-  small: PropTypes.bool,
 
   //Event
   onCurrentChange: PropTypes.func,

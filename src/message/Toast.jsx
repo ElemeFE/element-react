@@ -35,7 +35,7 @@ export default class Toast extends Component {
     this.setState({
       visible: false
     }, () => {
-      this.props.onClose();
+      this.props.willUnmount();
     });
   }
 
@@ -50,12 +50,15 @@ export default class Toast extends Component {
   }
 
   render() {
+    const { iconClass, customClass } = this.props;
+
     return (
       <Transition name="el-message-fade" duration="300">
-        <View key={Math.random()} show={this.state.visible}>
-          <div className="el-message" onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
-            <img className="el-message__icon" src={icons[this.props.type]} />
-            <div className="el-message__group">
+        <View key={this.state.visible} show={this.state.visible}>
+          <div className={this.classNames('el-message', customClass)} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
+            { !iconClass && <img className="el-message__img" src={icons[this.props.type]} /> }
+            <div className={this.classNames('el-message__group', { 'is-with-icon': iconClass })}>
+              { iconClass && <i className={this.classNames('el-message__icon', iconClass)}></i> }
               <p>{this.props.message}</p>
               { this.props.showClose && <div className="el-message__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div> }
             </div>
@@ -71,9 +74,8 @@ Toast.propTypes = {
   message: PropTypes.string.isRequired,
   duration: PropTypes.number,
   showClose: PropTypes.bool,
-/* eslint-disable */
-  onClose: PropTypes.func
-/* eslint-enable */
+  customClass: PropTypes.string,
+  iconClass: PropTypes.string
 }
 
 Toast.defaultProps = {

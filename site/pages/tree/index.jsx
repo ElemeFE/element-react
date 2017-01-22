@@ -1,11 +1,12 @@
-import React from 'react';
 import Markdown from '../../../libs/markdown';
-import template from '../../docs/zh-CN/tree.md';
 
 import './style.scss';
 
-export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="Tree">{template}</Markdown>
+export default class Tree extends Markdown {
+  document(locale) {
+    switch (locale) {
+      default:
+        return require('../../docs/zh-CN/tree.md');
+    }
   }
 }

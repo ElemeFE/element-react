@@ -88,6 +88,14 @@ export function debounce(func, delayms){
   }
 }
 
+export function pick(obj, keys){
+  require_condition(obj != null && Array.isArray(keys))
+  
+  const r = {}
+  keys.forEach(e=> r[e]= obj[e])
+  return r
+}
+
 export {default as DateUtils} from './date'
 export * from './popper-mixins'
 export {IDGenerator} from './IDGenerator'

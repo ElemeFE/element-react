@@ -1,11 +1,12 @@
-import React from 'react';
 import Markdown from '../../../libs/markdown';
-import template from '../../docs/zh-CN/rate.md';
 
 import './style.scss';
 
-export default class Playground extends React.Component {
-  render() {
-    return <Markdown context={this} component="Rate">{template}</Markdown>
+export default class Rate extends Markdown {
+  document(locale) {
+    switch (locale) {
+      default:
+        return require('../../docs/zh-CN/rate.md');
+    }
   }
 }

@@ -1,7 +1,8 @@
 # Element React
 
-[![npm version](https://badge.fury.io/js/element-react.svg)](https://badge.fury.io/js/element-react)
 ![](https://travis-ci.org/eleme/element-react.svg?branch=master)
+![](https://img.shields.io/npm/v/element-react.svg)
+![](https://img.shields.io/npm/dm/element-react.svg)
 
 [Element](https://github.com/ElemeFE/element) was initially written in [Vue](https://vuejs.org/), which has many elegant UI components, but we also love [React](https://facebook.github.io/react/), so we forked it for the React community.
 

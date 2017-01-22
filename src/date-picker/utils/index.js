@@ -1,6 +1,6 @@
-import {DateUtils} from '../../../libs/utils';
+import { DateUtils } from '../../../libs/utils';
 
-const newArray = function(start, end) {
+const newArray = function (start, end) {
   let result = [];
   for (let i = start; i <= end; i++) {
     result.push(i);
@@ -8,23 +8,31 @@ const newArray = function(start, end) {
   return result;
 };
 
-export const toDate = function(date) {
-  date = new Date(date);
-  if (isNaN(date.getTime())) return null;
-  return date;
+export const equalDate = function (dateA, dateB) {
+  return dateA === dateB || new Date(dateA).getTime() === new Date(dateB).getTime();
 };
 
-export const formatDate = function(date, format) {
+export const toDate = function (date) {
+  return isDate(date) ? new Date(date) : null;
+};
+
+export const isDate = function (date) {
+  date = new Date(date);
+  if (isNaN(date.getTime())) return false;
+  return true;
+};
+
+export const formatDate = function (date, format) {
   date = toDate(date);
   if (!date) return '';
   return DateUtils.format(date, format || 'yyyy-MM-dd');
 };
 
-export const parseDate = function(string, format) {
+export const parseDate = function (string, format) {
   return DateUtils.parse(string, format || 'yyyy-MM-dd');
 };
 
-export const getDayCountOfMonth = function(year, month) {
+export const getDayCountOfMonth = function (year, month) {
   if (month === 3 || month === 5 || month === 8 || month === 10) {
     return 30;
   }
@@ -40,7 +48,7 @@ export const getDayCountOfMonth = function(year, month) {
   return 31;
 };
 
-export const getFirstDayOfMonth = function(date) {
+export const getFirstDayOfMonth = function (date) {
   const temp = new Date(date.getTime());
   temp.setDate(1);
   return temp.getDay();
@@ -48,20 +56,25 @@ export const getFirstDayOfMonth = function(date) {
 
 export const DAY_DURATION = 86400000;
 
-export const getStartDateOfMonth = function(year, month) {
+export const getStartDateOfMonth = function (year, month, offsetWeek = 0) {
   const result = new Date(year, month, 1);
   const day = result.getDay();
 
-  if (day === 0) {
+  if (day === offsetWeek) {
     result.setTime(result.getTime() - DAY_DURATION * 7);
   } else {
-    result.setTime(result.getTime() - DAY_DURATION * day);
+    const offset = getOffsetToWeekOrigin(day, offsetWeek);
+    result.setTime(result.getTime() - DAY_DURATION * offset);
   }
 
   return result;
 };
 
-export const getWeekNumber = function(src) {
+export function getOffsetToWeekOrigin(day, offsetWeek = 0) {
+  return day >= offsetWeek ? day - offsetWeek : (7 - offsetWeek) + day;
+}
+
+export const getWeekNumber = function (src) {
   const date = new Date(src.getTime());
   date.setHours(0, 0, 0, 0);
   // Thursday in current week decides the year.
@@ -72,7 +85,19 @@ export const getWeekNumber = function(src) {
   return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
 };
 
-export const prevMonth = function(src) {
+// http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-number
+export function getDateOfISOWeek(w, y) {
+  var simple = new Date(y, 0, 1 + (w - 1) * 7);
+  var dow = simple.getDay();
+  var ISOweekStart = simple;
+  if (dow <= 4)
+    ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+  else
+    ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+  return ISOweekStart;
+}
+
+export const prevMonth = function (src) {
   const year = src.getFullYear();
   const month = src.getMonth();
   const date = src.getDate();
@@ -91,7 +116,7 @@ export const prevMonth = function(src) {
   return new Date(src.getTime());
 };
 
-export const nextMonth = function(src) {
+export const nextMonth = function (src) {
   const year = src.getFullYear();
   const month = src.getMonth();
   const date = src.getDate();
@@ -110,7 +135,7 @@ export const nextMonth = function(src) {
   return new Date(src.getTime());
 };
 
-export const getRangeHours = function(ranges) {
+export const getRangeHours = function (ranges) {
   const hours = [];
   let disabledHours = [];
 
@@ -133,7 +158,7 @@ export const getRangeHours = function(ranges) {
   return hours;
 };
 
-export const limitRange = function(date, ranges) {
+export const limitRange = function (date, ranges) {
   if (!ranges || !ranges.length) return date;
 
   const len = ranges.length;
@@ -157,3 +182,24 @@ export const limitRange = function(date, ranges) {
 
   return date < minDate ? minDate : maxDate;
 };
+
+
+export function hasClass(target, classname) {
+  return target.classList.contains(classname)
+}
+
+export const SELECTION_MODES = {
+  YEAR: 'year',
+  MONTH: 'month',
+  WEEK: 'week',
+  DAY: 'day',
+  RANGE: 'range'
+}
+
+export function deconstructDate(date) {
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth(),
+    week: getWeekNumber(date)
+  }
+}

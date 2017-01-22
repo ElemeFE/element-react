@@ -14,13 +14,13 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _babelStandalone = require('babel-standalone');
-
 var _marked = require('marked');
 
 var _marked2 = _interopRequireDefault(_marked);
 
-var _highlight2 = require('../../vendor/highlight');
+var _babelStandalone = require('babel-standalone');
+
+var _highlight2 = require('./highlight');
 
 var _highlight3 = _interopRequireDefault(_highlight2);
 
@@ -32,8 +32,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Canvas = function (_Component) {
-  _inherits(Canvas, _Component);
+var Canvas = function (_React$Component) {
+  _inherits(Canvas, _React$Component);
 
   function Canvas(props) {
     _classCallCheck(this, Canvas);
@@ -50,12 +50,7 @@ var Canvas = function (_Component) {
     key: 'componentWillMount',
     value: function componentWillMount() {
       _marked2.default.setOptions({
-        highlight: function highlight(code, lang) {
-          if (/^js/i.test(lang)) {
-            lang = 'javascript';
-            return _highlight3.default.highlightAuto(code, [lang]).value;
-          }
-
+        highlight: function highlight(code) {
           return _highlight3.default.highlightAuto(code).value;
         }
       });
@@ -94,7 +89,7 @@ var Canvas = function (_Component) {
           if (div instanceof HTMLElement) {
             require(['../../src'], function (Element) {
               var args = ['context', 'React'],
-                  argv = [_this2.props.context, _react2.default];
+                  argv = [_this2, _react2.default];
 
               for (var key in Element) {
                 args.push(key);
@@ -115,38 +110,20 @@ var Canvas = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var name = this.props.component.toLowerCase();
       var document = this.props.children.match(/([^]*)\n?(```[^]+```)/);
       var source = document[2].match(/```(.*)\n([^]+)```/);
       var description = (0, _marked2.default)(document[1]);
       var highlight = (0, _marked2.default)(document[2]);
-
-      var code = source[2];
-
-      if (!/^(js|javascript|jsfunc)/i.test(source[1])) {
-        code = '<div>' + source[2] + '</div>';
-      }
-
-      var component = void 0;
-      // hacking through restrictions, so i can create React class in markdown.
-      // see time-picker.md demo
-      if (/^jsfunc/i.test(source[1])) {
-        code = '\n        __rtn = (function() {\n          ' + code + '\n        })();\n      ';
-        component = (0, _babelStandalone.transform)(code, {
-          presets: ['es2015', 'react']
-        }).code.replace('__rtn = ', 'return ');
-      } else {
-        component = (0, _babelStandalone.transform)(code.replace(/this/g, 'context'), {
-          presets: ['es2015', 'react']
-        }).code.replace(/React.createElement/, 'return React.createElement');
-      }
+      var component = (0, _babelStandalone.transform)('\n      class Demo extends React.Component {\n        ' + source[2] + '\n      }\n\n      __rtn = (function() {\n        return <Demo {...context.props} />\n      })();\n    ', {
+        presets: ['es2015', 'react']
+      }).code.replace('__rtn = ', 'return ');
 
       this.shouldUpdate = component != this.component || this.component === undefined;
       this.component = component;
 
       return _react2.default.createElement(
         'div',
-        { className: 'demo-block demo-box demo-' + name },
+        { className: 'demo-block demo-box demo-' + this.props.name },
         _react2.default.createElement('div', { className: 'source', ref: 'source' }),
         _react2.default.createElement(
           'div',
@@ -180,19 +157,10 @@ var Canvas = function (_Component) {
   }]);
 
   return Canvas;
-}(_react.Component);
-
-/* eslint-disable */
-
+}(_react2.default.Component);
 
 var _default = Canvas;
 exports.default = _default;
-Canvas.propTypes = {
-  component: _react.PropTypes.string.isRequired,
-  context: _react.PropTypes.any
-};
-/* eslint-enable */
-
 ;
 
 var _temp = function () {

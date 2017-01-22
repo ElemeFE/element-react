@@ -30,10 +30,15 @@ var Loading = function (_Component) {
   }
 
   _createClass(Loading, [{
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.enableScroll();
+    }
+  }, {
     key: 'getStyle',
     value: function getStyle() {
       if (this.props.fullscreen) {
-        document.body.style.setProperty('overflow', 'hidden');
+        this.disableScroll();
 
         return {
           position: 'fixed',
@@ -41,10 +46,10 @@ var Loading = function (_Component) {
           right: 0,
           bottom: 0,
           left: 0,
-          zIndex: 10002
+          zIndex: 99999
         };
       } else {
-        document.body.style.removeProperty('overflow');
+        this.enableScroll();
 
         return {
           position: 'relative'
@@ -52,29 +57,45 @@ var Loading = function (_Component) {
       }
     }
   }, {
+    key: 'disableScroll',
+    value: function disableScroll() {
+      document.body.style.setProperty('overflow', 'hidden');
+    }
+  }, {
+    key: 'enableScroll',
+    value: function enableScroll() {
+      document.body.style.removeProperty('overflow');
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          loading = _props.loading,
+          fullscreen = _props.fullscreen,
+          text = _props.text;
+
+
       return _react2.default.createElement(
         'div',
         { style: this.style(this.getStyle()), className: this.className() },
-        _react2.default.createElement(
+        loading && _react2.default.createElement(
           'div',
           {
             style: {
+              display: 'block',
               position: 'absolute',
-              zIndex: 10001,
+              zIndex: 657,
               backgroundColor: 'rgba(255, 255, 255, 0.901961)',
               margin: 0,
               top: 0,
               right: 0,
               bottom: 0,
-              left: 0,
-              display: 'block'
+              left: 0
             } },
           _react2.default.createElement(
             'div',
             { className: this.classNames('el-loading-spinner', {
-                'is-full-screen': this.props.fullscreen
+                'is-full-screen': fullscreen
               }), style: {
                 position: 'absolute',
                 display: 'inline-block'
@@ -84,10 +105,10 @@ var Loading = function (_Component) {
               { className: 'circular', viewBox: '25 25 50 50' },
               _react2.default.createElement('circle', { className: 'path', cx: '50', cy: '50', r: '20', fill: 'none' })
             ),
-            this.props.text && _react2.default.createElement(
+            text && _react2.default.createElement(
               'p',
               { className: 'el-loading-text' },
-              this.props.text
+              text
             )
           )
         ),
@@ -104,8 +125,13 @@ exports.default = _default;
 
 
 Loading.propTypes = {
+  loading: _libs.PropTypes.bool,
   fullscreen: _libs.PropTypes.bool,
   text: _libs.PropTypes.string
+};
+
+Loading.defaultProps = {
+  loading: true
 };
 ;
 

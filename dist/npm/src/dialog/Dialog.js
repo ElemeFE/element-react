@@ -62,6 +62,11 @@ var Dialog = function (_Component) {
       }
     }
   }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      document.body.style.removeProperty('overflow');
+    }
+  }, {
     key: 'onKeyDown',
     value: function onKeyDown(e) {
       if (this.props.closeOnPressEscape && e.keyCode === 27) {

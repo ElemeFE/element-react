@@ -166,7 +166,7 @@ var MessageBox = function (_Component) {
             { name: 'msgbox-fade', duration: '300' },
             _react2.default.createElement(
               _libs.View,
-              { key: 'el-message-box', show: this.state.visible },
+              { key: this.state.visible, show: this.state.visible },
               _react2.default.createElement(
                 'div',
                 { className: 'el-message-box__wrapper' },
@@ -251,7 +251,7 @@ var MessageBox = function (_Component) {
           { name: 'v-modal', duration: '200' },
           _react2.default.createElement(
             _libs.View,
-            { key: 'v-modal', show: this.state.visible },
+            { key: this.state.visible, show: this.state.visible },
             _react2.default.createElement('div', { className: 'v-modal', style: { zIndex: 1006 } })
           )
         )

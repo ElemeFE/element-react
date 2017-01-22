@@ -22,8 +22,6 @@ var _TimeRangePanel = require('./panel/TimeRangePanel');
 
 var _TimeRangePanel2 = _interopRequireDefault(_TimeRangePanel);
 
-var _constants = require('./constants');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -59,28 +57,22 @@ var TimeRangePicker = function (_BasePicker) {
   _createClass(TimeRangePicker, [{
     key: 'onSelectionChange',
     value: function onSelectionChange(start, end) {
-      this.refs.reference.setSelectionRange(start, end);
-      this.refs.reference.focus();
+      this.refs.inputRoot.refs.input.setSelectionRange(start, end);
+      this.refs.inputRoot.refs.input.focus();
     }
   }, {
-    key: 'pickerPannel',
-    value: function pickerPannel(state, props) {
+    key: 'pickerPanel',
+    value: function pickerPanel(state, props) {
       var _this2 = this;
 
       return _react2.default.createElement(_TimeRangePanel2.default, _extends({}, props, {
-        key: 'time-range-picker-panel',
         currentDates: state.value,
         onCancel: function onCancel() {
           return _this2.setState({ pickerVisible: false });
         },
         onPicked: this.onPicked.bind(this),
-        onSelectRangeChange: this._onSelectionChange,
-        getPopperRefElement: function getPopperRefElement() {
-          return _this2.refs.reference;
-        },
-        popperMixinOption: {
-          placement: _constants.PLACEMENT_MAP[props.align] || _constants.PLACEMENT_MAP.left
-        } }));
+        onSelectRangeChange: this._onSelectionChange
+      }));
     }
   }]);
 

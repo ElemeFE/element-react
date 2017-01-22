@@ -10,6 +10,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _style = require('../../libs/utils/style');
+
+var _style2 = _interopRequireDefault(_style);
+
 var _libs = require('../../libs');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -19,6 +23,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+_style2.default.reset('\n  .el-select-dropdown {\n    position: absolute !important;\n  }\n');
 
 var Dropdown = function (_Component) {
   _inherits(Dropdown, _Component);
@@ -56,7 +62,7 @@ var Dropdown = function (_Component) {
         { ref: 'popper', className: this.className('el-select-dropdown', {
             'is-multiple': this.parent().props.multiple
           }), style: this.style({
-            width: '100%'
+            minWidth: this.parent().state.inputWidth
           }) },
         this.props.children
       );

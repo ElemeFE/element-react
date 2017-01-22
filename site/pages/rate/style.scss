@@ -19,16 +19,22 @@
 }
 
 .demo-box.demo-rate .intro-block {
- padding: 0;
+  overflow: hidden;
+  margin: -24px;
+  padding: 0;
 }
 
 .demo-rate .intro-block .block {
- padding: 30px 24px;
- overflow: hidden;
- border-bottom: solid 1px #EFF2F6;
- &:last-child {
+  padding: 30px 0;
+  text-align: center;
+  border-right: 1px solid #eff2f6;
+  float: left;
+  width: 50%;
+  box-sizing: border-box;
+
+  &:last-child {
    border-bottom: none;
- }
+  }
 }
 
 .demo-rate .intro-block .demonstration {

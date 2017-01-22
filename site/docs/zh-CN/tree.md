@@ -8,47 +8,57 @@
 基础的树形结构展示。
 
 ::: demo 基础的树形结构展示
-```javascript
-let data = [{
-  label: '一级 1',
-  children: [{
-    label: '二级 1-1'
-  }]
-}, {
-  label: '一级 2',
-  children: [{
-    label: '二级 2-1'
-  }, {
-    label: '二级 2-2'
-  }]
-}, {
-  label: '一级 3',
-  children: [{
-    label: '3.1',
-    children:[
-      {label: '3.1.1'},
-      {label: '3.1.2'}
-    ]
-  }, {
-    label: '3.2'
-  }]
-}];
-let options = {
-  children: 'children',
-  label: 'label'
-};
-//todo - move onCheckChange 
-<Tree 
-    data={data} 
-    options={options} 
-    onCheckChange={(data, checked, indeterminate)=>{
-        console.debug('onCheckChange: ', data, checked, indeterminate)}
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    data: [{
+      label: '一级 1',
+      children: [{
+        label: '二级 1-1'
+      }]
+    }, {
+      label: '一级 2',
+      children: [{
+        label: '二级 2-1'
+      }, {
+        label: '二级 2-2'
+      }]
+    }, {
+      label: '一级 3',
+      children: [{
+        label: '3.1',
+        children:[
+          {label: '3.1.1'},
+          {label: '3.1.2'}
+        ]
+      }, {
+        label: '3.2'
+      }]
+    }],
+    options: {
+      children: 'children',
+      label: 'label'
     }
-    onNodeClicked={(data, nodeModel, reactElement, treeNode)=>{
+  }
+}
+
+render() {
+  return (
+    <Tree
+      data={this.state.data}
+      options={this.state.options}
+      highlightCurrent={true}
+      onCheckChange={(data, checked, indeterminate)=>{
+        console.debug('onCheckChange: ', data, checked, indeterminate)}
+      }
+      onNodeClicked={(data, nodeModel, reactElement, treeNode)=>{
         console.debug('onNodeClicked: ', data, nodeModel, reactElement)
-    }} 
-    highlightCurrent={true}
+      }}
     />
+  )
+}
 ```
 :::
 
@@ -58,80 +68,77 @@ let options = {
 适用于需要选择层级时使用。在下例中，由于在点击时才进行该层数据的获取，导致层级不可预知，如果没有下层数据，则点击后下拉按钮会消失。
 
 ::: demo
-```jsfunc
-class TreeCheckDemo extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      regions: [{
-        'name': 'region1'
-      }, {
-        'name': 'region2'
-      }]
-    }
-
-    this.options = {
-      label: 'name',
-      children: 'zones'
-    }
-    this.count = 1
-
+```js
+constructor(props) {
+  super(props)
+  this.state = {
+    regions: [{
+      'name': 'region1'
+    }, {
+      'name': 'region2'
+    }]
   }
 
-  handleCheckChange(data, checked, indeterminate) {
-    console.log(data, checked, indeterminate);
+  this.options = {
+    label: 'name',
+    children: 'zones'
   }
+  this.count = 1
 
-  loadNode(node, resolve) {
-    if (node.level === -1) {
-      return resolve([{ name: 'region1' }, { name: 'region2' }]);
-    }
-    if (node.level > 4) return resolve([]);
-
-    let hasChild;
-    if (node.data.name === 'region1') {
-      hasChild = true;
-    } else if (node.data.name === 'region2') {
-      hasChild = false;
-    } else {
-      hasChild = node.level <= 2
-    }
-
-    setTimeout(()=> {
-      let data;
-      if (hasChild) {
-        data = [{
-          name: 'zone' + this.count++
-        }, {
-          name: 'zone' + this.count++
-        }];
-      } else {
-        data = [];
-      }
-
-      resolve(data);
-    }, 500);
-  }
-
-  render() {
-    const {regions} = this.state
-    return (
-      <Tree 
-        data={regions} 
-        options={this.options} 
-        isShowCheckbox={true}
-        lazy={true}
-        load={this.loadNode.bind(this)}
-        onCheckChange={this.handleCheckChange.bind(this)}
-        onNodeClicked={(data, nodeModel, reactElement, treeNode)=>{
-            console.debug('onNodeClicked: ', data, nodeModel, reactElement)
-        }} 
-        />
-    )
-  }
 }
 
-return <TreeCheckDemo />
+handleCheckChange(data, checked, indeterminate) {
+  console.log(data, checked, indeterminate);
+}
+
+loadNode(node, resolve) {
+  if (node.level === -1) {
+    return resolve([{ name: 'region1' }, { name: 'region2' }]);
+  }
+  if (node.level > 4) return resolve([]);
+
+  let hasChild;
+  if (node.data.name === 'region1') {
+    hasChild = true;
+  } else if (node.data.name === 'region2') {
+    hasChild = false;
+  } else {
+    hasChild = node.level <= 2
+  }
+
+  setTimeout(()=> {
+    let data;
+    if (hasChild) {
+      data = [{
+        name: 'zone' + this.count++
+      }, {
+        name: 'zone' + this.count++
+      }];
+    } else {
+      data = [];
+    }
+
+    resolve(data);
+  }, 500);
+}
+
+render() {
+  const { regions } = this.state
+
+  return (
+    <Tree
+      data={regions}
+      options={this.options}
+      isShowCheckbox={true}
+      lazy={true}
+      load={this.loadNode.bind(this)}
+      onCheckChange={this.handleCheckChange.bind(this)}
+      onNodeClicked={(data, nodeModel, reactElement, treeNode)=>{
+        console.debug('onNodeClicked: ', data, nodeModel, reactElement)
+      }}
+    />
+  )
+}
 ```
 :::
 
