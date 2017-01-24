@@ -12,7 +12,14 @@ export default class Tooltip extends Component {
   }
 
   componentDidMount() {
-    this.initialPopper();
+    const { popper, reference, arrow } = this.refs;
+    const { placement } = this.props;
+
+    if (arrow) {
+      arrow.setAttribute('x-arrow', '');
+    }
+
+    this.popper = this.popper || new Popper(reference, popper, { placement });
   }
 
   componentWillReceiveProps(props) {
@@ -24,18 +31,9 @@ export default class Tooltip extends Component {
   }
 
   componentDidUpdate() {
-    this.initialPopper();
-  }
-
-  initialPopper() {
-    const { popper, reference, arrow } = this.refs;
-    const { placement } = this.props;
-
-    if (arrow) {
-      arrow.setAttribute('x-arrow', '');
+    if (this.popper) {
+      this.popper.update();
     }
-
-    this.popper = new Popper(reference, popper, { placement });
   }
 
   showPopper() {
