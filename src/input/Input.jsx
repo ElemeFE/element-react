@@ -151,8 +151,6 @@ Input.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   onIconClick: PropTypes.func,
-  onMouseEnter: PropTypes.func,
-  onMouseLeave: PropTypes.func,
 
   // autoComplete
   autoComplete: PropTypes.string,
