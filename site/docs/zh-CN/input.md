@@ -414,8 +414,9 @@ render() {
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | type         | 类型   | string  | text/textarea | text |
 | value         | 绑定值           | string, number  | — | — |
-| maxlength     | 最大输入长度      | number          |  —  | — |
-| minlength     | 最小输入长度      | number          | — | — |
+| defaultValue  | 默认值           | string, number  | — | — |
+| maxLength     | 最大输入长度      | number          |  —  | — |
+| minLength     | 最小输入长度      | number          | — | — |
 | placeholder   | 输入框占位文本    | string          | — | — |
 | disabled      | 禁用            | boolean         | — | false   |
 | size          | 输入框尺寸，只在 `type!="textarea"` 时有效      | string          | large, small, mini  | — |
@@ -426,11 +427,7 @@ render() {
 ### Input Events
 | 事件名称 | 说明 | 回调参数 |
 |---------|--------|---------|
-| handleIconClick | 点击 Input 内的图标时触发 | event |
-| handleInput | input输入内容时触发 | event |
-| handlePressEnter | enter键被按下时触发 | event |
-| handleFocus | 输入框获得焦点时触发 | event |
-| handleBlur | 输入框失去焦点时触发 | event |
+| onIconClick | 点击 Input 内的图标时触发 | event |
 
 ### Autocomplete API
 
