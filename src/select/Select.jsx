@@ -58,10 +58,12 @@ class Select extends Component {
   }
 
   componentDidMount() {
-    this.findDOMNodes();
-    this.handleValueChange();
-
     addResizeListener(this.refs.root, this.resetInputWidth.bind(this));
+
+    this.reference = ReactDOM.findDOMNode(this.refs.reference);
+    this.popper = ReactDOM.findDOMNode(this.refs.popper);
+
+    this.handleValueChange();
   }
 
   componentWillReceiveProps(props) {
@@ -104,27 +106,34 @@ class Select extends Component {
     }
   }
 
-  componentDidUpdate(props, state) {
-    this.findDOMNodes();
+  componentDidUpdate() {
+    const { visible } = this.state;
 
-    if (this.refs.reference) {
-      this.state.inputWidth = this.reference.getBoundingClientRect().width;
+    if (visible) {
+      if (this.popperJS) {
+        this.popperJS.update();
+      } else {
+        this.popperJS = new Popper(this.reference, this.popper, {
+          gpuAcceleration: false
+        });
+      }
+    } else {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
     }
+
+    this.state.inputWidth = this.reference.getBoundingClientRect().width;
   }
 
   componentWillUnMount() {
     if (this.resetInputWidth()){
       removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
     }
-  }
 
-  findDOMNodes() {
-    this.reference = ReactDOM.findDOMNode(this.refs.reference);
-    this.popper = ReactDOM.findDOMNode(this.refs.popper);
-
-    this.popperJS = this.popperJS || new Popper(this.reference, this.popper, {
-      gpuAcceleration: false
-    });
+    if (this.popperJS) {
+      this.popperJS.destroy();
+    }
   }
 
   debounce() {
@@ -207,7 +216,9 @@ class Select extends Component {
         }
       }
 
-      this.popperJS.update();
+      if (this.popperJS) {
+        this.popperJS.update();
+      }
 
       if (filterable) {
         query = selectedLabel;
@@ -330,7 +341,9 @@ class Select extends Component {
     const { multiple, filterable, remote, remoteMethod, filterMethod } = this.props;
     let { voidRemoteQuery, hoverIndex, options, optionsCount } = this.state;
 
-    this.popperJS.update();
+    if (this.popperJS) {
+      this.popperJS.update();
+    }
 
     if (multiple && filterable) {
       this.resetInputHeight();
@@ -498,7 +511,9 @@ class Select extends Component {
 
     input.style.height = Math.max(this.refs.tags.clientHeight + 6, sizeMap[this.props.size] || 36) + 'px';
 
-    this.popperJS.update();
+    if (this.popperJS) {
+      this.popperJS.update();
+    }
   }
 
   resetHoverIndex() {
