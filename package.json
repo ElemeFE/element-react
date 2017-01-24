@@ -1,8 +1,8 @@
 {
   "name": "element-react",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "Element UI for React",
-  "private": true,
+  "private": false,
   "main": "dist/npm/index.js",
   "jsnext:main": "next.js",
   "scripts": {
