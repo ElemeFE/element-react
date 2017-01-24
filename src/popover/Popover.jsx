@@ -47,8 +47,28 @@ export default class Popover extends Component {
         this.reference.addEventListener('mouseup', () => { this.setState({ showPopper: false })});
       }
     }
+  }
 
-    this.initialPopper();
+  componentDidUpdate() {
+    const { showPopper } = this.state;
+
+    if (showPopper) {
+      if (this.popperJS) {
+        this.popperJS.update();
+      } else {
+        if (this.refs.arrow) {
+          this.refs.arrow.setAttribute('x-arrow', '');
+        }
+
+        this.popperJS = new Popper(this.reference, this.refs.popper, {
+          placement: this.props.placement
+        });
+      }
+    } else {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -61,16 +81,10 @@ export default class Popover extends Component {
 
   componentWillUnMount() {
     this.reference.parentNode.replaceChild(this.reference.cloneNode(true), this.reference);
-  }
 
-  initialPopper() {
-    if (this.refs.arrow) {
-      this.refs.arrow.setAttribute('x-arrow', '');
+    if (this.popperJS) {
+      this.popperJS.destroy();
     }
-
-    this.popperJS = new Popper(this.reference, this.refs.popper, {
-      placement: this.props.placement
-    });
   }
 
   handleMouseEnter() {

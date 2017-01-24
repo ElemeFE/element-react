@@ -106,10 +106,12 @@ var Select = function (_Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.findDOMNodes();
-      this.handleValueChange();
-
       (0, _resizeEvent.addResizeListener)(this.refs.root, this.resetInputWidth.bind(this));
+
+      this.reference = _reactDom2.default.findDOMNode(this.refs.reference);
+      this.popper = _reactDom2.default.findDOMNode(this.refs.popper);
+
+      this.handleValueChange();
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -157,12 +159,25 @@ var Select = function (_Component) {
     }
   }, {
     key: 'componentDidUpdate',
-    value: function componentDidUpdate(props, state) {
-      this.findDOMNodes();
+    value: function componentDidUpdate() {
+      var visible = this.state.visible;
 
-      if (this.refs.reference) {
-        this.state.inputWidth = this.reference.getBoundingClientRect().width;
+
+      if (visible) {
+        if (this.popperJS) {
+          this.popperJS.update();
+        } else {
+          this.popperJS = new _popper2.default(this.reference, this.popper, {
+            gpuAcceleration: false
+          });
+        }
+      } else {
+        if (this.popperJS) {
+          this.popperJS.destroy();
+        }
       }
+
+      this.state.inputWidth = this.reference.getBoundingClientRect().width;
     }
   }, {
     key: 'componentWillUnMount',
@@ -170,16 +185,10 @@ var Select = function (_Component) {
       if (this.resetInputWidth()) {
         (0, _resizeEvent.removeResizeListener)(this.refs.root, this.resetInputWidth.bind(this));
       }
-    }
-  }, {
-    key: 'findDOMNodes',
-    value: function findDOMNodes() {
-      this.reference = _reactDom2.default.findDOMNode(this.refs.reference);
-      this.popper = _reactDom2.default.findDOMNode(this.refs.popper);
 
-      this.popperJS = this.popperJS || new _popper2.default(this.reference, this.popper, {
-        gpuAcceleration: false
-      });
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
     }
   }, {
     key: 'debounce',
@@ -282,7 +291,9 @@ var Select = function (_Component) {
           }
         }
 
-        this.popperJS.update();
+        if (this.popperJS) {
+          this.popperJS.update();
+        }
 
         if (filterable) {
           query = selectedLabel;
@@ -449,7 +460,9 @@ var Select = function (_Component) {
           optionsCount = _state5.optionsCount;
 
 
-      this.popperJS.update();
+      if (this.popperJS) {
+        this.popperJS.update();
+      }
 
       if (multiple && filterable) {
         this.resetInputHeight();
@@ -651,7 +664,9 @@ var Select = function (_Component) {
 
       input.style.height = Math.max(this.refs.tags.clientHeight + 6, sizeMap[this.props.size] || 36) + 'px';
 
-      this.popperJS.update();
+      if (this.popperJS) {
+        this.popperJS.update();
+      }
     }
   }, {
     key: 'resetHoverIndex',

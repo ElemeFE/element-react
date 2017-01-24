@@ -11,17 +11,6 @@ export default class Tooltip extends Component {
     }
   }
 
-  componentDidMount() {
-    const { popper, reference, arrow } = this.refs;
-    const { placement } = this.props;
-
-    if (arrow) {
-      arrow.setAttribute('x-arrow', '');
-    }
-
-    this.popper = this.popper || new Popper(reference, popper, { placement });
-  }
-
   componentWillReceiveProps(props) {
     if (props.visible != this.props.visible) {
       this.setState({
@@ -31,8 +20,31 @@ export default class Tooltip extends Component {
   }
 
   componentDidUpdate() {
-    if (this.popper) {
-      this.popper.update();
+    const { showPopper } = this.state;
+
+    if (showPopper) {
+      if (this.popperJS) {
+        this.popperJS.update();
+      } else {
+        const { popper, reference, arrow } = this.refs;
+        const { placement } = this.props;
+
+        if (arrow) {
+          arrow.setAttribute('x-arrow', '');
+        }
+
+        this.popperJS = new Popper(reference, popper, { placement });
+      }
+    } else {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
+    }
+  }
+
+  componentWillUnMount() {
+    if (this.popperJS) {
+      this.popperJS.destroy();
     }
   }
 

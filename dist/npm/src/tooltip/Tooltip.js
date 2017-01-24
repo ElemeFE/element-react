@@ -39,22 +39,6 @@ var Tooltip = function (_Component) {
   }
 
   _createClass(Tooltip, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _refs = this.refs,
-          popper = _refs.popper,
-          reference = _refs.reference,
-          arrow = _refs.arrow;
-      var placement = this.props.placement;
-
-
-      if (arrow) {
-        arrow.setAttribute('x-arrow', '');
-      }
-
-      this.popper = this.popper || new _popper2.default(reference, popper, { placement: placement });
-    }
-  }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
       if (props.visible != this.props.visible) {
@@ -66,8 +50,37 @@ var Tooltip = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      if (this.popper) {
-        this.popper.update();
+      var showPopper = this.state.showPopper;
+
+
+      if (showPopper) {
+        if (this.popperJS) {
+          this.popperJS.update();
+        } else {
+          var _refs = this.refs,
+              popper = _refs.popper,
+              reference = _refs.reference,
+              arrow = _refs.arrow;
+          var placement = this.props.placement;
+
+
+          if (arrow) {
+            arrow.setAttribute('x-arrow', '');
+          }
+
+          this.popperJS = new _popper2.default(reference, popper, { placement: placement });
+        }
+      } else {
+        if (this.popperJS) {
+          this.popperJS.destroy();
+        }
+      }
+    }
+  }, {
+    key: 'componentWillUnMount',
+    value: function componentWillUnMount() {
+      if (this.popperJS) {
+        this.popperJS.destroy();
       }
     }
   }, {
