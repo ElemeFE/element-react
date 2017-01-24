@@ -41,7 +41,18 @@ var Tooltip = function (_Component) {
   _createClass(Tooltip, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.initialPopper();
+      var _refs = this.refs,
+          popper = _refs.popper,
+          reference = _refs.reference,
+          arrow = _refs.arrow;
+      var placement = this.props.placement;
+
+
+      if (arrow) {
+        arrow.setAttribute('x-arrow', '');
+      }
+
+      this.popper = this.popper || new _popper2.default(reference, popper, { placement: placement });
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -55,23 +66,9 @@ var Tooltip = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      this.initialPopper();
-    }
-  }, {
-    key: 'initialPopper',
-    value: function initialPopper() {
-      var _refs = this.refs,
-          popper = _refs.popper,
-          reference = _refs.reference,
-          arrow = _refs.arrow;
-      var placement = this.props.placement;
-
-
-      if (arrow) {
-        arrow.setAttribute('x-arrow', '');
+      if (this.popper) {
+        this.popper.update();
       }
-
-      this.popper = new _popper2.default(reference, popper, { placement: placement });
     }
   }, {
     key: 'showPopper',
