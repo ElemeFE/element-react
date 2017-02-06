@@ -5,12 +5,12 @@
 ### 基础用法
 基础的、简洁的标签页。
 
-:::demo Tabs 组件提供了选项卡功能，只需要使用`Tabs`和子元素`Tabs.Pane`即可，在两个元素中，我们分别提供了一系列的属性来方便使用，`Tabs.Pane`中`label`决定了选项卡标题，标签内部写入内容即可。在下例中我们在`Tabs`中设置了`activeName`属性，接受一个`String`值，表明选中的选项卡，在`Tabs.Pane`中可以设置对应的`name`属性，如果没有设置name，则默认值为顺序的`1`/`2`/`3`/`4`。例子选中选项卡2，如果不设置`name`，将`activeName`设为`2`，可以达成相同效果。
+:::demo Tabs 组件提供了选项卡功能，默认选中第一个标签页，你也可以通过 `value` 属性来指定当前选中的标签页。
 
 ```js
 render() {
   return (
-    <Tabs activeName="1" onTabClick={ (tab) => console.log(tab.props.name) }>
+    <Tabs activeName="2" onTabClick={ (tab) => console.log(tab.props.name) }>
       <Tabs.Pane label="用户管理" name="1">用户管理</Tabs.Pane>
       <Tabs.Pane label="配置管理" name="2">配置管理</Tabs.Pane>
       <Tabs.Pane label="角色管理" name="3">角色管理</Tabs.Pane>
@@ -24,7 +24,7 @@ render() {
 ### 选项卡样式
 选项卡样式的标签页。
 
-:::demo 只需要设置`type`属性即可，如果需要标签风格，将其设置为`card`。
+:::demo 只需要设置 `type` 属性为 `card` 就可以使选项卡改变为标签风格。
 
 ```js
 render() {
@@ -43,7 +43,7 @@ render() {
 ### 可关闭
 可以关闭标签页。
 
-:::demo 在`Tabs`中设置`closable`属性，接受一个`Boolean`，设置为`true`时为可关闭。
+:::demo 通过设置 `closable` 属性来打开 `Tabs` 的可关闭标签效果, `closable` 也可以设置在 `Tab Panel` 中实现部分标签页的可关闭效果。
 
 ```js
 render() {
@@ -78,12 +78,91 @@ render() {
 ```
 :::
 
+### 自定义标签页
+可以通过具名 slot 来实现自定义标签页的内容。
+
+:::demo
+
+```js
+render() {
+  return (
+    <Tabs type="border-card" activeName="1">
+      <Tabs.Pane name="1">
+        <span data-solt='label'><Icon name="date" /> 用户管理</span>
+        用户管理
+      </Tabs.Pane>
+      <Tabs.Pane label="配置管理" name="2">配置管理</Tabs.Pane>
+      <Tabs.Pane label="角色管理" name="3">角色管理</Tabs.Pane>
+      <Tabs.Pane label="定时补偿任务" name="4">定时补偿任务</Tabs.Pane>
+    </Tabs>
+  )
+}
+```
+:::
+
+### 动态添加标签页
+展示如何通过触发器来动态增加标签页。
+
+:::demo
+
+```js
+constructor() {
+  super();
+  this.state = {
+    tabs: [{
+      title: 'Tab 1',
+      name: 'Tab 1',
+      content: 'Tab 1 content',
+    }, {
+      title: 'Tab 2',
+      name: 'Tab 2',
+      content: 'Tab 2 content',
+    }],
+    tabIndex: 2,
+  }
+}
+
+addTab() {
+  const { tabs, tabIndex } = this.state;
+  const index = tabIndex + 1;
+
+  tabs.push({
+    title: 'new Tab',
+    name: 'Tab ' + index,
+    content: 'new Tab content',
+  })
+  this.setState({
+    tabs,
+    tabIndex: index,
+  });
+}
+
+render() {
+  return (
+    <div>
+      <div style={{marginBottom: '20px'}}>
+        <Button size="small" onClick={() => this.addTab()}>add tab</Button>
+      </div>
+      <Tabs type="card">
+        {
+          this.state.tabs.map((item, index) => {
+            return <Tabs.Pane key={index} closable label={item.title} name={item.name}>{item.content}</Tabs.Pane>
+          })
+        }
+      </Tabs>
+    </div>
+  )
+}
+```
+:::
+
 ### Tabs Attributes
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | type          | 风格类型      | string         |   card, border-card            |    —     |
 | closable          |  标签是否可关闭    | boolean  |  true, false             |     false    |
 | activeName       | 选中选项卡的 name    | string  |  —  |  第一个选项卡的 name |
+| value       | 绑定值，选中选项卡的name    | string  |  —  |  第一个选项卡的 name |
 
 ### Tabs Events
 | 事件名称          | 说明            | 回调参数            |
@@ -95,4 +174,6 @@ render() {
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | label          | 选项卡标题      | string          |          —             |    —     |
+| disabled       | 是否禁用    | boolean  |  —  |  false |
 | name          |  与选项卡 activeName 对应的标识符，表示选项卡别名    | string  |         —              |     该选项卡在选项卡列表中的顺序值，如第一个选项卡则为'1'    |
+| closable       | 标签是否可关闭    | boolean  |  —  |  false |
