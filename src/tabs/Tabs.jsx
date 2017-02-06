@@ -26,6 +26,12 @@ export default class Tabs extends Component {
         currentName: nextProps.activeName,
       }, () => this.calcBarStyle());
     }
+
+    if (nextProps.children !== this.props.children) {
+      this.setState({
+        children: React.Children.toArray(nextProps.children),
+      });
+    }
   }
 
   handleTabRemove(tab, index, e) {
@@ -53,6 +59,10 @@ export default class Tabs extends Component {
   }
 
   handleTabClick(tab, e) {
+    if (tab.props.disabled) {
+      return false;
+    }
+
     this.setState({
       currentName: tab.props.name,
     }, () => {
@@ -115,13 +125,13 @@ export default class Tabs extends Component {
                 'el-tabs__item': true,
                 'is-active': name === currentName,
                 'is-disabled': disabled,
-                'is-closable': closable,
+                'is-closable': closable || item.props.closable,
               });
 
               return (
                 <div key={ `el-tabs__item-${index}` } ref={ (tab) => tab && this.tabs.push(tab) } name={ name } className={ tabCls } onClick={ (e) => this.handleTabClick(item, e) }>
-                  { label }
-                  <View show={ closable }>
+                  { label || (typeof item.props.children === 'object' && item.props.children[0].props['data-solt'] === 'label' ? item.props.children[0] : '') }
+                  <View show={ closable || item.props.closable }>
                     <span className="el-icon-close" onClick={ (e) => this.handleTabRemove(item, index, e) }></span>
                   </View>
                 </div>
