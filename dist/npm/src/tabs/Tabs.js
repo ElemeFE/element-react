@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -59,6 +61,12 @@ var Tabs = function (_Component) {
           return _this2.calcBarStyle();
         });
       }
+
+      if (nextProps.children !== this.props.children) {
+        this.setState({
+          children: _react2.default.Children.toArray(nextProps.children)
+        });
+      }
     }
   }, {
     key: 'handleTabRemove',
@@ -92,6 +100,10 @@ var Tabs = function (_Component) {
     key: 'handleTabClick',
     value: function handleTabClick(tab, e) {
       var _this3 = this;
+
+      if (tab.props.disabled) {
+        return false;
+      }
 
       this.setState({
         currentName: tab.props.name
@@ -174,7 +186,7 @@ var Tabs = function (_Component) {
               'el-tabs__item': true,
               'is-active': name === currentName,
               'is-disabled': disabled,
-              'is-closable': closable
+              'is-closable': closable || item.props.closable
             });
 
             return _react2.default.createElement(
@@ -184,10 +196,10 @@ var Tabs = function (_Component) {
                 }, name: name, className: tabCls, onClick: function onClick(e) {
                   return _this5.handleTabClick(item, e);
                 } },
-              label,
+              label || (_typeof(item.props.children) === 'object' && item.props.children[0].props['data-solt'] === 'label' ? item.props.children[0] : ''),
               _react2.default.createElement(
                 _libs.View,
-                { show: closable },
+                { show: closable || item.props.closable },
                 _react2.default.createElement('span', { className: 'el-icon-close', onClick: function onClick(e) {
                     return _this5.handleTabRemove(item, index, e);
                   } })

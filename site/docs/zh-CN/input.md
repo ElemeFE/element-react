@@ -423,11 +423,13 @@ render() {
 | icon          | 输入框尾部图标    | string/ReactElement          | — | — |
 | rows          | 输入框行数，只对 `type="textarea"` 有效  |  number | — |  2   |
 | autosize      | 自适应内容高度，只对 `type="textarea"` 有效，可传入对象，如，{ minRows: 2, maxRows: 6 }  |  boolean/object | — |  false   |
-
-### Input Events
-| 事件名称 | 说明 | 回调参数 |
-|---------|--------|---------|
-| onIconClick | 点击 Input 内的图标时触发 | event |
+| autoComplete      | 原生属性，自动补全  |  string | on, off |  off   |
+| name      | 原生属性  |  string | - |  -   |
+| max      | 原生属性，设置最大值  |  * | - |  -   |
+| min      | 原生属性，设置最小值  |  * | - |  -   |
+| resize      | 控制是否能被用户缩放  |  string | none, both, horizontal, vertical |  -   |
+| autofocus      | 原生属性，自动获取焦点  |  boolean | - |  false   |
+| onIconClick | 点击 Input 内的图标的钩子函数 | function | — | — |
 
 ### Autocomplete API
 
@@ -438,6 +440,8 @@ render() {
 | value         | 必填值输入绑定值   | string  | — | — |
 | customItem  | 通过该参数指定自定义的输入建议列表项的组件名 | string  | — | — |
 | fetchSuggestions | 返回输入建议的方法，仅当你的输入建议数据 resolve 时，通过调用 callback(data:[]) 来返回它  | Function(queryString, callback)  | — | — |
+| popperClass | Autocomplete 下拉列表的类名  | string  | — | - |
+| triggerOnFocus | 是否在输入框 focus 时显示建议列表  | boolean  | — | true |
 
 ### Autocomplete Events
 | 事件名称 | 说明 | 回调参数 |

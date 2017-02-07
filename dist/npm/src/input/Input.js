@@ -222,6 +222,8 @@ Input.propTypes = {
   onBlur: _libs.PropTypes.func,
   onChange: _libs.PropTypes.func,
   onIconClick: _libs.PropTypes.func,
+  onMouseEnter: _libs.PropTypes.func,
+  onMouseLeave: _libs.PropTypes.func,
 
   // autoComplete
   autoComplete: _libs.PropTypes.string,
