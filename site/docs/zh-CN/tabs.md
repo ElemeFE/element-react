@@ -85,12 +85,11 @@ render() {
 
 ```js
 render() {
+  const label = <span><Icon name="date" /> 用户管理</span>
+
   return (
     <Tabs type="border-card" activeName="1">
-      <Tabs.Pane name="1">
-        <span data-solt='label'><Icon name="date" /> 用户管理</span>
-        用户管理
-      </Tabs.Pane>
+      <Tabs.Pane label={label} name="1">用户管理</Tabs.Pane>
       <Tabs.Pane label="配置管理" name="2">配置管理</Tabs.Pane>
       <Tabs.Pane label="角色管理" name="3">角色管理</Tabs.Pane>
       <Tabs.Pane label="定时补偿任务" name="4">定时补偿任务</Tabs.Pane>
@@ -173,7 +172,7 @@ render() {
 ### Tabs.Pane Attributes
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
-| label          | 选项卡标题      | string          |          —             |    —     |
+| label          | 选项卡标题      | string,node          |          —             |    —     |
 | disabled       | 是否禁用    | boolean  |  —  |  false |
 | name          |  与选项卡 activeName 对应的标识符，表示选项卡别名    | string  |         —              |     该选项卡在选项卡列表中的顺序值，如第一个选项卡则为'1'    |
 | closable       | 标签是否可关闭    | boolean  |  —  |  false |
