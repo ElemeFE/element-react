@@ -130,7 +130,7 @@ export default class Tabs extends Component {
 
               return (
                 <div key={ `el-tabs__item-${index}` } ref={ (tab) => tab && this.tabs.push(tab) } name={ name } className={ tabCls } onClick={ (e) => this.handleTabClick(item, e) }>
-                  { label || (typeof item.props.children === 'object' && item.props.children[0].props['data-solt'] === 'label' ? item.props.children[0] : '') }
+                  { label }
                   <View show={ closable || item.props.closable }>
                     <span className="el-icon-close" onClick={ (e) => this.handleTabRemove(item, index, e) }></span>
                   </View>
