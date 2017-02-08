@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -25,29 +23,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var TabPane = function (_Component) {
   _inherits(TabPane, _Component);
 
-  function TabPane(props) {
+  function TabPane() {
     _classCallCheck(this, TabPane);
 
-    var _this = _possibleConstructorReturn(this, (TabPane.__proto__ || Object.getPrototypeOf(TabPane)).call(this, props));
-
-    var content = [];
-
-    if (_typeof(_this.props.children) === 'object') {
-      _this.props.children.forEach(function (item) {
-        if ((typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object' && item.props['data-solt'] === 'label') {
-          return false;
-        }
-
-        content.push(item);
-      });
-    } else {
-      content = _this.props.children;
-    }
-
-    _this.state = {
-      content: content
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (TabPane.__proto__ || Object.getPrototypeOf(TabPane)).apply(this, arguments));
   }
 
   _createClass(TabPane, [{
@@ -56,7 +35,7 @@ var TabPane = function (_Component) {
       return _react2.default.createElement(
         'div',
         { style: this.style(), className: this.className('el-tab-pane') },
-        this.state.content
+        this.props.children
       );
     }
   }]);
@@ -69,7 +48,7 @@ exports.default = _default;
 
 
 TabPane.propTypes = {
-  label: _libs.PropTypes.string,
+  label: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.node]),
   name: _libs.PropTypes.string,
   disabled: _libs.PropTypes.bool,
   closable: _libs.PropTypes.bool
