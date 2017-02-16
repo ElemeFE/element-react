@@ -93,7 +93,7 @@ export default class TableHeader extends  Component{
           const columnWidth = finalLeft - this.state.dragState.startColumnLeft;
           //width本应为配置的高度， 如果改变过宽度， realWidth 与 width永远保持一致
           //这列不再参与宽度的自动重新分配
-          column.realWidth = column.width = columnWidth;
+          column.realWidth = column.width = (column.minWidth > columnWidth? column.minWidth:columnWidth);
 
           this.context.$owerTable.scheduleLayout();
 

@@ -1,6 +1,6 @@
 import { getScrollBarWidth } from './utils'
 
-const MIN_COLUMN_WIDTH = 80;
+const MIN_COLUMN_WIDTH = 48;
 
 export const defaultColumn = {
   default: {
@@ -26,6 +26,9 @@ export const defaultColumn = {
 const calcuateColumnsTotalWidth = (columns=[])=>{
   return columns.reduce((preWidth, next)=>{
     var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
+    if(next.minWidth && nextWidth < next.minWidth){
+      nextWidth = next.minWidth;
+    }
     return preWidth + nextWidth;
   }, 0);
 }
@@ -58,8 +61,13 @@ export const enhanceColumns = (columns=[], tableId)=>{
 
   const _columns = columns.map((col)=>{
     let width = col.width && !isNaN(col.width)? parseInt(col.width, 10): undefined;
-    let minWidth = col.minWidth && !isNaN(minWidth)? parseInt(col.minWidth, 10): undefined;
+    let minWidth = col.minWidth && !isNaN(col.minWidth)? parseInt(col.minWidth, 10): MIN_COLUMN_WIDTH;
     let realWidth = col.width || MIN_COLUMN_WIDTH;
+
+    //如果设定的宽度小于最小宽度，就用最小宽度做为真实宽度
+    if(realWidth && minWidth && realWidth < minWidth){
+      realWidth = width = minWidth;
+    }
 
     const columnId = tableId + 'column_' + columnIdSeed++
 
