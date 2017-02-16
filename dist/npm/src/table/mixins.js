@@ -7,7 +7,7 @@ exports.scheduleLayout = exports.calculateBodyWidth = exports.calculateFixedWidt
 
 var _utils = require('./utils');
 
-var MIN_COLUMN_WIDTH = 80;
+var MIN_COLUMN_WIDTH = 48;
 
 var defaultColumn = exports.defaultColumn = {
   default: {
@@ -35,6 +35,9 @@ var calcuateColumnsTotalWidth = function calcuateColumnsTotalWidth() {
 
   return columns.reduce(function (preWidth, next) {
     var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
+    if (next.minWidth && nextWidth < next.minWidth) {
+      nextWidth = next.minWidth;
+    }
     return preWidth + nextWidth;
   }, 0);
 };
@@ -70,8 +73,13 @@ var enhanceColumns = exports.enhanceColumns = function enhanceColumns() {
 
   var _columns = columns.map(function (col) {
     var width = col.width && !isNaN(col.width) ? parseInt(col.width, 10) : undefined;
-    var minWidth = col.minWidth && !isNaN(minWidth) ? parseInt(col.minWidth, 10) : undefined;
+    var minWidth = col.minWidth && !isNaN(col.minWidth) ? parseInt(col.minWidth, 10) : MIN_COLUMN_WIDTH;
     var realWidth = col.width || MIN_COLUMN_WIDTH;
+
+    //如果设定的宽度小于最小宽度，就用最小宽度做为真实宽度
+    if (realWidth && minWidth && realWidth < minWidth) {
+      realWidth = width = minWidth;
+    }
 
     var columnId = tableId + 'column_' + columnIdSeed++;
 
