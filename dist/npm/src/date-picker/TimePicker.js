@@ -84,12 +84,12 @@ var TimePicker = function (_BasePicker) {
   _createClass(TimePicker, [{
     key: 'onSelectionChange',
     value: function onSelectionChange(start, end) {
-      this.refs.reference.setSelectionRange(start, end);
-      this.refs.reference.focus();
+      this.refs.inputRoot.refs.input.setSelectionRange(start, end);
+      this.refs.inputRoot.refs.input.focus();
     }
   }, {
-    key: 'pickerPannel',
-    value: function pickerPannel(state, props) {
+    key: 'pickerPanel',
+    value: function pickerPanel(state, props) {
       var _this2 = this;
 
       return _react2.default.createElement(_TimePanel2.default, _extends({}, props, {
@@ -99,13 +99,8 @@ var TimePicker = function (_BasePicker) {
         },
         onPicked: this.onPicked.bind(this),
         onSelectRangeChange: this._onSelectionChange,
-        selectableRange: converSelectRange(props),
-        getPopperRefElement: function getPopperRefElement() {
-          return _this2.refs.reference;
-        },
-        popperMixinOption: {
-          placement: _constants.PLACEMENT_MAP[props.align] || _constants.PLACEMENT_MAP.left
-        } }));
+        selectableRange: converSelectRange(props)
+      }));
     }
   }]);
 

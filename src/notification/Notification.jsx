@@ -34,11 +34,9 @@ export default class Notification extends Component {
 
     this.setState({
       visible: false
+    }, () => {
+      this.props.willUnmount();
     });
-
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
   }
 
   startTimer() {
@@ -60,7 +58,7 @@ export default class Notification extends Component {
   render() {
     return (
       <Transition name="el-notification-fade" duration="300">
-        <View key={Math.random()} show={this.state.visible}>
+        <View key={this.state.visible} show={this.state.visible}>
           <div className="el-notification" style={{
               top: this.props.top,
               zIndex: 9999
@@ -87,10 +85,7 @@ Notification.propTypes = {
   title: PropTypes.string,
   message: PropTypes.string,
   duration: PropTypes.number,
-  top: PropTypes.number,
-/* eslint-disable */
-  onClose: PropTypes.func
-/* eslint-enable */
+  top: PropTypes.number
 }
 
 Notification.defaultProps = {

@@ -12,11 +12,13 @@ export default class TabPane extends Component {
 }
 
 TabPane.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   name: PropTypes.string,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  closable: PropTypes.bool,
 }
 
 TabPane.defaultProps = {
-
+  disabled: false,
+  closable: false,
 }

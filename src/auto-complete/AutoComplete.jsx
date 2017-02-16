@@ -126,7 +126,7 @@ class AutoComplete extends Component {
   }
 
   render() {
-    const { disabled, placeholder, name, size, customItem } = this.props;
+    const { disabled, placeholder, name, size, customItem, popperClass } = this.props;
     const { value, suggestions, suggestionVisible, loading, highlightedIndex } = this.state;
 
     return (
@@ -144,7 +144,7 @@ class AutoComplete extends Component {
         <Transition name="md-fade-bottom">
           {
             suggestionVisible && (
-              <ul ref="suggestions" className={this.classNames('el-autocomplete__suggestions', {
+              <ul ref="suggestions" className={this.classNames('el-autocomplete__suggestions', popperClass, {
                   'is-loading': loading
               })}>
                 { loading && <li><i className="el-icon-loading"></i></li> }
@@ -180,6 +180,7 @@ AutoComplete.propTypes = {
   name: PropTypes.string,
   size: PropTypes.string,
   value: PropTypes.string,
+  popperClass: PropTypes.string,
   fetchSuggestions: PropTypes.func,
   triggerOnFocus: PropTypes.bool,
   customItem: PropTypes.any,

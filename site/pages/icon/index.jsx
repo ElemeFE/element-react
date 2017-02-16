@@ -1,20 +1,16 @@
-import React from 'react';
 import Markdown from '../../../libs/markdown';
-import template from '../../docs/zh-CN/icon.md';
-import iconList from './iconList'
 
 import './style.scss';
 
-export default class Playground extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      list: iconList
+export default class Icon extends Markdown {
+  document(locale) {
+    switch (locale) {
+      default:
+        return require('../../docs/zh-CN/icon.md');
     }
   }
-
-  render() {
-    return <Markdown context={this} component="Icon">{template}</Markdown>
-  }
 }
+
+Icon.defaultProps = {
+  iconList: require('./iconList')
+};

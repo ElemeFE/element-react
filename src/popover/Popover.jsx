@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popper from '../../vendor/popper';
+import Popper from 'popper.js';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
 export default class Popover extends Component {
@@ -47,8 +47,28 @@ export default class Popover extends Component {
         this.reference.addEventListener('mouseup', () => { this.setState({ showPopper: false })});
       }
     }
+  }
 
-    this.initialPopper();
+  componentDidUpdate() {
+    const { showPopper } = this.state;
+
+    if (showPopper) {
+      if (this.popperJS) {
+        this.popperJS.update();
+      } else {
+        if (this.refs.arrow) {
+          this.refs.arrow.setAttribute('x-arrow', '');
+        }
+
+        this.popperJS = new Popper(this.reference, this.refs.popper, {
+          placement: this.props.placement
+        });
+      }
+    } else {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -61,16 +81,10 @@ export default class Popover extends Component {
 
   componentWillUnMount() {
     this.reference.parentNode.replaceChild(this.reference.cloneNode(true), this.reference);
-  }
 
-  initialPopper() {
-    if (this.refs.arrow) {
-      this.refs.arrow.setAttribute('x-arrow', '');
+    if (this.popperJS) {
+      this.popperJS.destroy();
     }
-
-    this.popperJS = new Popper(this.reference, this.refs.popper, {
-      placement: this.props.placement
-    });
   }
 
   handleMouseEnter() {
@@ -94,7 +108,7 @@ export default class Popover extends Component {
 
     return (
       <span>
-        <Transition name={transition}>
+        <Transition name={transition} duration={200}>
           <View show={this.state.showPopper}>
             <div ref="popper" className={this.className('el-popover', popperClass)} style={this.style({ width: Number(width) })}>
               { title && <div className="el-popover__title">{title}</div> }

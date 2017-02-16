@@ -35,6 +35,10 @@ export default class Dialog extends Component {
     }
   }
 
+  componentWillUnmount() {
+    document.body.style.removeProperty('overflow');
+  }
+
   onKeyDown(e) {
     if (this.props.closeOnPressEscape && e.keyCode === 27) {
       this.close(e);

@@ -48,12 +48,16 @@ exports.default = _default;
 
 
 TabPane.propTypes = {
-  label: _libs.PropTypes.string.isRequired,
+  label: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.node]),
   name: _libs.PropTypes.string,
-  disabled: _libs.PropTypes.bool
+  disabled: _libs.PropTypes.bool,
+  closable: _libs.PropTypes.bool
 };
 
-TabPane.defaultProps = {};
+TabPane.defaultProps = {
+  disabled: false,
+  closable: false
+};
 ;
 
 var _temp = function () {

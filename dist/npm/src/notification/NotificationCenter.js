@@ -49,7 +49,7 @@ function NotificationCenter() {
   props.top += 16;
 
   var component = _react2.default.createElement(_Notification2.default, Object.assign({}, props, {
-    onClose: function onClose() {
+    willUnmount: function willUnmount() {
       _reactDom2.default.unmountComponentAtNode(div);
       document.body.removeChild(div);
 

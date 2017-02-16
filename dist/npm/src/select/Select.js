@@ -18,7 +18,7 @@ var _reactClickOutside = require('react-click-outside');
 
 var _reactClickOutside2 = _interopRequireDefault(_reactClickOutside);
 
-var _popper = require('../../vendor/popper');
+var _popper = require('popper.js');
 
 var _popper2 = _interopRequireDefault(_popper);
 
@@ -51,6 +51,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var sizeMap = {
+  'large': 42,
+  'small': 30,
+  'mini': 22
+};
 
 var Select = function (_Component) {
   _inherits(Select, _Component);
@@ -100,42 +106,31 @@ var Select = function (_Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
+      (0, _resizeEvent.addResizeListener)(this.refs.root, this.resetInputWidth.bind(this));
+
+      this.reference = _reactDom2.default.findDOMNode(this.refs.reference);
+      this.popper = _reactDom2.default.findDOMNode(this.refs.popper);
+
+      this.handleValueChange();
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
       var _this2 = this;
 
-      var _props = this.props,
-          remote = _props.remote,
-          multiple = _props.multiple;
-      var _state = this.state,
-          value = _state.value,
-          options = _state.options,
-          selected = _state.selected;
-
-
-      this.findDOMNodes();
-
-      if (remote && multiple && Array.isArray(value)) {
+      if (props.placeholder != this.props.placeholder) {
         this.setState({
-          selected: options.reduce(function (prev, curr) {
-            return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
-          }, [])
-        }, function () {
-          _this2.resetInputHeight();
+          currentPlaceholder: props.placeholder
         });
-      } else {
-        var _selected = options.filter(function (option) {
-          return option.props.value === value;
-        })[0];
-
-        if (_selected) {
-          this.state.selectedLabel = _selected.props.label;
-        }
       }
 
-      if (selected) {
-        this.onSelectedChange(selected);
+      if (props.value != this.props.value) {
+        this.setState({
+          value: props.value
+        }, function () {
+          _this2.handleValueChange();
+        });
       }
-
-      (0, _resizeEvent.addResizeListener)(this.root, this.resetInputWidth.bind(this));
     }
   }, {
     key: 'componentWillUpdate',
@@ -164,38 +159,36 @@ var Select = function (_Component) {
     }
   }, {
     key: 'componentDidUpdate',
-    value: function componentDidUpdate(props, state) {
-      this.findDOMNodes();
+    value: function componentDidUpdate() {
+      var visible = this.state.visible;
 
-      if (this.refs.reference) {
-        this.state.inputWidth = this.reference.getBoundingClientRect().width;
+
+      if (visible) {
+        if (this.popperJS) {
+          this.popperJS.update();
+        } else {
+          this.popperJS = new _popper2.default(this.reference, this.popper, {
+            gpuAcceleration: false
+          });
+        }
+      } else {
+        if (this.popperJS) {
+          this.popperJS.destroy();
+        }
       }
-    }
-  }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(props) {
-      if (props.placeholder != this.props.placeholder) {
-        this.setState({
-          currentPlaceholder: props.placeholder
-        });
-      }
+
+      this.state.inputWidth = this.reference.getBoundingClientRect().width;
     }
   }, {
     key: 'componentWillUnMount',
     value: function componentWillUnMount() {
       if (this.resetInputWidth()) {
-        (0, _resizeEvent.removeResizeListener)(this.root, this.resetInputWidth.bind(this));
+        (0, _resizeEvent.removeResizeListener)(this.refs.root, this.resetInputWidth.bind(this));
       }
-    }
-  }, {
-    key: 'findDOMNodes',
-    value: function findDOMNodes() {
-      this.reference = _reactDom2.default.findDOMNode(this.refs.reference);
-      this.popper = _reactDom2.default.findDOMNode(this.refs.popper);
-      this.input = _reactDom2.default.findDOMNode(this.refs.input);
-      this.root = _reactDom2.default.findDOMNode(this);
 
-      this.popperJS = new _popper2.default(this.reference, this.popper);
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
     }
   }, {
     key: 'debounce',
@@ -206,6 +199,42 @@ var Select = function (_Component) {
     key: 'handleClickOutside',
     value: function handleClickOutside() {
       this.setState({ visible: false });
+    }
+  }, {
+    key: 'handleValueChange',
+    value: function handleValueChange() {
+      var _this3 = this;
+
+      var _props = this.props,
+          remote = _props.remote,
+          multiple = _props.multiple;
+      var _state = this.state,
+          value = _state.value,
+          options = _state.options,
+          selected = _state.selected;
+
+
+      if (remote && multiple && Array.isArray(value)) {
+        this.setState({
+          selected: options.reduce(function (prev, curr) {
+            return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
+          }, [])
+        }, function () {
+          _this3.resetInputHeight();
+        });
+      } else {
+        var _selected = options.filter(function (option) {
+          return option.props.value === value;
+        })[0];
+
+        if (_selected) {
+          this.state.selectedLabel = _selected.props.label;
+        }
+      }
+
+      if (selected) {
+        this.onSelectedChange(selected);
+      }
     }
   }, {
     key: 'onVisibleChange',
@@ -224,8 +253,8 @@ var Select = function (_Component) {
       if (!visible) {
         this.reference.querySelector('input').blur();
 
-        if (this.root.querySelector('.el-input__icon')) {
-          var elements = this.root.querySelector('.el-input__icon');
+        if (this.refs.root.querySelector('.el-input__icon')) {
+          var elements = this.refs.root.querySelector('.el-input__icon');
 
           for (var i = 0; i < elements.length; i++) {
             elements[i].classList.remove('is-reverse');
@@ -235,7 +264,7 @@ var Select = function (_Component) {
         // this.broadcast('select-dropdown', 'destroyPopper');
 
         if (this.refs.input) {
-          this.input.blur();
+          this.refs.input.blur();
         }
 
         this.resetHoverIndex();
@@ -252,23 +281,25 @@ var Select = function (_Component) {
           this.setState({ bottomOverflowBeforeHidden: bottomOverflowBeforeHidden, selectedLabel: selectedLabel });
         }
       } else {
-        var icon = this.root.querySelector('.el-input__icon');
+        var icon = this.refs.root.querySelector('.el-input__icon');
 
         if (icon && !icon.classList.contains('el-icon-circle-close')) {
-          var _elements = this.root.querySelector('.el-input__icon');
+          var _elements = this.refs.root.querySelector('.el-input__icon');
 
           for (var _i = 0; _i < _elements.length; _i++) {
             _elements[_i].classList.add('is-reverse');
           }
         }
 
-        // this.broadcast('select-dropdown', 'updatePopper');
+        if (this.popperJS) {
+          this.popperJS.update();
+        }
 
         if (filterable) {
           query = selectedLabel;
 
           if (multiple) {
-            this.input.focus();
+            this.refs.input.focus();
           } else {
             // this.broadcast('input', 'inputSelect');
           }
@@ -293,7 +324,7 @@ var Select = function (_Component) {
   }, {
     key: 'onValueChange',
     value: function onValueChange(val) {
-      var _this3 = this;
+      var _this4 = this;
 
       var multiple = this.props.multiple;
       var _state3 = this.state,
@@ -320,11 +351,11 @@ var Select = function (_Component) {
         currentPlaceholder = cachedPlaceHolder;
 
         val.forEach(function (item) {
-          var option = _this3.options.filter(function (option) {
+          var option = _this4.options.filter(function (option) {
             return option.props.value === item;
           })[0];
           if (option) {
-            _this3.addOptionToValue(option);
+            _this4.addOptionToValue(option);
           }
         });
       }
@@ -343,13 +374,13 @@ var Select = function (_Component) {
       }
 
       this.setState({ selectedInit: selectedInit, selected: selected, currentPlaceholder: currentPlaceholder, selectedLabel: selectedLabel }, function () {
-        _this3.resetHoverIndex();
+        _this4.resetHoverIndex();
       });
     }
   }, {
     key: 'onSelectedChange',
     value: function onSelectedChange(val) {
-      var _this4 = this;
+      var _this5 = this;
 
       var _props3 = this.props,
           multiple = _props3.multiple,
@@ -373,7 +404,7 @@ var Select = function (_Component) {
         }
 
         this.setState({ currentPlaceholder: currentPlaceholder }, function () {
-          _this4.resetInputHeight();
+          _this5.resetInputHeight();
         });
 
         if (selectedInit) {
@@ -398,7 +429,11 @@ var Select = function (_Component) {
           this.refs.input.focus();
         }
 
-        this.setState({ valueChangeBySelected: valueChangeBySelected, query: query, hoverIndex: hoverIndex, inputLength: inputLength });
+        this.setState({ valueChangeBySelected: valueChangeBySelected, query: query, hoverIndex: hoverIndex, inputLength: inputLength }, function () {
+          if (_this5.refs.input) {
+            _this5.refs.input.value = '';
+          }
+        });
       } else {
         if (selectedInit) {
           return this.setState({
@@ -424,7 +459,10 @@ var Select = function (_Component) {
           options = _state5.options,
           optionsCount = _state5.optionsCount;
 
-      // this.broadcast('select-dropdown', 'updatePopper');
+
+      if (this.popperJS) {
+        this.popperJS.update();
+      }
 
       if (multiple && filterable) {
         this.resetInputHeight();
@@ -463,16 +501,16 @@ var Select = function (_Component) {
   }, {
     key: 'iconClass',
     value: function iconClass() {
-      return this.showCloseIcon() ? 'circle-close' : this.props.remote && this.props.filterable ? '' : 'caret-top';
+      return this.showCloseIcon() ? 'circle-close' : this.props.remote && this.props.filterable ? '' : 'caret-top ' + (this.state.visible ? 'is-reverse' : '');
     }
   }, {
     key: 'showCloseIcon',
     value: function showCloseIcon() {
       var criteria = this.props.clearable && this.state.inputHovering && !this.props.multiple && this.state.options.indexOf(this.state.selected) > -1;
 
-      if (!this.root) return false;
+      if (!this.refs.root) return false;
 
-      var icon = this.root.querySelector('.el-input__icon');
+      var icon = this.refs.root.querySelector('.el-input__icon');
 
       if (icon) {
         if (criteria) {
@@ -624,14 +662,16 @@ var Select = function (_Component) {
         return item.tagName === 'INPUT';
       })[0];
 
-      input.style.height = Math.max(this.refs.tags.clientHeight + 6, this.size === 'small' ? 28 : 36) + 'px';
+      input.style.height = Math.max(this.refs.tags.clientHeight + 6, sizeMap[this.props.size] || 36) + 'px';
 
-      // this.broadcast('select-dropdown', 'updatePopper');
+      if (this.popperJS) {
+        this.popperJS.update();
+      }
     }
   }, {
     key: 'resetHoverIndex',
     value: function resetHoverIndex() {
-      var _this5 = this;
+      var _this6 = this;
 
       var multiple = this.props.multiple;
       var _state9 = this.state,
@@ -653,7 +693,7 @@ var Select = function (_Component) {
           }
         }
 
-        _this5.setState({ hoverIndex: hoverIndex });
+        _this6.setState({ hoverIndex: hoverIndex });
       }, 300);
     }
   }, {
@@ -680,7 +720,7 @@ var Select = function (_Component) {
   }, {
     key: 'navigateOptions',
     value: function navigateOptions(direction) {
-      var _this6 = this;
+      var _this7 = this;
 
       var _state11 = this.state,
           visible = _state11.visible,
@@ -728,7 +768,7 @@ var Select = function (_Component) {
 
       this.setState({ hoverIndex: hoverIndex, options: options }, function () {
         if (skip) {
-          _this6.navigateOptions(skip);
+          _this7.navigateOptions(skip);
         }
       });
     }
@@ -781,7 +821,6 @@ var Select = function (_Component) {
   }, {
     key: 'deleteTag',
     value: function deleteTag(tag) {
-      // let { selected } = this.state;
       var selected = this.state.selected.slice(0);
       var index = selected.indexOf(tag);
 
@@ -812,7 +851,7 @@ var Select = function (_Component) {
   }, {
     key: 'onOptionDestroy',
     value: function onOptionDestroy(option) {
-      var _this7 = this;
+      var _this8 = this;
 
       this.state.optionsCount--;
       this.state.filteredOptionsCount--;
@@ -824,15 +863,17 @@ var Select = function (_Component) {
       }
 
       this.setState(this.state, function () {
-        _this7.state.options.forEach(function (option) {
-          option.resetIndex();
+        _this8.state.options.forEach(function (el) {
+          if (el != option) {
+            el.resetIndex();
+          }
         });
       });
     }
   }, {
     key: 'onOptionClick',
     value: function onOptionClick(option) {
-      var _this8 = this;
+      var _this9 = this;
 
       var multiple = this.props.multiple;
       var _state13 = this.state,
@@ -862,8 +903,8 @@ var Select = function (_Component) {
       }
 
       this.setState({ selected: selected, selectedLabel: selectedLabel }, function () {
-        _this8.onSelectedChange(_this8.state.selected);
-        _this8.setState({ visible: visible });
+        _this9.onSelectedChange(_this9.state.selected);
+        _this9.setState({ visible: visible });
       });
     }
   }, {
@@ -890,7 +931,7 @@ var Select = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this9 = this;
+      var _this10 = this;
 
       var _props8 = this.props,
           multiple = _props8.multiple,
@@ -912,7 +953,7 @@ var Select = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { style: this.style(), className: this.className('el-select', {
+        { ref: 'root', style: this.style(), className: this.className('el-select', {
             'is-multiple': multiple,
             'is-small': size === 'small'
           }) },
@@ -930,7 +971,7 @@ var Select = function (_Component) {
                 hit: el.hitState,
                 closable: true,
                 closeTransition: true,
-                onClose: _this9.deleteTag.bind(_this9, el)
+                onClose: _this10.deleteTag.bind(_this10, el)
               },
               el.currentLabel()
             );
@@ -940,27 +981,37 @@ var Select = function (_Component) {
             type: 'text',
             className: 'el-select__input',
             style: { width: inputLength, maxWidth: inputWidth - 42 },
-            value: query,
+            defaultValue: query,
+            onKeyUp: this.managePlaceholder.bind(this),
+            onChange: function onChange(e) {
+              clearTimeout(_this10.timeout);
+
+              _this10.timeout = setTimeout(function () {
+                _this10.setState({
+                  query: _this10.state.value
+                });
+              }, _this10.debounce());
+
+              _this10.state.value = e.target.value;
+            },
             onKeyDown: function onKeyDown(e) {
-              // this.resetInputState();
-              // onChange={this.debouncedOnInputChange}
-              // onKeyUp={this.managePlaceholder.bind(this)}
+              _this10.resetInputState(e);
 
               switch (e.keyCode) {
                 case 27:
-                  _this9.setState({ visible: false });e.preventDefault();
+                  _this10.setState({ visible: false });e.preventDefault();
                   break;
                 case 8:
-                  _this9.deletePrevTag();
+                  _this10.deletePrevTag(e);
                   break;
                 case 13:
-                  _this9.selectOption();e.preventDefault();
+                  _this10.selectOption();e.preventDefault();
                   break;
                 case 38:
-                  _this9.navigateOptions('prev');e.preventDefault();
+                  _this10.navigateOptions('prev');e.preventDefault();
                   break;
                 case 40:
-                  _this9.navigateOptions('next');e.preventDefault();
+                  _this10.navigateOptions('next');e.preventDefault();
                   break;
                 default:
                   break;
@@ -978,7 +1029,7 @@ var Select = function (_Component) {
           readOnly: !filterable || multiple,
           icon: this.iconClass(),
           onChange: function onChange(e) {
-            return _this9.setState({ selectedLabel: e.target.value });
+            return _this10.setState({ selectedLabel: e.target.value });
           },
           onClick: this.toggleMenu.bind(this),
           onIconClick: this.toggleMenu.bind(this),
@@ -989,16 +1040,16 @@ var Select = function (_Component) {
             switch (e.keyCode) {
               case 9:
               case 27:
-                _this9.setState({ visible: false });e.preventDefault();
+                _this10.setState({ visible: false });e.preventDefault();
                 break;
               case 13:
-                _this9.selectOption();e.preventDefault();
+                _this10.selectOption();e.preventDefault();
                 break;
               case 38:
-                _this9.navigateOptions('prev');e.preventDefault();
+                _this10.navigateOptions('prev');e.preventDefault();
                 break;
               case 40:
-                _this9.navigateOptions('next');e.preventDefault();
+                _this10.navigateOptions('next');e.preventDefault();
                 break;
               default:
                 break;
@@ -1071,6 +1122,8 @@ var _temp = function () {
   if (typeof __REACT_HOT_LOADER__ === 'undefined') {
     return;
   }
+
+  __REACT_HOT_LOADER__.register(sizeMap, 'sizeMap', 'src/select/Select.jsx');
 
   __REACT_HOT_LOADER__.register(Select, 'Select', 'src/select/Select.jsx');
 

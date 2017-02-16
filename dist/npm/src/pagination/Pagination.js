@@ -10,10 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 var _libs = require('../../libs');
 
 var _Pager = require('./Pager');
@@ -172,12 +168,14 @@ var Pagination = function (_Component3) {
         pageSizes = _this4$props.pageSizes,
         pageSize = _this4$props.pageSize,
         total = _this4$props.total,
-        pageCount = _this4$props.pageCount;
+        pageCount = _this4$props.pageCount,
+        layout = _this4$props.layout;
 
     var internalPageSize = 0;
-
-    if (Array.isArray(pageSizes)) {
+    if (layout.split(',').indexOf('sizes') > -1 && Array.isArray(pageSizes)) {
       internalPageSize = pageSizes.indexOf(pageSize) > -1 ? pageSize : pageSizes[0];
+    } else {
+      internalPageSize = pageSize;
     }
 
     _this4.state = {
@@ -205,7 +203,7 @@ var Pagination = function (_Component3) {
       if (nextProps.currentPage != currentPage || nextProps.pageSizes != pageSizes || nextProps.pageSize != pageSize || nextProps.total != total || nextProps.pageCount != pageCount) {
 
         var internalPageSize = this.state.internalPageSize;
-        if (Array.isArray(nextProps.pageSizes)) {
+        if (nextProps.layout.split(',').indexOf('sizes') > -1 && Array.isArray(nextProps.pageSizes)) {
           internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1 ? nextProps.pageSize : nextProps.pageSizes[0];
         }
 

@@ -10,9 +10,17 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _libs = require('../../libs');
 
 var _internal = require('../../libs/internal');
+
+var _input = require('../input');
+
+var _input2 = _interopRequireDefault(_input);
 
 var _constants = require('./constants');
 
@@ -27,7 +35,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /*
-todo: 
+todo:
   handle animation popup
 */
 
@@ -53,10 +61,11 @@ var BasePicker = function (_Component) {
         format: _libs.PropTypes.string,
         isShowTrigger: _libs.PropTypes.bool,
         isReadOnly: _libs.PropTypes.bool,
+        isDisabled: _libs.PropTypes.bool,
         placeholder: _libs.PropTypes.string,
         onFocus: _libs.PropTypes.func,
         onBlur: _libs.PropTypes.func,
-        // (Date|Date[])=>()
+        // (Date|Date[]|null)=>(), null when click on clear icon
         onChange: _libs.PropTypes.func,
         // time select pannel:
         value: _libs.PropTypes.oneOfType([_libs.PropTypes.instanceOf(Date), _libs.PropTypes.arrayOf(_libs.PropTypes.instanceOf(Date))])
@@ -66,7 +75,7 @@ var BasePicker = function (_Component) {
     key: 'defaultProps',
     get: function get() {
       return {
-        value: '',
+        value: new Date(),
         // (thisReactElement)=>Unit
         onFocus: function onFocus() {},
         onBlur: function onBlur() {}
@@ -101,8 +110,8 @@ var BasePicker = function (_Component) {
     /**
      * onPicked should only be called from picker pannel instance
      * and should never return a null date instance
-     * 
-     * @param value: Date|Date[]
+     *
+     * @param value: Date|Date[]|null
      * @param isKeepPannel: boolean = false
      */
 
@@ -130,8 +139,7 @@ var BasePicker = function (_Component) {
 
       var tdate = date;
       var formatter = (_constants.TYPE_VALUE_RESOLVER_MAP[this.type] || _constants.TYPE_VALUE_RESOLVER_MAP['default']).formatter;
-      var format = _constants.DEFAULT_FORMATS[this.type];
-      var result = formatter(tdate, this.props.format || format);
+      var result = formatter(tdate, this.getFormat());
 
       return result;
     }
@@ -144,7 +152,12 @@ var BasePicker = function (_Component) {
       if (!dateStr) return null;
       var type = this.type;
       var parser = (_constants.TYPE_VALUE_RESOLVER_MAP[type] || _constants.TYPE_VALUE_RESOLVER_MAP['default']).parser;
-      return parser(dateStr, this.props.format || _constants.DEFAULT_FORMATS[type]);
+      return parser(dateStr, this.getFormat());
+    }
+  }, {
+    key: 'getFormat',
+    value: function getFormat() {
+      return this.props.format || _constants.DEFAULT_FORMATS[this.type];
     }
   }, {
     key: 'propsToState',
@@ -157,6 +170,11 @@ var BasePicker = function (_Component) {
         state.text = '';
         state.value = null;
       }
+
+      if (state.value == null) {
+        state.value = new Date();
+      }
+
       return state;
     }
   }, {
@@ -194,49 +212,10 @@ var BasePicker = function (_Component) {
   }, {
     key: 'handleKeydown',
     value: function handleKeydown(evt) {
-      var _this3 = this;
-
       var keyCode = evt.keyCode;
-      var target = evt.target;
-      var selectionStart = target.selectionStart;
-      var selectionEnd = target.selectionEnd;
-      var length = target.value.length;
-
-      var hidePicker = function hidePicker() {
-        _this3.setState({ pickerVisible: false });
-      };
-
       // tab
       if (keyCode === 9) {
-        hidePicker();
-
-        // enter
-      } else if (keyCode === 13) {
-        hidePicker();
-        evt.target.blur(); //this trigger's handleBlur func
-        // left
-      } else if (keyCode === 37) {
-        evt.preventDefault();
-
-        if (selectionEnd === length && selectionStart === length) {
-          target.selectionStart = length - 2;
-        } else if (selectionStart >= 3) {
-          target.selectionStart -= 3;
-        } else {
-          target.selectionStart = 0;
-        }
-        target.selectionEnd = target.selectionStart + 2;
-        // right
-      } else if (keyCode === 39) {
-        evt.preventDefault();
-        if (selectionEnd === 0 && selectionStart === 0) {
-          target.selectionEnd = 2;
-        } else if (selectionEnd <= length - 3) {
-          target.selectionEnd += 3;
-        } else {
-          target.selectionEnd = length;
-        }
-        target.selectionStart = target.selectionEnd - 2;
+        this.setState({ pickerVisible: false });
       }
     }
   }, {
@@ -250,8 +229,8 @@ var BasePicker = function (_Component) {
     // (state, props)=>ReactElement
 
   }, {
-    key: 'pickerPannel',
-    value: function pickerPannel() {
+    key: 'pickerPanel',
+    value: function pickerPanel() {
       throw new _utils.Errors.MethodImplementationRequiredError();
     }
 
@@ -265,7 +244,7 @@ var BasePicker = function (_Component) {
 
     // return true on condition
     //  * input is parsable to date
-    //  * also meet your other condition 
+    //  * also meet your other condition
 
   }, {
     key: 'isInputValid',
@@ -300,18 +279,73 @@ var BasePicker = function (_Component) {
       }
     }
   }, {
-    key: 'render',
-    value: function render() {
-      var _this4 = this;
-
+    key: 'handleClickIcon',
+    value: function handleClickIcon() {
       var _props = this.props,
           isReadOnly = _props.isReadOnly,
-          placeholder = _props.placeholder;
+          isDisabled = _props.isDisabled;
+      var text = this.state.text;
+
+
+      if (isReadOnly || isDisabled) return;
+      if (!text) {
+        this.togglePickerVisible();
+      } else {
+        this.setState({ text: '', value: null, pickerVisible: false });
+        this.props.onChange(null);
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
+
+      var _props2 = this.props,
+          isReadOnly = _props2.isReadOnly,
+          placeholder = _props2.placeholder,
+          isDisabled = _props2.isDisabled;
       var _state2 = this.state,
           pickerVisible = _state2.pickerVisible,
           value = _state2.value,
-          text = _state2.text;
+          text = _state2.text,
+          isShowClose = _state2.isShowClose;
 
+
+      var createIconSlot = function createIconSlot() {
+        if (_this3.calcIsShowTrigger()) {
+          var cls = isShowClose ? 'el-icon-close' : _this3.triggerClass();
+          return _react2.default.createElement('i', {
+            className: _this3.classNames('el-input__icon', cls),
+            onClick: _this3.handleClickIcon.bind(_this3),
+            onMouseEnter: function onMouseEnter() {
+              if (isReadOnly || isDisabled) return;
+              if (text) {
+                _this3.setState({ isShowClose: true });
+              }
+            },
+            onMouseLeave: function onMouseLeave() {
+              _this3.setState({ isShowClose: false });
+            }
+          });
+        } else {
+          return null;
+        }
+      };
+
+      var createPickerPanel = function createPickerPanel() {
+        if (pickerVisible) {
+          return _this3.pickerPanel(_this3.state, Object.assign({}, _this3.props, {
+            getPopperRefElement: function getPopperRefElement() {
+              return _reactDom2.default.findDOMNode(_this3.refs.inputRoot);
+            },
+            popperMixinOption: {
+              placement: _constants.PLACEMENT_MAP[_this3.props.align] || _constants.PLACEMENT_MAP.left
+            }
+          }));
+        } else {
+          return null;
+        }
+      };
 
       return _react2.default.createElement(
         'span',
@@ -332,9 +366,10 @@ var BasePicker = function (_Component) {
           target: document,
           eventName: 'click',
           func: this.handleClickOutside.bind(this) }),
-        _react2.default.createElement('input', {
-          className: 'el-date-editor__editor',
+        _react2.default.createElement(_input2.default, {
+          className: this.classNames('el-date-editor el-date-editor--' + this.type),
           readOnly: isReadOnly,
+          disabled: isDisabled,
           type: 'text',
           placeholder: placeholder,
           onFocus: this.handleFocus.bind(this),
@@ -345,20 +380,17 @@ var BasePicker = function (_Component) {
             var nstate = { text: iptxt };
             if (iptxt.trim() === '') {
               nstate.value = null;
-            } else if (_this4.isInputValid(iptxt)) {
+            } else if (_this3.isInputValid(iptxt)) {
               //only set value on a valid date input
-              nstate.value = _this4.parseDate(iptxt);
+              nstate.value = _this3.parseDate(iptxt);
             }
-            _this4.setState(nstate);
+            _this3.setState(nstate);
           },
-          ref: 'reference',
-          value: text
+          ref: 'inputRoot',
+          value: text,
+          icon: createIconSlot()
         }),
-        this.calcIsShowTrigger() && _react2.default.createElement('span', {
-          onClick: this.togglePickerVisible.bind(this),
-          className: this.classNames('el-date-editor__trigger', 'el-icon', this.triggerClass())
-        }),
-        pickerVisible && this.pickerPannel(this.state, this.props)
+        createPickerPanel()
       );
     }
   }]);

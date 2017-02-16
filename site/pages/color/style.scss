@@ -1,13 +1,20 @@
+.demo-color-row {
+  display: flex;
+  justify-content: space-between;
+  margin: -6px;
+}
+
 .demo-color-box {
+  flex: 1;
   border-radius: 4px;
   padding: 20px;
   height: 74px;
   box-sizing: border-box;
   color: #fff;
   font-size: 14px;
-  width: 33%;
   margin-bottom: 5px;
   display: inline-block;
+  margin: 6px;
 
   & .value {
     font-size: 12px;
@@ -16,16 +23,40 @@
   }
 }
 .demo-color-box-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 6px;
+
   .demo-color-box {
     border-radius: 0;
+    margin: 0;
+    flex: 0;
   }
+
   .demo-color-box:first-child {
     border-radius: 4px 4px 0 0;
   }
+
   .demo-color-box:last-child {
     border-radius: 0 0 4px 4px;
   }
 }
+
+.demo-color-box-group:last-child {
+  .demo-color-box {
+    border: 1px solid #e0e6ed;
+  }
+
+  .demo-color-box:first-child {
+    border-bottom: none;
+  }
+
+  .demo-color-box:last-child {
+    border-top: none;
+  }
+}
+
 .bg-blue-light {
   background-color: #58b7ff;
 }

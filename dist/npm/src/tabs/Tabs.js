@@ -59,6 +59,12 @@ var Tabs = function (_Component) {
           return _this2.calcBarStyle();
         });
       }
+
+      if (nextProps.children !== this.props.children) {
+        this.setState({
+          children: _react2.default.Children.toArray(nextProps.children)
+        });
+      }
     }
   }, {
     key: 'handleTabRemove',
@@ -92,6 +98,10 @@ var Tabs = function (_Component) {
     key: 'handleTabClick',
     value: function handleTabClick(tab, e) {
       var _this3 = this;
+
+      if (tab.props.disabled) {
+        return false;
+      }
 
       this.setState({
         currentName: tab.props.name
@@ -174,7 +184,7 @@ var Tabs = function (_Component) {
               'el-tabs__item': true,
               'is-active': name === currentName,
               'is-disabled': disabled,
-              'is-closable': closable
+              'is-closable': closable || item.props.closable
             });
 
             return _react2.default.createElement(
@@ -187,7 +197,7 @@ var Tabs = function (_Component) {
               label,
               _react2.default.createElement(
                 _libs.View,
-                { show: closable },
+                { show: closable || item.props.closable },
                 _react2.default.createElement('span', { className: 'el-icon-close', onClick: function onClick(e) {
                     return _this5.handleTabRemove(item, index, e);
                   } })

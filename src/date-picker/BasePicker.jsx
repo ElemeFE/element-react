@@ -1,13 +1,15 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import { PropTypes, Component } from '../../libs';
 import { EventRegister } from '../../libs/internal'
 
-import { HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
+import Input from '../input'
+import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
 import { Errors, require_condition, IDGenerator } from '../../libs/utils';
 
 /*
-todo: 
+todo:
   handle animation popup
 */
 
@@ -29,10 +31,11 @@ export default class BasePicker extends Component {
       format: PropTypes.string,
       isShowTrigger: PropTypes.bool,
       isReadOnly: PropTypes.bool,
+      isDisabled: PropTypes.bool,
       placeholder: PropTypes.string,
       onFocus: PropTypes.func,
       onBlur: PropTypes.func,
-      // (Date|Date[])=>()
+      // (Date|Date[]|null)=>(), null when click on clear icon
       onChange: PropTypes.func,
       // time select pannel:
       value: PropTypes.oneOfType([
@@ -44,7 +47,7 @@ export default class BasePicker extends Component {
 
   static get defaultProps() {
     return {
-      value: '',
+      value: new Date(),
       // (thisReactElement)=>Unit
       onFocus() { },
       onBlur() { },
@@ -70,8 +73,8 @@ export default class BasePicker extends Component {
   /**
    * onPicked should only be called from picker pannel instance
    * and should never return a null date instance
-   * 
-   * @param value: Date|Date[]
+   *
+   * @param value: Date|Date[]|null
    * @param isKeepPannel: boolean = false
    */
   onPicked(value, isKeepPannel = false) {//only change input value on picked triggered
@@ -94,8 +97,7 @@ export default class BasePicker extends Component {
       TYPE_VALUE_RESOLVER_MAP[this.type] ||
       TYPE_VALUE_RESOLVER_MAP['default']
     ).formatter;
-    const format = DEFAULT_FORMATS[this.type];
-    const result = formatter(tdate, this.props.format || format);
+    const result = formatter(tdate, this.getFormat());
 
     return result;
   }
@@ -108,7 +110,11 @@ export default class BasePicker extends Component {
       TYPE_VALUE_RESOLVER_MAP[type] ||
       TYPE_VALUE_RESOLVER_MAP['default']
     ).parser;
-    return parser(dateStr, this.props.format || DEFAULT_FORMATS[type]);
+    return parser(dateStr, this.getFormat());
+  }
+
+  getFormat() {
+    return this.props.format || DEFAULT_FORMATS[this.type]
   }
 
   propsToState(props) {
@@ -120,6 +126,11 @@ export default class BasePicker extends Component {
       state.text = ''
       state.value = null
     }
+
+    if (state.value == null) {
+      state.value = new Date()
+    }
+
     return state
   }
 
@@ -152,46 +163,9 @@ export default class BasePicker extends Component {
 
   handleKeydown(evt) {
     const keyCode = evt.keyCode;
-    const target = evt.target;
-    let selectionStart = target.selectionStart;
-    let selectionEnd = target.selectionEnd;
-    let length = target.value.length;
-
-    const hidePicker = () => {
-      this.setState({ pickerVisible: false })
-    }
-
     // tab
     if (keyCode === 9) {
-      hidePicker()
-
-      // enter
-    } else if (keyCode === 13) {
-      hidePicker()
-      evt.target.blur()//this trigger's handleBlur func
-      // left
-    } else if (keyCode === 37) {
-      evt.preventDefault();
-
-      if (selectionEnd === length && selectionStart === length) {
-        target.selectionStart = length - 2;
-      } else if (selectionStart >= 3) {
-        target.selectionStart -= 3;
-      } else {
-        target.selectionStart = 0;
-      }
-      target.selectionEnd = target.selectionStart + 2;
-      // right
-    } else if (keyCode === 39) {
-      evt.preventDefault();
-      if (selectionEnd === 0 && selectionStart === 0) {
-        target.selectionEnd = 2;
-      } else if (selectionEnd <= length - 3) {
-        target.selectionEnd += 3;
-      } else {
-        target.selectionEnd = length;
-      }
-      target.selectionStart = target.selectionEnd - 2;
+      this.setState({ pickerVisible: false });
     }
   }
 
@@ -202,7 +176,7 @@ export default class BasePicker extends Component {
   }
 
   // (state, props)=>ReactElement
-  pickerPannel() {
+  pickerPanel() {
     throw new Errors.MethodImplementationRequiredError()
   }
 
@@ -213,7 +187,7 @@ export default class BasePicker extends Component {
 
   // return true on condition
   //  * input is parsable to date
-  //  * also meet your other condition 
+  //  * also meet your other condition
   isInputValid(value) {
     const parseable = this.parseDate(value)
     if (!parseable) {
@@ -241,9 +215,61 @@ export default class BasePicker extends Component {
     }
   }
 
+  handleClickIcon() {
+    const {isReadOnly, isDisabled} = this.props
+    const {text} = this.state
+
+    if (isReadOnly || isDisabled) return
+    if (!text) {
+      this.togglePickerVisible()
+    } else {
+      this.setState({ text: '', value: null, pickerVisible: false })
+      this.props.onChange(null)
+    }
+  }
+
   render() {
-    const {isReadOnly, placeholder} = this.props;
-    const {pickerVisible, value, text} = this.state;
+    const {isReadOnly, placeholder, isDisabled} = this.props;
+    const {pickerVisible, value, text, isShowClose} = this.state;
+
+    const createIconSlot = () => {
+      if (this.calcIsShowTrigger()) {
+        const cls = isShowClose ? 'el-icon-close' : this.triggerClass()
+        return (
+          <i
+            className={this.classNames('el-input__icon', cls)}
+            onClick={this.handleClickIcon.bind(this)}
+            onMouseEnter={() => {
+              if (isReadOnly || isDisabled) return
+              if (text) {
+                this.setState({ isShowClose: true })
+              }
+            } }
+            onMouseLeave={() => {
+              this.setState({ isShowClose: false })
+            } }
+            ></i>
+        )
+      } else {
+        return null
+      }
+    }
+
+    const createPickerPanel = () => {
+      if (pickerVisible) {
+        return this.pickerPanel(
+          this.state,
+          Object.assign({}, this.props, {
+            getPopperRefElement: () => ReactDOM.findDOMNode(this.refs.inputRoot),
+            popperMixinOption: {
+              placement: PLACEMENT_MAP[this.props.align] || PLACEMENT_MAP.left
+            }
+          })
+        )
+      } else {
+        return null
+      }
+    }
 
     return (
       <span
@@ -265,9 +291,10 @@ export default class BasePicker extends Component {
           eventName="click"
           func={this.handleClickOutside.bind(this)} />
 
-        <input
-          className="el-date-editor__editor"
+        <Input
+          className={this.classNames(`el-date-editor el-date-editor--${this.type}`)}
           readOnly={isReadOnly}
+          disabled={isDisabled}
           type="text"
           placeholder={placeholder}
           onFocus={this.handleFocus.bind(this)}
@@ -283,22 +310,13 @@ export default class BasePicker extends Component {
             }
             this.setState(nstate)
           } }
-          ref="reference"
+          ref="inputRoot"
           value={text}
+          icon={createIconSlot()}
           />
 
-        {
-          this.calcIsShowTrigger() && <span
-            onClick={this.togglePickerVisible.bind(this)}
-            className={this.classNames('el-date-editor__trigger', 'el-icon', this.triggerClass())}
-            />
-        }
-
-        {
-          pickerVisible && this.pickerPannel(this.state, this.props)
-        }
+        {createPickerPanel()}
       </span>
     )
   }
 }
-

@@ -16,8 +16,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _libs = require('../../libs');
 
-var _constants = require('./constants');
-
 var _BasePicker2 = require('./BasePicker');
 
 var _BasePicker3 = _interopRequireDefault(_BasePicker2);
@@ -68,30 +66,25 @@ var TimeSelect = function (_BasePicker) {
     }
   }, {
     key: 'panelProps',
-    value: function panelProps() {
+    value: function panelProps(props) {
+      var ps = props || this.props;
       var minTime = this.dateToStr(this.props.minTime);
-      return _extends({}, this.props, { minTime: minTime });
+      return _extends({}, ps, { minTime: minTime });
     }
   }, {
-    key: 'pickerPannel',
-    value: function pickerPannel(state, props) {
+    key: 'pickerPanel',
+    value: function pickerPanel(state, props) {
       var _this2 = this;
 
       var value = this.dateToStr(state.value);
-
-      return _react2.default.createElement(_TimeSelectPanel2.default, _extends({}, this.panelProps(), {
+      return _react2.default.createElement(_TimeSelectPanel2.default, _extends({}, this.panelProps(props), {
         value: value,
         onPicked: this.onPicked.bind(this),
-        getPopperRefElement: function getPopperRefElement() {
-          return _this2.refs.reference;
-        },
         dateParser: function dateParser(str) {
           var r = _this2.parseDate(str);
           return r;
-        },
-        popperMixinOption: {
-          placement: _constants.PLACEMENT_MAP[props.align] || _constants.PLACEMENT_MAP.left
-        } }));
+        }
+      }));
     }
   }]);
 

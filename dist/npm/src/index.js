@@ -339,6 +339,18 @@ Object.defineProperty(exports, 'TimeRangePicker', {
     return _datePicker.TimeRangePicker;
   }
 });
+Object.defineProperty(exports, 'DatePicker', {
+  enumerable: true,
+  get: function get() {
+    return _datePicker.DatePicker;
+  }
+});
+Object.defineProperty(exports, 'DateRangePicker', {
+  enumerable: true,
+  get: function get() {
+    return _datePicker.DateRangePicker;
+  }
+});
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

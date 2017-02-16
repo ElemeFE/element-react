@@ -124,8 +124,10 @@ var Input = function (_Component) {
           otherProps = _objectWithoutProperties(_props2, ['type', 'size', 'prepend', 'append', 'icon', 'autoComplete', 'validating', 'rows', 'onMouseEnter', 'onMouseLeave']);
 
       var classname = this.classNames(type === 'textarea' ? 'el-textarea' : 'el-input', size && 'el-input--' + size, {
+        'is-disabled': this.props.disabled,
         'el-input-group': prepend || append,
-        'is-disabled': this.props.disabled
+        'el-input-group--append': !!append,
+        'el-input-group--prepend': !!prepend
       });
 
       if ('value' in this.props) {
@@ -161,7 +163,11 @@ var Input = function (_Component) {
             { className: 'el-input-group__prepend' },
             prepend
           ),
-          icon && _react2.default.createElement('i', { className: 'el-input__icon el-icon-' + icon, onClick: this.handleIconClick.bind(this) }),
+          typeof icon != 'string' ? icon : _react2.default.createElement(
+            'i',
+            { className: 'el-input__icon el-icon-' + icon, onClick: this.handleIconClick.bind(this) },
+            prepend
+          ),
           _react2.default.createElement('input', _extends({}, otherProps, {
             ref: 'input',
             className: 'el-input__inner',
@@ -191,7 +197,7 @@ exports.default = _default;
 Input.propTypes = {
   // base
   type: _libs.PropTypes.string,
-  icon: _libs.PropTypes.string,
+  icon: _libs.PropTypes.oneOfType([_libs.PropTypes.element, _libs.PropTypes.string]),
   disabled: _libs.PropTypes.bool,
   name: _libs.PropTypes.string,
   placeholder: _libs.PropTypes.string,

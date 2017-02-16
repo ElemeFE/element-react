@@ -191,7 +191,8 @@ var AutoComplete = function (_Component) {
           placeholder = _props.placeholder,
           name = _props.name,
           size = _props.size,
-          customItem = _props.customItem;
+          customItem = _props.customItem,
+          popperClass = _props.popperClass;
       var _state3 = this.state,
           value = _state3.value,
           suggestions = _state3.suggestions,
@@ -218,7 +219,7 @@ var AutoComplete = function (_Component) {
           { name: 'md-fade-bottom' },
           suggestionVisible && _react2.default.createElement(
             'ul',
-            { ref: 'suggestions', className: this.classNames('el-autocomplete__suggestions', {
+            { ref: 'suggestions', className: this.classNames('el-autocomplete__suggestions', popperClass, {
                 'is-loading': loading
               }) },
             loading && _react2.default.createElement(
@@ -254,6 +255,7 @@ AutoComplete.propTypes = {
   name: _libs.PropTypes.string,
   size: _libs.PropTypes.string,
   value: _libs.PropTypes.string,
+  popperClass: _libs.PropTypes.string,
   fetchSuggestions: _libs.PropTypes.func,
   triggerOnFocus: _libs.PropTypes.bool,
   customItem: _libs.PropTypes.any,

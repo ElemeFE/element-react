@@ -108,7 +108,7 @@ export default class MessageBox extends Component {
       <div>
         <div style={{ position: 'absolute', zIndex: 2001 }}>
           <Transition name="msgbox-fade" duration="300">
-            <View key="el-message-box" show={this.state.visible}>
+            <View key={this.state.visible} show={this.state.visible}>
               <div className="el-message-box__wrapper">
                 <div className="el-message-box">
                   {
@@ -157,7 +157,7 @@ export default class MessageBox extends Component {
           </Transition>
         </div>
         <Transition name="v-modal" duration="200">
-          <View key="v-modal" show={this.state.visible}>
+          <View key={this.state.visible} show={this.state.visible}>
             <div className="v-modal" style={{ zIndex: 1006 }}></div>
           </View>
         </Transition>

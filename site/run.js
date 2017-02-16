@@ -18,13 +18,13 @@ new WebpackDevServer(webpack({
     new webpack.HotModuleReplacementPlugin()
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        loaders: ['babel'],
+        loader: 'babel-loader',
         include: [
           path.join(__dirname, '../site'),
           path.join(__dirname, '../src'),
@@ -33,23 +33,23 @@ new WebpackDevServer(webpack({
       },
       {
         test: /\.css$/,
-        loaders: ['style', 'css']
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)(\?.+)?$/,
-        loader : 'file'
+        loader : 'file-loader'
       },
       {
         test: /\.(jpe?g|png|gif)(\?.+)?$/,
-        loader : 'url'
+        loader : 'url-loader'
       },
       {
         test: /\.md$/,
-        loader : 'raw'
+        loader : 'raw-loader'
       }
     ]
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popper from '../../vendor/popper';
+import Popper from 'popper.js';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
 export default class DropdownMenu extends Component {
@@ -13,9 +13,27 @@ export default class DropdownMenu extends Component {
   }
 
   componentDidUpdate() {
-    this.popperJS = new Popper(ReactDOM.findDOMNode(this.parent()), this.refs.popper, {
-      placement: this.placement()
-    });
+    const { showPopper } = this.state;
+
+    if (showPopper) {
+      if (this.popperJS) {
+        this.popperJS.update();
+      } else {
+        this.popperJS = new Popper(ReactDOM.findDOMNode(this.parent()), this.refs.popper, {
+          placement: this.placement()
+        });
+      }
+    } else {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
+    }
+  }
+
+  componentWillUnMount() {
+    if (this.popperJS) {
+      this.popperJS.destroy();
+    }
   }
 
   onVisibleChange(visible) {

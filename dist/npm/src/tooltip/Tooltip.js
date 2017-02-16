@@ -10,7 +10,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _popper = require('../../vendor/popper');
+var _popper = require('popper.js');
 
 var _popper2 = _interopRequireDefault(_popper);
 
@@ -39,11 +39,6 @@ var Tooltip = function (_Component) {
   }
 
   _createClass(Tooltip, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.initialPopper();
-    }
-  }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
       if (props.visible != this.props.visible) {
@@ -55,23 +50,38 @@ var Tooltip = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      this.initialPopper();
+      var showPopper = this.state.showPopper;
+
+
+      if (showPopper) {
+        if (this.popperJS) {
+          this.popperJS.update();
+        } else {
+          var _refs = this.refs,
+              popper = _refs.popper,
+              reference = _refs.reference,
+              arrow = _refs.arrow;
+          var placement = this.props.placement;
+
+
+          if (arrow) {
+            arrow.setAttribute('x-arrow', '');
+          }
+
+          this.popperJS = new _popper2.default(reference, popper, { placement: placement });
+        }
+      } else {
+        if (this.popperJS) {
+          this.popperJS.destroy();
+        }
+      }
     }
   }, {
-    key: 'initialPopper',
-    value: function initialPopper() {
-      var _refs = this.refs,
-          popper = _refs.popper,
-          reference = _refs.reference,
-          arrow = _refs.arrow;
-      var placement = this.props.placement;
-
-
-      if (arrow) {
-        arrow.setAttribute('x-arrow', '');
+    key: 'componentWillUnMount',
+    value: function componentWillUnMount() {
+      if (this.popperJS) {
+        this.popperJS.destroy();
       }
-
-      this.popper = new _popper2.default(reference, popper, { placement: placement });
     }
   }, {
     key: 'showPopper',

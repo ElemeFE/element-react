@@ -1,26 +1,22 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { transform } from 'babel-standalone';
 import marked from 'marked';
+import { transform } from 'babel-standalone';
 
-import highlight from '../../vendor/highlight';
+import highlight from './highlight';
 
-export default class Canvas extends Component {
+export default class Canvas extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      showBlock: false,
+      showBlock: false
     };
   }
 
   componentWillMount() {
     marked.setOptions({
-      highlight: (code, lang) => {
-        if (/^js/i.test(lang)) {
-          lang = 'javascript'
-          return highlight.highlightAuto(code, [lang]).value;
-        }
-
+      highlight: code => {
         return highlight.highlightAuto(code).value;
       }
     });
@@ -50,7 +46,7 @@ export default class Canvas extends Component {
 
       if (div instanceof HTMLElement) {
         require(['../../src'], Element => {
-          const args = ['context', 'React'], argv = [this.props.context, React];
+          const args = ['context', 'React'], argv = [this, React];
 
           for (const key in Element) {
             args.push(key);
@@ -69,41 +65,27 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const name = this.props.component.toLowerCase();
     const document = this.props.children.match(/([^]*)\n?(```[^]+```)/);
     const source = document[2].match(/```(.*)\n([^]+)```/);
     const description = marked(document[1]);
     const highlight = marked(document[2]);
+    const component = transform(`
+      class Demo extends React.Component {
+        ${source[2]}
+      }
 
-    let code = source[2];
-
-    if (!/^(js|javascript|jsfunc)/i.test(source[1])) {
-      code = `<div>${source[2]}</div>`
-    }
-
-    let component
-    // hacking through restrictions, so i can create React class in markdown.
-    // see time-picker.md demo
-    if (/^jsfunc/i.test(source[1])) {
-      code = `
-        __rtn = (function() {
-          ${code}
-        })();
-      `
-      component = transform(code, {
-        presets: ['es2015', 'react']
-      }).code.replace('__rtn = ', 'return ')
-    } else {
-      component = transform(code.replace(/this/g, 'context'), {
-        presets: ['es2015', 'react']
-      }).code.replace(/React.createElement/, 'return React.createElement');
-    }
+      __rtn = (function() {
+        return <Demo {...context.props} />
+      })();
+    `, {
+      presets: ['es2015', 'react']
+    }).code.replace('__rtn = ', 'return ');
 
     this.shouldUpdate = component != this.component || this.component === undefined;
     this.component = component;
 
     return (
-      <div className={`demo-block demo-box demo-${name}`}>
+      <div className={`demo-block demo-box demo-${this.props.name}`}>
         <div className="source" ref="source"></div>
         <div className="meta" style={{
           height: this.state.showBlock ? this.getHeight() : 0
@@ -125,10 +107,3 @@ export default class Canvas extends Component {
     )
   }
 }
-
-/* eslint-disable */
-Canvas.propTypes = {
-  component: PropTypes.string.isRequired,
-  context: PropTypes.any
-}
-/* eslint-enable */
