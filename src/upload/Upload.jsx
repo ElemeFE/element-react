@@ -4,6 +4,8 @@ import UploadList from './UploadList';
 import iFrameUpload from './iFrameUpload';
 import AjaxUpload from './AjaxUpload';
 
+let fileStaged = [];
+
 export default class Upload extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +33,7 @@ export default class Upload extends Component {
   }
 
   handleStart(file) {
-    let { fileList, tempIndex } = this.state;
+    let { tempIndex } = this.state;
     file.uid = Date.now() + tempIndex++;
     let _file = {
       status: 'uploading',
@@ -48,8 +50,9 @@ export default class Upload extends Component {
         throw err;
       }
     }
+    fileStaged = fileStaged.concat(_file);
     this.setState({
-      fileList: fileList.concat(_file),
+      fileList: fileStaged,
       tempIndex,
     })
   }
