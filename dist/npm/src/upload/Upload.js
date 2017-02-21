@@ -32,6 +32,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var fileStaged = [];
+
 var Upload = function (_Component) {
   _inherits(Upload, _Component);
 
@@ -73,9 +75,7 @@ var Upload = function (_Component) {
   }, {
     key: 'handleStart',
     value: function handleStart(file) {
-      var _state = this.state,
-          fileList = _state.fileList,
-          tempIndex = _state.tempIndex;
+      var tempIndex = this.state.tempIndex;
 
       file.uid = Date.now() + tempIndex++;
       var _file = {
@@ -93,8 +93,9 @@ var Upload = function (_Component) {
           throw err;
         }
       }
+      fileStaged = fileStaged.concat(_file);
       this.setState({
-        fileList: fileList.concat(_file),
+        fileList: fileStaged,
         tempIndex: tempIndex
       });
     }
@@ -311,6 +312,8 @@ var _temp = function () {
   if (typeof __REACT_HOT_LOADER__ === 'undefined') {
     return;
   }
+
+  __REACT_HOT_LOADER__.register(fileStaged, 'fileStaged', 'src/upload/Upload.jsx');
 
   __REACT_HOT_LOADER__.register(Upload, 'Upload', 'src/upload/Upload.jsx');
 
