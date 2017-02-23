@@ -18,20 +18,20 @@ export default class Form extends Component {
   }
 
   addField(field) {
-    this.state.fields[field.prop] = field;
+    this.state.fields[field.props.prop] = field;
     this.state.fieldLength++;
   }
 
   removeField(field) {
-    delete this.state.fields[field.prop];
+    delete this.state.fields[field.props.prop];
     this.state.fieldLength--;
   }
 
   resetFields() {
     const { fields } = this.state;
 
-    for (let prop in fields) {
-      fields[prop].resetField();
+    for (const key in fields) {
+      fields[key].resetField();
     }
   }
 
@@ -39,8 +39,8 @@ export default class Form extends Component {
     const { fields, fieldLength } = this.state;
     let count = 0, valid = true;
 
-    for (let prop in fields) {
-      fields[prop].validate('', errors => {
+    for (const key in fields) {
+      fields[key].validate('', errors => {
         if (errors) {
           valid = false;
         }
