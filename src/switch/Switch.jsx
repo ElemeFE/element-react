@@ -5,59 +5,79 @@ export default class Switch extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      value: Boolean(props.value),
-      disabled: Boolean(props.disabled),
-      width: props.width === 0 ? this.hasText() ? 58 : 46 : props.width
+      value: props.value,
+      coreWidth: props.width,
+      buttonStyle: {
+        transform: ''
+      }
     };
   }
 
   componentDidMount() {
+    if (this.props.width === 0) {
+      this.state.coreWidth = this.hasText() ? 58 : 46;
+    }
+
     this.updateSwitch();
   }
 
-  componentDidUpdate() {
-    this.updateSwitch();
-    if (this.props.onChange) {
-      this.props.onChange(this.state.value);
+  componentWillReceiveProps(props) {
+    this.setState({ value: props.value }, () => {
+      this.updateSwitch();
+    });
+
+    if (props.width) {
+      this.setState({ coreWidth: props.width });
     }
   }
 
   updateSwitch() {
-    if (!this.state.disabled) {
-      if ((this.props.onColor || this.props.offColor)) {
-        this.handleCoreColor();
-      }
-    }
     this.handleButtonTransform();
+
+    if (this.props.onColor || this.props.offColor) {
+      this.setBackgroundColor();
+    }
   }
 
   hasText() {
     return this.props.onText || this.props.offText;
   }
 
-  handleMiscClick() {
-    if (!this.state.disabled) {
-      this.setState({
-        value: !this.state.value
-      });
-    }
+  setBackgroundColor() {
+    let newColor = this.state.value ? this.props.onColor : this.props.offColor;
+
+    this.refs.core.style.borderColor = newColor;
+    this.refs.core.style.backgroundColor = newColor;
   }
 
-  handleCoreColor() {
-    this.refs.core.style.borderColor = this.state.value ? this.props.onColor : this.props.offColor;
-    this.refs.core.style.backgroundColor = this.state.value ? this.props.onColor : this.props.offColor;
+  handleChange(e) {
+    this.setState({
+      value: e.target.checked
+    }, () => {
+      this.updateSwitch();
+
+      if (this.props.onChange) {
+        this.props.onChange(this.state.value);
+      }
+    });
   }
 
   handleButtonTransform() {
-    this.refs.button.style.transform = this.state.value ? `translate3d(${ this.state.width - 20 }px, 2px, 0)` : 'translate3d(2px, 2px, 0)';
+    const { value, coreWidth, buttonStyle } = this.state;
+
+    buttonStyle.transform = value ? `translate(${ coreWidth - 20 }px, 2px)` : 'translate(2px, 2px)';
+
+    this.setState({ buttonStyle });
   }
 
   render() {
-    const {name, onText, offText, onIconClass, offIconClass} = this.props;
-    const {value, disabled, width} = this.state;
+    const { name, disabled, onText, offText, onIconClass, offIconClass } = this.props;
+    const { value, coreWidth, buttonStyle } = this.state;
+
     return (
-      <div
+      <label
         style={this.style()}
         className={this.className('el-switch', {
           'is-disabled' : disabled,
@@ -68,34 +88,43 @@ export default class Switch extends Component {
           <div className="el-switch__mask"></div>
         </View>
 
-        <input className="el-switch__input" type="checkbox" checked={value} name={name}
-          disabled={disabled} style={{display: 'none'}} onChange={()=>{}} />
+        <input
+          className="el-switch__input"
+          type="checkbox"
+          checked={value}
+          name={name}
+          disabled={disabled}
+          onChange={this.handleChange.bind(this)}
+        />
 
-        <span className="el-switch__core" ref="core" onClick={this.handleMiscClick.bind(this)} style={{ 'width': width + 'px' }}>
-          <span className="el-switch__button" ref="button" />
+        <span className="el-switch__core" ref="core" style={{ 'width': coreWidth + 'px' }}>
+          <span className="el-switch__button" style={Object.assign({}, buttonStyle)} />
         </span>
 
         <Transition name="label-fade">
           <View show={value}>
-            <div className="el-switch__label el-switch__label--left" onClick={this.handleMiscClick.bind(this)}
-              style={{ 'width': width + 'px' }}>
-              {onIconClass && <i className="onIconClass" />}
-              {!onIconClass && onText && <span>{onText}</span>}
+            <div
+              className="el-switch__label el-switch__label--left"
+              style={{ 'width': coreWidth + 'px' }}
+            >
+              { onIconClass && <i className={onIconClass} /> }
+              { !onIconClass && onText && <span>{onText}</span> }
             </div>
           </View>
         </Transition>
 
         <Transition name="label-fade">
-          <View show={!this.state.value}>
-            <div className="el-switch__label el-switch__label--right" onClick={this.handleMiscClick.bind(this)}
-              style={{ 'width': this.state.width + 'px' }}>
-              {offIconClass && <i className="offIconClass" />}
-              {!offIconClass && offText && <span>{offText}</span>}
+          <View show={!value}>
+            <div
+              className="el-switch__label el-switch__label--right"
+              style={{ 'width': coreWidth + 'px' }}
+            >
+              { offIconClass && <i className={offIconClass} /> }
+              { !offIconClass && offText && <span>{offText}</span> }
             </div>
           </View>
         </Transition>
-      </div>
-
+      </label>
     )
   }
 }
@@ -124,6 +153,5 @@ Switch.defaultProps = {
   offText: 'OFF',
   onColor: '',
   offColor: '',
-  name: '',
-  onChange: undefined
+  name: ''
 };
