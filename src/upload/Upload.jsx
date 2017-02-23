@@ -61,6 +61,7 @@ export default class Upload extends Component {
     const { fileList } = this.state;
     let _file = this.getFile(file);
     _file.percentage = e.percent || 0;
+    this.props.onProgress(e, _file, fileList);
     this.setState({ fileList })
   }
 
@@ -198,6 +199,7 @@ Upload.propTypes = {
   beforeUpload: PropTypes.func,
   onRemove: PropTypes.func,
   onPreview: PropTypes.func,
+  onProgress: PropTypes.func,
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
 }
@@ -209,6 +211,7 @@ Upload.defaultProps = {
   showUploadList: true,
   onRemove() {},
   onPreview() {},
+  onProgress() {},
   onSuccess() {},
   onError() {},
 }
