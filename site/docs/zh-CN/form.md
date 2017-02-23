@@ -15,8 +15,8 @@ constructor(props) {
     form: {
       name: '',
       region: '',
-      date1: '',
-      date2: '',
+      date1: null,
+      date2: null,
       delivery: false,
       type: [],
       resource: '',
@@ -294,8 +294,8 @@ constructor(props) {
     form: {
       name: '',
       region: '',
-      date1: '',
-      date2: '',
+      date1: null,
+      date2: null,
       delivery: false,
       type: [],
       resource: '',
@@ -347,9 +347,9 @@ handleReset(e) {
 }
 
 onChange(key, e) {
-  // this.setState({
-  //   form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
-  // });
+  this.setState({
+    form: Object.assign({}, this.state.form, { [key]: e.target ? e.target.value : e })
+  });
 }
 
 render() {
@@ -367,31 +367,27 @@ render() {
       <Form.Item label="活动时间" required={true}>
         <Layout.Col span="11">
           <Form.Item prop="date1">
-            <Form.Item>
-              <DatePicker
-                value={this.state.form.date1}
-                placeholder="选择日期"
-                onChange={this.onChange.bind(this, 'date1')}
-              />
-            </Form.Item>
+            <DatePicker
+              value={this.state.form.date1}
+              placeholder="选择日期"
+              onChange={this.onChange.bind(this, 'date1')}
+            />
           </Form.Item>
         </Layout.Col>
         <Layout.Col className="line" span="2">-</Layout.Col>
         <Layout.Col span="11">
           <Form.Item prop="date2">
-            <Form.Item>
-              <TimePicker
-                value={this.state.form.date2}
-                selectableRange="18:30:00 - 20:30:00"
-                placeholder="选择时间"
-                onChange={this.onChange.bind(this, 'date2')}
-              />
-            </Form.Item>
+            <TimePicker
+              value={this.state.form.date2}
+              selectableRange="18:30:00 - 20:30:00"
+              placeholder="选择时间"
+              onChange={this.onChange.bind(this, 'date2')}
+            />
           </Form.Item>
         </Layout.Col>
       </Form.Item>
-      <Form.Item label="即时配送">
-        <Switch onText="" offText="" value={this.state.form.delivery} onChange={this.onChange.bind(this, 'delivery')}></Switch>
+      <Form.Item label="即时配送" prop="delivery">
+        <Switch value={this.state.form.delivery} onChange={this.onChange.bind(this, 'delivery')}></Switch>
       </Form.Item>
       <Form.Item label="活动性质" prop="type">
         <Checkbox.Group value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}>
@@ -440,8 +436,8 @@ constructor(props) {
           if (value === '') {
             callback(new Error('请输入密码'));
           } else {
-            if (this.state.ruleForm2.checkPass !== '') {
-              this.ruleForm2.validateField('checkPass');
+            if (this.state.form.checkPass !== '') {
+              this.refs.form.validateField('checkPass');
             }
             callback();
           }
@@ -452,7 +448,7 @@ constructor(props) {
         { validator: (rule, value, callback) => {
           if (value === '') {
             callback(new Error('请再次输入密码'));
-          } else if (value !== this.ruleForm2.pass) {
+          } else if (value !== this.state.form.pass) {
             callback(new Error('两次输入密码不一致!'));
           } else {
             callback();
@@ -500,17 +496,23 @@ handleReset(e) {
   this.refs.form.resetFields();
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign({}, this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
       <Form.Item label="密码" prop="pass">
-        <Input type="password" value={this.state.form.pass} autoComplete="off"></Input>
+        <Input type="password" value={this.state.form.pass} onChange={this.onChange.bind(this, 'pass')} autoComplete="off" />
       </Form.Item>
       <Form.Item label="确认密码" prop="checkPass">
-        <Input type="password" value={this.state.form.checkPass} autoComplete="off"></Input>
+        <Input type="password" value={this.state.form.checkPass} onChange={this.onChange.bind(this, 'checkPass')} autoComplete="off" />
       </Form.Item>
       <Form.Item label="年龄" prop="age">
-        <Input value={this.state.form.age}></Input>
+        <Input value={this.state.form.age} onChange={this.onChange.bind(this, 'age')}></Input>
       </Form.Item>
       <Form.Item>
         <Button type="primary" onClick={this.handleSubmit.bind(this)}>提交</Button>
@@ -581,11 +583,22 @@ addDomain(e) {
   this.forceUpdate();
 }
 
+onEmailChange(e) {
+  this.setState({
+    form: Object.assign({}, this.state.form, { email: e.target.value })
+  });
+}
+
+onDomainChange(index, e) {
+  this.state.form.domains[index].value = e.target.value;
+  this.forceUpdate();
+}
+
 render() {
   return (
     <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-dynamic">
       <Form.Item prop="email" label="邮箱">
-        <Input value={this.state.form.email}></Input>
+        <Input value={this.state.form.email} onChange={this.onEmailChange.bind(this)}></Input>
       </Form.Item>
       {
         this.state.form.domains.map((domain, index) => {
@@ -601,7 +614,7 @@ render() {
                 }
               }}
             >
-              <Input value={domain.value}></Input>
+              <Input value={domain.value} onChange={this.onDomainChange.bind(this, index)}></Input>
               <Button onClick={this.removeDomain.bind(this, domain)}>删除</Button>
             </Form.Item>
           )
