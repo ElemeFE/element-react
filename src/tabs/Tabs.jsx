@@ -5,13 +5,13 @@ export default class Tabs extends Component {
   constructor(props) {
     super(props);
 
-    let { children, activeName } = props;
+    let { children, activeName, value } = props;
 
     children = React.Children.toArray(children);
 
     this.state = {
       children: children,
-      currentName: activeName || children[0].props.name,
+      currentName: value || activeName || children[0].props.name,
       barStyle: {},
     };
   }
@@ -27,6 +27,12 @@ export default class Tabs extends Component {
       }, () => this.calcBarStyle());
     }
 
+    if (nextProps.value !== this.props.value) {
+      this.setState({
+        currentName: nextProps.value,
+      }, () => this.calcBarStyle());
+    }
+
     if (nextProps.children !== this.props.children) {
       this.setState({
         children: React.Children.toArray(nextProps.children),
@@ -34,9 +40,16 @@ export default class Tabs extends Component {
     }
   }
 
+  handleTabAdd() {
+    const { onTabAdd, onTabEdit } = this.props;
+
+    onTabEdit && onTabEdit('add');
+    onTabAdd && onTabAdd();
+  }
+
   handleTabRemove(tab, index, e) {
     const { children, currentName } = this.state;
-    const { onTabRemove } = this.props;
+    const { onTabRemove, onTabEdit } = this.props;
 
     e.stopPropagation();
 
@@ -54,6 +67,7 @@ export default class Tabs extends Component {
     this.setState({
       children
     }, () => {
+      onTabEdit && onTabEdit('remove', tab);
       onTabRemove && onTabRemove(tab, e);
     });
   }
@@ -107,40 +121,57 @@ export default class Tabs extends Component {
 
   render() {
     const { children, currentName, barStyle } = this.state;
-    const { type, closable } = this.props;
+    const { type, addable, closable, editable } = this.props;
     const tabsCls = this.classNames({
       'el-tabs': true,
       'el-tabs--card': type === 'card',
       'el-tabs--border-card': type === 'border-card',
     });
+    const addButton = editable || addable
+      ? (
+        <span
+          className="el-tabs__new-tab"
+          onClick={() => this.handleTabAdd()}
+        >
+          <i className="el-icon-plus"></i>
+        </span>
+      )
+      : null;
     this.tabs = [];
 
     return (
       <div style={this.style()} className={this.className(tabsCls)}>
         <div className="el-tabs__header">
-          {
-            React.Children.map(children, (item, index) => {
-              const { name, label, disabled } = item.props;
-              const tabCls = this.classNames({
-                'el-tabs__item': true,
-                'is-active': name === currentName,
-                'is-disabled': disabled,
-                'is-closable': closable || item.props.closable,
-              });
+          {addButton}
+          <div className="el-tabs__nav-wrap">
+            <div className="el-tabs__nav-scroll">
+              <div className="el-tabs__nav">
+                {
+                  React.Children.map(children, (item, index) => {
+                    const { name, label, disabled } = item.props;
+                    const tabCls = this.classNames({
+                      'el-tabs__item': true,
+                      'is-active': name === currentName,
+                      'is-disabled': disabled,
+                      'is-closable': closable || item.props.closable,
+                    });
 
-              return (
-                <div key={ `el-tabs__item-${index}` } ref={ (tab) => tab && this.tabs.push(tab) } name={ name } className={ tabCls } onClick={ (e) => this.handleTabClick(item, e) }>
-                  { label }
-                  <View show={ closable || item.props.closable }>
-                    <span className="el-icon-close" onClick={ (e) => this.handleTabRemove(item, index, e) }></span>
-                  </View>
-                </div>
-              )
-            })
-          }
-          <View show={ !type }>
-            <div className="el-tabs__active-bar" style={ barStyle }></div>
-          </View>
+                    return (
+                      <div key={ `el-tabs__item-${index}` } ref={ (tab) => tab && this.tabs.push(tab) } name={ name } className={ tabCls } onClick={ (e) => this.handleTabClick(item, e) }>
+                        { label }
+                        <View show={ editable || closable || item.props.closable }>
+                          <span className="el-icon-close" onClick={ (e) => this.handleTabRemove(item, index, e) }></span>
+                        </View>
+                      </div>
+                    )
+                  })
+                }
+                <View show={ !type }>
+                  <div className="el-tabs__active-bar" style={ barStyle }></div>
+                </View>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="el-tabs__content">
           {
@@ -168,12 +199,19 @@ export default class Tabs extends Component {
 
 Tabs.propTypes = {
   type: PropTypes.oneOf(['card', 'border-card']),
-  closable: PropTypes.bool,
   activeName: PropTypes.string,
+  value: PropTypes.string,
+  closable: PropTypes.bool,
+  addable: PropTypes.bool,
+  editable: PropTypes.bool,
   onTabClick: PropTypes.func,
   onTabRemove: PropTypes.func,
+  onTabAdd: PropTypes.func,
+  onTabEdit: PropTypes.func,
 }
 
 Tabs.defaultProps = {
   closable: false,
+  addable: false,
+  edidable: false,
 }

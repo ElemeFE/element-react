@@ -29,7 +29,7 @@ render() {
 ```js
 render() {
   return (
-    <Tabs type="card" activeName="1">
+    <Tabs type="card" value="1">
       <Tabs.Pane label="用户管理" name="1">用户管理</Tabs.Pane>
       <Tabs.Pane label="配置管理" name="2">配置管理</Tabs.Pane>
       <Tabs.Pane label="角色管理" name="3">角色管理</Tabs.Pane>
@@ -79,7 +79,7 @@ render() {
 :::
 
 ### 自定义标签页
-可以通过具名 slot 来实现自定义标签页的内容。
+可以通过 node 类型来实现自定义标签页的内容。
 
 :::demo
 
@@ -99,8 +99,64 @@ render() {
 ```
 :::
 
+### 动态增减标签页
+增减标签页按钮只能在选项卡样式的标签页下使用
+
+:::demo
+
+```js
+constructor() {
+  super();
+  this.state = {
+    tabs: [{
+      title: 'Tab 1',
+      name: 'Tab 1',
+      content: 'Tab 1 content',
+    }, {
+      title: 'Tab 2',
+      name: 'Tab 2',
+      content: 'Tab 2 content',
+    }],
+    tabIndex: 2,
+  }
+}
+
+editTab(action, tab) {
+  if (action === 'add') {
+    const { tabs, tabIndex } = this.state;
+    const index = tabIndex + 1;
+
+    tabs.push({
+      title: 'new Tab',
+      name: 'Tab ' + index,
+      content: 'new Tab content',
+    })
+    this.setState({
+      tabs,
+      tabIndex: index,
+    });
+  }
+
+  if (action === 'remove') {
+    console.log(action, tab);
+  }
+}
+
+render() {
+  return (
+    <Tabs type="card" value="Tab 2" editable onTabEdit={(action, tab) => this.editTab(action, tab)}>
+      {
+        this.state.tabs.map((item, index) => {
+          return <Tabs.Pane key={index} closable label={item.title} name={item.name}>{item.content}</Tabs.Pane>
+        })
+      }
+    </Tabs>
+  )
+}
+```
+:::
+
 ### 动态添加标签页
-展示如何通过触发器来动态增加标签页。
 
 :::demo
 
@@ -142,7 +198,7 @@ render() {
       <div style={{marginBottom: '20px'}}>
         <Button size="small" onClick={() => this.addTab()}>add tab</Button>
       </div>
-      <Tabs type="card">
+      <Tabs type="card" value="Tab 2">
         {
           this.state.tabs.map((item, index) => {
             return <Tabs.Pane key={index} closable label={item.title} name={item.name}>{item.content}</Tabs.Pane>
@@ -159,15 +215,19 @@ render() {
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | type          | 风格类型      | string         |   card, border-card            |    —     |
-| closable          |  标签是否可关闭    | boolean  |  true, false             |     false    |
+| closable          |  标签是否可关闭    | boolean  |  -             |     false    |
+| addable          |  标签是否可增加    | boolean  |  -             |     false    |
+| editable          |  标签是否同时可增加和关闭    | boolean  |  -             |     false    |
 | activeName       | 选中选项卡的 name    | string  |  —  |  第一个选项卡的 name |
 | value       | 绑定值，选中选项卡的name    | string  |  —  |  第一个选项卡的 name |
 
 ### Tabs Events
 | 事件名称          | 说明            | 回调参数            |
 |-------------  |---------------- |---------------- |
-| onTabClick          |  tab 被选中的钩子      | 被选中的标签 tab         |
-| onTabRemove          |    tab 被删除的钩子    | 被删除的标签 tab  |
+| onTabClick          |  tab 被选中时触发      | 被选中的标签 tab 实例         |
+| onTabRemove          |    点击 tab 移除按钮后触发    | 被删除的标签的 name  |
+| onTabAdd          |    点击 tabs 的新增按钮后触发    | -  |
+| onTabEdit          |    点击 tabs 的新增按钮或 tab 被关闭后触发    | (targetName, action)  |
 
 ### Tabs.Pane Attributes
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
