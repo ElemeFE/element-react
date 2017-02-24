@@ -5,10 +5,17 @@ export default class CheckboxGroup extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       options: this.props.options || []
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.options !== this.props.options) {
+      this.setState({
+        options: nextProps.options
+      });
+    }
   }
 
   getChildContext () {
@@ -18,7 +25,6 @@ export default class CheckboxGroup extends Component {
   onChange(e, label, value) {
     const { options, values } = this.state;
     let newOptions, newValues;
-
     if (e.target.checked) {
       newOptions = options.concat(value || label);
     } else {
@@ -36,7 +42,6 @@ export default class CheckboxGroup extends Component {
 
   render() {
     const { options } = this.state;
-
     const children = Children.map(this.props.children, (child, index) => {
       return React.cloneElement(
         child,
