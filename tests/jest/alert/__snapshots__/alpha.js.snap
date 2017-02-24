@@ -1,86 +1,108 @@
-exports[`test error 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`error 1`] = `
 <span
   className={undefined}
-  style={undefined}>
+  style={undefined}
+>
   <div
     className="el-alert el-alert--error"
-    style={Object {}}>
+    style={Object {}}
+  >
     <div
-      className="el-alert__content">
+      className="el-alert__content"
+    >
       <span
-        className="el-alert__title">
+        className="el-alert__title"
+      >
         错误提示的文案
       </span>
       <i
         className="el-alert__closebtn el-icon-close"
         onClick={[Function]}
-        style={Object {}} />
+        style={Object {}}
+      />
     </div>
   </div>
 </span>
 `;
 
-exports[`test info 1`] = `
+exports[`info 1`] = `
 <span
   className={undefined}
-  style={undefined}>
+  style={undefined}
+>
   <div
     className="el-alert el-alert--info"
-    style={Object {}}>
+    style={Object {}}
+  >
     <div
-      className="el-alert__content">
+      className="el-alert__content"
+    >
       <span
-        className="el-alert__title">
+        className="el-alert__title"
+      >
         消息提示的文案
       </span>
       <i
         className="el-alert__closebtn el-icon-close"
         onClick={[Function]}
-        style={Object {}} />
+        style={Object {}}
+      />
     </div>
   </div>
 </span>
 `;
 
-exports[`test success 1`] = `
+exports[`success 1`] = `
 <span
   className={undefined}
-  style={undefined}>
+  style={undefined}
+>
   <div
     className="el-alert el-alert--success"
-    style={Object {}}>
+    style={Object {}}
+  >
     <div
-      className="el-alert__content">
+      className="el-alert__content"
+    >
       <span
-        className="el-alert__title">
+        className="el-alert__title"
+      >
         成功提示的文案
       </span>
       <i
         className="el-alert__closebtn el-icon-close"
         onClick={[Function]}
-        style={Object {}} />
+        style={Object {}}
+      />
     </div>
   </div>
 </span>
 `;
 
-exports[`test warning 1`] = `
+exports[`warning 1`] = `
 <span
   className={undefined}
-  style={undefined}>
+  style={undefined}
+>
   <div
     className="el-alert el-alert--warning"
-    style={Object {}}>
+    style={Object {}}
+  >
     <div
-      className="el-alert__content">
+      className="el-alert__content"
+    >
       <span
-        className="el-alert__title">
+        className="el-alert__title"
+      >
         警告提示的文案
       </span>
       <i
         className="el-alert__closebtn el-icon-close"
         onClick={[Function]}
-        style={Object {}} />
+        style={Object {}}
+      />
     </div>
   </div>
 </span>

@@ -99,7 +99,8 @@ export default class CollapseTransition extends React.Component {
   afterLeave() {
     const el = this.selfRef
 
-    el.style.display = el.style.height = '';
+    el.style.display = 'none';
+    el.style.height = '';
     el.style.overflow = el.dataset.oldOverflow;
     el.style.paddingTop = el.dataset.oldPaddingTop;
     el.style.paddingBottom = el.dataset.oldPaddingBottom;

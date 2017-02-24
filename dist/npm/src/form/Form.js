@@ -45,13 +45,13 @@ var Form = function (_Component) {
   }, {
     key: 'addField',
     value: function addField(field) {
-      this.state.fields[field.prop] = field;
+      this.state.fields[field.props.prop] = field;
       this.state.fieldLength++;
     }
   }, {
     key: 'removeField',
     value: function removeField(field) {
-      delete this.state.fields[field.prop];
+      delete this.state.fields[field.props.prop];
       this.state.fieldLength--;
     }
   }, {
@@ -60,8 +60,8 @@ var Form = function (_Component) {
       var fields = this.state.fields;
 
 
-      for (var prop in fields) {
-        fields[prop].resetField();
+      for (var key in fields) {
+        fields[key].resetField();
       }
     }
   }, {
@@ -74,8 +74,8 @@ var Form = function (_Component) {
       var count = 0,
           valid = true;
 
-      for (var prop in fields) {
-        fields[prop].validate('', function (errors) {
+      for (var key in fields) {
+        fields[key].validate('', function (errors) {
           if (errors) {
             valid = false;
           }

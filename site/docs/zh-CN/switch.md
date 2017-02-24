@@ -80,7 +80,7 @@ render() {
 | offText  | switch 关闭时的文字    | string   | — | OFF |
 | onColor  | switch 打开时的背景色    | string   | — | #20A0FF |
 | offColor  | switch 关闭时的背景色    | string   | — | #C0CCDA |
-| Name  | switch 对应的 name 属性    | string   | — | — |
+| name  | switch 对应的 name 属性    | string   | — | — |
 
 ### Events
 | 事件名称      | 说明    | 回调参数      |
