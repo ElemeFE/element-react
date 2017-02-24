@@ -36,7 +36,7 @@ handleRemove(file, fileList) {
 
 ### 用户头像上传
 
-使用 `before-upload` 限制用户上传的图片格式和大小。
+使用 `beforeUpload` 限制用户上传的图片格式和大小。
 
 ::: demo
 ```js
@@ -72,10 +72,10 @@ beforeAvatarUpload(file) {
   const isLt2M = file.size / 1024 / 1024 < 2;
 
   if (!isJPG) {
-    alert('上传头像图片只能是 JPG 格式!');
+    Message('上传头像图片只能是 JPG 格式!');
   }
   if (!isLt2M) {
-    alert('上传头像图片大小不能超过 2MB!');
+    Message('上传头像图片大小不能超过 2MB!');
   }
   return isJPG && isLt2M;
 }
@@ -170,7 +170,7 @@ handlePreview(file) {
 
 ### 上传文件列表控制
 
-通过 `on-change` 钩子函数来对列表进行控制
+通过 `onChange` 钩子函数来对列表进行控制
 
 ::: demo
 ```js
@@ -215,7 +215,7 @@ handleChange(file, fileList) {
 
 可将文件拖入指定区域进行上传。
 
-::: demo 将 `type` 属性指定为 'drag' 可以将上传控件变为支持拖拽的形式，并且你可以通过 `multiple` 属性来控制是否支持多选，`onPreview` 和 `onRemove` 是一个钩子函数，分别在点击上传后的文件链接和点击移除上传后的文件后被调用。
+::: demo 通过 `drag` 属性可以将上传控件变为支持拖拽的形式，并且你可以通过 `multiple` 属性来控制是否支持多选，`onPreview` 和 `onRemove` 是一个钩子函数，分别在点击上传后的文件链接和点击移除上传后的文件后被调用。
 ```js
 render() {
   return (
@@ -284,17 +284,18 @@ submitUpload() {
 | name | 可选参数, 上传的文件字段名 | string | — | file |
 | withCredentials | 支持发送 cookie 凭证信息 | boolean | — | false |
 | showFileList | 是否显示已上传文件列表 | boolean | — | true |
-| type | 上传控件类型 | string | select/drag | select |
+| drag | 可选参数，是否支持拖拽 | boolean | - | - |
 | accept | 可选参数, 接受上传的[文件类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept)（thumbnailMode 模式下此参数无效）| string | — | — |
 | onPreview | 可选参数, 点击已上传的文件链接时的钩子, 可以通过 file.response 拿到服务端返回数据 | function(file) | — | — |
 | onRemove | 可选参数, 文件列表移除文件时的钩子 | function(file, fileList) | — | — |
 | onSuccess | 可选参数, 文件上传成功时的钩子 | function(response, file, fileList) | — | — |
 | onError | 可选参数, 文件上传失败时的钩子 | function(err, response, file) | — | — |
 | onProgress | 可选参数, 文件上传时的钩子 | function(event, file, fileList) | — | — |
+| onChange | 可选参数, 文件状态改变时的钩子，上传成功或者失败时都会被调用 | function(file, fileList) | — | — |
 | beforeUpload | 可选参数, 上传文件之前的钩子，参数为上传的文件，若返回 false 或者 Promise 则停止上传。 | function(file) | — | — |
-| list-type | 文件列表的类型 | string | text/picture/picture-card | text |
-| auto-upload | 是否在选取文件后立即进行上传 | boolean | — | true |
-| file-list | 上传的文件列表, 例如: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}] | array | — | [] |
+| listType | 文件列表的类型 | string | text/picture/picture-card | text |
+| autoUpload | 是否在选取文件后立即进行上传 | boolean | — | true |
+| fileList | 上传的文件列表, 例如: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}] | array | — | [] |
 
 ### Methods
 | 方法名      | 说明          | 参数 |
