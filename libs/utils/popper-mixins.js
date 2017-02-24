@@ -1,4 +1,4 @@
-import PopperJS from 'popper.js';
+import Popper from './popper';
 import {require_condition} from './assert'
 
 const MixinMethods = {
