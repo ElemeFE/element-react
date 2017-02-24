@@ -50,11 +50,7 @@ export default class InputNumber extends Component {
 
   onChange() {
     if (this.props.onChange) {
-      this.props.onChange({
-        target: {
-          value: this.state.value
-        }
-      });
+      this.props.onChange(this.state.value);
     }
   }
 
@@ -113,10 +109,37 @@ export default class InputNumber extends Component {
   }
 
   render() {
+    const { controls, disabled } = this.props;
+
     return (
       <div style={this.style()} className={this.className('el-input-number', this.props.size && `el-input-number--${this.props.size}`, {
-        'is-disabled': this.props.disabled
+        'is-disabled': disabled,
+        'is-without-controls': !controls
       })}>
+        {
+          controls && (
+            <span
+              className={this.classNames("el-input-number__decrease", {
+                'is-disabled': this.minDisabled()
+              })}
+              onClick={this.decrease.bind(this)}
+            >
+              <i className="el-icon-minus"></i>
+            </span>
+          )
+        }
+        {
+          controls && (
+            <span
+              className={this.classNames("el-input-number__increase", {
+                'is-disabled': this.maxDisabled()
+              })}
+              onClick={this.increase.bind(this)}
+            >
+              <i className="el-icon-plus"></i>
+            </span>
+          )
+        }
         <Input
           ref="input"
           className={this.classNames({
@@ -127,18 +150,6 @@ export default class InputNumber extends Component {
           size={this.props.size}
           onKeyDown={this.onKeyDown.bind(this)}
           onBlur={this.onBlur.bind(this)} />
-        <span className={this.classNames('el-input-number__decrease el-icon-minus', {
-          'is-disabled': this.minDisabled()
-        })}
-          onClick={this.decrease.bind(this)}
-          onMouseEnter={this.activeInput.bind(this, this.minDisabled())}
-          onMouseLeave={this.inactiveInput.bind(this, this.minDisabled())} />
-        <span className={this.classNames('el-input-number__increase el-icon-plus', {
-          'is-disabled': this.maxDisabled()
-        })}
-          onClick={this.increase.bind(this)}
-          onMouseEnter={this.activeInput.bind(this, this.maxDisabled())}
-          onMouseLeave={this.inactiveInput.bind(this, this.maxDisabled())} />
       </div>
     )
   }
@@ -151,12 +162,14 @@ InputNumber.propTypes = {
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   disabled: PropTypes.bool,
+  controls: PropTypes.bool,
   size: PropTypes.string,
   onChange: PropTypes.func
 }
 
 InputNumber.defaultProps = {
   step: 1,
+  controls: true,
   max: Infinity,
   min: 0
 }

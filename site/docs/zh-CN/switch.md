@@ -50,24 +50,6 @@ render() {
 ```
 :::
 
-### 回调事件
-
-:::demo 设置`change`回调事件，当开关状态发生了改变，会回调此函数，并返回当前`value`值。
-
-```js
-render() {
-  return (
-    <Switch
-      value={true}
-      onText=""
-      offText=""
-      onChange={(value)=>{console.log('switch ---> ' + value)}}>
-    </Switch>
-  )
-}
-```
-:::
-
 ### Attributes
 
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |

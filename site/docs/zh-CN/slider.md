@@ -95,17 +95,43 @@ render() {
 ```
 :::
 
-## Attributes
+### 范围选择
+
+支持选择某一数值范围
+
+:::demo 设置`range`即可开启范围选择，此时绑定值是一个数组，其元素分别为最小边界值和最大边界值
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: [4, 8]
+  }
+}
+
+render() {
+  return (
+    <div className="block">
+      <Slider value={this.state.value} max={10} range={true} showStops={true} />
+    </div>
+  )
+}
+```
+:::
+
+### Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | min | 最小值 | number | — | 0 |
 | max | 最大值 | number | — | 100 |
 | disabled | 是否禁用 | boolean | — | false |
 | step | 步长 | number | — | 1 |
-| show-input | 是否显示输入框 | boolean | — | false |
-| show-stops | 是否显示间断点 | boolean | — | false |
+| showInput | 是否显示输入框，仅在非范围选择时有效 | boolean | — | false |
+| showInputControls | 在显示输入框的情况下，是否显示输入框的控制按钮 | boolean | — | true|
+| showStops | 是否显示间断点 | boolean | — | false |
+| range | 是否为范围选择 | boolean | — | false |
 
-## Events
+### Events
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
-| change | 值改变时触发 | 改变后的值 |
+| onChange | 值改变时触发 | 改变后的值 |

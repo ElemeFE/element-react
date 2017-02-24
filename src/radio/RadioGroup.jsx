@@ -2,6 +2,12 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class RadioGroup extends Component {
+  getChildContext() {
+    return {
+      component: this
+    };
+  }
+
   onChange(value) {
     if (this.props.onChange) {
       this.props.onChange({
@@ -27,8 +33,15 @@ export default class RadioGroup extends Component {
   }
 }
 
+RadioGroup.childContextTypes = {
+  component: PropTypes.any
+};
+
 RadioGroup.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool,
   size: PropTypes.string,
+  textColor: PropTypes.string,
+  fill: PropTypes.string,
   onChange: PropTypes.func
 }
