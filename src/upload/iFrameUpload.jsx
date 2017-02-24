@@ -8,7 +8,8 @@ export default class IframeUpload extends Component {
     this.state = {
       dragOver: false,
       file: null,
-      disabled: false
+      disabled: false,
+      frameName: 'frame-' + Date.now(),
     }
   }
 
@@ -38,8 +39,15 @@ export default class IframeUpload extends Component {
   }
 
   handleChange(e) {
-    const file = e.target.files[0];
-    this.setState({ file });
+    const file = e.target.value;
+    if (file) {
+      this.uploadFiles(file);
+    }
+  }
+
+  uploadFiles(file) {
+    if (this.state.disabled) return;
+    this.setState({ disabled: false, file });
     this.props.onStart && this.props.onStart(file);
     const formNode = this.refs.form;
     const dataSpan = this.refs.data;
@@ -52,11 +60,6 @@ export default class IframeUpload extends Component {
     dataSpan.innerHTML = inputs.join('');
     formNode.submit();
     dataSpan.innerHTML = '';
-
-    this.setState({
-      file,
-      disabled: true,
-    });
   }
 
   handleClick() {
@@ -76,13 +79,11 @@ export default class IframeUpload extends Component {
   }
 
   render() {
-    const { type, action, name, accept, showCover } = this.props;
-    const frameName = 'frame-' + Date.now();
+    const { drag, action, name, accept, listType } = this.props;
+    const { frameName } = this.state;
     const classes = this.classNames({
-      'el-upload__inner': true,
-      'el-dragger': type === 'drag',
-      'is-dragOver': this.state.dragOver,
-      'is-showCover': this.showCover()
+      'el-upload': true,
+      [`el-upload--${listType}`]: true,
     });
     return (
       <div
@@ -110,14 +111,14 @@ export default class IframeUpload extends Component {
           <input type="hidden" name="documentDomain" value={document.domain} />
           <span ref="data"></span>
         </form>
-        {showCover ? <Cover onClick={() => this.handleClick()} />: React.children.map(this.props.children, child => React.cloneElement(child))}
+        {drag ? <Cover onFile={file => this.uploadFiles(file)}>{this.props.children}</Cover> : this.props.children}
       </div>
     );
   }
 }
 
 IframeUpload.propTypes = {
-  type: PropTypes.string,
+  drag: PropTypes.bool,
   data: PropTypes.object,
   action: PropTypes.string.isRequired,
   name: PropTypes.string,
@@ -125,7 +126,7 @@ IframeUpload.propTypes = {
   onStart: PropTypes.func,
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
-  showCover: PropTypes.bool,
+  listType: PropTypes.string,
 }
 
 IframeUpload.defaultProps = {

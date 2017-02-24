@@ -4,25 +4,40 @@ import UploadList from './UploadList';
 import iFrameUpload from './iFrameUpload';
 import AjaxUpload from './AjaxUpload';
 
-let fileStaged = [];
+
 
 export default class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fileList: [],
-      dragOver: false,
-      draging: false,
       tempIndex: 1,
     }
   }
 
+  componentWillMount() {
+    this.init(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.init(nextProps);
+  }
+
+  init(props) {
+    let { tempIndex } = this.state;
+    const { fileList } = props;
+    const uploadFiles = fileList.map(file => {
+      file.uid = file.uid || (Date.now() + tempIndex++);
+      file.status = 'success';
+      return file;
+    })
+    this.setState({ fileList: uploadFiles });
+  }
+
   getChildContext() {
-    const { fileList } = this.state;
     return {
       onPreview: this.handlePreview.bind(this),
       onRemove: this.handleRemove.bind(this),
-      fileList: fileList,
     }
   }
 
@@ -33,26 +48,25 @@ export default class Upload extends Component {
   }
 
   handleStart(file) {
-    let { tempIndex } = this.state;
+    let { tempIndex, fileList } = this.state;
     file.uid = Date.now() + tempIndex++;
     let _file = {
-      status: 'uploading',
+      status: 'ready',
       name: file.name,
       size: file.size,
       percentage: 0,
       uid: file.uid,
-      showProgress: true
+      raw: file,
     };
-    if (this.props.thumbnailMode) {
-      try {
-        _file.url = URL.createObjectURL(file);
-      } catch (err) {
-        throw err;
-      }
+    try {
+      _file.url = URL.createObjectURL(file);
+    } catch (err) {
+      console.error(err);
+      return;
     }
-    fileStaged = fileStaged.concat(_file);
+    fileList.push(_file);
     this.setState({
-      fileList: fileStaged,
+      fileList,
       tempIndex,
     })
   }
@@ -61,42 +75,47 @@ export default class Upload extends Component {
     const { fileList } = this.state;
     let _file = this.getFile(file);
     _file.percentage = e.percent || 0;
-    this.setState({ fileList })
+    _file.status = 'uploading';
+    this.props.onProgress(e, _file, fileList);
+    this.setState({ fileList });
   }
 
   handleSuccess(res, file) {
     const { fileList } = this.state;
     let _file = this.getFile(file);
     if (_file) {
-      _file.status = 'finished';
+      _file.status = 'success';
       _file.response = res;
-      this.setState({ fileList });
-      this.props.onSuccess(res, _file, this.fileList);
+
       setTimeout(() => {
-        _file.showProgress = false;
-        this.setState({ fileList });
+        this.setState({ fileList },() => {
+          this.props.onSuccess(res, _file, fileList);
+          this.props.onChange(_file, fileList);
+        });
       }, 1000);
     }
   }
 
-  handleError(err, response, file) {
-    let _file = this.getFile(file);
+  handleError(err, file) {
     const { fileList } = this.state;
+    let _file = this.getFile(file);
     _file.status = 'fail';
     fileList.splice(fileList.indexOf(_file), 1);
-    this.setState({ fileList }, () => this.props.onError(err, response, file));
-
+    this.setState({ fileList }, () => {
+      this.props.onError(err, _file, fileList);
+      this.props.onChange(_file, fileList);
+    });
   }
 
   handleRemove(file) {
-    let _file = this.getFile(file);
     const { fileList } = this.state;
+    let _file = this.getFile(file);
     fileList.splice(fileList.indexOf(_file), 1);
     this.setState({ fileList }, () => this.props.onRemove(file, fileList));
   }
 
   handlePreview(file) {
-    if (file.status === 'finished') {
+    if (file.status === 'success') {
       this.props.onPreview(file);
     }
   }
@@ -107,18 +126,26 @@ export default class Upload extends Component {
     })
   }
 
+  submit() {
+    this.state.fileList
+      .filter(file => file.status === 'ready')
+      .forEach(file => {
+        this.refs['upload-inner'].upload(file.raw, file);
+      });
+  }
+
   showCover() {
     const { fileList } = this.state;
     const file = fileList[fileList.length - 1];
-    return this.props.thumbnailMode && file && file.status !== 'fail';
+    return file && file.status !== 'fail';
   }
 
   render() {
     const { fileList } = this.state;
     const {
-      showUploadList,
-      thumbnailMode,
-      type,
+      showFileList,
+      autoUpload,
+      drag,
       tip,
       action,
       multiple,
@@ -128,13 +155,16 @@ export default class Upload extends Component {
       name,
       data,
       accept,
+      listType,
+      className,
     } = this.props;
     let uploadList;
-    if (showUploadList && !thumbnailMode && fileList.length) {
-      uploadList = <UploadList />;
+    if (showFileList && fileList.length) {
+      uploadList = <UploadList listType={listType} fileList={fileList} />;
     }
     const restProps = {
-      type,
+      autoUpload,
+      drag,
       action,
       multiple,
       beforeUpload,
@@ -142,7 +172,8 @@ export default class Upload extends Component {
       headers,
       name,
       data,
-      accept: thumbnailMode ? 'image/*' : accept,
+      accept,
+      listType,
       onStart: file => this.handleStart(file),
       onProgress: (e, file) => this.handleProgress(e, file),
       onSuccess: (res, file) => this.handleSuccess(res, file),
@@ -152,28 +183,20 @@ export default class Upload extends Component {
       ref: 'upload-inner',
       showCover: this.showCover(),
     };
-    const children = React.Children.map(this.props.children, child => React.cloneElement(child));
+    const trigger = this.props.trigger || this.props.children;
     const uploadComponent = typeof FormData !== 'undefined'
-     ? <AjaxUpload {...restProps}>{children}</AjaxUpload>
-     : <iFrameUpload {...restProps}>{children}</iFrameUpload>;
-    if (type === 'select') {
-     return (
-       <div className="el-upload">
-         {uploadList}
-         {uploadComponent}
-         {tip}
-       </div>
-      );
-    }
-    if (type === 'drag') {
-      return (
-        <div style={this.style()} className={this.className('el-upload')}>
-          {uploadComponent}
-          {tip}
-          {uploadList}
-        </div>
-      );
-    }
+     ? <AjaxUpload {...restProps}>{trigger}</AjaxUpload>
+     : <iFrameUpload {...restProps}>{trigger}</iFrameUpload>;
+    return (
+      <div className={className}>
+        {listType === 'picture-card' ? uploadList : ''}
+        {
+          this.props.trigger ? [uploadComponent, this.props.children] : uploadComponent
+        }
+        {tip}
+        {listType !== 'picture-card' ? uploadList : ''}
+      </div>
+    );
   }
 }
 
@@ -190,25 +213,36 @@ Upload.propTypes = {
   multiple: PropTypes.bool,
   name: PropTypes.string,
   withCredentials: PropTypes.bool,
-  thumbnailMode: PropTypes.bool,
-  showUploadList: PropTypes.bool,
+  showFileList: PropTypes.bool,
+  fileList: PropTypes.array,
+  autoUpload: PropTypes.bool,
   accept: PropTypes.string,
-  type: PropTypes.oneOf(['select', 'drag']),
+  drag: PropTypes.bool,
+  listType: PropTypes.oneOf(['text', 'picture', 'picture-card']),
   tip: PropTypes.node,
+  trigger: PropTypes.node,
   beforeUpload: PropTypes.func,
   onRemove: PropTypes.func,
   onPreview: PropTypes.func,
+  onProgress: PropTypes.func,
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
+  onChange: PropTypes.func,
+  className: PropTypes.string,
 }
 
 Upload.defaultProps = {
   headers: {},
   name: 'file',
   type: 'select',
-  showUploadList: true,
+  listType: 'text',
+  fileList: [],
+  showFileList: true,
+  autoUpload: true,
   onRemove() {},
   onPreview() {},
+  onProgress() {},
   onSuccess() {},
   onError() {},
+  onChange() {},
 }
