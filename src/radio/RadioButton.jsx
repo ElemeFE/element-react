@@ -4,18 +4,30 @@ import { PropTypes } from '../../libs';
 import Radio from './Radio';
 
 export default class RadioButton extends Radio {
+  parent() {
+    return this.context.component;
+  }
+
+  size() {
+    return this.parent().props.size;
+  }
+
+  isDisabled() {
+    return this.props.disabled || this.parent().props.disabled;
+  }
+
   activeStyle() {
     return {
-      backgroundColor: this.props.fill,
-      borderColor: this.props.fill,
-      color: this.props.textColor
+      backgroundColor: this.parent().props.fill || '',
+      borderColor: this.parent().props.fill || '',
+      color: this.parent().props.textColor || ''
     };
   }
 
   render() {
     return (
       <label style={this.style()} className={this.className('el-radio-button',
-        this.props.size && `el-radio-button--${this.props.size}`, {
+        this.props.size && `el-radio-button--${this.size()}`, {
           'is-active': this.state.checked
         })
       }>
@@ -23,7 +35,7 @@ export default class RadioButton extends Radio {
           type="radio"
           className="el-radio-button__orig-radio"
           checked={this.state.checked}
-          disabled={this.props.disabled}
+          disabled={this.isDisabled()}
           onChange={this.onChange.bind(this)}
         />
         <span className="el-radio-button__inner" style={this.state.checked ? this.activeStyle() : {}}>
@@ -34,14 +46,12 @@ export default class RadioButton extends Radio {
   }
 }
 
-RadioButton.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  disabled: PropTypes.bool,
-  textColor: PropTypes.string,
-  fill: PropTypes.string
+RadioButton.contextTypes = {
+  component: PropTypes.any
 };
 
-RadioButton.defaultProps = {
-  textColor: '#ffffff',
-  fill: '#20a0ff'
-}
+RadioButton.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool,
+  name: PropTypes.string
+};

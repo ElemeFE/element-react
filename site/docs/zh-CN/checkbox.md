@@ -39,12 +39,18 @@ render() {
 :::demo checkbox-group元素能把多个 checkbox 管理为一组，只需要在 Group 中使用options绑定Array类型的变量即可，label属性除了改变 checkbox 按钮后的介绍外，同时也是该 checkbox 对应的值，label与数组中的元素值相对应，如果存在指定的值则为选中状态，否则为不选中。
 
 ```js
+constructor(props) {
+  super(props);
+  this.state = {
+    checkList: ['复选框 A', '选中且禁用']
+  }
+}
 render() {
   return (
-    <Checkbox.Group options={['复选框A', '选中且禁用']}>
-      <Checkbox label="复选框A"></Checkbox>
-      <Checkbox label="复选框B"></Checkbox>
-      <Checkbox label="复选框C"></Checkbox>
+    <Checkbox.Group options={this.state.checkList}>
+      <Checkbox label="复选框 A"></Checkbox>
+      <Checkbox label="复选框 B"></Checkbox>
+      <Checkbox label="复选框 C"></Checkbox>
       <Checkbox label="禁用" disabled></Checkbox>
       <Checkbox label="选中且禁用" disabled></Checkbox>
     </Checkbox.Group>
@@ -53,18 +59,62 @@ render() {
 ```
 :::
 
-### 可切换值的多选框
+### indeterminate状态
 
-多选框单独时，除了可以表示为是否选中的逻辑值以外，你还可以设定其选中和未选中所表示的值。
+indeterminate属性用以表示checkbox的不确定状态，一般用于实现全选的效果
 
-:::demo 使用trueLabel和falseLabel可以自定义选中时和未选中时的值，可以为String或Number类型。
+:::demo 设置indeterminate属性该表checkbox不确定状态.
 
 ```js
+constructor(props) {
+  super(props);
+  this.state = {
+    checkAll: false,
+    cities: ['上海', '北京', '广州', '深圳'],
+    checkedCities: ['上海', '北京'],
+    isIndeterminate: true,
+  }
+}
+
+handleCheckAllChange(e) {
+  const checkedCities = e.target.checked ? ['上海', '北京', '广州', '深圳'] : [];
+  this.setState({
+    isIndeterminate: false,
+    checkAll: e.target.checked,
+    checkedCities: checkedCities,
+  });
+}
+
+handleCheckedCitiesChange(value) {
+  const checkedCount = value.length;
+  const citiesLength = this.state.cities.length;
+  this.setState({
+    checkedCities: value,
+    checkAll: checkedCount === citiesLength,
+    isIndeterminate: checkedCount > 0 && checkedCount < citiesLength,
+  });
+}
+
 render() {
-  return <Checkbox trueLabel="可用" falseLabel="不可用"></Checkbox>
+  const cbItem = this.state.cities.map((city, index) => 
+    <Checkbox key={index} label={city}></Checkbox>
+  );
+ 
+  return (
+    <div>
+      <Checkbox checked={this.state.checkAll} indeterminate={this.state.isIndeterminate} onChange={(e) => this.handleCheckAllChange(e)}>全选</Checkbox>
+      <div style={{margin: '15px 0'}}></div>
+      <Checkbox.Group 
+        options={this.state.checkedCities} 
+        onChange={(value) => this.handleCheckedCitiesChange(value)}>
+        {cbItem}
+      </Checkbox.Group>
+    </div>
+  )
 }
 ```
 :::
+
 
 ### Checkbox Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
@@ -89,4 +139,4 @@ render() {
 ### Checkbox-group Events
 | 事件名称 | 说明 | 回调参数 |
 |---------- |-------- |---------- |
-| onChange  | 当绑定值变化时触发的事件 |  所有选中的选项  |
+| onChange  | 当绑定值变化时触发的事件 |  value 所有选中项  |
