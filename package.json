@@ -62,6 +62,7 @@
   "dependencies": {
     "async-validator": "^1.6.8",
     "classnames": "^2.2.5",
+    "element-theme-default": "^1.2.1",
     "popper.js": "^1.0.6",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
