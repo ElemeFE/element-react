@@ -134,7 +134,8 @@ var CollapseTransition = function (_React$Component) {
     value: function afterLeave() {
       var el = this.selfRef;
 
-      el.style.display = el.style.height = '';
+      el.style.display = 'none';
+      el.style.height = '';
       el.style.overflow = el.dataset.oldOverflow;
       el.style.paddingTop = el.dataset.oldPaddingTop;
       el.style.paddingBottom = el.dataset.oldPaddingBottom;

@@ -16,9 +16,9 @@ var _inputNumber = require('../input-number');
 
 var _inputNumber2 = _interopRequireDefault(_inputNumber);
 
-var _tooltip = require('../tooltip');
+var _Button = require('./Button');
 
-var _tooltip2 = _interopRequireDefault(_tooltip);
+var _Button2 = _interopRequireDefault(_Button);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37,124 +37,255 @@ var Slider = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, props));
 
     _this.state = {
-      oldValue: props.value,
-      inputValue: props.value,
-      currentPosition: (props.value - props.min) / (props.max - props.min) * 100 + '%'
+      firstValue: null,
+      secondValue: null,
+      oldValue: null,
+      precision: 0,
+      inputValue: null,
+      dragging: false
     };
     return _this;
   }
 
   _createClass(Slider, [{
-    key: 'onSliderClick',
-    value: function onSliderClick(event) {
-      if (this.props.disabled) return;
-
-      var currentX = event.clientX;
-      var sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
-      var newPos = (currentX - sliderOffsetLeft) / this.sliderWidth() * 100;
-
-      this.setPosition(newPos);
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        component: this
+      };
     }
   }, {
-    key: 'onInputChange',
-    value: function onInputChange(event) {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
       var _props = this.props,
+          range = _props.range,
+          value = _props.value,
+          min = _props.min,
           max = _props.max,
-          min = _props.min;
-      var value = event.target.value;
+          step = _props.step;
+      var _state = this.state,
+          firstValue = _state.firstValue,
+          secondValue = _state.secondValue,
+          oldValue = _state.oldValue,
+          inputValue = _state.inputValue,
+          precision = _state.precision;
 
 
-      if (value === '') {
-        return;
+      if (range) {
+        if (Array.isArray(value)) {
+          firstValue = Math.max(min, value[0]);
+          secondValue = Math.min(max, value[1]);
+        } else {
+          firstValue = min;
+          secondValue = max;
+        }
+
+        oldValue = [firstValue, secondValue];
+      } else {
+        if (typeof value !== 'number' || isNaN(value)) {
+          firstValue = min;
+        } else {
+          firstValue = Math.min(max, Math.max(min, value));
+        }
+
+        oldValue = firstValue;
       }
 
-      if (!isNaN(value)) {
-        this.setPosition((value - min) * 100 / (max - min));
-      }
-    }
-  }, {
-    key: 'onDragStart',
-    value: function onDragStart(event) {
-      this.startX = event.clientX;
-      this.startPos = parseInt(this.state.currentPosition, 10);
-
-      this.setState({
-        dragging: true
+      var precisions = [min, max, step].map(function (item) {
+        var decimal = ('' + item).split('.')[1];
+        return decimal ? decimal.length : 0;
       });
+
+      precision = Math.max.apply(null, precisions);
+      inputValue = inputValue || firstValue;
+
+      this.setState({ firstValue: firstValue, secondValue: secondValue, oldValue: oldValue, inputValue: inputValue, precision: precision });
     }
   }, {
-    key: 'onDragging',
-    value: function onDragging(event) {
-      if (this.state.dragging) {
-        // this.refs.tooltip.showPopper = true;
-        this.currentX = event.clientX;
-
-        var diff = (this.currentX - this.startX) / this.sliderWidth() * 100;
-
-        this.newPos = this.startPos + diff;
-        this.setPosition(this.newPos);
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(props, state) {
+      if (props.min != this.props.min || props.max != this.props.max) {
+        this.setValues();
       }
-    }
-  }, {
-    key: 'onDragEnd',
-    value: function onDragEnd() {
-      if (this.state.dragging) {
-        this.setState({
-          dragging: false
-        });
 
-        // this.refs.tooltip.showPopper = false;
-        this.setPosition(this.newPos);
+      if (props.value != this.props.value) {
+        if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && this.props.value.every(function (item, index) {
+          return item === oldVal[index];
+        })) {
+          return;
+        }
 
-        window.removeEventListener('mousemove', this.onDragging.bind(this));
-        window.removeEventListener('mouseup', this.onDragEnd.bind(this));
+        this.setValues();
       }
-    }
-  }, {
-    key: 'onButtonDown',
-    value: function onButtonDown(event) {
-      if (this.props.disabled) return;
 
-      this.onDragStart(event);
+      if (state.firstValue != this.state.firstValue) {
+        if (this.props.range) {
+          this.setState({
+            inputValue: [this.minValue(), this.maxValue()]
+          });
+        } else {
+          this.setState({
+            inputValue: this.state.firstValue
+          });
+        }
+      }
 
-      window.addEventListener('mousemove', this.onDragging.bind(this));
-      window.addEventListener('mouseup', this.onDragEnd.bind(this));
-    }
-  }, {
-    key: 'setPosition',
-    value: function setPosition(newPos) {
-      if (newPos >= 0 && newPos <= 100) {
-        var _props2 = this.props,
-            max = _props2.max,
-            min = _props2.min,
-            step = _props2.step;
-
-
-        var lengthPerStep = 100 / ((max - min) / step);
-        var steps = Math.round(newPos / lengthPerStep);
-
-        var value = Math.round(steps * lengthPerStep * (max - min) * 0.01 + min);
-
-        this.setState({
-          inputValue: value,
-          currentPosition: (value - min) / (max - min) * 100 + '%'
-        });
-
-        if (!this.state.dragging) {
-          if (value !== this.state.oldValue) {
-            this.state.oldValue = value;
-
-            if (this.props.onChange) {
-              this.props.onChange({
-                target: {
-                  value: value
-                }
-              });
-            }
-          }
+      if (state.secondValue != this.state.secondValue) {
+        if (this.props.range) {
+          this.setState({
+            inputValue: [this.minValue(), this.maxValue()]
+          });
         }
       }
     }
+  }, {
+    key: 'valueChanged',
+    value: function valueChanged() {
+      var _props2 = this.props,
+          range = _props2.range,
+          value = _props2.value;
+      var oldValue = this.state.oldValue;
+
+
+      if (range) {
+        return ![this.minValue(), this.maxValue()].every(function (item, index) {
+          return item === oldValue[index];
+        });
+      } else {
+        return value !== oldValue;
+      }
+    }
+  }, {
+    key: 'setValues',
+    value: function setValues() {
+      var _props3 = this.props,
+          range = _props3.range,
+          value = _props3.value,
+          min = _props3.min,
+          max = _props3.max;
+      var _state2 = this.state,
+          firstValue = _state2.firstValue,
+          secondValue = _state2.secondValue,
+          oldValue = _state2.oldValue,
+          inputValue = _state2.inputValue;
+
+
+      if (range && Array.isArray(value)) {
+        if (value[1] < min) {
+          inputValue = [min, min];
+        } else if (value[0] > max) {
+          inputValue = [max, max];
+        } else if (value[0] < min) {
+          inputValue = [min, value[1]];
+        } else if (value[1] > max) {
+          inputValue = [value[0], max];
+        } else {
+          firstValue = value[0];
+          secondValue = value[1];
+
+          if (this.valueChanged()) {
+            this.onValueChanged([this.minValue(), this.maxValue()]);
+
+            oldValue = value.slice();
+          }
+        }
+      } else if (!range && typeof value === 'number' && !isNaN(value)) {
+        if (value < min) {
+          inputValue = min;
+        } else if (value > max) {
+          inputValue = max;
+        } else {
+          firstValue = value;
+
+          if (this.valueChanged()) {
+            this.onValueChanged(value);
+
+            oldValue = value;
+          }
+        }
+      }
+
+      this.forceUpdate();
+    }
+  }, {
+    key: 'setPosition',
+    value: function setPosition(percent) {
+      var _props4 = this.props,
+          range = _props4.range,
+          min = _props4.min,
+          max = _props4.max;
+      var _state3 = this.state,
+          firstValue = _state3.firstValue,
+          secondValue = _state3.secondValue;
+
+
+      var targetValue = min + percent * (max - min) / 100;
+
+      if (!range) {
+        this.refs.button1.setPosition(percent);return;
+      }
+
+      var button = void 0;
+
+      if (Math.abs(this.minValue() - targetValue) < Math.abs(this.maxValue() - targetValue)) {
+        button = firstValue < secondValue ? 'button1' : 'button2';
+      } else {
+        button = firstValue > secondValue ? 'button1' : 'button2';
+      }
+
+      this.refs[button].setPosition(percent);
+    }
+  }, {
+    key: 'onSliderClick',
+    value: function onSliderClick(event) {
+      if (this.props.disabled || this.state.dragging) return;
+
+      var sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
+
+      this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderWidth() * 100);
+    }
+
+    /* Watched Methods */
+
+  }, {
+    key: 'onValueChanged',
+    value: function onValueChanged(val) {
+      if (this.props.onChange) {
+        this.props.onChange(val);
+      }
+    }
+  }, {
+    key: 'onInputValueChanged',
+    value: function onInputValueChanged(e) {
+      this.setState({
+        inputValue: e,
+        firstValue: e
+      });
+    }
+  }, {
+    key: 'onFirstValueChange',
+    value: function onFirstValueChange(e) {
+      this.setState({
+        firstValue: e
+      });
+    }
+  }, {
+    key: 'onSecondValueChange',
+    value: function onSecondValueChange(e) {
+      this.setState({
+        secondValue: e
+      });
+    }
+  }, {
+    key: 'onDraggingChanged',
+    value: function onDraggingChanged(val) {
+      if (!val) {
+        this.setValues();
+      }
+    }
+
+    /* Computed Methods */
+
   }, {
     key: 'sliderWidth',
     value: function sliderWidth() {
@@ -163,97 +294,102 @@ var Slider = function (_Component) {
   }, {
     key: 'stops',
     value: function stops() {
-      var _props3 = this.props,
-          max = _props3.max,
-          min = _props3.min,
-          step = _props3.step,
-          value = _props3.value;
+      var _this2 = this;
+
+      var _props5 = this.props,
+          range = _props5.range,
+          min = _props5.min,
+          max = _props5.max,
+          step = _props5.step;
+      var firstValue = this.state.firstValue;
 
 
-      var stopCount = (max - value) / step;
-      var currentLeft = parseFloat(this.state.currentPosition);
+      var stopCount = (max - min) / step;
       var stepWidth = 100 * step / (max - min);
-
       var result = [];
 
       for (var i = 1; i < stopCount; i++) {
-        result.push(currentLeft + i * stepWidth);
+        result.push(i * stepWidth);
       }
 
-      return result;
+      if (range) {
+        return result.filter(function (step) {
+          return step < 100 * (_this2.minValue() - min) / (max - min) || step > 100 * (_this2.maxValue() - min) / (max - min);
+        });
+      } else {
+        return result.filter(function (step) {
+          return step > 100 * (firstValue - min) / (max - min);
+        });
+      }
     }
   }, {
-    key: 'handleMouseEnter',
-    value: function handleMouseEnter() {
-      this.setState({
-        hovering: true
-      });
-
-      // this.$refs.tooltip.showPopper = true;
+    key: 'minValue',
+    value: function minValue() {
+      return Math.min(this.state.firstValue, this.state.secondValue);
     }
   }, {
-    key: 'handleMouseLeave',
-    value: function handleMouseLeave() {
-      this.setState({
-        hovering: false
-      });
-
-      // this.$refs.tooltip.showPopper = false;
+    key: 'maxValue',
+    value: function maxValue() {
+      return Math.max(this.state.firstValue, this.state.secondValue);
+    }
+  }, {
+    key: 'barWidth',
+    value: function barWidth() {
+      return this.props.range ? 100 * (this.maxValue() - this.minValue()) / (this.props.max - this.props.min) + '%' : 100 * (this.state.firstValue - this.props.min) / (this.props.max - this.props.min) + '%';
+    }
+  }, {
+    key: 'barLeft',
+    value: function barLeft() {
+      return this.props.range ? 100 * (this.minValue() - this.props.min) / (this.props.max - this.props.min) + '%' : '0%';
     }
   }, {
     key: 'render',
     value: function render() {
+      var _props6 = this.props,
+          showInput = _props6.showInput,
+          showStops = _props6.showStops,
+          showInputControls = _props6.showInputControls,
+          range = _props6.range,
+          step = _props6.step,
+          disabled = _props6.disabled,
+          min = _props6.min,
+          max = _props6.max;
+      var _state4 = this.state,
+          inputValue = _state4.inputValue,
+          firstValue = _state4.firstValue,
+          secondValue = _state4.secondValue;
+
+
       return _react2.default.createElement(
         'div',
-        { style: this.style(), className: this.className('el-slider') },
-        this.props.showInput && _react2.default.createElement(_inputNumber2.default, {
-          ref: 'input',
+        { className: 'el-slider' },
+        showInput && !range && _react2.default.createElement(_inputNumber2.default, {
+          value: inputValue,
           className: 'el-slider__input',
-          defaultValue: this.state.inputValue,
-          value: this.state.inputValue,
-          onChange: this.onInputChange.bind(this),
-          step: this.props.step,
-          disabled: this.props.disabled,
-          min: this.props.min,
-          max: this.props.max,
-          size: 'small' }),
+          ref: 'input',
+          step: step,
+          disabled: disabled,
+          controls: showInputControls,
+          min: min,
+          max: max,
+          size: 'small',
+          onChange: this.onInputValueChanged.bind(this)
+        }),
         _react2.default.createElement(
           'div',
           { ref: 'slider', className: this.classNames('el-slider__runway', {
-              'show-input': this.props.showInput,
-              'disabled': this.props.disabled
+              'show-input': showInput,
+              'disabled': disabled
             }), onClick: this.onSliderClick.bind(this) },
-          _react2.default.createElement('div', { className: 'el-slider__bar', style: {
-              width: this.state.currentPosition
+          _react2.default.createElement('div', {
+            className: 'el-slider__bar',
+            style: {
+              width: this.barWidth(),
+              left: this.barLeft()
             } }),
-          _react2.default.createElement(
-            'div',
-            {
-              ref: 'button',
-              className: this.classNames('el-slider__button-wrapper', {
-                'hover': this.state.hovering,
-                'dragging': this.state.dragging
-              }),
-              style: {
-                left: this.state.currentPosition
-              },
-              onMouseEnter: this.handleMouseEnter.bind(this),
-              onMouseLeave: this.handleMouseLeave.bind(this),
-              onMouseDown: this.onButtonDown.bind(this) },
-            _react2.default.createElement(
-              _tooltip2.default,
-              { ref: 'tooltip', placement: 'top', content: _react2.default.createElement(
-                  'span',
-                  null,
-                  this.state.inputValue
-                ) },
-              _react2.default.createElement('div', { className: this.classNames('el-slider__button', {
-                  'hover': this.state.hovering,
-                  'dragging': this.state.dragging
-                }) })
-            )
-          ),
-          this.props.showStops && this.stops().map(function (item, index) {
+          _react2.default.createElement(_Button2.default, { ref: 'button1', value: firstValue, onChange: this.onFirstValueChange.bind(this) }),
+          range && _react2.default.createElement(_Button2.default, { ref: 'button2', value: secondValue, onChange: this.onSecondValueChange.bind(this) }),
+          showStops && this.stops().map(function (item, index) {
             return _react2.default.createElement('div', { key: index, className: 'el-slider__stop', style: { 'left': item + '%' } });
           })
         )
@@ -268,18 +404,25 @@ var _default = Slider;
 exports.default = _default;
 
 
+Slider.childContextTypes = {
+  component: _libs.PropTypes.any
+};
+
 Slider.propTypes = {
   min: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
   max: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
   step: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
-  value: _libs.PropTypes.number,
+  value: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.arrayOf(_libs.PropTypes.number)]),
   showInput: _libs.PropTypes.bool,
+  showInputControls: _libs.PropTypes.bool,
   showStops: _libs.PropTypes.bool,
   disabled: _libs.PropTypes.bool,
+  range: _libs.PropTypes.bool,
   onChange: _libs.PropTypes.func
 };
 
 Slider.defaultProps = {
+  showInputControls: true,
   min: 0,
   max: 100,
   step: 1,

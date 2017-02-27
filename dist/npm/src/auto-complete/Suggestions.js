@@ -20,6 +20,8 @@ var _popper2 = _interopRequireDefault(_popper);
 
 var _libs = require('../../libs');
 
+var _scrollbar = require('../scrollbar');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28,32 +30,33 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var DropdownMenu = function (_Component) {
-  _inherits(DropdownMenu, _Component);
+var Suggestions = function (_Component) {
+  _inherits(Suggestions, _Component);
 
-  function DropdownMenu(props) {
-    _classCallCheck(this, DropdownMenu);
+  function Suggestions(props) {
+    _classCallCheck(this, Suggestions);
 
-    var _this = _possibleConstructorReturn(this, (DropdownMenu.__proto__ || Object.getPrototypeOf(DropdownMenu)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Suggestions.__proto__ || Object.getPrototypeOf(Suggestions)).call(this, props));
 
     _this.state = {
-      showPopper: false
+      showPopper: false,
+      dropdownWidth: ''
     };
     return _this;
   }
 
-  _createClass(DropdownMenu, [{
+  _createClass(Suggestions, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      var showPopper = this.state.showPopper;
+      var reference = _reactDom2.default.findDOMNode(this.parent().refs.input);
 
-
-      if (showPopper) {
+      if (this.state.showPopper) {
         if (this.popperJS) {
           this.popperJS.update();
         } else {
-          this.popperJS = new _popper2.default(_reactDom2.default.findDOMNode(this.parent()), this.refs.popper, {
-            placement: this.placement()
+          this.popperJS = new _popper2.default(reference, this.refs.popper, {
+            gpuAcceleration: false,
+            forceAbsolute: true
           });
         }
       } else {
@@ -71,8 +74,9 @@ var DropdownMenu = function (_Component) {
     }
   }, {
     key: 'onVisibleChange',
-    value: function onVisibleChange(visible) {
+    value: function onVisibleChange(visible, inputWidth) {
       this.setState({
+        dropdownWidth: inputWidth,
         showPopper: visible
       });
     }
@@ -82,38 +86,88 @@ var DropdownMenu = function (_Component) {
       return this.context.component;
     }
   }, {
-    key: 'placement',
-    value: function placement() {
-      return 'bottom-' + this.parent().props.menuAlign;
+    key: 'select',
+    value: function select(item) {
+      console.log(item);
+      this.parent().select(item);
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
+      var customItem = this.parent().props.customItem;
+      var _parent$state = this.parent().state,
+          loading = _parent$state.loading,
+          highlightedIndex = _parent$state.highlightedIndex;
+      var suggestions = this.props.suggestions;
+      var _state = this.state,
+          showPopper = _state.showPopper,
+          dropdownWidth = _state.dropdownWidth;
+
+
       return _react2.default.createElement(
         _libs.Transition,
-        { name: 'md-fade-bottom' },
+        { name: 'el-zoom-in-top' },
         _react2.default.createElement(
           _libs.View,
-          { show: this.state.showPopper },
+          { show: showPopper },
           _react2.default.createElement(
-            'ul',
-            { ref: 'popper', style: this.style(), className: this.className('el-dropdown-menu') },
-            this.props.children
+            'div',
+            {
+              ref: 'popper',
+              className: this.classNames('el-autocomplete-suggestion', {
+                'is-loading': loading
+              }),
+              style: {
+                width: dropdownWidth,
+                zIndex: 1
+              }
+            },
+            _react2.default.createElement(
+              _scrollbar.Scrollbar,
+              {
+                viewComponent: 'ul',
+                wrapClass: 'el-autocomplete-suggestion__wrap',
+                viewClass: 'el-autocomplete-suggestion__list'
+              },
+              loading ? _react2.default.createElement(
+                'li',
+                null,
+                _react2.default.createElement('i', { className: 'el-icon-loading' })
+              ) : suggestions.map(function (item, index) {
+                return _react2.default.createElement(
+                  'li',
+                  {
+                    key: index,
+                    className: _this2.classNames({ 'highlighted': highlightedIndex === index }),
+                    onClick: _this2.select.bind(_this2, item) },
+                  !customItem ? item.value : _react2.default.createElement(customItem, {
+                    index: index,
+                    item: item
+                  })
+                );
+              })
+            )
           )
         )
       );
     }
   }]);
 
-  return DropdownMenu;
+  return Suggestions;
 }(_libs.Component);
 
-var _default = DropdownMenu;
+var _default = Suggestions;
 exports.default = _default;
 
 
-DropdownMenu.contextTypes = {
+Suggestions.contextTypes = {
   component: _libs.PropTypes.any
+};
+
+Suggestions.propTypes = {
+  suggestions: _libs.PropTypes.array
 };
 ;
 
@@ -122,9 +176,9 @@ var _temp = function () {
     return;
   }
 
-  __REACT_HOT_LOADER__.register(DropdownMenu, 'DropdownMenu', 'src/dropdown/DropdownMenu.jsx');
+  __REACT_HOT_LOADER__.register(Suggestions, 'Suggestions', 'src/auto-complete/Suggestions.jsx');
 
-  __REACT_HOT_LOADER__.register(_default, 'default', 'src/dropdown/DropdownMenu.jsx');
+  __REACT_HOT_LOADER__.register(_default, 'default', 'src/auto-complete/Suggestions.jsx');
 }();
 
 ;

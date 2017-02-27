@@ -18,6 +18,8 @@ var _Cover2 = _interopRequireDefault(_Cover);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -35,7 +37,8 @@ var IframeUpload = function (_Component) {
     _this.state = {
       dragOver: false,
       file: null,
-      disabled: false
+      disabled: false,
+      frameName: 'frame-' + Date.now()
     };
     return _this;
   }
@@ -77,8 +80,16 @@ var IframeUpload = function (_Component) {
   }, {
     key: 'handleChange',
     value: function handleChange(e) {
-      var file = e.target.files[0];
-      this.setState({ file: file });
+      var file = e.target.value;
+      if (file) {
+        this.uploadFiles(file);
+      }
+    }
+  }, {
+    key: 'uploadFiles',
+    value: function uploadFiles(file) {
+      if (this.state.disabled) return;
+      this.setState({ disabled: false, file: file });
       this.props.onStart && this.props.onStart(file);
       var formNode = this.refs.form;
       var dataSpan = this.refs.data;
@@ -93,11 +104,6 @@ var IframeUpload = function (_Component) {
       dataSpan.innerHTML = inputs.join('');
       formNode.submit();
       dataSpan.innerHTML = '';
-
-      this.setState({
-        file: file,
-        disabled: true
-      });
     }
   }, {
     key: 'handleClick',
@@ -124,19 +130,16 @@ var IframeUpload = function (_Component) {
       var _this2 = this;
 
       var _props2 = this.props,
-          type = _props2.type,
+          drag = _props2.drag,
           action = _props2.action,
           name = _props2.name,
           accept = _props2.accept,
-          showCover = _props2.showCover;
+          listType = _props2.listType;
+      var frameName = this.state.frameName;
 
-      var frameName = 'frame-' + Date.now();
-      var classes = this.classNames({
-        'el-upload__inner': true,
-        'el-dragger': type === 'drag',
-        'is-dragOver': this.state.dragOver,
-        'is-showCover': this.showCover()
-      });
+      var classes = this.classNames(_defineProperty({
+        'el-upload': true
+      }, 'el-upload--' + listType, true));
       return _react2.default.createElement(
         'div',
         {
@@ -176,11 +179,13 @@ var IframeUpload = function (_Component) {
           _react2.default.createElement('input', { type: 'hidden', name: 'documentDomain', value: document.domain }),
           _react2.default.createElement('span', { ref: 'data' })
         ),
-        showCover ? _react2.default.createElement(_Cover2.default, { onClick: function onClick() {
-            return _this2.handleClick();
-          } }) : _react2.default.children.map(this.props.children, function (child) {
-          return _react2.default.cloneElement(child);
-        })
+        drag ? _react2.default.createElement(
+          _Cover2.default,
+          { onFile: function onFile(file) {
+              return _this2.uploadFiles(file);
+            } },
+          this.props.children
+        ) : this.props.children
       );
     }
   }]);
@@ -193,7 +198,7 @@ exports.default = _default;
 
 
 IframeUpload.propTypes = {
-  type: _libs.PropTypes.string,
+  drag: _libs.PropTypes.bool,
   data: _libs.PropTypes.object,
   action: _libs.PropTypes.string.isRequired,
   name: _libs.PropTypes.string,
@@ -201,7 +206,7 @@ IframeUpload.propTypes = {
   onStart: _libs.PropTypes.func,
   onSuccess: _libs.PropTypes.func,
   onError: _libs.PropTypes.func,
-  showCover: _libs.PropTypes.bool
+  listType: _libs.PropTypes.string
 };
 
 IframeUpload.defaultProps = {

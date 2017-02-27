@@ -30,6 +30,13 @@ var RadioGroup = function (_Component) {
   }
 
   _createClass(RadioGroup, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        component: this
+      };
+    }
+  }, {
     key: 'onChange',
     value: function onChange(value) {
       if (this.props.onChange) {
@@ -64,9 +71,16 @@ var _default = RadioGroup;
 exports.default = _default;
 
 
+RadioGroup.childContextTypes = {
+  component: _libs.PropTypes.any
+};
+
 RadioGroup.propTypes = {
   value: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
+  disabled: _libs.PropTypes.bool,
   size: _libs.PropTypes.string,
+  textColor: _libs.PropTypes.string,
+  fill: _libs.PropTypes.string,
   onChange: _libs.PropTypes.func
 };
 ;

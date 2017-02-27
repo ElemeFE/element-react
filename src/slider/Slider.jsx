@@ -2,7 +2,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import InputNumber from '../input-number';
-import SliderButton from './SliderButton';
+import SliderButton from './Button';
 
 export default class Slider extends Component {
   constructor(props) {

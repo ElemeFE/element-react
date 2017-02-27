@@ -35,6 +35,15 @@ var CheckboxGroup = function (_Component) {
   }
 
   _createClass(CheckboxGroup, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.options !== this.props.options) {
+        this.setState({
+          options: nextProps.options
+        });
+      }
+    }
+  }, {
     key: 'getChildContext',
     value: function getChildContext() {
       return { isWrap: true };
@@ -48,7 +57,6 @@ var CheckboxGroup = function (_Component) {
 
       var newOptions = void 0,
           newValues = void 0;
-
       if (e.target.checked) {
         newOptions = options.concat(value || label);
       } else {
@@ -71,7 +79,6 @@ var CheckboxGroup = function (_Component) {
       var _this2 = this;
 
       var options = this.state.options;
-
 
       var children = _react.Children.map(this.props.children, function (child, index) {
         return _react2.default.cloneElement(child, Object.assign({}, child.props, {
