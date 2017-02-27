@@ -18,7 +18,7 @@ var _reactClickOutside = require('react-click-outside');
 
 var _reactClickOutside2 = _interopRequireDefault(_reactClickOutside);
 
-var _popper = require('popper.js');
+var _popper = require('../../libs/utils/popper');
 
 var _popper2 = _interopRequireDefault(_popper);
 

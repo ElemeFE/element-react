@@ -12,12 +12,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _libs = require('../../libs');
 
-var _src = require('../../src');
-
-var _locale = require('../locale');
-
-var _locale2 = _interopRequireDefault(_locale);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35,115 +29,55 @@ var Cover = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Cover.__proto__ || Object.getPrototypeOf(Cover)).call(this, props));
 
     _this.state = {
-      mouseover: false
+      dragOver: false
     };
     return _this;
   }
 
   _createClass(Cover, [{
+    key: 'handleDragover',
+    value: function handleDragover(e) {
+      e.preventDefault();
+      this.setState({ dragOver: true });
+    }
+  }, {
+    key: 'handleDragleave',
+    value: function handleDragleave(e) {
+      e.preventDefault();
+      this.setState({ dragOver: false });
+    }
+  }, {
+    key: 'onDrop',
+    value: function onDrop(e) {
+      e.preventDefault();
+      this.setState({ dragOver: false });
+      this.props.onFile(e.dataTransfer.files);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
-      var _context = this.context,
-          fileList = _context.fileList,
-          onPreview = _context.onPreview,
-          onRemove = _context.onRemove;
-      var mouseover = this.state.mouseover;
+      var dragOver = this.state.dragOver;
 
-      var image = fileList[fileList.length - 1];
-      return image && _react2.default.createElement(
+      return _react2.default.createElement(
         'div',
-        { className: 'el-dragger__cover', onClick: function onClick(e) {
-            return e.stopPropagation();
-          } },
-        _react2.default.createElement(
-          _libs.Transition,
-          { name: 'fade-in' },
-          image.status === 'uploading' ? _react2.default.createElement(_src.Progress, {
-            className: 'el-dragger__cover__progress',
-            percentage: image.percentage,
-            showText: false,
-            status: image.status === 'finished' ? 'success' : '' }) : _react2.default.createElement('span', null)
-        ),
-        image.status === 'finished' && _react2.default.createElement(
-          'div',
-          {
-            className: 'el-dragger__cover__content',
-            onMouseEnter: function onMouseEnter() {
-              return _this2.setState({ mouseover: true });
-            },
-            onMouseLeave: function onMouseLeave() {
-              return _this2.setState({ mouseover: false });
-            }
+        {
+          className: this.classNames({
+            'el-upload-dragger': true,
+            'is-dragover': dragOver
+          }),
+          onDrop: function onDrop(e) {
+            return _this2.onDrop(e);
           },
-          _react2.default.createElement('img', { src: image.url }),
-          _react2.default.createElement(
-            _libs.Transition,
-            { name: 'fade-in' },
-            _react2.default.createElement(
-              _libs.View,
-              { show: mouseover },
-              _react2.default.createElement(
-                'div',
-                { className: 'el-dragger__cover__interact' },
-                _react2.default.createElement(
-                  'div',
-                  { className: 'el-draggeer__cover__btns' },
-                  _react2.default.createElement(
-                    'span',
-                    { className: 'btn', onClick: function onClick() {
-                        return _this2.props.onClick();
-                      } },
-                    _react2.default.createElement('i', { className: 'el-icon-upload2' }),
-                    _react2.default.createElement(
-                      'span',
-                      null,
-                      _locale2.default.t('el.upload.continue')
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'span',
-                    { className: 'btn', onClick: function onClick() {
-                        return onPreview(image);
-                      } },
-                    _react2.default.createElement('i', { className: 'el-icon-view' }),
-                    _react2.default.createElement(
-                      'span',
-                      null,
-                      _locale2.default.t('el.upload.preview')
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'span',
-                    { className: 'btn', onClick: function onClick() {
-                        return onRemove(image);
-                      } },
-                    _react2.default.createElement('i', { className: 'el-icon-delete2' }),
-                    _react2.default.createElement(
-                      'span',
-                      null,
-                      _locale2.default.t('el.upload.delete')
-                    )
-                  )
-                )
-              )
-            )
-          ),
-          _react2.default.createElement(
-            _libs.Transition,
-            { name: 'md-fade-top' },
-            _react2.default.createElement(
-              _libs.View,
-              { show: mouseover },
-              _react2.default.createElement(
-                'h4',
-                { className: 'el-dragger__cover__title' },
-                image.name
-              )
-            )
-          )
-        )
+          onDragOver: function onDragOver(e) {
+            return _this2.handleDragover(e);
+          },
+          onDragLeave: function onDragLeave(e) {
+            return _this2.handleDragleave(e);
+          }
+        },
+        this.props.children
       );
     }
   }]);
@@ -155,18 +89,12 @@ var _default = Cover;
 exports.default = _default;
 
 
-Cover.contextTypes = {
-  onPreview: _libs.PropTypes.func,
-  onRemove: _libs.PropTypes.func,
-  fileList: _libs.PropTypes.array
-};
-
 Cover.propTypes = {
-  onClick: _libs.PropTypes.func
+  onFile: _libs.PropTypes.func
 };
 
 Cover.defaultProps = {
-  onClick: function onClick() {}
+  onFile: function onFile() {}
 };
 ;
 

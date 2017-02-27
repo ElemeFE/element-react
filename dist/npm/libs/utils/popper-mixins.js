@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PopperMixin = PopperMixin;
 exports.PopperReactMixin = PopperReactMixin;
 
-var _popper = require('popper.js');
+var _popper = require('./popper');
 
 var _popper2 = _interopRequireDefault(_popper);
 

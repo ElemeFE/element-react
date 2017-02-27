@@ -10,7 +10,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _popper = require('popper.js');
+var _popper = require('../../libs/utils/popper');
 
 var _popper2 = _interopRequireDefault(_popper);
 

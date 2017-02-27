@@ -22,6 +22,8 @@ var _Cover2 = _interopRequireDefault(_Cover);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -36,20 +38,11 @@ var AjaxUpload = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (AjaxUpload.__proto__ || Object.getPrototypeOf(AjaxUpload)).call(this, props));
 
-    _this.state = {
-      dragOver: false
-    };
+    _this.state = {};
     return _this;
   }
 
   _createClass(AjaxUpload, [{
-    key: 'onDrop',
-    value: function onDrop(e) {
-      e.preventDefault();
-      this.setState({ dragOver: false });
-      this.uploadFiles(e.dataTransfer.files);
-    }
-  }, {
     key: 'isImage',
     value: function isImage(str) {
       return str.indexOf('image') !== -1;
@@ -69,9 +62,7 @@ var AjaxUpload = function (_Component) {
     value: function uploadFiles(files) {
       var _this2 = this;
 
-      var _props = this.props,
-          multiple = _props.multiple,
-          thumbnailMode = _props.thumbnailMode;
+      var multiple = this.props.multiple;
 
       var postFiles = Array.prototype.slice.call(files);
       if (postFiles.length === 0) {
@@ -80,56 +71,51 @@ var AjaxUpload = function (_Component) {
       if (!multiple) {
         postFiles = postFiles.slice(0, 1);
       }
-
       postFiles.forEach(function (file) {
-        var isImage = _this2.isImage(file.type);
-        if (thumbnailMode && !isImage) {
-          return;
-        } else {
-          _this2.upload(file);
-        }
+        _this2.props.onStart(file);
+        if (_this2.props.autoUpload) _this2.upload(file);
       });
     }
   }, {
     key: 'upload',
-    value: function upload(file) {
+    value: function upload(rawFile, file) {
       var _this3 = this;
 
       var beforeUpload = this.props.beforeUpload;
 
       if (!beforeUpload) {
-        return this.post(file);
+        return this.post(rawFile);
       }
-      var before = beforeUpload(file);
+      var before = beforeUpload(rawFile);
       if (before && before.then) {
         before.then(function (processedFile) {
           if (Object.prototype.toString.call(processedFile) === '[object File]') {
             _this3.post(processedFile);
           } else {
-            _this3.post(file);
+            _this3.post(rawFile);
           }
+        }, function () {
+          if (file) _this3.onRemove(file);
         });
       } else if (before !== false) {
-        this.post(file);
+        this.post(rawFile);
+      } else {
+        if (file) this.onRemove(file);
       }
     }
   }, {
     key: 'post',
     value: function post(file) {
-      var _props2 = this.props,
-          filename = _props2.name,
-          headers = _props2.headers,
-          withCredentials = _props2.withCredentials,
-          data = _props2.data,
-          action = _props2.action,
-          onStart = _props2.onStart,
-          _onProgress = _props2.onProgress,
-          _onSuccess = _props2.onSuccess,
-          _onError = _props2.onError;
+      var _props = this.props,
+          filename = _props.name,
+          headers = _props.headers,
+          withCredentials = _props.withCredentials,
+          data = _props.data,
+          action = _props.action,
+          _onProgress = _props.onProgress,
+          _onSuccess = _props.onSuccess,
+          _onError = _props.onError;
 
-      onStart && onStart(file);
-      var formData = new FormData();
-      formData.append(filename, file);
       (0, _ajax2.default)({
         headers: headers,
         withCredentials: withCredentials,
@@ -143,8 +129,8 @@ var AjaxUpload = function (_Component) {
         onSuccess: function onSuccess(res) {
           return _onSuccess(res, file);
         },
-        onError: function onError(err, response) {
-          return _onError(err, response, file);
+        onError: function onError(err) {
+          return _onError(err, file);
         }
       });
     }
@@ -158,42 +144,29 @@ var AjaxUpload = function (_Component) {
     value: function render() {
       var _this4 = this;
 
-      var dragOver = this.state.dragOver;
-      var _props3 = this.props,
-          type = _props3.type,
-          multiple = _props3.multiple,
-          accept = _props3.accept,
-          showCover = _props3.showCover;
+      var _props2 = this.props,
+          drag = _props2.drag,
+          multiple = _props2.multiple,
+          accept = _props2.accept,
+          listType = _props2.listType;
 
       return _react2.default.createElement(
         'div',
         {
-          className: this.classNames({
-            'el-upload__inner': true,
-            'el-dragger': type === 'drag',
-            'is-dragOver': dragOver,
-            'is-showCover': showCover
-          }),
+          className: this.classNames(_defineProperty({
+            'el-upload': true
+          }, 'el-upload--' + listType, true)),
           onClick: function onClick() {
             return _this4.handleClick();
-          },
-          onDrop: function onDrop(e) {
-            return _this4.onDrop(e);
-          },
-          onDragOver: function onDragOver(e) {
-            e.preventDefault();
-            _this4.setState({ dragOver: true });
-          },
-          onDragLeave: function onDragLeave(e) {
-            e.preventDefault();
-            _this4.setState({ dragOver: false });
           }
         },
-        showCover ? _react2.default.createElement(_Cover2.default, { onClick: function onClick() {
-            return _this4.handleClick();
-          } }) : _react2.default.Children.map(this.props.children, function (child) {
-          return _react2.default.cloneElement(child);
-        }),
+        drag ? _react2.default.createElement(
+          _Cover2.default,
+          { onFile: function onFile(file) {
+              return _this4.uploadFiles(file);
+            } },
+          this.props.children
+        ) : this.props.children,
         _react2.default.createElement('input', { className: 'el-upload__input', type: 'file', ref: 'input', onChange: function onChange(e) {
             return _this4.handleChange(e);
           }, multiple: multiple, accept: accept })
@@ -209,7 +182,7 @@ exports.default = _default;
 
 
 AjaxUpload.propTypes = {
-  type: _libs.PropTypes.string,
+  drag: _libs.PropTypes.bool,
   data: _libs.PropTypes.object,
   action: _libs.PropTypes.string.isRequired,
   name: _libs.PropTypes.string,
@@ -217,13 +190,14 @@ AjaxUpload.propTypes = {
   headers: _libs.PropTypes.object,
   withCredentials: _libs.PropTypes.bool,
   multiple: _libs.PropTypes.bool,
-  thumbnailMode: _libs.PropTypes.bool,
   onStart: _libs.PropTypes.func,
   onProgress: _libs.PropTypes.func,
   onSuccess: _libs.PropTypes.func,
   onError: _libs.PropTypes.func,
   beforeUpload: _libs.PropTypes.func,
-  showCover: _libs.PropTypes.bool
+  autoUpload: _libs.PropTypes.bool,
+  listType: _libs.PropTypes.string,
+  fileList: _libs.PropTypes.array
 };
 
 AjaxUpload.defaultProps = {

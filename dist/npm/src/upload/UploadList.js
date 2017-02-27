@@ -14,11 +14,9 @@ var _libs = require('../../libs');
 
 var _src = require('../../src');
 
-var _locale = require('../locale');
-
-var _locale2 = _interopRequireDefault(_locale);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41,30 +39,35 @@ var UploadList = function (_Component) {
       var _this2 = this;
 
       var _context = this.context,
-          fileList = _context.fileList,
           onPreview = _context.onPreview,
           onRemove = _context.onRemove;
-
+      var _props = this.props,
+          listType = _props.listType,
+          fileList = _props.fileList;
 
       var isFinished = function isFinished(status) {
-        return status === 'finished';
+        return status === 'success';
       };
       return _react2.default.createElement(
         _libs.Transition,
-        { component: 'ul', className: 'el-upload__files', name: 'list' },
-        fileList.map(function (file, index) {
+        { component: 'ul', className: this.classNames(_defineProperty({
+            'el-upload-list': true
+          }, 'el-upload-list--' + listType, true)),
+          name: 'list'
+        },
+        fileList.map(function (file) {
           return _react2.default.createElement(
             'li',
             {
-              className: _this2.classNames({
-                'el-upload__file': true,
-                'is-finished': isFinished(file.status)
-              }),
-              key: index
+              className: _this2.classNames(_defineProperty({
+                'el-upload-list__item': true
+              }, 'is-' + file.status, true)),
+              key: file.uid
             },
+            ['picture-card', 'picture'].includes(listType) && isFinished(file.status) && _react2.default.createElement('img', { className: 'el-upload-list__item-thumbnail', src: file.url, alt: '' }),
             _react2.default.createElement(
               'a',
-              { className: 'el-upload__file__name', onClick: function onClick() {
+              { className: 'el-upload-list__item-name', onClick: function onClick() {
                   return onPreview(file);
                 } },
               _react2.default.createElement('i', { className: 'el-icon-document' }),
@@ -72,17 +75,42 @@ var UploadList = function (_Component) {
             ),
             _react2.default.createElement(
               _libs.View,
-              { show: isFinished(file.status) },
+              { className: 'el-upload-list__item-status-label', show: isFinished(file.status), component: 'label' },
+              _react2.default.createElement('i', { className: _this2.classNames({
+                  'el-icon-circle-check': listType === 'text',
+                  'el-icon-check': ['picture-card', 'picture'].includes(listType)
+                }) }),
+              _react2.default.createElement('i', { className: 'el-icon-close', onClick: function onClick() {
+                  return onRemove(file);
+                } })
+            ),
+            _react2.default.createElement(
+              _libs.View,
+              { className: 'el-upload-list__item-actions', show: listType === 'picture-card' && isFinished(file.status) },
               _react2.default.createElement(
                 'span',
-                { className: 'el-upload__btn-delete', onClick: function onClick() {
+                {
+                  onClick: function onClick() {
+                    return onPreview(file);
+                  },
+                  className: 'el-upload-list__item-preview'
+                },
+                _react2.default.createElement('i', { className: 'el-icon-view' })
+              ),
+              _react2.default.createElement(
+                'span',
+                {
+                  className: 'el-upload-list__item-delete',
+                  onClick: function onClick() {
                     return onRemove(file);
-                  } },
-                _locale2.default.t('el.upload.delete')
+                  }
+                },
+                _react2.default.createElement('i', { className: 'el-icon-delete2' })
               )
             ),
-            file.showProgress && _react2.default.createElement(_src.Progress, {
-              strokeWidth: 2,
+            file.status === 'uploading' && _react2.default.createElement(_src.Progress, {
+              strokeWidth: listType === 'picture-card' ? 6 : 2,
+              type: listType === 'picture-card' ? 'circle' : 'line',
               percentage: parseInt(file.percentage, 10),
               status: isFinished(file.status) && file.showProgress ? 'success' : ''
             })
@@ -101,7 +129,11 @@ exports.default = _default;
 
 UploadList.contextTypes = {
   onPreview: _libs.PropTypes.func,
-  onRemove: _libs.PropTypes.func,
+  onRemove: _libs.PropTypes.func
+};
+
+UploadList.propTypes = {
+  listType: _libs.PropTypes.string,
   fileList: _libs.PropTypes.array
 };
 ;

@@ -11,6 +11,7 @@ class AutoComplete extends Component {
     super(props);
 
     this.state = {
+      inputValue: props.value,
       isFocus: false,
       suggestions: [],
       loading: false,
@@ -24,8 +25,15 @@ class AutoComplete extends Component {
     };
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({ inputValue: props.value });
+  }
+
   componentDidUpdate() {
-    this.refs.suggestions.onVisibleChange(this.suggestionVisible(), ReactDOM.findDOMNode(this.refs.input).offsetWidth)
+    const reference = ReactDOM.findDOMNode(this.refs.input);
+    const visible = this.suggestionVisible();
+    
+    this.refs.suggestions.onVisibleChange(visible, reference.offsetWidth);
   }
 
   getData(queryString) {
@@ -42,7 +50,9 @@ class AutoComplete extends Component {
     });
   }
 
-  handleChange(value) {
+  handleChange(e) {
+    const value = e.target.value;
+
     this.setState({ inputValue: value });
 
     if (!this.props.triggerOnFocus && !value) {
@@ -78,15 +88,13 @@ class AutoComplete extends Component {
   }
 
   select(item) {
-    this.setState({ inputValue: item.props.value });
+    this.setState({ inputValue: item.value }, () => {
+      this.setState({ suggestions: [] });
+    });
 
     if (this.props.onSelect) {
       this.props.onSelect(item);
     }
-
-    // this.$nextTick(_ => {
-    //   this.suggestions = [];
-    // });
   }
 
   highlight(index) {
@@ -96,7 +104,7 @@ class AutoComplete extends Component {
       index = this.state.suggestions.length - 1;
     }
 
-    const suggestion = this.refs.suggestions.querySelector('.el-autocomplete-suggestion__wrap');
+    const suggestion = ReactDOM.findDOMNode(this.refs.suggestions).querySelector('.el-autocomplete-suggestion__wrap');
     const suggestionList = suggestion.querySelectorAll('.el-autocomplete-suggestion__list li');
 
     let highlightItem = suggestionList[index];
@@ -120,8 +128,6 @@ class AutoComplete extends Component {
     const suggestions = this.state.suggestions;
     const isValidData = Array.isArray(suggestions) && suggestions.length > 0;
 
-    console.log(this.state.loading, this.state.isFocus, this.state.suggestions);
-
     return (isValidData || this.state.loading) && this.state.isFocus;
   }
 
@@ -144,14 +150,14 @@ class AutoComplete extends Component {
   }
 
   render() {
-    const { value, disabled, placeholder, name, size, icon, append, prepend, onIconClick, popperClass } = this.props;
-    const { suggestions } = this.state;
+    const { disabled, placeholder, name, size, icon, append, prepend, onIconClick, popperClass } = this.props;
+    const { inputValue, suggestions } = this.state;
 
     return (
-      <div className="el-autocomplete">
+      <div style={this.style()} className={this.className('el-autocomplete')}>
         <Input
           ref="input"
-          value={value}
+          value={inputValue}
           disabled={disabled}
           placeholder={placeholder}
           name={name}
