@@ -1,7 +1,7 @@
 import React from 'react';
+import debounce from 'throttle-debounce/debounce';
 
 import { PropTypes } from '../../libs';
-import { debounce } from '../../libs/utils'
 
 import BasePicker from './BasePicker'
 import TimePanel from './panel/TimePanel'
@@ -40,7 +40,7 @@ export default class TimePicker extends BasePicker {
 
   constructor(props) {
     super(props, 'time', {})
-    this._onSelectionChange = debounce(this.onSelectionChange.bind(this), 200)
+    this._onSelectionChange = debounce(200, this.onSelectionChange.bind(this))
   }
 
   onSelectionChange(start, end) {

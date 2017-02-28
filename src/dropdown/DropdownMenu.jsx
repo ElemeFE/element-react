@@ -30,7 +30,7 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     if (this.popperJS) {
       this.popperJS.destroy();
     }

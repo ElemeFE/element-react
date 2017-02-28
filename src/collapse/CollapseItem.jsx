@@ -14,7 +14,7 @@ export default class CollapseItem extends Component {
           <i className="el-collapse-item__header__arrow el-icon-arrow-right"></i>
           {title}
         </div>
-        <Transition>
+        <Transition name="collapse-transition" duration="200">
           <View show={isActive} >
             <div className="el-collapse-item__wrap">
               <div className="el-collapse-item__content">

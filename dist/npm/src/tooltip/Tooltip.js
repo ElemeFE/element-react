@@ -77,8 +77,8 @@ var Tooltip = function (_Component) {
       }
     }
   }, {
-    key: 'componentWillUnMount',
-    value: function componentWillUnMount() {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
       if (this.popperJS) {
         this.popperJS.destroy();
       }

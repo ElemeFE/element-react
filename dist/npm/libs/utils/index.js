@@ -7,7 +7,6 @@ exports.IDGenerator = exports.DateUtils = exports.Errors = exports.ReactUtils = 
 exports.watchPropertyChange = watchPropertyChange;
 exports.createPropType = createPropType;
 exports.hashCode = hashCode;
-exports.debounce = debounce;
 exports.pick = pick;
 
 var _date = require('./date');
@@ -126,22 +125,6 @@ function hashCode(str) {
   return hash;
 }
 
-function debounce(func, delayms) {
-  var timeout = null;
-  return function () {
-    var _this = this;
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    if (timeout != null) clearTimeout(timeout);
-    timeout = setTimeout(function () {
-      return func.apply(_this, args);
-    }, delayms);
-  };
-}
-
 function pick(obj, keys) {
   (0, _assert.require_condition)(obj != null && Array.isArray(keys));
 
@@ -164,8 +147,6 @@ var _temp = function () {
   __REACT_HOT_LOADER__.register(createPropType, 'createPropType', 'libs/utils/index.js');
 
   __REACT_HOT_LOADER__.register(hashCode, 'hashCode', 'libs/utils/index.js');
-
-  __REACT_HOT_LOADER__.register(debounce, 'debounce', 'libs/utils/index.js');
 
   __REACT_HOT_LOADER__.register(pick, 'pick', 'libs/utils/index.js');
 }();
