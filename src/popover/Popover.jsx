@@ -79,7 +79,7 @@ export default class Popover extends Component {
     }
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     this.reference.parentNode.replaceChild(this.reference.cloneNode(true), this.reference);
 
     if (this.popperJS) {

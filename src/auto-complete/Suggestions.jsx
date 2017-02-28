@@ -34,7 +34,7 @@ export default class Suggestions extends Component {
     }
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     if (this.popperJS) {
       this.popperJS.destroy();
     }
@@ -52,7 +52,6 @@ export default class Suggestions extends Component {
   }
 
   select(item) {
-    console.log(item);
     this.parent().select(item);
   }
 

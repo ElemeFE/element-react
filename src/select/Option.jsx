@@ -24,7 +24,7 @@ export default class Option extends Component {
     }
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     this.parent().onOptionDestroy(this);
   }
 

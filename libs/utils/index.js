@@ -6,8 +6,8 @@ export {require_condition, ReactUtils, Errors}
 
 export function watchPropertyChange(target, property, cb) {
   require_condition(
-    target != null && 
-    typeof property === 'string' && 
+    target != null &&
+    typeof property === 'string' &&
     typeof cb === 'function', 'invalid arguments')
 
   let cache = null
@@ -18,12 +18,12 @@ export function watchPropertyChange(target, property, cb) {
 
   require_condition(cache[property] == null, `duplicated watch on ${target} 's ${property}`)
   cache[property] = cb
-  
+
   let origin = target[property]
 
   Object.defineProperty(target, property, {
     configurable: true,
-    
+
     get() {
       return origin
     },
@@ -80,17 +80,9 @@ export function hashCode(str){
 	return hash;
 }
 
-export function debounce(func, delayms){
-  let timeout = null;
-  return function(...args){
-    if (timeout != null) clearTimeout(timeout)
-    timeout = setTimeout(()=>func.apply(this, args), delayms) 
-  }
-}
-
 export function pick(obj, keys){
   require_condition(obj != null && Array.isArray(keys))
-  
+
   const r = {}
   keys.forEach(e=> r[e]= obj[e])
   return r

@@ -66,7 +66,8 @@
     "react-addons-css-transition-group": "^15.4.2",
     "react-addons-transition-group": "^15.4.2",
     "react-click-outside": "^2.2.0",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "throttle-debounce": "^1.0.1"
   },
   "jest": {
     "testRegex": "/jest/.+\\.(js|jsx)$",

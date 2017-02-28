@@ -66,8 +66,8 @@ var Suggestions = function (_Component) {
       }
     }
   }, {
-    key: 'componentWillUnMount',
-    value: function componentWillUnMount() {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
       if (this.popperJS) {
         this.popperJS.destroy();
       }
@@ -88,7 +88,6 @@ var Suggestions = function (_Component) {
   }, {
     key: 'select',
     value: function select(item) {
-      console.log(item);
       this.parent().select(item);
     }
   }, {
