@@ -42,6 +42,7 @@ import Dropdown from './dropdown';
 import Popover from './popover';
 import Form from './form';
 import Pagination from './pagination';
+import Collapse from './collapse';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -99,7 +100,8 @@ const pages = {
       'dialog': { title: 'Dialog 对话框', component: Dialog },
       'tooltip': { title: 'Tooltip 文字提示', component: Tooltip },
       'popover': { title: 'Popover 弹出框', component: Popover },
-      'card': { title: 'Card 卡片', component: Card }
+      'card': { title: 'Card 卡片', component: Card },
+      'collapse': { title: 'Collapse 折叠面板', component: Collapse }
     }
   }
 };
