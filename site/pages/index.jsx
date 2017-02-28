@@ -43,6 +43,7 @@ import Popover from './popover';
 import Form from './form';
 import Pagination from './pagination';
 import Carousel from './carousel';
+import Collapse from './collapse';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -101,7 +102,8 @@ const pages = {
       'tooltip': { title: 'Tooltip 文字提示', component: Tooltip },
       'popover': { title: 'Popover 弹出框', component: Popover },
       'card': { title: 'Card 卡片', component: Card },
-      'carousel': { title: 'Carousel 走马灯', component: Carousel }
+      'carousel': { title: 'Carousel 走马灯', component: Carousel },
+      'collapse': { title: 'Collapse 折叠面板', component: Collapse }
     }
   }
 };
