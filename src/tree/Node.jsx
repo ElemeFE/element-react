@@ -1,7 +1,8 @@
 import React from 'react';
+import debounce from 'throttle-debounce/debounce';
 
 import { PropTypes, Component } from '../../libs';
-import { watchPropertyChange, debounce, IDGenerator } from '../../libs/utils'
+import { watchPropertyChange, IDGenerator } from '../../libs/utils'
 import CollapseTransition from './CollapseTransition'
 import Checkbox from '../checkbox'
 
@@ -43,12 +44,12 @@ export default class Node extends Component {
     const nodeModel = this.props.nodeModel
     const childrenKey = this.props.options.children || 'children'
 
-    const triggerChange = debounce((...args)=>{
+    const triggerChange = debounce(20, (...args)=>{
       if (this.isDeconstructed) return
       this.handleSelectChange.apply(this, args)
-    }, 20)
+    })
 
-    this.loadHandler = this.enhanceLoad(nodeModel) 
+    this.loadHandler = this.enhanceLoad(nodeModel)
     this.watchers = {
       [this.idGen.next()]: watchPropertyChange(nodeModel, 'indeterminate', (value) => {
         triggerChange(nodeModel.checked, value);
@@ -64,7 +65,7 @@ export default class Node extends Component {
     if (nodeModel.data != null) {
       this.watchers[this.idGen.next()] = watchPropertyChange(nodeModel.data, childrenKey, () => {
         nodeModel.updateChildren()
-        this.setState({})//force update view 
+        this.setState({})//force update view
       })
     }
   }
@@ -126,7 +127,7 @@ export default class Node extends Component {
     }
 
     onNodeClicked(nodeModel.data, nodeModel, this)
-    
+
   }
 
   handleUserClick() {
@@ -157,7 +158,7 @@ export default class Node extends Component {
           <span className={this.classNames('el-tree-node__expand-icon', { 'is-leaf': nodeModel.isLeaf, expanded: !nodeModel.isLeaf && expanded })}></span>
           {
             isShowCheckbox && <Checkbox
-              checked={nodeModel.checked} 
+              checked={nodeModel.checked}
               onChange={this.handleCheckChange.bind(this)}
               indeterminate={nodeModel.indeterminate}
               />
@@ -198,4 +199,3 @@ Node.defaultProps = {
   onCheckChange() { },
   onNodeClicked() { },
 }
-

@@ -352,6 +352,24 @@ Object.defineProperty(exports, 'DateRangePicker', {
   }
 });
 
+var _carousel = require('./carousel');
+
+Object.defineProperty(exports, 'Carousel', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_carousel).default;
+  }
+});
+
+var _collapse = require('./collapse');
+
+Object.defineProperty(exports, 'Collapse', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_collapse).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 ;

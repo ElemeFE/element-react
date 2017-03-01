@@ -1,0 +1,121 @@
+.demo-box.demo-carousel {
+  .source {
+    overflow: hidden;
+  }
+
+  .block {
+    padding: 30px;
+    text-align: center;
+    border-right: solid 1px #EFF2F6;
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .demonstration {
+    display: block;
+    color: #8492a6;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .el-carousel__container {
+    text-align: center;
+  }
+
+  .el-carousel__item {
+    h3 {
+      color: #fff;
+      font-size: 18px;
+      line-height: 300px;
+      margin: 0;
+    }
+    &:nth-child(2n) {
+      background-color: #99a9bf;
+    }
+    &:nth-child(2n+1) {
+      background-color: #d3dce6;
+    }
+  }
+
+  .small h3 {
+    font-size: 14px;
+    line-height: 150px;
+  }
+
+  .medium h3 {
+    font-size: 14px;
+    line-height: 200px;
+  }
+
+  .demo-1 {
+    .el-carousel__item h3 {
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 150px;
+      margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+       background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n+1) {
+       background-color: #d3dce6;
+    }
+  }
+
+  .demo-2 {
+    .el-carousel__item h3 {
+      font-size: 18px;
+      opacity: 0.75;
+      line-height: 300px;
+      margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n+1) {
+      background-color: #d3dce6;
+    }
+  }
+
+  .demo-3 {
+    .el-carousel__item h3 {
+      font-size: 18px;
+      opacity: 0.75;
+      line-height: 300px;
+      margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n+1) {
+      background-color: #d3dce6;
+    }
+  }
+
+  .demo-4 {
+    .el-carousel__item h3 {
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 200px;
+      margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n+1) {
+      background-color: #d3dce6;
+    }
+  }
+}

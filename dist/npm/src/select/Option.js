@@ -50,8 +50,8 @@ var Option = function (_Component) {
       }
     }
   }, {
-    key: 'componentWillUnMount',
-    value: function componentWillUnMount() {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
       this.parent().onOptionDestroy(this);
     }
   }, {

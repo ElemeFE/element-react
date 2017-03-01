@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
+import debounce from 'throttle-debounce/debounce';
 import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
-import { debounce } from '../../libs/utils';
 
 import Tag from '../tag';
 import Input from '../input';
@@ -46,9 +46,9 @@ class Select extends Component {
       this.state.voidRemoteQuery = true;
     }
 
-    this.debouncedOnInputChange = debounce(() => {
+    this.debouncedOnInputChange = debounce(this.debounce(), () => {
       this.onInputChange();
-    }, this.debounce());
+    });
   }
 
   getChildContext() {
@@ -126,7 +126,7 @@ class Select extends Component {
     this.state.inputWidth = this.reference.getBoundingClientRect().width;
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     if (this.resetInputWidth()){
       removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
     }

@@ -42,7 +42,7 @@ export default class Tooltip extends Component {
     }
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     if (this.popperJS) {
       this.popperJS.destroy();
     }

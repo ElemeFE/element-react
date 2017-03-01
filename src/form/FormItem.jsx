@@ -39,7 +39,7 @@ export default class FormItem extends Component {
     }
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     this.parent().removeField(this);
   }
 

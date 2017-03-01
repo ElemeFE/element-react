@@ -10,11 +10,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _debounce = require('throttle-debounce/debounce');
+
+var _debounce2 = _interopRequireDefault(_debounce);
+
 var _libs = require('../../../libs');
 
-var _utils = require('../../../libs/utils');
-
-var _utils2 = require('../utils');
+var _utils = require('../utils');
 
 var _scrollbar = require('../../scrollbar');
 
@@ -69,7 +71,7 @@ function propsToState(props) {
   setOnValid(validateMinOrSec(seconds), function (state) {
     return state.seconds = seconds;
   });
-  state.hoursList = (0, _utils2.getRangeHours)(selectableRange);
+  state.hoursList = (0, _utils.getRangeHours)(selectableRange);
   state.minutesLisit = withIndex(range(60));
   state.secondsList = withIndex(range(60));
   return state;
@@ -92,7 +94,7 @@ var TimeSpinner = function (_Component) {
         selectableRange: _libs.PropTypes.arrayOf(_libs.PropTypes.arrayOf(_react2.default.PropTypes.instanceOf(Date))).isRequired,
         /*
         type: one of [hours, minutes, seconds]
-             onChange: ({type})=>()
+         onChange: ({type})=>()
         */
         onChange: _libs.PropTypes.func.isRequired,
         onSelectRangeChange: _libs.PropTypes.func.isRequired
@@ -123,7 +125,7 @@ var TimeSpinner = function (_Component) {
 
     Object.assign(_this.state, propsToState(props));
     _this.ajustScrollTop = _this._ajustScrollTop.bind(_this);
-    _this.handleScroll = (0, _utils.debounce)(_this._handleScroll.bind(_this), 20);
+    _this.handleScroll = (0, _debounce2.default)(20, _this._handleScroll.bind(_this));
     return _this;
   }
 

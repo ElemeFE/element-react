@@ -12,6 +12,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _debounce = require('throttle-debounce/debounce');
+
+var _debounce2 = _interopRequireDefault(_debounce);
+
 var _libs = require('../../libs');
 
 var _utils = require('../../libs/utils');
@@ -87,14 +91,14 @@ var Node = function (_Component) {
       var nodeModel = this.props.nodeModel;
       var childrenKey = this.props.options.children || 'children';
 
-      var triggerChange = (0, _utils.debounce)(function () {
+      var triggerChange = (0, _debounce2.default)(20, function () {
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
 
         if (_this2.isDeconstructed) return;
         _this2.handleSelectChange.apply(_this2, args);
-      }, 20);
+      });
 
       this.loadHandler = this.enhanceLoad(nodeModel);
       this.watchers = (_watchers = {}, _defineProperty(_watchers, this.idGen.next(), (0, _utils.watchPropertyChange)(nodeModel, 'indeterminate', function (value) {
@@ -108,7 +112,7 @@ var Node = function (_Component) {
       if (nodeModel.data != null) {
         this.watchers[this.idGen.next()] = (0, _utils.watchPropertyChange)(nodeModel.data, childrenKey, function () {
           nodeModel.updateChildren();
-          _this2.setState({}); //force update view 
+          _this2.setState({}); //force update view
         });
       }
     }

@@ -18,6 +18,10 @@ var _reactClickOutside = require('react-click-outside');
 
 var _reactClickOutside2 = _interopRequireDefault(_reactClickOutside);
 
+var _debounce = require('throttle-debounce/debounce');
+
+var _debounce2 = _interopRequireDefault(_debounce);
+
 var _popper = require('../../libs/utils/popper');
 
 var _popper2 = _interopRequireDefault(_popper);
@@ -25,8 +29,6 @@ var _popper2 = _interopRequireDefault(_popper);
 var _libs = require('../../libs');
 
 var _resizeEvent = require('../../libs/utils/resize-event');
-
-var _utils = require('../../libs/utils');
 
 var _tag = require('../tag');
 
@@ -90,9 +92,9 @@ var Select = function (_Component) {
       _this.state.voidRemoteQuery = true;
     }
 
-    _this.debouncedOnInputChange = (0, _utils.debounce)(function () {
+    _this.debouncedOnInputChange = (0, _debounce2.default)(_this.debounce(), function () {
       _this.onInputChange();
-    }, _this.debounce());
+    });
     return _this;
   }
 
@@ -180,8 +182,8 @@ var Select = function (_Component) {
       this.state.inputWidth = this.reference.getBoundingClientRect().width;
     }
   }, {
-    key: 'componentWillUnMount',
-    value: function componentWillUnMount() {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
       if (this.resetInputWidth()) {
         (0, _resizeEvent.removeResizeListener)(this.refs.root, this.resetInputWidth.bind(this));
       }
