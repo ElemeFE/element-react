@@ -4,8 +4,6 @@ import UploadList from './UploadList';
 import iFrameUpload from './iFrameUpload';
 import AjaxUpload from './AjaxUpload';
 
-
-
 export default class Upload extends Component {
   constructor(props) {
     super(props);
