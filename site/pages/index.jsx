@@ -44,6 +44,7 @@ import Form from './form';
 import Pagination from './pagination';
 import Carousel from './carousel';
 import Collapse from './collapse';
+import ColorPicker from './color-picker';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -73,6 +74,7 @@ const pages = {
       'date-picker': { title: 'Date Picker 日期选择器', component: DatePicker },
       'upload': { title: 'Upload 上传', component: Upload },
       'rate': { title: 'Rate 评分', component: Rate },
+      'color-picker': { title: 'ColorPicker 颜色选择器', component: ColorPicker },
       'form': { title: 'Form 表单', component: Form },
     },
     'Data': {

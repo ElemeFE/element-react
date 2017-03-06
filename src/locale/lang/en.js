@@ -1,5 +1,9 @@
 export default {
   el: {
+    colorpicker: {
+      confirm: 'OK',
+      clear: 'Clear'
+    },
     datepicker: {
       now: 'Now',
       today: 'Today',
@@ -13,18 +17,18 @@ export default {
       endDate: 'End Date',
       endTime: 'End Time',
       year: '',
-      month1: 'January',
-      month2: 'February',
-      month3: 'March',
-      month4: 'April',
+      month1: 'Jan',
+      month2: 'Feb',
+      month3: 'Mar',
+      month4: 'Apr',
       month5: 'May',
-      month6: 'June',
-      month7: 'July',
-      month8: 'August',
-      month9: 'September',
-      month10: 'October',
-      month11: 'November',
-      month12: 'December',
+      month6: 'Jun',
+      month7: 'Jul',
+      month8: 'Aug',
+      month9: 'Sep',
+      month10: 'Oct',
+      month11: 'Nov',
+      month12: 'Dec',
       // week: 'week',
       weeks: {
         sun: 'Sun',
@@ -56,6 +60,10 @@ export default {
       noData: 'No data',
       placeholder: 'Select'
     },
+    cascader: {
+      noMatch: 'No matching data',
+      placeholder: 'Select'
+    },
     pagination: {
       goto: 'Go to',
       pagesize: '/page',
@@ -63,6 +71,7 @@ export default {
       pageClassifier: ''
     },
     messagebox: {
+      title: 'Message',
       confirm: 'OK',
       cancel: 'Cancel',
       error: 'Illegal input'
@@ -77,6 +86,9 @@ export default {
       confirmFilter: 'Confirm',
       resetFilter: 'Reset',
       clearFilter: 'All'
+    },
+    tree: {
+      emptyText: 'No Data'
     }
   }
 };

@@ -1,0 +1,53 @@
+.demo-colorpicker .block {
+  padding: 30px 0;
+  text-align: center;
+  border-right: 1px solid #eff2f6;
+  width: 50%;
+  display: inline-block;
+  box-sizing: border-box
+}
+.demo-colorpicker .block:after {
+  clear: both;
+}
+
+.demo-colorpicker .block:last-child {
+  border-right: none
+}
+
+.demo-colorpicker .source:nth-child(1) {
+  padding: 0;
+}
+
+.demo-colorpicker .demonstration {
+  display: block;
+  color: #8492a6;
+  font-size: 14px;
+  margin-bottom: 20px
+}
+
+.demo-color-box {
+  border-radius: 4px;
+  padding: 20px;
+  height: 74px;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 14px
+}
+
+.demo-color-box .value {
+  font-size: 12px;
+  opacity: .69;
+  line-height: 24px
+}
+
+.demo-color-box-group .demo-color-box {
+  border-radius: 0
+}
+
+.demo-color-box-group .demo-color-box:first-child {
+  border-radius: 4px 4px 0 0
+}
+
+.demo-color-box-group .demo-color-box:last-child {
+  border-radius: 0 0 4px 4px
+}
