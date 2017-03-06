@@ -1,9 +1,12 @@
 const hsv2hsl = function(hue, sat, val) {
-  return [
-    hue,
-    (sat * val / ((hue = (2 - sat) * val) < 1 ? hue : 2 - hue)) || 0,
-    hue / 2
-  ];
+  let sl, l;
+
+  l = (2 - sat) * val;
+  sl = sat * val;
+  sl /= (l < 1) ? l : 2 - l;
+  sl = sl || 0;
+  l /= 2;
+  return [hue, sl, l];
 };
 
 // Need to handle 1.0 as 100%, since once it is a number, there is no difference between it and 1
