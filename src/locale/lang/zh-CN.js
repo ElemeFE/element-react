@@ -1,5 +1,9 @@
 export default {
   el: {
+    colorpicker: {
+      confirm: '确定',
+      clear: '清空'
+    },
     datepicker: {
       now: '此刻',
       today: '今天',
@@ -56,6 +60,10 @@ export default {
       noData: '无数据',
       placeholder: '请选择'
     },
+    cascader: {
+      noMatch: '无匹配数据',
+      placeholder: '请选择'
+    },
     pagination: {
       goto: '前往',
       pagesize: '条/页',
@@ -63,6 +71,7 @@ export default {
       pageClassifier: '页'
     },
     messagebox: {
+      title: '提示',
       confirm: '确定',
       cancel: '取消',
       error: '输入的数据不合法!'
@@ -77,6 +86,9 @@ export default {
       confirmFilter: '筛选',
       resetFilter: '重置',
       clearFilter: '全部'
+    },
+    tree: {
+      emptyText: '暂无数据'
     }
   }
 };

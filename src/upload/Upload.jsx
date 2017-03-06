@@ -201,7 +201,6 @@ export default class Upload extends Component {
 Upload.childContextTypes = {
   onPreview: PropTypes.func,
   onRemove: PropTypes.func,
-  fileList: PropTypes.array,
 }
 
 Upload.propTypes = {
