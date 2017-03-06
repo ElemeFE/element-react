@@ -1,8 +1,9 @@
 import React from 'react';
+import ClickOutside from 'react-click-outside';
 import { Component, PropTypes } from '../../libs';
 import PickerDropdown from './components/PickerDropdown';
 import Color from './color';
-import ClickOutside from 'react-click-outside';
+
 
 class ColorPicker extends Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class ColorPicker extends Component {
       showPanelColor: false,
       value: null,
     }, () => {
-      onChange(null);
+      this.props.onChange(null);
       this.resetColor();
     });
   }
@@ -75,7 +76,7 @@ class ColorPicker extends Component {
   }
 
   render() {
-    const { showAlpha, colorFormat } = this.props;
+    const { showAlpha } = this.props;
     const { value, color, showPicker, showPanelColor } = this.state;
 
     let displayedColor;
