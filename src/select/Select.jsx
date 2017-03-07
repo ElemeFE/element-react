@@ -6,11 +6,10 @@ import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
+import Dropdown from './Dropdown';
 import Tag from '../tag';
 import Input from '../input';
 import i18n from '../locale';
-
-import Dropdown from './Dropdown';
 
 const sizeMap = {
   'large': 42,
@@ -121,6 +120,8 @@ class Select extends Component {
       if (this.popperJS) {
         this.popperJS.destroy();
       }
+
+      delete this.popperJS;
     }
 
     this.state.inputWidth = this.reference.getBoundingClientRect().width;
@@ -141,7 +142,9 @@ class Select extends Component {
   }
 
   handleClickOutside() {
-    this.setState({ visible: false });
+    if (this.state.visible) {
+      this.setState({ visible: false });
+    }
   }
 
   handleValueChange() {

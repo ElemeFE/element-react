@@ -1,21 +1,21 @@
 export default {
   el: {
     colorpicker: {
-      confirm: '确定',
+      confirm: '確認',
       clear: '清空'
     },
     datepicker: {
-      now: '此刻',
+      now: '現在',
       today: '今天',
       cancel: '取消',
       clear: '清空',
-      confirm: '确定',
-      selectDate: '选择日期',
-      selectTime: '选择时间',
-      startDate: '开始日期',
-      startTime: '开始时间',
-      endDate: '结束日期',
-      endTime: '结束时间',
+      confirm: '確認',
+      selectDate: '選擇日期',
+      selectTime: '選擇時間',
+      startDate: '開始日期',
+      startTime: '開始時間',
+      endDate: '結束日期',
+      endTime: '結束時間',
       year: '年',
       month1: '1 月',
       month2: '2 月',
@@ -55,40 +55,40 @@ export default {
       }
     },
     select: {
-      loading: '加载中',
-      noMatch: '无匹配数据',
-      noData: '无数据',
-      placeholder: '请选择'
+      loading: '加載中',
+      noMatch: '無匹配資料',
+      noData: '無資料',
+      placeholder: '請選擇'
     },
     cascader: {
-      noMatch: '无匹配数据',
-      placeholder: '请选择'
+      noMatch: '無匹配資料',
+      placeholder: '請選擇'
     },
     pagination: {
       goto: '前往',
-      pagesize: '条/页',
-      total: '共 {total} 条',
-      pageClassifier: '页'
+      pagesize: '項/頁',
+      total: '共 {total} 項',
+      pageClassifier: '頁'
     },
     messagebox: {
       title: '提示',
-      confirm: '确定',
+      confirm: '確定',
       cancel: '取消',
-      error: '输入的数据不合法!'
+      error: '輸入的資料不符規定!'
     },
     upload: {
-      delete: '删除',
-      preview: '查看图片',
-      continue: '继续上传'
+      delete: '刪除',
+      preview: '查看圖片',
+      continue: '繼續上傳'
     },
     table: {
-      emptyText: '暂无数据',
-      confirmFilter: '筛选',
+      emptyText: '暫無資料',
+      confirmFilter: '篩選',
       resetFilter: '重置',
       clearFilter: '全部'
     },
     tree: {
-      emptyText: '暂无数据'
+      emptyText: '暫無資料'
     }
   }
 };

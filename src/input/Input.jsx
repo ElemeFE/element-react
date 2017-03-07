@@ -9,12 +9,24 @@ export default class Input extends Component {
 
     this.state = {
       textareaStyle: null
-    }
+    };
   }
 
   componentDidMount() {
     this.resizeTextarea();
   }
+
+  /* <Instance Methods */
+
+  focus() {
+    (this.refs.input || this.refs.textarea).focus();
+  }
+
+  blur() {
+    (this.refs.input || this.refs.textarea).blur();
+  }
+
+  /* Instance Methods> */
 
   fixControlledValue(value) {
     if (typeof value === 'undefined' || value === null) {

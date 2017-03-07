@@ -12,10 +12,10 @@ export default {
       confirm: 'Confirmar',
       selectDate: 'Selecione a data',
       selectTime: 'Selecione a hora',
-      startDate: 'Data de inicio',
-      startTime: 'Hora de inicio',
-      endDate: 'Data de fim',
-      endTime: 'Hora de fim',
+      startDate: 'Data inicial',
+      startTime: 'Hora inicial',
+      endDate: 'Data final',
+      endTime: 'Hora final',
       year: '',
       month1: 'Janeiro',
       month2: 'Fevereiro',
@@ -55,13 +55,13 @@ export default {
       }
     },
     select: {
-      loading: 'A carregar',
-      noMatch: 'Sem correspondência',
+      loading: 'Carregando',
+      noMatch: 'Sem resultados',
       noData: 'Sem dados',
       placeholder: 'Selecione'
     },
     cascader: {
-      noMatch: 'Sem correspondência',
+      noMatch: 'Sem resultados',
       placeholder: 'Selecione'
     },
     pagination: {
@@ -77,7 +77,7 @@ export default {
     },
     upload: {
       delete: 'Apagar',
-      preview: 'Previsualizar',
+      preview: 'Pré-visualizar',
       continue: 'Continuar'
     },
     table: {

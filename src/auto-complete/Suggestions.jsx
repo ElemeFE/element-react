@@ -31,6 +31,8 @@ export default class Suggestions extends Component {
       if (this.popperJS) {
         this.popperJS.destroy();
       }
+
+      delete this.popperJS;
     }
   }
 

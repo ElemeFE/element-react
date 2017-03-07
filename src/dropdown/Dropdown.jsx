@@ -31,7 +31,9 @@ class Dropdown extends Component {
   }
 
   handleClickOutside() {
-    this.setState({ visible: false });
+    if (this.state.visible) {
+      this.setState({ visible: false });
+    }
   }
 
   show() {

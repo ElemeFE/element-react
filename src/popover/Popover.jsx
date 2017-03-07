@@ -68,6 +68,8 @@ export default class Popover extends Component {
       if (this.popperJS) {
         this.popperJS.destroy();
       }
+
+      delete this.popperJS;
     }
   }
 
