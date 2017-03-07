@@ -17,10 +17,10 @@ var _default = {
       confirm: 'Confirmar',
       selectDate: 'Selecione a data',
       selectTime: 'Selecione a hora',
-      startDate: 'Data de inicio',
-      startTime: 'Hora de inicio',
-      endDate: 'Data de fim',
-      endTime: 'Hora de fim',
+      startDate: 'Data inicial',
+      startTime: 'Hora inicial',
+      endDate: 'Data final',
+      endTime: 'Hora final',
       year: '',
       month1: 'Janeiro',
       month2: 'Fevereiro',
@@ -60,13 +60,13 @@ var _default = {
       }
     },
     select: {
-      loading: 'A carregar',
-      noMatch: 'Sem correspondência',
+      loading: 'Carregando',
+      noMatch: 'Sem resultados',
       noData: 'Sem dados',
       placeholder: 'Selecione'
     },
     cascader: {
-      noMatch: 'Sem correspondência',
+      noMatch: 'Sem resultados',
       placeholder: 'Selecione'
     },
     pagination: {
@@ -82,7 +82,7 @@ var _default = {
     },
     upload: {
       delete: 'Apagar',
-      preview: 'Previsualizar',
+      preview: 'Pré-visualizar',
       continue: 'Continuar'
     },
     table: {
@@ -104,7 +104,7 @@ var _temp = function () {
     return;
   }
 
-  __REACT_HOT_LOADER__.register(_default, 'default', 'src/locale/lang/pt.js');
+  __REACT_HOT_LOADER__.register(_default, 'default', 'src/locale/lang/pt-br.js');
 }();
 
 ;

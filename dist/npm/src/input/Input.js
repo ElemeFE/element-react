@@ -47,6 +47,22 @@ var Input = function (_Component) {
     value: function componentDidMount() {
       this.resizeTextarea();
     }
+
+    /* <Instance Methods */
+
+  }, {
+    key: 'focus',
+    value: function focus() {
+      (this.refs.input || this.refs.textarea).focus();
+    }
+  }, {
+    key: 'blur',
+    value: function blur() {
+      (this.refs.input || this.refs.textarea).blur();
+    }
+
+    /* Instance Methods> */
+
   }, {
     key: 'fixControlledValue',
     value: function fixControlledValue(value) {

@@ -111,6 +111,8 @@ var Popover = function (_Component) {
         if (this.popperJS) {
           this.popperJS.destroy();
         }
+
+        delete this.popperJS;
       }
     }
   }, {
