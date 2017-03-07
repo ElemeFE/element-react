@@ -1,9 +1,9 @@
 /* @flow */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
 import { Component, PropTypes } from '../../libs';
-
 import Input from '../input';
 import Suggestions from './Suggestions';
 
@@ -63,7 +63,10 @@ class AutoComplete extends Component {
 
   componentDidUpdate(): void {
     const visible = this.suggestionVisible();
-    this.refs.suggestions.onVisibleChange(visible, this.inputNode.offsetWidth);
+    const reference = ReactDOM.findDOMNode(this.inputNode);
+    if (reference instanceof HTMLElement) {
+      this.suggestionsNode.onVisibleChange(visible, reference.offsetWidth);
+    }
   }
 
   getData(queryString: string): void {
@@ -135,23 +138,26 @@ class AutoComplete extends Component {
     if (index >= this.state.suggestions.length) {
       index = this.state.suggestions.length - 1;
     }
+    const reference = ReactDOM.findDOMNode(this.suggestionsNode);
+    if (reference instanceof HTMLElement) {
+      const suggestion = document.querySelector('.el-autocomplete-suggestion__wrap');
+      const suggestionList = document.querySelectorAll('.el-autocomplete-suggestion__list li');
+      if (suggestion instanceof HTMLElement && suggestionList instanceof HTMLCollection) {
+        let highlightItem = suggestionList[index];
+        let scrollTop = suggestion.scrollTop;
+        let offsetTop = highlightItem.offsetTop;
 
-    const suggestion = this.suggestionsNode.querySelector('.el-autocomplete-suggestion__wrap');
-    const suggestionList = suggestion.querySelectorAll('.el-autocomplete-suggestion__list li');
+        if (offsetTop + highlightItem.scrollHeight > (scrollTop + suggestion.clientHeight)) {
+          suggestion.scrollTop += highlightItem.scrollHeight;
+        }
 
-    let highlightItem = suggestionList[index];
-    let scrollTop = suggestion.scrollTop;
-    let offsetTop = highlightItem.offsetTop;
+        if (offsetTop < scrollTop) {
+          suggestion.scrollTop -= highlightItem.scrollHeight;
+        }
 
-    if (offsetTop + highlightItem.scrollHeight > (scrollTop + suggestion.clientHeight)) {
-      suggestion.scrollTop += highlightItem.scrollHeight;
+        this.setState({ highlightedIndex: index });
+      }
     }
-
-    if (offsetTop < scrollTop) {
-      suggestion.scrollTop -= highlightItem.scrollHeight;
-    }
-
-    this.setState({ highlightedIndex: index });
   }
 
   /* Computed Methods */
