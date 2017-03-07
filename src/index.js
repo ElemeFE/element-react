@@ -37,4 +37,5 @@ export { default as AutoComplete } from './auto-complete';
 export { TimeSelect, TimePicker, TimeRangePicker, DatePicker, DateRangePicker } from './date-picker';
 export { default as Carousel } from './carousel';
 export { default as Collapse } from './collapse';
+export { default as ColorPicker } from './color-picker';
 export { default as Cascader } from './cascader';
