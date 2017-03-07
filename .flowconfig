@@ -4,5 +4,6 @@
 [include]
 
 [libs]
+flow
 
 [options]
