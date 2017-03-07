@@ -12,6 +12,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _libs = require('../../libs');
 
+var _dom = require('../../libs/utils/dom');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30,6 +32,11 @@ var CollapseItem = function (_Component) {
   }
 
   _createClass(CollapseItem, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      (0, _dom.loadStyleString)('.collapse-enter {\n        max-height: 0px;\n        -webkit-transition: max-height .3s ease;\n        overflow: hidden;\n      }\n      .collapse-enter.collapse-enter-active {\n        height: auto;\n        max-height: 100px;\n      }\n      .collapse-leave {\n        max-height: 100px;\n        -webkit-transition: max-height .3s ease;\n      }\n      .collapse-leave.collapse-leave-active {\n        overflow: hidden;\n        max-height: 0px;\n      }\n      ', 'collaspe-item');
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props = this.props,
@@ -37,6 +44,7 @@ var CollapseItem = function (_Component) {
           isActive = _props.isActive,
           _onClick = _props.onClick,
           name = _props.name;
+
 
       return _react2.default.createElement(
         'div',
@@ -51,18 +59,14 @@ var CollapseItem = function (_Component) {
         ),
         _react2.default.createElement(
           _libs.Transition,
-          { name: 'collapse-transition', duration: '200' },
-          _react2.default.createElement(
-            _libs.View,
-            { show: isActive },
+          { name: 'collapse' },
+          isActive && _react2.default.createElement(
+            'div',
+            { className: 'el-collapse-item__wrap' },
             _react2.default.createElement(
               'div',
-              { className: 'el-collapse-item__wrap' },
-              _react2.default.createElement(
-                'div',
-                { className: 'el-collapse-item__content' },
-                this.props.children
-              )
+              { className: 'el-collapse-item__content' },
+              this.props.children
             )
           )
         )

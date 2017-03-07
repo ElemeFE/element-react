@@ -30,6 +30,10 @@ var _libs = require('../../libs');
 
 var _resizeEvent = require('../../libs/utils/resize-event');
 
+var _Dropdown = require('./Dropdown');
+
+var _Dropdown2 = _interopRequireDefault(_Dropdown);
+
 var _tag = require('../tag');
 
 var _tag2 = _interopRequireDefault(_tag);
@@ -41,10 +45,6 @@ var _input2 = _interopRequireDefault(_input);
 var _locale = require('../locale');
 
 var _locale2 = _interopRequireDefault(_locale);
-
-var _Dropdown = require('./Dropdown');
-
-var _Dropdown2 = _interopRequireDefault(_Dropdown);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -177,6 +177,8 @@ var Select = function (_Component) {
         if (this.popperJS) {
           this.popperJS.destroy();
         }
+
+        delete this.popperJS;
       }
 
       this.state.inputWidth = this.reference.getBoundingClientRect().width;
@@ -200,7 +202,9 @@ var Select = function (_Component) {
   }, {
     key: 'handleClickOutside',
     value: function handleClickOutside() {
-      this.setState({ visible: false });
+      if (this.state.visible) {
+        this.setState({ visible: false });
+      }
     }
   }, {
     key: 'handleValueChange',

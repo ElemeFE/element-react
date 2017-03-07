@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 var _default = {
   el: {
+    colorpicker: {
+      confirm: 'Confirmar',
+      clear: 'Limpar'
+    },
     datepicker: {
       now: 'Agora',
       today: 'Hoje',
@@ -17,7 +21,7 @@ var _default = {
       startTime: 'Hora de inicio',
       endDate: 'Data de fim',
       endTime: 'Hora de fim',
-      year: 'Ano',
+      year: '',
       month1: 'Janeiro',
       month2: 'Fevereiro',
       month3: 'Março',
@@ -61,6 +65,10 @@ var _default = {
       noData: 'Sem dados',
       placeholder: 'Selecione'
     },
+    cascader: {
+      noMatch: 'Sem correspondência',
+      placeholder: 'Selecione'
+    },
     pagination: {
       goto: 'Ir para',
       pagesize: '/pagina',
@@ -82,6 +90,9 @@ var _default = {
       confirmFilter: 'Confirmar',
       resetFilter: 'Limpar',
       clearFilter: 'Todos'
+    },
+    tree: {
+      emptyText: 'Sem dados'
     }
   }
 };

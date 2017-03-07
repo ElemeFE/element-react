@@ -28,8 +28,6 @@ var Tag = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Tag.__proto__ || Object.getPrototypeOf(Tag)).call(this, props));
 
-    _this.duration = 200;
-
     _this.state = {
       visible: true
     };
@@ -63,7 +61,7 @@ var Tag = function (_Component) {
 
       return _react2.default.createElement(
         _libs.Transition,
-        { name: closeTransition ? '' : 'el-zoom-in-center', duration: this.duration },
+        { name: closeTransition ? '' : 'el-zoom-in-center', duration: '200' },
         _react2.default.createElement(
           _libs.View,
           { key: this.state.visible, show: this.state.visible },

@@ -32,7 +32,7 @@ class AutoComplete extends Component {
   componentDidUpdate() {
     const reference = ReactDOM.findDOMNode(this.refs.input);
     const visible = this.suggestionVisible();
-    
+
     this.refs.suggestions.onVisibleChange(visible, reference.offsetWidth);
   }
 
@@ -84,7 +84,9 @@ class AutoComplete extends Component {
   }
 
   handleClickOutside() {
-    this.setState({ isFocus: false });
+    if (this.state.isFocus) {
+      this.setState({ isFocus: false });
+    }
   }
 
   select(item) {

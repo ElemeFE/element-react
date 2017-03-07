@@ -297,8 +297,7 @@ exports.default = _default;
 
 Upload.childContextTypes = {
   onPreview: _libs.PropTypes.func,
-  onRemove: _libs.PropTypes.func,
-  fileList: _libs.PropTypes.array
+  onRemove: _libs.PropTypes.func
 };
 
 Upload.propTypes = {

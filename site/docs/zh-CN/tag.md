@@ -71,6 +71,89 @@ render() {
 ```
 :::
 
+### 动态编辑标签
+
+动态编辑标签可以通过点击标签关闭按钮后触发的 `close` 事件来实现
+
+:::demo
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    dynamicTags: ['标签一', '标签二', '标签三'],
+    inputVisible: false,
+    inputValue: ''
+  }
+}
+
+onKeyUp(e) {
+  if (e.keyCode === 13) {
+    this.handleInputConfirm();
+  }
+}
+
+onChange(e) {
+  this.setState({ inputValue: e.target.value });
+}
+
+handleClose(tag) {
+  this.state.dynamicTags.splice(this.state.dynamicTags.indexOf(tag), 1);
+  this.forceUpdate();
+}
+
+showInput() {
+  this.setState({ inputVisible: true }, () => {
+    this.refs.saveTagInput.focus();
+  });
+}
+
+handleInputConfirm() {
+  let inputValue = this.state.inputValue;
+
+  if (inputValue) {
+    this.state.dynamicTags.push(inputValue);
+  }
+
+  this.state.inputVisible = false;
+  this.state.inputValue = '';
+
+  this.forceUpdate();
+}
+
+render() {
+  return (
+    <div>
+      {
+        this.state.dynamicTags.map((tag, index) => {
+          return (
+            <Tag
+              key={index}
+              closable={true}
+              closeTransition={false}
+              onClose={this.handleClose.bind(this, tag)}>{tag}</Tag>
+          )
+        })
+      }
+      {
+        this.state.inputVisible ? (
+          <Input
+            className="input-new-tag"
+            value={this.state.inputValue}
+            ref="saveTagInput"
+            size="mini"
+            onChange={this.onChange.bind(this)}
+            onKeyUp={this.onKeyUp.bind(this)}
+            onBlur={this.handleInputConfirm.bind(this)}
+          />
+        ) : <Button className="button-new-tag" size="small" onClick={this.showInput.bind(this)}>+ New Tag</Button>
+      }
+    </div>
+  )
+}
+```
+:::
+
 ### Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |

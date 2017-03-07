@@ -5,8 +5,6 @@ export default class Tag extends Component {
   constructor(props) {
     super(props);
 
-    this.duration = 200;
-
     this.state = {
       visible: true
     };
@@ -28,7 +26,7 @@ export default class Tag extends Component {
     const { type, hit, closable, closeTransition } = this.props;
 
     return(
-      <Transition name={closeTransition ? '' : 'el-zoom-in-center'} duration={this.duration}>
+      <Transition name={closeTransition ? '' : 'el-zoom-in-center'} duration="200">
         <View key={this.state.visible} show={this.state.visible}>
           <span style={this.style()} className={this.className('el-tag', type && `el-tag--${type}`, {
             'is-hit': hit

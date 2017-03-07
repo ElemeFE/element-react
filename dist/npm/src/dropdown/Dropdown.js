@@ -68,7 +68,9 @@ var Dropdown = function (_Component) {
   }, {
     key: 'handleClickOutside',
     value: function handleClickOutside() {
-      this.setState({ visible: false });
+      if (this.state.visible) {
+        this.setState({ visible: false });
+      }
     }
   }, {
     key: 'show',

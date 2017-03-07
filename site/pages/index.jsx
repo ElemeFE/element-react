@@ -45,6 +45,7 @@ import Pagination from './pagination';
 import Carousel from './carousel';
 import Collapse from './collapse';
 import ColorPicker from './color-picker';
+import Cascader from './cascader';
 
 // pages是有序的Object, 会影响到左侧的菜单顺序.
 const pages = {
@@ -68,6 +69,7 @@ const pages = {
       'input': { title: 'Input 输入框', component: Input },
       'input-number': { title: 'Input Number 计数器', component: InputNumber },
       'select': { title: 'Select 选择器', component: Select },
+      'cascader': { title: 'Cascader 级联选择器', component: Cascader },
       'switch': { title: 'Switch 开关', component: Switch },
       'slider': { title: 'Slider 滑块', component: Slider },
       'time-picker': { title: 'Time Picker 时间选择器', component: TimePicker },

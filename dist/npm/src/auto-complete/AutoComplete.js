@@ -133,7 +133,9 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'handleClickOutside',
     value: function handleClickOutside() {
-      this.setState({ isFocus: false });
+      if (this.state.isFocus) {
+        this.setState({ isFocus: false });
+      }
     }
   }, {
     key: 'select',

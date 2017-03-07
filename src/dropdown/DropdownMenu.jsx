@@ -27,6 +27,8 @@ export default class DropdownMenu extends Component {
       if (this.popperJS) {
         this.popperJS.destroy();
       }
+
+      delete this.popperJS;
     }
   }
 
