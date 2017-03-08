@@ -5,7 +5,7 @@ import { Component, PropTypes, View } from '../../libs';
 
 type Props = {
   children: React.Element<any>,
-  type: string,
+  type: 'card' | 'border-card',
   activeName: string,
   value: string,
   closable: boolean,
@@ -97,7 +97,7 @@ export default class Tabs extends Component {
     });
   }
 
-  handleTabClick(tab: React.Element<any>, e: Event): void|boolean {
+  handleTabClick(tab: React.Element<any>, e: Event): void | boolean {
     if (tab.props.disabled) {
       return false;
     }
@@ -112,7 +112,7 @@ export default class Tabs extends Component {
     });
   }
 
-  calcBarStyle(firstRendering?: boolean): void|Object {
+  calcBarStyle(firstRendering?: boolean): void | Object {
     if (this.props.type || !this.tabs.length ) return {};
 
     let style = {};

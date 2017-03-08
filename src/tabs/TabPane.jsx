@@ -5,7 +5,7 @@ import { Component, PropTypes } from '../../libs';
 
 type Props = {
   children: React.Element<any>,
-  label: string|React.Element<any>,
+  label: string | React.Element<any>,
   name: string,
   disabled: boolean,
   closable: boolean,
