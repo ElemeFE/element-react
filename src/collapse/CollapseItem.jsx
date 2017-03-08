@@ -42,7 +42,7 @@ export default class CollapseItem extends Component {
     )
   }
 
-  render() {
+  render(): React.Element<any> {
     const { title, isActive, onClick, name } = this.props;
 
     return (
