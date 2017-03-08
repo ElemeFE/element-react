@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
 import enhanceWithClickOutside from 'react-click-outside';
@@ -84,15 +85,15 @@ class Filter extends Component{
 
         <div className="el-table-filter__content">
           <Checkbox.Group 
-            options={defaultCondi?defaultCondi:[]}
+            options={defaultCondi ? defaultCondi: checked}
             onChange={(opts)=>{this.onFilterChange(opts)}}
             className="el-table-filter__checkbox-group">
             {
               filters.map((item, idx)=>{
                 return (
                   <Checkbox 
-                    value={item}
-                    key={idx} 
+                    key={idx}
+                    value={item} 
                     label={item.text}>
                   </Checkbox>
                 )

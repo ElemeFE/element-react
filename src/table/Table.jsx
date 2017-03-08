@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Component, PropTypes } from '../../libs';
@@ -11,7 +12,7 @@ let tableIdSeed = 1;
 
 export default class Table extends Component{
 
-  constructor(props, context){
+  constructor(props:Object, context:Object){
     super(props, context);
     this.tableId = tableIdSeed++;
 
@@ -48,19 +49,21 @@ export default class Table extends Component{
   componentDidMount(){
     this.initLayout();
 
-    Object.defineProperty(this, 'filterContainer', {
+    const des:Object = {
       get: this._filterContainer.bind(this)
-    });
+    };
+    Object.defineProperty(this, 'filterContainer', des);
   }
 
   componentWillUnmount(){
     if (this._filterContainer instanceof HTMLElement) {
-      ReactDOM.unmountComponentAtNode(this._filterContainer);
-      document.body.removeChild(this._filterContainer);
+      const body = document.body || document;
+      ReactDOM.unmountComponentAtNode(this.filterContainer);
+      body.removeChild(this.filterContainer);
     }
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps:Object){
     if(nextProps.data != this.props.data){
       this.setState({data: nextProps.data}, ()=>{
         this.initLayout();
@@ -75,9 +78,10 @@ export default class Table extends Component{
   _filterContainer(){
     if(!this._filterCon){
       this._filterCon = document.createElement('div');
-      this._filterCon.style="position:absolute;left:0;top:0";
+      this._filterCon.style.cssText = "position:absolute;left:0;top:0";
       this._filterCon.id = "__filter__" + Math.random(32).toString().slice(2);
-      document.body.appendChild(this._filterCon);
+      const body = document.body || document.createElement('body');
+      body.appendChild(this._filterCon);
     }
 
     return this._filterCon;
@@ -89,7 +93,7 @@ export default class Table extends Component{
     const headerComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
     const thisTableWidth = parseFloat(headerComputedStyle.getPropertyValue('width'));
     const realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
-    const bodyWidth = scheduleLayout(this.state._columns, thisTableWidth, undefined, fit).bodyWidth;
+    const bodyWidth = scheduleLayout(this.state._columns, thisTableWidth, 0, fit).bodyWidth;
     const headerHeight = this.refs.headerWrapper.offsetHeight;
     const bodyHeight = height ? height - headerHeight : '';
 
@@ -134,7 +138,7 @@ export default class Table extends Component{
     return style;
   }
 
-  onScrollBodyWrapper(e){
+  onScrollBodyWrapper(e:any){
     const target = e ? e.target : this.refs.bodyWrapper;
     const headerWrapper = this.refs.headerWrapper;
     const fixedBodyWrapper = this.refs.fixedBodyWrapper;
@@ -145,7 +149,7 @@ export default class Table extends Component{
     rightFixedBodyWrapper && (rightFixedBodyWrapper.scrollTop = target.scrollTop);
   }
 
-  sortBy(sort, prop, compare){
+  sortBy(sort:number, prop:string, compare:any){
     const data = this.state.filterList || this.state.data;
     const sortList = data.slice(0);
 
@@ -161,7 +165,7 @@ export default class Table extends Component{
     }
   }
 
-  filterBy(column, filteCondi){
+  filterBy(column:Object, filteCondi:Array<Object>){
     const data = this.state.sortList || this.state.data;
 
     const filterList = data.filter((d)=>{

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Checkbox from '../checkbox';
@@ -100,7 +101,7 @@ BodyItem.propTypes = {
 };
 
 export default class TableBody extends  Component{
-  constructor(props, context){
+  constructor(props:Object, context:Object){
     super(props, context);
     this.rowPrefix = props.fixed + 'TableRow';
 
@@ -110,7 +111,7 @@ export default class TableBody extends  Component{
     }
   }
 
-  toggleSelectedRow(isHiglight, rowData){
+  toggleSelectedRow(isHiglight:Boolean, rowData:any){
     const { highlightCurrentRow } = this.props;
     if(!highlightCurrentRow){
       return;
@@ -120,7 +121,7 @@ export default class TableBody extends  Component{
     });
   }
 
-  hoverRowItem(rowIndex, hover){
+  hoverRowItem(rowIndex:number, hover:Boolean){
     var rcRowElement = this.refs[this.rowPrefix + rowIndex ];
     rcRowElement.setHoverState(hover);
   }
@@ -136,7 +137,7 @@ export default class TableBody extends  Component{
     return tableBodyWrapper.offsetWidth < this.refs.root.offsetWidth;
   }
 
-  onSelected(checked, data){
+  onSelected(checked:Boolean, data:Object){
     const { selected } = this.state;
     const dataList = this.props.data;
     const { onSelectChange } = this.context.$owerTable.props;
@@ -149,7 +150,7 @@ export default class TableBody extends  Component{
     onSelectChange && onSelectChange(data, checked);
   }
 
-  selectAll(checked){
+  selectAll(checked:Boolean){
     const { data } = this.props;
     const { onSelectAll } = this.context.$owerTable.props;
 
