@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Popper from '../../libs/utils/popper';
@@ -5,8 +7,20 @@ import { Component, PropTypes, Transition, View } from '../../libs';
 
 import { Scrollbar } from '../scrollbar';
 
+type Props = {
+  suggestions: Array<any>,
+}
+
+type State = {
+  showPopper: boolean,
+  dropdownWidth: string,
+}
+
 export default class Suggestions extends Component {
-  constructor(props) {
+  props: Props;
+  state: State;
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -15,8 +29,9 @@ export default class Suggestions extends Component {
     };
   }
 
-  componentDidUpdate() {
-    const reference = ReactDOM.findDOMNode(this.parent().refs.input);
+  componentDidUpdate(): void {
+
+    const reference = ReactDOM.findDOMNode(this.parent().inputNode);
 
     if (this.state.showPopper) {
       if (this.popperJS) {
@@ -36,28 +51,28 @@ export default class Suggestions extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.popperJS) {
       this.popperJS.destroy();
     }
   }
 
-  onVisibleChange(visible, inputWidth) {
+  onVisibleChange(visible: boolean, inputWidth: string): void {
     this.setState({
       dropdownWidth: inputWidth,
       showPopper: visible
     })
   }
 
-  parent() {
+  parent(): Component {
     return this.context.component;
   }
 
-  select(item) {
+  select(item: Object): void {
     this.parent().select(item);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { customItem } = this.parent().props;
     const { loading, highlightedIndex } = this.parent().state;
     const { suggestions } = this.props;
@@ -76,31 +91,31 @@ export default class Suggestions extends Component {
               zIndex: 1
             }}
           >
-          <Scrollbar
-            viewComponent="ul"
-            wrapClass="el-autocomplete-suggestion__wrap"
-            viewClass="el-autocomplete-suggestion__list"
-          >
-            {
-              loading ? (
-                <li><i className="el-icon-loading"></i></li>
-              ) : suggestions.map((item, index) => {
-                return (
-                  <li
-                    key={index}
-                    className={this.classNames({'highlighted': highlightedIndex === index})}
-                    onClick={this.select.bind(this, item)}>
-                    {
-                      !customItem ? item.value : React.createElement(customItem, {
-                        index,
-                        item
-                      })
-                    }
-                  </li>
-                )
-              })
-            }
-          </Scrollbar>
+            <Scrollbar
+              viewComponent="ul"
+              wrapClass="el-autocomplete-suggestion__wrap"
+              viewClass="el-autocomplete-suggestion__list"
+            >
+              {
+                loading ? (
+                  <li><i className="el-icon-loading"></i></li>
+                ) : suggestions.map((item, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className={this.classNames({'highlighted': highlightedIndex === index})}
+                      onClick={this.select.bind(this, item)}>
+                      {
+                        !customItem ? item.value : React.createElement(customItem, {
+                          index,
+                          item
+                        })
+                      }
+                    </li>
+                  )
+                })
+              }
+            </Scrollbar>
           </div>
         </View>
       </Transition>
@@ -111,7 +126,3 @@ export default class Suggestions extends Component {
 Suggestions.contextTypes = {
   component: PropTypes.any
 };
-
-Suggestions.propTypes = {
-  suggestions: PropTypes.array
-}
