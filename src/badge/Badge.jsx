@@ -5,7 +5,7 @@ import { Component, PropTypes } from '../../libs';
 
 type Props = {
   children: React.Element<any>,
-  value: number|string,
+  value: number | string,
   max: number,
   isDot: boolean,
 }
