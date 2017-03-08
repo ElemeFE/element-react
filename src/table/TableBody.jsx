@@ -123,7 +123,7 @@ export default class TableBody extends  Component{
     }
   }
 
-  toggleSelectedRow(isHiglight:Boolean, rowData:any){
+  toggleSelectedRow(isHiglight:boolean, rowData:Object){
     const { highlightCurrentRow } = this.props;
     if(!highlightCurrentRow){
       return;
@@ -217,9 +217,4 @@ export default class TableBody extends  Component{
 
 TableBody.contextTypes = {
   $owerTable: React.PropTypes.object
-};
-
-TableBody.propTypes = {
-  columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,
 };
