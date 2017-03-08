@@ -4,8 +4,14 @@ import ReactDOM from 'react-dom';
 import enhanceWithClickOutside from 'react-click-outside';
 import { Component, PropTypes } from '../../libs';
 import Checkbox from '../checkbox';
+import type { Column, FilterProps, FilterState, FilterDefaultProps} from './Types';
+
 
 class Filter extends Component{
+  props: FilterProps;
+  state: FilterState;
+
+  static defaultProps: FilterDefaultProps;
 
   constructor(props, context){
     super(props, context);
@@ -114,11 +120,6 @@ class Filter extends Component{
       </div>
     )
   }
-};
-
-Filter.propTypes = {
-  filters: PropTypes.array,
-  onFilter: PropTypes.func
 };
 
 Filter.defaultProps = {

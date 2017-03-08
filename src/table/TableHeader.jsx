@@ -6,7 +6,12 @@ import { Component, PropTypes } from '../../libs';
 import { getScrollBarWidth } from './utils'
 import Filter from './filter'
 
+import type { Column, TableHeaderProps, TableHeaderState } from './Types';
+
 export default class TableHeader extends  Component{
+  props: TableHeaderProps;
+  state: TableHeaderState;
+
   constructor(props:Object, context:Object){
     super(props, context);
 
@@ -297,8 +302,4 @@ export default class TableHeader extends  Component{
 
 TableHeader.contextTypes = {
   $owerTable: React.PropTypes.object
-};
-
-TableHeader.propTypes = {
-  columns: PropTypes.array.isRequired
 };

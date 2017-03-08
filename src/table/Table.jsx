@@ -7,10 +7,14 @@ import { getScrollBarWidth } from './utils';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
+import type { Column, TableProps, TableState, DefaultTableProps } from './Types';
 
 let tableIdSeed = 1;
 
 export default class Table extends Component{
+  props: TableProps;
+  state: TableState;
+  static defaultProps: DefaultTableProps;
 
   constructor(props:Object, context:Object){
     super(props, context);
@@ -33,6 +37,7 @@ export default class Table extends Component{
       headerHeight: '',
       realTableHeaderHeight: '',
       realTableHeight: '',
+      realTableWidth: '',
       resizeProxyVisible: false,
 
       scrollY: false,//表格竖Y轴是否有滚动条,
@@ -112,7 +117,7 @@ export default class Table extends Component{
   scheduleLayout(){
     const { _columns, realTableWidth, scrollY } = this.state;
 
-    const layout = scheduleLayout(_columns, realTableWidth, scrollY, this.props.fit);
+    const layout = scheduleLayout(_columns, realTableWidth, Number(scrollY), this.props.fit);
     this.setState({
       bodyWidth: layout.bodyWidth
     }, ()=>{
@@ -138,15 +143,17 @@ export default class Table extends Component{
     return style;
   }
 
-  onScrollBodyWrapper(e:any){
-    const target = e ? e.target : this.refs.bodyWrapper;
+  onScrollBodyWrapper(){
+    const target = arguments[0] ? arguments[0].target : this.refs.bodyWrapper;
     const headerWrapper = this.refs.headerWrapper;
     const fixedBodyWrapper = this.refs.fixedBodyWrapper;
     const rightFixedBodyWrapper = this.refs.rightFixedBodyWrapper;
 
-    headerWrapper.scrollLeft = target.scrollLeft;
-    fixedBodyWrapper && (fixedBodyWrapper.scrollTop = target.scrollTop);
-    rightFixedBodyWrapper && (rightFixedBodyWrapper.scrollTop = target.scrollTop);
+    if(target instanceof HTMLDivElement){
+      headerWrapper.scrollLeft = target.scrollLeft;
+      fixedBodyWrapper && (fixedBodyWrapper.scrollTop = target.scrollTop);
+      rightFixedBodyWrapper && (rightFixedBodyWrapper.scrollTop = target.scrollTop);
+    }
   }
 
   sortBy(sort:number, prop:string, compare:any){
@@ -311,23 +318,6 @@ export default class Table extends Component{
 
 Table.childContextTypes = {
   $owerTable: React.PropTypes.object
-};
-
-Table.propTypes = {
-  columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,
-  height: PropTypes.number,
-  stripe: PropTypes.bool,
-  border: PropTypes.bool,
-  fit: PropTypes.bool,
-  rowClassName: PropTypes.func,
-  style: PropTypes.object,
-  highlightCurrentRow: PropTypes.bool,
-
-  //Event
-  onCurrentChange: PropTypes.func,
-  onSelectAll: PropTypes.func,
-  onSelectChange: PropTypes.func
 };
 
 Table.defaultProps = {

@@ -126,7 +126,7 @@ export const calculateBodyWidth = (columns: Array<Object>, owerTableWidth: numbe
   return (bodyMinWidth < owerTableWidth ? owerTableWidth : bodyMinWidth)
 }
 
-export const scheduleLayout = (columns: Array<Object>=[], owerTableWidth: number, scrollY: number, fit: Boolean)=>{
+export const scheduleLayout = (columns: Array<Object>=[], owerTableWidth: ''|number, scrollY: number, fit: boolean)=>{
   const layout = {};
   const columnsWithNoWidth = columns.filter((col)=>typeof col.width == 'undefined');
   const columnsWithWidth = columns.filter((col)=>typeof col.width != 'undefined');
@@ -138,9 +138,12 @@ export const scheduleLayout = (columns: Array<Object>=[], owerTableWidth: number
   }, 0);
 
   const gutterWidth:number = scrollY ? getScrollBarWidth() : 0;
-  owerTableWidth -= gutterWidth;
+  
+  if(typeof owerTableWidth == 'number'){
+    owerTableWidth -= gutterWidth;
+  }
 
-  if(bodyMinWidth <= owerTableWidth && fit){
+  if(typeof owerTableWidth == 'number' && bodyMinWidth <= owerTableWidth && fit){
     let remainWidthForEach = (owerTableWidth - calcuateColumnsTotalWidth(columnsWithWidth)) / columnsWithNoWidth.length;
     remainWidthForEach = remainWidthForEach < MIN_COLUMN_WIDTH ? MIN_COLUMN_WIDTH : remainWidthForEach;
     columnsWithNoWidth.forEach((col)=>{col.realWidth = remainWidthForEach});
