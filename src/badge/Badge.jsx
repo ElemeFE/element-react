@@ -1,8 +1,27 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
+type Props = {
+  children: React.Element<any>,
+  value: number|string,
+  max: number,
+  isDot: boolean,
+}
+
 export default class Badge extends Component {
-  render() {
+  props: Props;
+
+  static defaultProps = {
+    isDot: false,
+  };
+
+  constructor(props: Props): void {
+    super(props);
+  }
+
+  render(): React.Element<any> {
     const { children, value, max, isDot } = this.props;
     const className = this.classNames({
       'el-badge__content': true,
@@ -28,14 +47,4 @@ export default class Badge extends Component {
       </div>
     )
   }
-}
-
-Badge.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  max: PropTypes.number,
-  isDot: PropTypes.bool,
-}
-
-Badge.defaultProps = {
-  isDot: false,
 }
