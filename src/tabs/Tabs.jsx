@@ -1,8 +1,33 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, View } from '../../libs';
 
+type Props = {
+  children: React.Element<any>,
+  type: string,
+  activeName: string,
+  value: string,
+  closable: boolean,
+  addable: boolean,
+  editable: boolean,
+  onTabClick: Function,
+  onTabRemove: Function,
+  onTabAdd: Function,
+  onTabEdit: Function,
+}
+
+type State = {
+  children: Array<any>,
+  currentName: string,
+  barStyle: Object,
+}
+
 export default class Tabs extends Component {
-  constructor(props) {
+  props: Props;
+  state: State;
+
+  constructor(props: Props): void {
     super(props);
 
     let { children, activeName, value } = props;
@@ -16,11 +41,11 @@ export default class Tabs extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.calcBarStyle(true);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props): void {
     if (nextProps.activeName !== this.props.activeName) {
       this.setState({
         currentName: nextProps.activeName,
@@ -40,14 +65,14 @@ export default class Tabs extends Component {
     }
   }
 
-  handleTabAdd() {
+  handleTabAdd(): void {
     const { onTabAdd, onTabEdit } = this.props;
 
     onTabEdit && onTabEdit('add');
     onTabAdd && onTabAdd();
   }
 
-  handleTabRemove(tab, index, e) {
+  handleTabRemove(tab: React.Element<any>, index: number, e: Event): void {
     const { children, currentName } = this.state;
     const { onTabRemove, onTabEdit } = this.props;
 
@@ -72,7 +97,7 @@ export default class Tabs extends Component {
     });
   }
 
-  handleTabClick(tab, e) {
+  handleTabClick(tab: React.Element<any>, e: Event): void|boolean {
     if (tab.props.disabled) {
       return false;
     }
@@ -87,7 +112,7 @@ export default class Tabs extends Component {
     });
   }
 
-  calcBarStyle(firstRendering) {
+  calcBarStyle(firstRendering?: boolean): void|Object {
     if (this.props.type || !this.tabs.length ) return {};
 
     let style = {};
@@ -119,7 +144,7 @@ export default class Tabs extends Component {
     });
   }
 
-  render() {
+  render(): React.Element<any> {
     const { children, currentName, barStyle } = this.state;
     const { type, addable, closable, editable } = this.props;
     const tabsCls = this.classNames({
