@@ -1,8 +1,21 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
+type Props = {
+  children: any,
+  separator: string
+};
+
+type Context = {
+  separator: string
+};
+
 export default class Breadcrumb extends Component {
-  getChildContext() {
+  props: Props;
+
+  getChildContext(): Context {
     return {
       separator: this.props.separator
     };

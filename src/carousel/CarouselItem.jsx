@@ -1,11 +1,29 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Component, PropTypes, View } from '../../libs';
 
+type Props = {
+  children: any
+};
+
+type State = {
+  hover: boolean,
+  translate: number,
+  scale: number,
+  active: boolean,
+  ready: boolean,
+  inStage: boolean
+};
+
 const CARD_SCALE = 0.83;
 
 export default class CarouselItem extends Component {
-  constructor(props) {
+  props: Props;
+  state: State;
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -26,7 +44,7 @@ export default class CarouselItem extends Component {
     this.parent().removeItem(this);
   }
 
-  processIndex(index, activeIndex, length) {
+  processIndex(index: number, activeIndex: number, length: number): number {
     if (activeIndex === 0 && index === length - 1) {
       return -1;
     } else if (activeIndex === length - 1 && index === 0) {
@@ -40,7 +58,7 @@ export default class CarouselItem extends Component {
     return index;
   }
 
-  calculateTranslate(index, activeIndex, parentWidth) {
+  calculateTranslate(index: number, activeIndex: number, parentWidth: number): number {
     if (this.state.inStage) {
       return parentWidth * ((2 - CARD_SCALE) * (index - activeIndex) + 1) / 4;
     } else if (index < activeIndex) {
@@ -50,8 +68,9 @@ export default class CarouselItem extends Component {
     }
   }
 
-  translateItem(index, activeIndex) {
-    const parentWidth = ReactDOM.findDOMNode(this.parent()).offsetWidth;
+  translateItem(index: number, activeIndex: number) {
+    const parent = ReactDOM.findDOMNode(this.parent());
+    const parentWidth = parent.offsetWidth;
     const length = this.parent().state.items.length;
 
     if (index !== activeIndex && length > 2) {
@@ -80,7 +99,7 @@ export default class CarouselItem extends Component {
     }
   }
 
-  parent() {
+  parent(): Object {
     return this.context.component;
   }
 
@@ -118,8 +137,4 @@ export default class CarouselItem extends Component {
 
 CarouselItem.contextTypes = {
   component: PropTypes.any
-};
-
-CarouselItem.propTypes = {
-  name: PropTypes.string
 };
