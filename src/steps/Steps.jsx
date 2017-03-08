@@ -1,9 +1,37 @@
+/* @flow */
+
 import React from 'react';
-import { Component, PropTypes } from '../../libs';
+import { Component } from '../../libs';
+
+type statusMap = 'wait' | 'process' | 'finish' | 'error' | 'success';
+
+type Props = {
+  space: number,
+  active: number,
+  direction: 'vertical' | 'horizontal',
+  finishStatus: statusMap,
+  processStatus: statusMap,
+  children: React.Children
+}
+
+type StepsDefaultProps = {
+  direction: 'vertical' | 'horizontal',
+  finishStatus: statusMap,
+  processStatus: statusMap,
+  active: number,
+}
 
 export default class Steps extends Component {
+  props: Props;
 
-  calcProgress(status, index) {
+  static defaultProps: StepsDefaultProps = {
+    direction: 'horizontal',
+    finishStatus: 'finish',
+    processStatus: 'process',
+    active: 0,
+  }
+
+  calcProgress(status: statusMap, index: number): Object {
     let step = 100;
     const style = {};
     style.transitionDelay = 150 * index + 'ms';
@@ -25,7 +53,7 @@ export default class Steps extends Component {
     return style;
   }
 
-  calStatus(index) {
+  calStatus(index: number): statusMap {
     const { active, finishStatus, processStatus } = this.props;
     let status = 'wait';
 
@@ -38,7 +66,7 @@ export default class Steps extends Component {
     return status;
   }
 
-  render() {
+  render(): React.Element<any> {
     const { children, space, direction } = this.props;
 
     return (
@@ -62,21 +90,4 @@ export default class Steps extends Component {
       </div>
     )
   }
-}
-
-const statusMap = ['wait', 'process', 'finish', 'error', 'success'];
-
-Steps.propTypes = {
-  space: PropTypes.number,
-  active: PropTypes.number,
-  direction: PropTypes.oneOf(['vertical', 'horizontal']),
-  finishStatus: PropTypes.oneOf(statusMap),
-  processStatus: PropTypes.oneOf(statusMap),
-}
-
-Steps.defaultProps = {
-  direction: 'horizontal',
-  finishStatus: 'finish',
-  processStatus: 'process',
-  active: 0,
 }

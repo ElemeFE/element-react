@@ -1,13 +1,25 @@
+/* @flow */
+
 import React from 'react';
-import { Component, PropTypes,Transition } from '../../libs';
+import { Component, Transition } from '../../libs';
 import { loadStyleString } from '../../libs/utils/dom';
 
+type Props = {
+  onClick: Function,
+  isActive: boolean,
+  title: Element | string,
+  name: string,
+  children: React.Children,
+}
+
 export default class CollapseItem extends Component {
-  constructor(props) {
+  props: Props;
+
+  constructor(props: Props) {
     super(props);
   }
 
-  componentWillMount() {
+  componentWillMount(): void {
     loadStyleString(
       `.collapse-enter {
         max-height: 0px;
@@ -51,15 +63,4 @@ export default class CollapseItem extends Component {
       </div>
     )
   }
-}
-
-CollapseItem.propTypes = {
-  onClick: PropTypes.func,
-  isActive: PropTypes.bool,
-  title: PropTypes.node,
-  name: PropTypes.string,
-}
-
-CollapseItem.defaultProps = {
-
 }

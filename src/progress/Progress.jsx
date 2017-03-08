@@ -1,27 +1,67 @@
+/* @flow */
+
 import React from 'react';
-import { Component, PropTypes } from '../../libs';
+import { Component } from '../../libs';
+
+type Shape = "line" | "circle";
+
+type Props = {
+  type: Shape,
+  percentage: number,
+  status: string,
+  strokeWidth: number,
+  width: number,
+  textInside: boolean,
+  showText: boolean,
+}
+
+type ProgressDefaultProps = {
+  type: Shape,
+  percentage: number,
+  strokeWidth: number,
+  width: number,
+  showText: boolean,
+  textInside: boolean,
+}
+
+type PathStyle = {
+  strokeDasharray: string,
+  strokeDashoffset: string,
+  transition: string,
+}
 
 export default class Progress extends Component {
-  constructor(props) {
+  props: Props;
+
+  static defaultProps: ProgressDefaultProps = {
+    type: 'line',
+    percentage: 0,
+    strokeWidth: 6,
+    width: 126,
+    showText: true,
+    textInside: false,
+  }
+
+  constructor(props: Props) {
     super(props);
   }
 
-  relativeStrokeWidth() {
+  relativeStrokeWidth(): string {
     const { strokeWidth, width } = this.props;
     return (strokeWidth / width * 100).toFixed(1);
   }
 
-  trackPath() {
+  trackPath(): string {
     const radius = parseInt(50 - parseFloat(this.relativeStrokeWidth()) / 2, 10);
     return `M 50 50 m 0 -${radius} a ${radius} ${radius} 0 1 1 0 ${radius * 2} a ${radius} ${radius} 0 1 1 0 -${radius * 2}`;
   }
 
-  perimeter() {
+  perimeter(): number {
     const radius = 50 - parseFloat(this.relativeStrokeWidth()) / 2;
     return 2 * Math.PI * radius;
   }
 
-  circlePathStyle() {
+  circlePathStyle(): PathStyle {
     const perimeter = this.perimeter();
     return {
       strokeDasharray: `${perimeter}px,${perimeter}px`,
@@ -30,7 +70,7 @@ export default class Progress extends Component {
     };
   }
 
-  stroke() {
+  stroke(): string {
     let ret;
     switch (this.props.status) {
       case 'success':
@@ -45,21 +85,21 @@ export default class Progress extends Component {
     return ret;
   }
 
-  iconClass() {
+  iconClass(): string {
     const { type, status } =  this.props;
     return type === 'line'
       ? status === 'success' ? 'el-icon-circle-check' : 'el-icon-circle-cross'
       : status === 'success' ? 'el-icon-check' : 'el-icon-close'
   }
 
-  progressTextSize() {
+  progressTextSize(): number {
     const { type, strokeWidth, width } =  this.props;
     return type === 'line'
       ? 12 + strokeWidth * 0.4
       : width * 0.111111 + 2 ;
   }
 
-  render() {
+  render(): React.Element<any> {
     const { type, percentage, status, strokeWidth, textInside, width, showText } = this.props;
     let progress;
     if (type === 'line') {
@@ -110,23 +150,4 @@ export default class Progress extends Component {
       </div>
     )
   }
-}
-
-Progress.propTypes = {
-  type: PropTypes.oneOf(['line', 'circle']),
-  percentage: PropTypes.range(0, 100).isRequired,
-  status: PropTypes.string,
-  strokeWidth: PropTypes.number,
-  width: PropTypes.number,
-  textInside: PropTypes.bool,
-  showText: PropTypes.bool,
-}
-
-Progress.defaultProps = {
-  type: 'line',
-  percentage: 0,
-  strokeWidth: 6,
-  width: 126,
-  showText: true,
-  textInside: false,
 }

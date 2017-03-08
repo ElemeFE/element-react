@@ -31,11 +31,15 @@ type Props = {
   prepend: Element,
 }
 
+type AutoCompleteDefaultProps = {
+  triggerOnFocus: boolean,
+};
+
 class AutoComplete extends Component {
   props: Props;
   state: State;
 
-  static defaultProps = {
+  static defaultProps: AutoCompleteDefaultProps = {
     triggerOnFocus: true,
   };
 
