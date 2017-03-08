@@ -13,14 +13,6 @@ type Props = {
 export default class Badge extends Component {
   props: Props;
 
-  static defaultProps = {
-    isDot: false,
-  };
-
-  constructor(props: Props): void {
-    super(props);
-  }
-
   render(): React.Element<any> {
     const { children, value, max, isDot } = this.props;
     const className = this.classNames({
@@ -47,4 +39,14 @@ export default class Badge extends Component {
       </div>
     )
   }
+}
+
+Badge.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  max: PropTypes.number,
+  isDot: PropTypes.bool,
+}
+
+Badge.defaultProps = {
+  isDot: false,
 }
