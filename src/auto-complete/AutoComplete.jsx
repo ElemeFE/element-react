@@ -1,13 +1,45 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
-import { Component, PropTypes, Transition } from '../../libs';
-
+import { Component, PropTypes } from '../../libs';
 import Input from '../input';
 import Suggestions from './Suggestions';
 
+type State = {
+  inputValue: string,
+  isFocus: boolean,
+  suggestions: Array<any>,
+  loading: boolean,
+  highlightedIndex: number,
+}
+
+type Props = {
+  popperClass: string,
+  placeholder: string,
+  disabled: boolean,
+  name: string,
+  size: string,
+  value: string,
+  triggerOnFocus: boolean,
+  fetchSuggestions: Function,
+  onSelect: Function,
+  onIconClick: Function,
+  icon: Element | string,
+  append: Element,
+  prepend: Element,
+}
+
 class AutoComplete extends Component {
-  constructor(props) {
+  props: Props;
+  state: State;
+
+  static defaultProps = {
+    triggerOnFocus: true,
+  };
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -25,21 +57,22 @@ class AutoComplete extends Component {
     };
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: Props): void {
     this.setState({ inputValue: props.value });
   }
 
-  componentDidUpdate() {
-    const reference = ReactDOM.findDOMNode(this.refs.input);
+  componentDidUpdate(): void {
     const visible = this.suggestionVisible();
-
-    this.refs.suggestions.onVisibleChange(visible, reference.offsetWidth);
+    const reference = ReactDOM.findDOMNode(this.inputNode);
+    if (reference instanceof HTMLElement) {
+      this.suggestionsNode.onVisibleChange(visible, reference.offsetWidth);
+    }
   }
 
-  getData(queryString) {
+  getData(queryString: string): void {
     this.setState({ loading: true });
 
-    this.props.fetchSuggestions(queryString, (suggestions) => {
+    this.props.fetchSuggestions(queryString, (suggestions: Array<any>) => {
       this.setState({ loading: false });
 
       if (Array.isArray(suggestions)) {
@@ -50,19 +83,21 @@ class AutoComplete extends Component {
     });
   }
 
-  handleChange(e) {
-    const value = e.target.value;
+  handleChange(e: SyntheticInputEvent): void {
+    if (e.target instanceof HTMLInputElement) {
+      const value = e.target.value;
 
-    this.setState({ inputValue: value });
+      this.setState({ inputValue: value });
 
-    if (!this.props.triggerOnFocus && !value) {
-      this.setState({ suggestions: [] }); return;
+      if (!this.props.triggerOnFocus && !value) {
+        this.setState({ suggestions: [] }); return;
+      }
+
+      this.getData(value);
     }
-
-    this.getData(value);
   }
 
-  handleFocus() {
+  handleFocus(): void {
     this.setState({ isFocus: true });
 
     if (this.props.triggerOnFocus) {
@@ -70,26 +105,26 @@ class AutoComplete extends Component {
     }
   }
 
-  handleBlur() {
+  handleBlur(): void {
     // 因为 blur 事件处理优先于 select 事件执行
     setTimeout(() => {
       this.setState({ isFocus: false });
     }, 100);
   }
 
-  handleKeyEnter() {
+  handleKeyEnter(): void {
     if (this.suggestionVisible() && this.state.highlightedIndex >= 0 && this.state.highlightedIndex < this.state.suggestions.length) {
       this.select(this.state.suggestions[this.state.highlightedIndex]);
     }
   }
 
-  handleClickOutside() {
+  handleClickOutside(): void {
     if (this.state.isFocus) {
       this.setState({ isFocus: false });
     }
   }
 
-  select(item) {
+  select(item: Object): void {
     this.setState({ inputValue: item.value }, () => {
       this.setState({ suggestions: [] });
     });
@@ -99,41 +134,44 @@ class AutoComplete extends Component {
     }
   }
 
-  highlight(index) {
-    if (!this.suggestionVisible() || this.state.loading) { return; }
+  highlight(index: number): void {
+    if (!this.suggestionVisible() || this.state.loading) return;
     if (index < 0) index = 0;
     if (index >= this.state.suggestions.length) {
       index = this.state.suggestions.length - 1;
     }
+    const reference = ReactDOM.findDOMNode(this.suggestionsNode);
+    if (reference instanceof HTMLElement) {
+      const suggestion = document.querySelector('.el-autocomplete-suggestion__wrap');
+      const suggestionList = document.querySelectorAll('.el-autocomplete-suggestion__list li');
+      if (suggestion instanceof HTMLElement && suggestionList instanceof NodeList) {
+        let highlightItem = suggestionList[index];
+        let scrollTop = suggestion.scrollTop;
+        let offsetTop = highlightItem.offsetTop;
 
-    const suggestion = ReactDOM.findDOMNode(this.refs.suggestions).querySelector('.el-autocomplete-suggestion__wrap');
-    const suggestionList = suggestion.querySelectorAll('.el-autocomplete-suggestion__list li');
+        if (offsetTop + highlightItem.scrollHeight > (scrollTop + suggestion.clientHeight)) {
+          suggestion.scrollTop += highlightItem.scrollHeight;
+        }
 
-    let highlightItem = suggestionList[index];
-    let scrollTop = suggestion.scrollTop;
-    let offsetTop = highlightItem.offsetTop;
+        if (offsetTop < scrollTop) {
+          suggestion.scrollTop -= highlightItem.scrollHeight;
+        }
 
-    if (offsetTop + highlightItem.scrollHeight > (scrollTop + suggestion.clientHeight)) {
-      suggestion.scrollTop += highlightItem.scrollHeight;
+        this.setState({ highlightedIndex: index });
+      }
     }
-
-    if (offsetTop < scrollTop) {
-      suggestion.scrollTop -= highlightItem.scrollHeight;
-    }
-
-    this.setState({ highlightedIndex: index });
   }
 
   /* Computed Methods */
 
-  suggestionVisible() {
+  suggestionVisible(): boolean {
     const suggestions = this.state.suggestions;
     const isValidData = Array.isArray(suggestions) && suggestions.length > 0;
 
     return (isValidData || this.state.loading) && this.state.isFocus;
   }
 
-  onKeyDown(e) {
+  onKeyDown(e: SyntheticKeyboardEvent): void {
     const { highlightedIndex } = this.state;
 
     switch (e.keyCode) {
@@ -151,14 +189,14 @@ class AutoComplete extends Component {
     }
   }
 
-  render() {
+  render(): React.Element<any> {
     const { disabled, placeholder, name, size, icon, append, prepend, onIconClick, popperClass } = this.props;
     const { inputValue, suggestions } = this.state;
 
     return (
       <div style={this.style()} className={this.className('el-autocomplete')}>
         <Input
-          ref="input"
+          ref={node => this.inputNode = node}
           value={inputValue}
           disabled={disabled}
           placeholder={placeholder}
@@ -174,7 +212,7 @@ class AutoComplete extends Component {
           onKeyDown={this.onKeyDown.bind(this)}
         />
         <Suggestions
-          ref="suggestions"
+          ref={node => this.suggestionsNode = node}
           className={this.classNames(popperClass)}
           suggestions={suggestions}
         />
@@ -185,25 +223,6 @@ class AutoComplete extends Component {
 
 AutoComplete.childContextTypes = {
   component: PropTypes.any
-};
-
-AutoComplete.propTypes = {
-  popperClass: PropTypes.string,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-  name: PropTypes.string,
-  size: PropTypes.string,
-  value: PropTypes.string,
-  autofocus: PropTypes.bool,
-  fetchSuggestions: PropTypes.func,
-  triggerOnFocus: PropTypes.bool,
-  customItem: PropTypes.any,
-  onSelect: PropTypes.func,
-  onIconClick: PropTypes.func
-}
-
-AutoComplete.defaultProps = {
-  triggerOnFocus: true
 };
 
 export default ClickOutside(AutoComplete);
