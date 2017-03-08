@@ -24,7 +24,7 @@ export const defaultColumn = {
 };
 
 //计算列实际占用宽度, 必须用realWidth
-const calcuateColumnsTotalWidth = (columns:Array<Object>=[])=>{
+const calcuateColumnsTotalWidth = (columns: Array<Object>=[])=>{
   return columns.reduce((preWidth, next)=>{
     var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
     if(next.minWidth && nextWidth < next.minWidth){
@@ -34,7 +34,7 @@ const calcuateColumnsTotalWidth = (columns:Array<Object>=[])=>{
   }, 0);
 }
 
-export const getDefaultColumn = (type:string, options:Object)=>{
+export const getDefaultColumn = (type: string, options: Object)=>{
   const column = {};
 
   for (var name in options) {
@@ -57,7 +57,7 @@ export const getDefaultColumn = (type:string, options:Object)=>{
   return column;
 };
 
-export const enhanceColumns = (columns:Array<Object>=[], tableId:number)=>{
+export const enhanceColumns = (columns: Array<Object>=[], tableId: number)=>{
   let columnIdSeed = 1;
 
   const _columns = columns.map((col)=>{
@@ -112,7 +112,7 @@ export const enhanceColumns = (columns:Array<Object>=[], tableId:number)=>{
 };
 
 
-export const calculateFixedWidth = (fxiedColumns:Array<Object>)=>{
+export const calculateFixedWidth = (fxiedColumns: Array<Object>)=>{
   const width = fxiedColumns.reduce((pre, next)=>{
     var preWidth = pre;
     var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
@@ -121,12 +121,12 @@ export const calculateFixedWidth = (fxiedColumns:Array<Object>)=>{
   return width;
 };
 
-export const calculateBodyWidth = (columns:Array<Object>, owerTableWidth:number)=>{
+export const calculateBodyWidth = (columns: Array<Object>, owerTableWidth: number)=>{
   const bodyMinWidth:number = calcuateColumnsTotalWidth(columns);
   return (bodyMinWidth < owerTableWidth ? owerTableWidth : bodyMinWidth)
 }
 
-export const scheduleLayout = (columns:Array<Object>=[], owerTableWidth:number, scrollY:number, fit:Boolean)=>{
+export const scheduleLayout = (columns: Array<Object>=[], owerTableWidth: number, scrollY: number, fit: Boolean)=>{
   const layout = {};
   const columnsWithNoWidth = columns.filter((col)=>typeof col.width == 'undefined');
   const columnsWithWidth = columns.filter((col)=>typeof col.width != 'undefined');
