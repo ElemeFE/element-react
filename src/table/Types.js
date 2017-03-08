@@ -12,7 +12,7 @@ export type Column = {
   resizable: boolean,
   formatter: ()=>void,
   selectable: boolean,
-  [fixed:string]:boolean,
+  [fixed: string]: boolean,
   filterMethod: ()=>void,
   filters: Array<Object>,
   render: ()=>void

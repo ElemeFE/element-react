@@ -126,7 +126,7 @@ export const calculateBodyWidth = (columns: Array<Object>, owerTableWidth: numbe
   return (bodyMinWidth < owerTableWidth ? owerTableWidth : bodyMinWidth)
 }
 
-export const scheduleLayout = (columns: Array<Object>=[], owerTableWidth: ''|number, scrollY: number, fit: boolean)=>{
+export const scheduleLayout = (columns: Array<Object> = [], owerTableWidth: '' | number, scrollY: number, fit: boolean)=>{
   const layout = {};
   const columnsWithNoWidth = columns.filter((col)=>typeof col.width == 'undefined');
   const columnsWithWidth = columns.filter((col)=>typeof col.width != 'undefined');
