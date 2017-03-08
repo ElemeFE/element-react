@@ -22,8 +22,8 @@ type Props = {
   name: string,
   size: string,
   value: string,
-  fetchSuggestions: Function,
   triggerOnFocus: boolean,
+  fetchSuggestions: Function,
   onSelect: Function,
   onIconClick: Function,
   icon: Element | string,
@@ -84,15 +84,17 @@ class AutoComplete extends Component {
   }
 
   handleChange(e: SyntheticInputEvent): void {
-    const value = e.target.value;
+    if (e.target instanceof HTMLInputElement) {
+      const value = e.target.value;
 
-    this.setState({ inputValue: value });
+      this.setState({ inputValue: value });
 
-    if (!this.props.triggerOnFocus && !value) {
-      this.setState({ suggestions: [] }); return;
+      if (!this.props.triggerOnFocus && !value) {
+        this.setState({ suggestions: [] }); return;
+      }
+
+      this.getData(value);
     }
-
-    this.getData(value);
   }
 
   handleFocus(): void {
@@ -142,7 +144,7 @@ class AutoComplete extends Component {
     if (reference instanceof HTMLElement) {
       const suggestion = document.querySelector('.el-autocomplete-suggestion__wrap');
       const suggestionList = document.querySelectorAll('.el-autocomplete-suggestion__list li');
-      if (suggestion instanceof HTMLElement && suggestionList instanceof HTMLCollection) {
+      if (suggestion instanceof HTMLElement && suggestionList instanceof NodeList) {
         let highlightItem = suggestionList[index];
         let scrollTop = suggestion.scrollTop;
         let offsetTop = highlightItem.offsetTop;
