@@ -1,8 +1,10 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Button extends Component {
-  onClick(e) {
+  onClick(e: Object) {
     if (this.props.onClick) {
       this.props.onClick(e);
     }

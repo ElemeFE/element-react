@@ -1,10 +1,28 @@
+/* @flow */
+
 import React from 'react';
 import throttle from 'throttle-debounce/throttle';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
+type State = {
+  items: Array<any>,
+  activeIndex: number,
+  containerWidth: number,
+  timer: any,
+  hover: boolean
+};
+
+type Context = {
+  component: any
+};
+
 export default class Carousel extends Component {
-  constructor(props) {
+  state: State;
+  throttledArrowClick: Function;
+  throttledIndicatorHover: Function;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -24,7 +42,7 @@ export default class Carousel extends Component {
     });
   }
 
-  getChildContext() {
+  getChildContext(): Context {
     return {
       component: this
     };
@@ -42,7 +60,7 @@ export default class Carousel extends Component {
     this.startTimer();
   }
 
-  componentDidUpdate(props, state) {
+  componentDidUpdate(props: Object, state: Object) {
     if (state.activeIndex != this.state.activeIndex) {
       this.resetItemPosition();
 
@@ -66,7 +84,7 @@ export default class Carousel extends Component {
     this.startTimer();
   }
 
-  itemInStage(item, index) {
+  itemInStage(item: any, index: number): mixed {
     const length = this.state.items.length;
 
     if (index === length - 1 && item.state.inStage && this.state.items[0].state.active ||
@@ -80,7 +98,7 @@ export default class Carousel extends Component {
     return false;
   }
 
-  handleButtonEnter(arrow) {
+  handleButtonEnter(arrow: mixed) {
     this.state.items.forEach((item, index) => {
       if (arrow === this.itemInStage(item, index)) {
         item.setState({ hover: true });
@@ -121,17 +139,17 @@ export default class Carousel extends Component {
     this.timer = setInterval(this.playSlides.bind(this), Number(this.props.interval));
   }
 
-  addItem(item) {
+  addItem(item: any) {
     this.state.items.push(item);
     this.setActiveItem(0);
   }
 
-  removeItem(item) {
+  removeItem(item: any) {
     this.state.items.splice(this.state.items.indexOf(item), 1);
     this.setActiveItem(0);
   }
 
-  setActiveItem(index) {
+  setActiveItem(index: number) {
     let { activeIndex } = this.state;
 
     if (typeof index === 'string') {
@@ -171,13 +189,13 @@ export default class Carousel extends Component {
     this.setActiveItem(this.state.activeIndex + 1);
   }
 
-  handleIndicatorClick(index) {
+  handleIndicatorClick(index: number) {
     this.setState({
       activeIndex: index
     });
   }
 
-  handleIndicatorHover(index) {
+  handleIndicatorHover(index: number) {
     if (this.props.trigger === 'hover' && index !== this.state.activeIndex) {
       this.setState({
         activeIndex: index
@@ -275,6 +293,7 @@ Carousel.propTypes = {
   indicatorPosition: PropTypes.string,
   indicator: PropTypes.bool,
   arrow: PropTypes.string,
+  type: PropTypes.string,
   onChange: PropTypes.func
 };
 

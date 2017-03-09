@@ -1,9 +1,24 @@
+/* @flow */
+
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
+type State = {
+  inputWidth: number,
+  options: [],
+  props: {},
+  visible: boolean,
+  activeValue: any,
+  value: [],
+  expandTrigger: string,
+  changeOnSelect: boolean,
+  popperClass: string
+};
+
 export default class CascaderMenu extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -27,13 +42,13 @@ export default class CascaderMenu extends Component {
     this.parent().initMenu(this);
   }
 
-  componentDidUpdate(props, state) {
+  componentDidUpdate(props: Object, state: State) {
     if (state.value != this.state.value || state.visible != this.state.visible) {
       this.setState({ activeValue: this.state.value });
     }
   }
 
-  select(item, menuIndex) {
+  select(item: any, menuIndex: number) {
     if (item.__IS__FLAT__OPTIONS) {
       this.state.activeValue = item.value;
     } else {
@@ -48,7 +63,7 @@ export default class CascaderMenu extends Component {
     // this.$emit('menuLeave');
   }
 
-  activeItem(item, menuIndex) {
+  activeItem(item: any, menuIndex: number) {
     const activeOptions = this.activeOptions();
 
     this.state.activeValue.splice(menuIndex, activeOptions.length, item.value);
@@ -65,10 +80,10 @@ export default class CascaderMenu extends Component {
 
   /* Computed Methods */
 
-  activeOptions() {
+  activeOptions(): [] {
     const activeValue = this.state.activeValue;
     const configurableProps = ['label', 'value', 'children', 'disabled'];
-    const formatOptions = options => {
+    const formatOptions = (options: any) => {
       options.forEach(option => {
         if (option.__IS__FLAT__OPTIONS) return;
         configurableProps.forEach(prop => {
@@ -80,7 +95,7 @@ export default class CascaderMenu extends Component {
         }
       });
     };
-    const loadActiveOptions = (options, activeOptions = []) => {
+    const loadActiveOptions = (options: any, activeOptions: any = []): [] => {
       const level = activeOptions.length;
       activeOptions[level] = options;
       let active = activeValue[level];

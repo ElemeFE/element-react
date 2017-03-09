@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
@@ -9,8 +11,25 @@ import CascaderMenu from './Menu';
 import Input from '../input';
 import i18n from '../locale';
 
+type State = {
+  currentValue: [],
+  menu: any,
+  menuVisible: boolean,
+  inputHover: boolean,
+  inputValue: any,
+  flatOptions: []
+};
+
+type Context = {
+  component: any
+};
+
 class Cascader extends Component {
-  constructor(props) {
+  state: State;
+  input: any;
+  debouncedInputChange: Function;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -27,13 +46,17 @@ class Cascader extends Component {
     });
   }
 
-  getChildContext() {
+  getChildContext(): Context {
     return {
       component: this
     };
   }
 
-  componentWillReceiveProps(props) {
+  componentDidMount() {
+    this.input = ReactDOM.findDOMNode(this.refs.input);
+  }
+
+  componentWillReceiveProps(props: Object) {
     this.setState({
       currentValue: props.value,
       flatOptions: this.flattenOptions(props.options),
@@ -44,7 +67,7 @@ class Cascader extends Component {
     });
   }
 
-  componentDidUpdate(props, state) {
+  componentDidUpdate(props: Object, state: State) {
     const { menuVisible } = this.state;
 
     if (menuVisible != state.menuVisible) {
@@ -54,7 +77,7 @@ class Cascader extends Component {
         if (this.popperJS) {
           this.popperJS.update();
         } else {
-          this.popperJS = new Popper(ReactDOM.findDOMNode(this.refs.input), this.refs.menu, {
+          this.popperJS = new Popper(this.input, this.refs.menu, {
             gpuAcceleration: false
           });
         }
@@ -82,7 +105,7 @@ class Cascader extends Component {
     }
   }
 
-  initMenu(menu) {
+  initMenu(menu: any) {
     this.state.menu = menu;
   }
 
@@ -91,7 +114,7 @@ class Cascader extends Component {
       value: this.state.currentValue.slice(0),
       visible: true,
       options: this.props.options,
-      inputWidth: ReactDOM.findDOMNode(this.refs.input).offsetWidth - 2
+      inputWidth: this.input.offsetWidth - 2
     });
   }
 
@@ -103,7 +126,7 @@ class Cascader extends Component {
     }
   }
 
-  handleActiveItemChange(value) {
+  handleActiveItemChange(value: []) {
     this.updatePopper();
 
     if (this.props.activeItemChange) {
@@ -111,7 +134,7 @@ class Cascader extends Component {
     }
   }
 
-  handlePick(value, close = true) {
+  handlePick(value: [], close: boolean = true) {
     this.setState({
       currentValue: value
     });
@@ -125,7 +148,7 @@ class Cascader extends Component {
     }
   }
 
-  handleInputChange(value) {
+  handleInputChange(value: any) {
     if (!this.state.menuVisible) return;
 
     const flatOptions = this.state.flatOptions;
@@ -163,7 +186,7 @@ class Cascader extends Component {
     });
   }
 
-  renderFilteredOptionLabel(inputValue, optionsStack) {
+  renderFilteredOptionLabel(inputValue: any, optionsStack: any): [] {
     return optionsStack.map((option, index) => {
       const label = option[this.labelKey()];
       const keywordIndex = label.toLowerCase().indexOf(inputValue.toLowerCase());
@@ -173,14 +196,14 @@ class Cascader extends Component {
     });
   }
 
-  highlightKeyword(label, keyword) {
+  highlightKeyword(label: string, keyword: string): any {
     return label.split(keyword).map((node, index) => index === 0 ? node : [
       (<span className="el-cascader-menu__item__keyword">{keyword}</span>),
       node
     ]);
   }
 
-  flattenOptions(options, ancestor = []) {
+  flattenOptions(options: any, ancestor: any = []): [] {
     let flatOptions = [];
 
     options.forEach((option) => {
@@ -198,7 +221,7 @@ class Cascader extends Component {
     return flatOptions;
   }
 
-  clearValue(e) {
+  clearValue(e: SyntheticEvent) {
     e.stopPropagation();
 
     this.handlePick([], true);
@@ -227,19 +250,19 @@ class Cascader extends Component {
 
   /* Computed Methods */
 
-  labelKey() {
+  labelKey(): string {
     return this.props.props.label || 'label';
   }
 
-  valueKey() {
+  valueKey(): string {
     return this.props.props.value || 'value';
   }
 
-  childrenKey() {
+  childrenKey(): string {
     return this.props.props.children || 'children';
   }
 
-  currentLabels() {
+  currentLabels(): [] {
     let options = this.props.options;
     let labels = [];
 

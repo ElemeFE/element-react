@@ -1,8 +1,18 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, View } from '../../libs';
 
+type State = {
+  index: number,
+  visible: boolean,
+  hitState: boolean
+};
+
 export default class Option extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -28,26 +38,28 @@ export default class Option extends Component {
     this.parent().onOptionDestroy(this);
   }
 
-  parent() {
+  parent(): Object {
     return this.context.component;
   }
 
-  currentSelected() {
+  currentSelected(): boolean {
     return this.props.selected || (this.parent().props.multiple ?
       this.parent().state.value.indexOf(this.props.value) > -1 :
       this.parent().state.value === this.props.value);
   }
 
-  currentLabel() {
+  currentLabel(): string {
     return this.props.label || ((typeof this.props.value === 'string' || typeof this.props.value === 'number') ? this.props.value : '');
   }
 
-  itemSelected() {
+  itemSelected(): boolean {
     if (Object.prototype.toString.call(this.parent().state.selected) === '[object Object]') {
       return this === this.parent().state.selected;
     } else if (Array.isArray(this.parent().state.selected)) {
       return this.parent().state.selected.map(el => el.props.value).indexOf(this.props.value) > -1;
     }
+
+    return false;
   }
 
   hoverItem() {
@@ -64,7 +76,7 @@ export default class Option extends Component {
     }
   }
 
-  queryChange(query) {
+  queryChange(query: string) {
     // query 里如果有正则中的特殊字符，需要先将这些字符转义
     let parsedQuery = query.replace(/(\^|\(|\)|\[|\]|\$|\*|\+|\.|\?|\\|\{|\}|\|)/g, '\\$1');
 
