@@ -1,14 +1,22 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
-const TYPE_CLASSES_MAP = {
+type State = {
+  visible: boolean
+};
+
+const TYPE_CLASSES_MAP: {[type: string]: string} = {
   'success': 'el-icon-circle-check',
   'warning': 'el-icon-warning',
   'error': 'el-icon-circle-cross'
 };
 
 export default class Alert extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {

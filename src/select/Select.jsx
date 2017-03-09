@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
@@ -6,19 +8,43 @@ import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
-import Dropdown from './Dropdown';
 import Tag from '../tag';
 import Input from '../input';
 import i18n from '../locale';
 
-const sizeMap = {
+type State = {
+  options: Array<Object>,
+  isSelect: boolean,
+  inputLength: number,
+  inputWidth: number,
+  filteredOptionsCount: number,
+  optionsCount: number,
+  hoverIndex: number,
+  bottomOverflowBeforeHidden: number,
+  cachedPlaceHolder: string,
+  currentPlaceholder: string,
+  selectedLabel: string,
+  value: any,
+  visible: boolean,
+  query: string,
+  selected: any,
+  voidRemoteQuery: boolean,
+  valueChangeBySelected: boolean,
+  selectedInit: boolean,
+  dropdownUl?: HTMLElement
+};
+
+const sizeMap: {[size: string]: number} = {
   'large': 42,
   'small': 30,
   'mini': 22
 };
 
 class Select extends Component {
-  constructor(props) {
+  state: State;
+  debouncedOnInputChange: Function;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -33,7 +59,13 @@ class Select extends Component {
       cachedPlaceHolder: props.placeholder,
       currentPlaceholder: props.placeholder,
       selectedLabel: '',
-      value: props.value
+      selectedInit: false,
+      visible: false,
+      value: props.value,
+      selected: props.multiple ? [] : {},
+      valueChangeBySelected: false,
+      voidRemoteQuery: false,
+      query: ''
     };
 
     if (props.multiple) {
@@ -50,7 +82,7 @@ class Select extends Component {
     });
   }
 
-  getChildContext() {
+  getChildContext(): Object {
     return {
       component: this
     };
@@ -65,7 +97,7 @@ class Select extends Component {
     this.handleValueChange();
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: Object) {
     if (props.placeholder != this.props.placeholder) {
       this.setState({
         currentPlaceholder: props.placeholder
@@ -81,7 +113,7 @@ class Select extends Component {
     }
   }
 
-  componentWillUpdate(props, state) {
+  componentWillUpdate(props: Object, state: Object) {
     if (state.value != this.state.value) {
       this.onValueChange(state.value);
     }
@@ -137,7 +169,7 @@ class Select extends Component {
     }
   }
 
-  debounce() {
+  debounce(): number {
     return this.props.remote ? 300 : 0;
   }
 
@@ -174,7 +206,7 @@ class Select extends Component {
     }
   }
 
-  onVisibleChange(visible) {
+  onVisibleChange(visible: boolean) {
     const { multiple, filterable } = this.props;
     let { query, dropdownUl, selected, selectedLabel, bottomOverflowBeforeHidden } = this.state;
 
@@ -199,7 +231,8 @@ class Select extends Component {
 
       if (!multiple) {
         if (dropdownUl && selected) {
-          bottomOverflowBeforeHidden = ReactDOM.findDOMNode(selected).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
+          const element: any = ReactDOM.findDOMNode(selected);
+          bottomOverflowBeforeHidden = element.getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
         }
 
         if (selected && selected.props.value) {
@@ -248,7 +281,7 @@ class Select extends Component {
     }
   }
 
-  onValueChange(val) {
+  onValueChange(val: mixed) {
     const { multiple } = this.props;
     let { options, valueChangeBySelected, selectedInit, selected, selectedLabel, currentPlaceholder, cachedPlaceHolder } = this.state;
 
@@ -289,7 +322,7 @@ class Select extends Component {
     });
   }
 
-  onSelectedChange(val) {
+  onSelectedChange(val: any) {
     const { multiple, filterable, onChange } = this.props;
     let { query, hoverIndex, inputLength, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
@@ -340,7 +373,7 @@ class Select extends Component {
     }
   }
 
-  onQueryChange(query) {
+  onQueryChange(query: string) {
     const { multiple, filterable, remote, remoteMethod, filterMethod } = this.props;
     let { voidRemoteQuery, hoverIndex, options, optionsCount } = this.state;
 
@@ -376,15 +409,15 @@ class Select extends Component {
     this.setState({ hoverIndex, voidRemoteQuery });
   }
 
-  optionsAllDisabled(options) {
+  optionsAllDisabled(options: []): boolean {
      return options.length === (options.filter(item => item.props.disabled === true).length);
   }
 
-  iconClass() {
+  iconClass(): string {
     return this.showCloseIcon() ? 'circle-close' : (this.props.remote && this.props.filterable ? '' : `caret-top ${this.state.visible ? 'is-reverse' : ''}`);
   }
 
-  showCloseIcon() {
+  showCloseIcon(): boolean {
     let criteria = this.props.clearable && this.state.inputHovering && !this.props.multiple && this.state.options.indexOf(this.state.selected) > -1;
 
     if (!this.refs.root) return false;
@@ -404,7 +437,7 @@ class Select extends Component {
     return criteria;
   }
 
-  emptyText() {
+  emptyText(): mixed {
     const { loading, filterable } = this.props;
     const { voidRemoteQuery, options, filteredOptionsCount } = this.state;
 
@@ -437,7 +470,7 @@ class Select extends Component {
     this.setState({ visible: false });
   }
 
-  toggleLastOptionHitState(hit) {
+  toggleLastOptionHitState(hit?: boolean): any {
     const { selected } = this.state;
 
     if (!Array.isArray(selected)) return;
@@ -455,7 +488,7 @@ class Select extends Component {
     return option.hitState;
   }
 
-  deletePrevTag(e) {
+  deletePrevTag(e: Object) {
     if (e.target.value.length <= 0 && !this.toggleLastOptionHitState()) {
       const { selected } = this.state;
 
@@ -465,7 +498,7 @@ class Select extends Component {
     }
   }
 
-  addOptionToValue(option, init) {
+  addOptionToValue(option: any, init?: boolean) {
     const { multiple, remote } = this.props;
     let { selected, selectedLabel, hoverIndex, value } = this.state;
 
@@ -498,7 +531,7 @@ class Select extends Component {
     this.setState({ currentPlaceholder });
   }
 
-  resetInputState(e) {
+  resetInputState(e: Object) {
     if (e.keyCode !== 8) {
       this.toggleLastOptionHitState(false);
     }
@@ -553,7 +586,7 @@ class Select extends Component {
     }
   }
 
-  navigateOptions(direction) {
+  navigateOptions(direction: string) {
     let { visible, hoverIndex, options } = this.state;
 
     if (!visible) {
@@ -564,15 +597,13 @@ class Select extends Component {
 
     let skip;
 
-    if (!this.optionsAllDisabled(options)) {
+    if (options.length != options.filter(item => item.props.disabled === true).length) {
       if (direction === 'next') {
         hoverIndex++;
 
         if (hoverIndex === options.length) {
           hoverIndex = 0;
         }
-
-        this.resetScrollTop();
 
         if (options[hoverIndex].props.disabled === true ||
             options[hoverIndex].props.groupDisabled === true ||
@@ -588,8 +619,6 @@ class Select extends Component {
           hoverIndex = options.length - 1;
         }
 
-        this.resetScrollTop();
-
         if (options[hoverIndex].props.disabled === true ||
             options[hoverIndex].props.groupDisabled === true ||
            !options[hoverIndex].state.visible ) {
@@ -602,25 +631,24 @@ class Select extends Component {
       if (skip) {
         this.navigateOptions(skip);
       }
+
+      this.resetScrollTop();
     });
   }
 
   resetScrollTop() {
-    // let { hoverIndex, options, dropdownUl } = this.state;
-    //
-    // console.log(options, hoverIndex, options[hoverIndex]);
-    //
-    // let bottomOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
-    // let topOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().top - this.popper.getBoundingClientRect().top;
-    //
-    // if (bottomOverflowDistance > 0) {
-    //   dropdownUl.scrollTop += bottomOverflowDistance;
-    // }
-    // if (topOverflowDistance < 0) {
-    //   dropdownUl.scrollTop += topOverflowDistance;
-    // }
-    //
-    // this.setState({ dropdownUl });
+    const element: any = ReactDOM.findDOMNode(this.state.options[this.state.hoverIndex]);
+    const bottomOverflowDistance = element.getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
+    const topOverflowDistance = element.getBoundingClientRect().top - this.popper.getBoundingClientRect().top;
+
+    if (this.state.dropdownUl) {
+      if (bottomOverflowDistance > 0) {
+        this.state.dropdownUl.scrollTop += bottomOverflowDistance;
+      }
+      if (topOverflowDistance < 0) {
+        this.state.dropdownUl.scrollTop += topOverflowDistance;
+      }
+    }
   }
 
   selectOption() {
@@ -631,8 +659,8 @@ class Select extends Component {
     }
   }
 
-  deleteSelected(event) {
-    event.stopPropagation();
+  deleteSelected(e: Object) {
+    e.stopPropagation();
 
     this.setState({
       selected: {},
@@ -645,7 +673,7 @@ class Select extends Component {
     }
   }
 
-  deleteTag(tag) {
+  deleteTag(tag: any) {
     let selected = this.state.selected.slice(0);
     let index = selected.indexOf(tag);
 
@@ -664,7 +692,7 @@ class Select extends Component {
     }
   }
 
-  onOptionCreate(option) {
+  onOptionCreate(option: any) {
     this.state.options.push(option);
     this.state.optionsCount++;
     this.state.filteredOptionsCount++;
@@ -672,7 +700,7 @@ class Select extends Component {
     this.setState(this.state);
   }
 
-  onOptionDestroy(option) {
+  onOptionDestroy(option: any) {
     this.state.optionsCount--;
     this.state.filteredOptionsCount--;
 
@@ -691,7 +719,7 @@ class Select extends Component {
     });
   }
 
-  onOptionClick(option) {
+  onOptionClick(option: any) {
     const { multiple } = this.props;
     let { visible, selected, selectedLabel } = this.state;
 
@@ -853,14 +881,18 @@ class Select extends Component {
         />
         <Transition name="md-fade-bottom" duration="200">
           <View show={visible && this.emptyText() !== false}>
-            <Dropdown ref="popper">
+            <div ref="popper" className={this.classNames('el-select-dropdown', {
+                'is-multiple': multiple
+            })} style={{
+              minWidth: inputWidth,
+            }}>
               <View show={options.length > 0 && filteredOptionsCount > 0 && !loading}>
                 <ul className="el-select-dropdown__list">
                   {this.props.children}
                 </ul>
               </View>
               { this.emptyText() && <p className="el-select-dropdown__empty">{this.emptyText()}</p> }
-            </Dropdown>
+            </div>
           </View>
         </Transition>
       </div>
@@ -873,7 +905,6 @@ Select.childContextTypes = {
 };
 
 Select.propTypes = {
-  name: PropTypes.string,
   value: PropTypes.any,
   size: PropTypes.string,
   disabled: PropTypes.bool,

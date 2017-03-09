@@ -1,8 +1,10 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
 export default class Tag extends Component {
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
 
     this.state = {
