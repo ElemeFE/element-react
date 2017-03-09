@@ -3,21 +3,7 @@
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
-type Props = {
-  children: any,
-  onClick: Function,
-  type: string,
-  size: string,
-  icon: string,
-  nativeType: string,
-  loading: boolean,
-  disabled: boolean,
-  plain: boolean
-};
-
 export default class Button extends Component {
-  props: Props;
-
   onClick(e: Object) {
     if (this.props.onClick) {
       this.props.onClick(e);

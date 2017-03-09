@@ -3,16 +3,6 @@
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
-type Props = {
-  onClose: Function,
-  title: string,
-  description: string,
-  type: string,
-  closable: boolean,
-  closeText: string,
-  showIcon: boolean
-};
-
 type State = {
   visible: boolean
 };
@@ -24,10 +14,9 @@ const TYPE_CLASSES_MAP: {[type: string]: string} = {
 };
 
 export default class Alert extends Component {
-  props: Props;
   state: State;
 
-  constructor(props: Props) {
+  constructor(props: Object) {
     super(props);
 
     this.state = {

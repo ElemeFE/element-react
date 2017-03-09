@@ -4,10 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Component, PropTypes, View } from '../../libs';
 
-type Props = {
-  children: any
-};
-
 type State = {
   hover: boolean,
   translate: number,
@@ -20,10 +16,9 @@ type State = {
 const CARD_SCALE = 0.83;
 
 export default class CarouselItem extends Component {
-  props: Props;
   state: State;
 
-  constructor(props: Props) {
+  constructor(props: Object) {
     super(props);
 
     this.state = {

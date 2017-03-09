@@ -5,20 +5,6 @@ import throttle from 'throttle-debounce/throttle';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
-type Props = {
-  children: any,
-  initialIndex: number,
-  height: string,
-  trigger: string,
-  autoplay: boolean,
-  interval: number,
-  indicatorPosition: string,
-  indicator: boolean,
-  arrow: string,
-  type: string,
-  onChange: Function
-};
-
 type State = {
   items: Array<any>,
   activeIndex: number,
@@ -32,12 +18,11 @@ type Context = {
 };
 
 export default class Carousel extends Component {
-  props: Props;
   state: State;
   throttledArrowClick: Function;
   throttledIndicatorHover: Function;
 
-  constructor(props: Props) {
+  constructor(props: Object) {
     super(props);
 
     this.state = {
