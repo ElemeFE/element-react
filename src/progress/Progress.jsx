@@ -1,28 +1,7 @@
 /* @flow */
 
 import React from 'react';
-import { Component } from '../../libs';
-
-type Shape = "line" | "circle";
-
-type Props = {
-  type: Shape,
-  percentage: number,
-  status: string,
-  strokeWidth: number,
-  width: number,
-  textInside: boolean,
-  showText: boolean,
-}
-
-type ProgressDefaultProps = {
-  type: Shape,
-  percentage: number,
-  strokeWidth: number,
-  width: number,
-  showText: boolean,
-  textInside: boolean,
-}
+import { Component, PropTypes } from '../../libs';
 
 type PathStyle = {
   strokeDasharray: string,
@@ -31,9 +10,8 @@ type PathStyle = {
 }
 
 export default class Progress extends Component {
-  props: Props;
 
-  static defaultProps: ProgressDefaultProps = {
+  static defaultProps = {
     type: 'line',
     percentage: 0,
     strokeWidth: 6,
@@ -42,7 +20,7 @@ export default class Progress extends Component {
     textInside: false,
   }
 
-  constructor(props: Props) {
+  constructor(props: Object) {
     super(props);
   }
 
@@ -150,4 +128,14 @@ export default class Progress extends Component {
       </div>
     )
   }
+}
+
+Progress.propTypes = {
+  type: PropTypes.oneOf(['line', 'circle']),
+  percentage: PropTypes.range(0, 100).isRequired,
+  status: PropTypes.string,
+  strokeWidth: PropTypes.number,
+  width: PropTypes.number,
+  textInside: PropTypes.bool,
+  showText: PropTypes.bool,
 }

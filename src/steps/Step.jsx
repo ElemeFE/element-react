@@ -1,31 +1,15 @@
 /* @flow */
 
 import React from 'react';
-import { Component } from '../../libs';
-
-type Props = {
-  title: string,
-  icon: string,
-  description: string,
-  status: string,
-  direction: string,
-  style: Object,
-  lineStyle: Object,
-  stepNumber: number,
-}
-
-type StepDefaultProps = {
-  status: string,
-}
+import { Component, PropTypes } from '../../libs';
 
 export default class Step extends Component {
-  props: Props;
 
-  static defaultProps: StepDefaultProps = {
+  static defaultProps = {
     status: 'wait'
   }
 
-  constructor(props: Props) {
+  constructor(props: Object) {
     super(props);
   }
 
@@ -67,4 +51,15 @@ export default class Step extends Component {
       </div>
     )
   }
+}
+
+Step.propTypes = {
+  title: PropTypes.string,
+  icon: PropTypes.string,
+  description: PropTypes.string,
+  status: PropTypes.string,
+  direction: PropTypes.string,
+  style: PropTypes.object,
+  lineStyle: PropTypes.object,
+  stepNumber: PropTypes.number,
 }

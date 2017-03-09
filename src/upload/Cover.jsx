@@ -1,31 +1,37 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Cover extends Component {
-  constructor(props) {
+  static defaultProps = {
+    onFile: Function,
+  }
+
+  constructor(props: Object) {
     super(props);
     this.state = {
       dragOver: false,
     }
   }
 
-  handleDragover(e) {
+  handleDragover(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ dragOver: true });
   }
 
-  handleDragleave(e) {
+  handleDragleave(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ dragOver: false });
   }
 
-  onDrop(e) {
+  onDrop(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ dragOver: false });
     this.props.onFile(e.dataTransfer.files);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { dragOver } = this.state;
     return (
       <div
@@ -45,8 +51,4 @@ export default class Cover extends Component {
 
 Cover.propTypes = {
   onFile: PropTypes.func,
-}
-
-Cover.defaultProps = {
-  onFile() {},
 }

@@ -1,21 +1,11 @@
 /* @flow */
 
 import React from 'react';
-import { Component, Transition } from '../../libs';
+import { Component, PropTypes, Transition } from '../../libs';
 import { loadStyleString } from '../../libs/utils/dom';
 
-type Props = {
-  onClick: Function,
-  isActive: boolean,
-  title: Element | string,
-  name: string,
-  children: React.Children,
-}
-
 export default class CollapseItem extends Component {
-  props: Props;
-
-  constructor(props: Props) {
+  constructor(props: Object) {
     super(props);
   }
 
@@ -63,4 +53,11 @@ export default class CollapseItem extends Component {
       </div>
     )
   }
+}
+
+CollapseItem.propTypes = {
+  onClick: PropTypes.func,
+  isActive: PropTypes.bool,
+  title: PropTypes.node,
+  name: PropTypes.string,
 }

@@ -1,27 +1,20 @@
 /* @flow */
 
 import React from 'react';
-import { Component } from '../../libs';
-
-type Props = {
-  accordion: boolean,
-  value: string | Array<string>,
-  children: React.Children,
-}
+import { Component, PropTypes } from '../../libs';
 
 type State = {
   activeNames: Array<string>,
 }
 
 export default class Collapse extends Component {
-  props: Props;
   state: State;
 
   static defaultProps = {
     value: []
   }
 
-  constructor(props: Props) {
+  constructor(props: Object) {
     super(props);
     this.state = {
       activeNames: [].concat(this.props.value),
@@ -67,4 +60,9 @@ export default class Collapse extends Component {
       </div>
     )
   }
+}
+
+Collapse.propTypes = {
+  accordion: PropTypes.bool,
+  value: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
 }

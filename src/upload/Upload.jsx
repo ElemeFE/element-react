@@ -1,11 +1,33 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import UploadList from './UploadList';
 import iFrameUpload from './iFrameUpload';
 import AjaxUpload from './AjaxUpload';
+import type { UploadState, RawFile, _File, _ProgressEvent } from './Types';
+
 
 export default class Upload extends Component {
-  constructor(props) {
+  state: UploadState
+
+  static defaultProps = {
+    headers: {},
+    name: 'file',
+    type: 'select',
+    listType: 'text',
+    fileList: [],
+    showFileList: true,
+    autoUpload: true,
+    onRemove() {},
+    onPreview() {},
+    onProgress() {},
+    onSuccess() {},
+    onError() {},
+    onChange() {},
+  }
+
+  constructor(props: Object) {
     super(props);
     this.state = {
       fileList: [],
@@ -13,15 +35,15 @@ export default class Upload extends Component {
     }
   }
 
-  componentWillMount() {
+  componentWillMount(): void {
     this.init(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Object): void {
     this.init(nextProps);
   }
 
-  init(props) {
+  init(props: Object): void {
     let { tempIndex } = this.state;
     const { fileList } = props;
     const uploadFiles = fileList.map(file => {
@@ -39,16 +61,19 @@ export default class Upload extends Component {
     }
   }
 
-  getFile(file) {
-    const { fileList } = this.state;
+  getFile(file: RawFile): ?_File {
+    const { fileList }= this.state;
     const target = fileList.find(item => item.uid === file.uid);
-    return target;
+    if (target) {
+      return target;
+    }
+    return null;
   }
 
-  handleStart(file) {
+  handleStart(file: RawFile): void {
     let { tempIndex, fileList } = this.state;
     file.uid = Date.now() + tempIndex++;
-    let _file = {
+    let _file: _File = {
       status: 'ready',
       name: file.name,
       size: file.size,
@@ -69,16 +94,18 @@ export default class Upload extends Component {
     })
   }
 
-  handleProgress(e, file) {
+  handleProgress(e: _ProgressEvent, file: RawFile): void {
     const { fileList } = this.state;
     let _file = this.getFile(file);
-    _file.percentage = e.percent || 0;
-    _file.status = 'uploading';
-    this.props.onProgress(e, _file, fileList);
-    this.setState({ fileList });
+    if (_file) {
+      _file.percentage = e.percent || 0;
+      _file.status = 'uploading';
+      this.props.onProgress(e, _file, fileList);
+      this.setState({ fileList });
+    }
   }
 
-  handleSuccess(res, file) {
+  handleSuccess(res: Object, file: RawFile): void {
     const { fileList } = this.state;
     let _file = this.getFile(file);
     if (_file) {
@@ -94,37 +121,41 @@ export default class Upload extends Component {
     }
   }
 
-  handleError(err, file) {
+  handleError(err: Error, file: RawFile): void {
     const { fileList } = this.state;
     let _file = this.getFile(file);
-    _file.status = 'fail';
-    fileList.splice(fileList.indexOf(_file), 1);
-    this.setState({ fileList }, () => {
-      this.props.onError(err, _file, fileList);
-      this.props.onChange(_file, fileList);
-    });
+    if (_file) {
+      _file.status = 'fail';
+      fileList.splice(fileList.indexOf(_file), 1);
+      this.setState({ fileList }, () => {
+        this.props.onError(err, _file, fileList);
+        this.props.onChange(_file, fileList);
+      });
+    }
   }
 
-  handleRemove(file) {
+  handleRemove(file: RawFile): void {
     const { fileList } = this.state;
     let _file = this.getFile(file);
-    fileList.splice(fileList.indexOf(_file), 1);
-    this.setState({ fileList }, () => this.props.onRemove(file, fileList));
+    if (_file) {
+      fileList.splice(fileList.indexOf(_file), 1);
+      this.setState({ fileList }, () => this.props.onRemove(file, fileList));
+    }
   }
 
-  handlePreview(file) {
+  handlePreview(file: _File): void {
     if (file.status === 'success') {
       this.props.onPreview(file);
     }
   }
 
-  clearFiles() {
+  clearFiles(): void {
     this.setState({
       fileList: [],
     })
   }
 
-  submit() {
+  submit(): void {
     this.state.fileList
       .filter(file => file.status === 'ready')
       .forEach(file => {
@@ -132,13 +163,13 @@ export default class Upload extends Component {
       });
   }
 
-  showCover() {
+  showCover(): boolean {
     const { fileList } = this.state;
     const file = fileList[fileList.length - 1];
     return file && file.status !== 'fail';
   }
 
-  render() {
+  render(): React.Element<any> {
     const { fileList } = this.state;
     const {
       showFileList,
@@ -226,20 +257,4 @@ Upload.propTypes = {
   onError: PropTypes.func,
   onChange: PropTypes.func,
   className: PropTypes.string,
-}
-
-Upload.defaultProps = {
-  headers: {},
-  name: 'file',
-  type: 'select',
-  listType: 'text',
-  fileList: [],
-  showFileList: true,
-  autoUpload: true,
-  onRemove() {},
-  onPreview() {},
-  onProgress() {},
-  onSuccess() {},
-  onError() {},
-  onChange() {},
 }
