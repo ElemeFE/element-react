@@ -1,8 +1,17 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
+type State = {
+  fields: {},
+  fieldLength: number
+};
+
 export default class Form extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -11,18 +20,18 @@ export default class Form extends Component {
     }
   }
 
-  getChildContext() {
+  getChildContext(): Object {
     return {
       component: this
     };
   }
 
-  addField(field) {
+  addField(field: any) {
     this.state.fields[field.props.prop] = field;
     this.state.fieldLength++;
   }
 
-  removeField(field) {
+  removeField(field: any) {
     delete this.state.fields[field.props.prop];
     this.state.fieldLength--;
   }
@@ -35,7 +44,7 @@ export default class Form extends Component {
     }
   }
 
-  validate(callback) {
+  validate(callback: Function) {
     const { fields, fieldLength } = this.state;
     let count = 0, valid = true;
 
@@ -52,7 +61,7 @@ export default class Form extends Component {
     }
   }
 
-  validateField(prop, cb) {
+  validateField(prop: string, cb: Function) {
     const { fields } = this.state;
     const field = fields[prop];
 

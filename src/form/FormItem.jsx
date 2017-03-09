@@ -3,8 +3,16 @@ import ReactDOM from 'react-dom';
 import AsyncValidator from 'async-validator';
 import { Component, PropTypes, Transition } from '../../libs';
 
+type State = {
+  error: string,
+  validating: boolean,
+  isRequired: boolean
+};
+
 export default class FormItem extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -33,8 +41,10 @@ export default class FormItem extends Component {
           }
         });
 
-        ReactDOM.findDOMNode(this.parent()).addEventListener('blur', this.onFieldBlur.bind(this))
-        ReactDOM.findDOMNode(this.parent()).addEventListener('change', this.onFieldChange.bind(this))
+        const parent: any = ReactDOM.findDOMNode(this.parent());
+
+        parent.addEventListener('blur', this.onFieldBlur.bind(this))
+        parent.addEventListener('change', this.onFieldChange.bind(this))
       }
     }
   }
@@ -43,7 +53,7 @@ export default class FormItem extends Component {
     this.parent().removeField(this);
   }
 
-  parent() {
+  parent(): Object {
     return this.context.component;
   }
 
@@ -61,7 +71,7 @@ export default class FormItem extends Component {
     this.validate('change');
   }
 
-  validate(trigger, cb) {
+  validate(trigger: string, cb: Function) {
     let { validating, valid, error } = this.state;
 
     var rules = this.getFilteredRule(trigger);
@@ -87,7 +97,7 @@ export default class FormItem extends Component {
     this.setState({ validating, valid, error });
   }
 
-  getInitialValue() {
+  getInitialValue(): mixed {
     var value = this.parent().props.model[this.props.prop];
 
     if (value === undefined) {
@@ -116,7 +126,7 @@ export default class FormItem extends Component {
     }
   }
 
-  getRules() {
+  getRules(): [] {
     var formRules = this.parent().props.rules;
     var selfRuels = this.props.rules;
 
@@ -124,7 +134,7 @@ export default class FormItem extends Component {
     return [].concat(selfRuels || formRules || []);
   }
 
-  getFilteredRule(trigger) {
+  getFilteredRule(trigger: string): [] {
     var rules = this.getRules();
 
     return rules.filter(rule => {
@@ -132,7 +142,7 @@ export default class FormItem extends Component {
     });
   }
 
-  labelStyle() {
+  labelStyle(): Object {
     var ret = {};
     var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
     if (labelWidth) {
@@ -141,7 +151,7 @@ export default class FormItem extends Component {
     return ret;
   }
 
-  contentStyle() {
+  contentStyle(): Object {
     var ret = {};
     var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
     if (labelWidth) {
@@ -150,7 +160,7 @@ export default class FormItem extends Component {
     return ret;
   }
 
-  fieldValue() {
+  fieldValue(): mixed {
     var model = this.parent().props.model;
     if (!model || !this.props.prop) { return; }
     var temp = this.props.prop.split(':');
