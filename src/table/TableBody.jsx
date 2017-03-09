@@ -1,9 +1,13 @@
+// @flow
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Checkbox from '../checkbox';
 import { getScrollBarWidth } from './utils'
+import type { Column, TableBodyProps, TableBodyState, TableBodyItemProps, TableBodyItemState } from './Types';
 
 class BodyItem extends Component{
+  props: TableBodyItemProps;
+  state: TableBodyItemState;
   constructor(props, context){
     super(props, context);
     this.state = {
@@ -48,11 +52,17 @@ class BodyItem extends Component{
 
   render(){
     const { itemData, columns, rowIndex, rowClassName, isHiglight, selected } = this.props;
-    const rootClassName = this.classNames({
+    const classSet:Object = {
       'hover-row': this.state.hover,
-      'current-row': isHiglight,
-      [rowClassName?rowClassName(itemData, rowIndex):'']: true
-    });
+      'current-row': isHiglight
+    };
+
+    if(rowClassName){
+      const clasName = rowClassName(itemData, rowIndex);
+      classSet[rowClassName] = true;
+    }
+
+    const rootClassName = this.classNames(classSet);
 
     return (
       <tr
@@ -62,7 +72,12 @@ class BodyItem extends Component{
         onMouseLeave={()=>{this.onMouseState(false)}}>
         {
           columns.map((column, idx)=>{
-            let content = column.render ? column.render(itemData, column) : itemData[column.property];
+            let content;
+            if(column.render){
+              content = column.render(itemData, column);
+            }else{
+              content = itemData[column.property];
+            }
             const className = this.classNames({ 
               'is-hidden': !this.props.fixed && column.fixed,
               'is-center': column.align == 'center',
@@ -94,13 +109,11 @@ BodyItem.contextTypes = {
   $owerTable: React.PropTypes.object
 };
 
-BodyItem.propTypes = {
-  columns: PropTypes.array.isRequired,
-  itemData: PropTypes.object.isRequired,
-};
-
 export default class TableBody extends  Component{
-  constructor(props, context){
+  props: TableBodyProps;
+  state: TableBodyState;
+
+  constructor(props:Object, context:Object){
     super(props, context);
     this.rowPrefix = props.fixed + 'TableRow';
 
@@ -110,7 +123,7 @@ export default class TableBody extends  Component{
     }
   }
 
-  toggleSelectedRow(isHiglight, rowData){
+  toggleSelectedRow(isHiglight:boolean, rowData:Object){
     const { highlightCurrentRow } = this.props;
     if(!highlightCurrentRow){
       return;
@@ -120,7 +133,7 @@ export default class TableBody extends  Component{
     });
   }
 
-  hoverRowItem(rowIndex, hover){
+  hoverRowItem(rowIndex:number, hover:Boolean){
     var rcRowElement = this.refs[this.rowPrefix + rowIndex ];
     rcRowElement.setHoverState(hover);
   }
@@ -136,7 +149,7 @@ export default class TableBody extends  Component{
     return tableBodyWrapper.offsetWidth < this.refs.root.offsetWidth;
   }
 
-  onSelected(checked, data){
+  onSelected(checked:Boolean, data:Object){
     const { selected } = this.state;
     const dataList = this.props.data;
     const { onSelectChange } = this.context.$owerTable.props;
@@ -149,7 +162,7 @@ export default class TableBody extends  Component{
     onSelectChange && onSelectChange(data, checked);
   }
 
-  selectAll(checked){
+  selectAll(checked:Boolean){
     const { data } = this.props;
     const { onSelectAll } = this.context.$owerTable.props;
 
@@ -204,9 +217,4 @@ export default class TableBody extends  Component{
 
 TableBody.contextTypes = {
   $owerTable: React.PropTypes.object
-};
-
-TableBody.propTypes = {
-  columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,
 };
