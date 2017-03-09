@@ -113,7 +113,7 @@ export default class TableBody extends  Component{
   props: TableBodyProps;
   state: TableBodyState;
 
-  constructor(props:Object, context:Object){
+  constructor(props: TableBodyProps, context: Object){
     super(props, context);
     this.rowPrefix = props.fixed + 'TableRow';
 
@@ -123,7 +123,7 @@ export default class TableBody extends  Component{
     }
   }
 
-  toggleSelectedRow(isHiglight:boolean, rowData:Object){
+  toggleSelectedRow(isHiglight: boolean, rowData: Object){
     const { highlightCurrentRow } = this.props;
     if(!highlightCurrentRow){
       return;
@@ -133,7 +133,7 @@ export default class TableBody extends  Component{
     });
   }
 
-  hoverRowItem(rowIndex:number, hover:Boolean){
+  hoverRowItem(rowIndex: number, hover: boolean){
     var rcRowElement = this.refs[this.rowPrefix + rowIndex ];
     rcRowElement.setHoverState(hover);
   }
@@ -149,7 +149,7 @@ export default class TableBody extends  Component{
     return tableBodyWrapper.offsetWidth < this.refs.root.offsetWidth;
   }
 
-  onSelected(checked:Boolean, data:Object){
+  onSelected(checked: boolean, data: Object){
     const { selected } = this.state;
     const dataList = this.props.data;
     const { onSelectChange } = this.context.$owerTable.props;
@@ -162,7 +162,7 @@ export default class TableBody extends  Component{
     onSelectChange && onSelectChange(data, checked);
   }
 
-  selectAll(checked:Boolean){
+  selectAll(checked: boolean){
     const { data } = this.props;
     const { onSelectAll } = this.context.$owerTable.props;
 
