@@ -231,7 +231,8 @@ class Select extends Component {
 
       if (!multiple) {
         if (dropdownUl && selected) {
-          bottomOverflowBeforeHidden = ReactDOM.findDOMNode(selected).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
+          const element: any = ReactDOM.findDOMNode(selected);
+          bottomOverflowBeforeHidden = element.getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
         }
 
         if (selected && selected.props.value) {
@@ -636,7 +637,7 @@ class Select extends Component {
   }
 
   resetScrollTop() {
-    const element = ReactDOM.findDOMNode(this.state.options[this.state.hoverIndex]);
+    const element: any = ReactDOM.findDOMNode(this.state.options[this.state.hoverIndex]);
     const bottomOverflowDistance = element.getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
     const topOverflowDistance = element.getBoundingClientRect().top - this.popper.getBoundingClientRect().top;
 

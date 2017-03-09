@@ -26,6 +26,7 @@ type Context = {
 
 class Cascader extends Component {
   state: State;
+  input: any;
   debouncedInputChange: Function;
 
   constructor(props: Object) {
@@ -51,6 +52,10 @@ class Cascader extends Component {
     };
   }
 
+  componentDidMount() {
+    this.input = ReactDOM.findDOMNode(this.refs.input);
+  }
+
   componentWillReceiveProps(props: Object) {
     this.setState({
       currentValue: props.value,
@@ -72,7 +77,7 @@ class Cascader extends Component {
         if (this.popperJS) {
           this.popperJS.update();
         } else {
-          this.popperJS = new Popper(ReactDOM.findDOMNode(this.refs.input), this.refs.menu, {
+          this.popperJS = new Popper(this.input, this.refs.menu, {
             gpuAcceleration: false
           });
         }
@@ -109,7 +114,7 @@ class Cascader extends Component {
       value: this.state.currentValue.slice(0),
       visible: true,
       options: this.props.options,
-      inputWidth: ReactDOM.findDOMNode(this.refs.input).offsetWidth - 2
+      inputWidth: this.input.offsetWidth - 2
     });
   }
 

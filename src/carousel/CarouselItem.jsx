@@ -64,7 +64,7 @@ export default class CarouselItem extends Component {
   }
 
   translateItem(index: number, activeIndex: number) {
-    const parent = ReactDOM.findDOMNode(this.parent());
+    const parent: any = ReactDOM.findDOMNode(this.parent());
     const parentWidth = parent.offsetWidth;
     const length = this.parent().state.items.length;
 
