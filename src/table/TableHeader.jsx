@@ -12,7 +12,7 @@ export default class TableHeader extends  Component{
   props: TableHeaderProps;
   state: TableHeaderState;
 
-  constructor(props:Object, context:Object){
+  constructor(props: TableHeaderProps, context: Object){
     super(props, context);
 
     this.$ower = context.$owerTable;
@@ -131,13 +131,13 @@ export default class TableHeader extends  Component{
     }
   }
 
-  onAllChecked(checked:Boolean){
+  onAllChecked(checked: boolean){
     const body = this.context.$owerTable.refs.mainBody;
     this.setState({allChecked: checked});
     body.selectAll(checked);
   }
 
-  onSort(column:Object){
+  onSort(column: Object){
     const { sortStatus } = this.state;
     let  nextStatus;
 
