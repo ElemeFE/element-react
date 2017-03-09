@@ -1,9 +1,18 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Cover from './Cover';
+import type { IframeUploadState } from './Types';
 
 export default class IframeUpload extends Component {
-  constructor(props) {
+  state: IframeUploadState;
+
+  static defaultProps = {
+    name: 'file',
+  }
+
+  constructor(props: Object) {
     super(props);
     this.state = {
       dragOver: false,
@@ -13,7 +22,7 @@ export default class IframeUpload extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const { action, onSuccess, onError } = this.props;
     const { file } = this.state;
     window.addEventListener('message', event => {
@@ -28,24 +37,26 @@ export default class IframeUpload extends Component {
     }, false);
   }
 
-  onload() {
+  onload(): void {
     this.setState({ disabled: false });
   }
 
-  onDrop(e) {
+  onDrop(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ dragOver: false });
     this.uploadFiles(e.dataTransfer.files); // TODO
   }
 
-  handleChange(e) {
-    const file = e.target.value;
-    if (file) {
-      this.uploadFiles(file);
+  handleChange(e: SyntheticInputEvent): void {
+    if (e.target instanceof HTMLInputElement) {
+      const file: File = e.target.files[0];
+      if (file) {
+        this.uploadFiles(file);
+      }
     }
   }
 
-  uploadFiles(file) {
+  uploadFiles(file: File): void {
     if (this.state.disabled) return;
     this.setState({ disabled: false, file });
     this.props.onStart && this.props.onStart(file);
@@ -62,23 +73,23 @@ export default class IframeUpload extends Component {
     dataSpan.innerHTML = '';
   }
 
-  handleClick() {
+  handleClick(): void {
     if (!this.state.disabled) {
       this.refs.input.click();
     }
   }
 
-  handleDragover(e) {
+  handleDragover(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ onDrop: true });
   }
 
-  handleDragleave(e) {
+  handleDragleave(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ onDrop: false });
   }
 
-  render() {
+  render(): React.Element<any> {
     const { drag, action, name, accept, listType } = this.props;
     const { frameName } = this.state;
     const classes = this.classNames({
@@ -127,8 +138,4 @@ IframeUpload.propTypes = {
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
   listType: PropTypes.string,
-}
-
-IframeUpload.defaultProps = {
-  name: 'file',
 }

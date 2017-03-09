@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import SvPanel from './SvPanel';
 import HueSlider from './HueSlider';
@@ -6,11 +8,11 @@ import { Component, PropTypes, Transition } from '../../../libs';
 import Locale from '../../locale';
 
 export default class PickerDropdown extends Component {
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { color, showAlpha, onPick, onClear, showPicker } = this.props;
     const currentColor = color.value;
     return (

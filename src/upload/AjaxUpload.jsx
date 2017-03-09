@@ -1,29 +1,36 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import ajax from './ajax';
 import Cover from './Cover';
+import type { RawFile, _File } from './Types';
 
 export default class AjaxUpload extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
+  static defaultProps = {
+    name: 'file',
   }
 
-  isImage(str) {
+  constructor(props: Object) {
+    super(props);
+  }
+
+  isImage(str: string): boolean {
     return str.indexOf('image') !== -1;
   }
 
-  handleChange(e) {
-    const files = e.target.files;
-    if (!files) {
-      return;
+  handleChange(e: Event): void {
+    if (e.target instanceof HTMLInputElement) {
+      const files = e.target.files;
+      if (!files) {
+        return;
+      }
+      this.uploadFiles(files);
+      this.refs.input.value = null;
     }
-    this.uploadFiles(files);
-    this.refs.input.value = null;
   }
 
-  uploadFiles(files) {
+  uploadFiles(files: FileList): void {
     const { multiple } = this.props;
     let postFiles = Array.prototype.slice.call(files);
     if (postFiles.length === 0) { return; }
@@ -34,7 +41,7 @@ export default class AjaxUpload extends Component {
     });
   }
 
-  upload(rawFile, file) {
+  upload(rawFile: RawFile, file?: _File): void {
     const { beforeUpload } = this.props;
     if (!beforeUpload) {
       return this.post(rawFile);
@@ -57,7 +64,7 @@ export default class AjaxUpload extends Component {
     }
   }
 
-  post(file) {
+  post(file: RawFile): void {
     const { name: filename, headers, withCredentials, data, action, onProgress, onSuccess, onError } = this.props;
     ajax({
       headers,
@@ -72,11 +79,11 @@ export default class AjaxUpload extends Component {
     });
   }
 
-  handleClick() {
+  handleClick(): void {
     this.refs.input.click();
   }
 
-  render() {
+  render(): React.Element<any> {
     const { drag, multiple, accept, listType } = this.props;
     return (
       <div
@@ -111,8 +118,4 @@ AjaxUpload.propTypes = {
   autoUpload: PropTypes.bool,
   listType: PropTypes.string,
   fileList: PropTypes.array,
-}
-
-AjaxUpload.defaultProps = {
-  name: 'file',
 }

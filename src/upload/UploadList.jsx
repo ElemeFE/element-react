@@ -1,13 +1,15 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { Progress } from '../../src';
 
 export default class UploadList extends Component {
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { onPreview, onRemove } = this.context;
     const { listType, fileList } = this.props;
     const isFinished = status => status === 'success';

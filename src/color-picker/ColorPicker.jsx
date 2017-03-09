@@ -1,15 +1,19 @@
+/* @flow */
+
 import React from 'react';
 import ClickOutside from 'react-click-outside';
 import { Component, PropTypes } from '../../libs';
 import PickerDropdown from './components/PickerDropdown';
 import Color from './color';
-
+import type { ColorType, ColorPickerState } from './Types';
 
 class ColorPicker extends Component {
-  constructor(props) {
+  state: ColorPickerState;
+
+  constructor(props: Object) {
     super(props);
 
-    const color = new Color({
+    const color: ColorType = new Color({
       enableAlpha: this.props.showAlpha,
       format: this.props.colorFormat
     });
@@ -22,7 +26,7 @@ class ColorPicker extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const { value, color } = this.state;
     if (value) {
       color.fromString(value);
@@ -37,16 +41,17 @@ class ColorPicker extends Component {
     }
   }
 
-  handleChange(color) {
+  handleChange(color: ColorType): void {
     this.setState({ value: color.value, color });
   }
 
-  confirmValue(value) {
+  confirmValue(): void {
+    const { value } = this.state;
     const { onChange } = this.props;
     this.setState({ showPicker: false }, () => onChange(value));
   }
 
-  clearValue() {
+  clearValue(): void {
     this.setState({
       showPicker: false,
       showPanelColor: false,
@@ -57,13 +62,13 @@ class ColorPicker extends Component {
     });
   }
 
-  hide() {
+  hide(): void {
     this.setState({
       showPicker: false,
     }, () => this.resetColor());
   }
 
-  resetColor() {
+  resetColor(): void {
     const { value, color } = this.state;
     if (value) {
       color.fromString(value);
@@ -71,11 +76,11 @@ class ColorPicker extends Component {
     }
   }
 
-  handleClickOutside() {
+  handleClickOutside(): void {
     this.setState({ showPicker: false });
   }
 
-  render() {
+  render(): React.Element<any> {
     const { showAlpha } = this.props;
     const { value, color, showPicker, showPanelColor } = this.state;
 
@@ -84,9 +89,12 @@ class ColorPicker extends Component {
       displayedColor = 'transparent';
     } else {
       const { r, g, b } = color.toRgb();
-      displayedColor = showAlpha
-        ? `rgba(${ r }, ${ g }, ${ b }, ${ color.get('alpha') / 100 })`
-        : `rgb(${ r }, ${ g }, ${ b })`;
+      const alpha = color.get('alpha');
+      if (typeof alpha === 'number') {
+        displayedColor = showAlpha
+          ? `rgba(${ r }, ${ g }, ${ b }, ${ alpha / 100 })`
+          : `rgb(${ r }, ${ g }, ${ b })`;
+      }
     }
     return (
       <div className="el-color-picker">

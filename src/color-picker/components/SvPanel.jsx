@@ -1,9 +1,14 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../../libs';
 import draggable from '../draggable';
+import type { SvPanelState, DragOptions } from '../Types';
 
 export default class SvPanel extends Component {
-  constructor(props) {
+  state: SvPanelState;
+
+  constructor(props: Object) {
     super(props);
     this.state = {
       cursorTop: 0,
@@ -12,19 +17,20 @@ export default class SvPanel extends Component {
     }
   }
 
-  componentDidMount() {
-    draggable(this.$el, {
+  componentDidMount(): void {
+    const dragConfig: DragOptions = {
       drag: event => {
         this.handleDrag(event);
       },
       end: event => {
         this.handleDrag(event);
       }
-    });
+    };
+    draggable(this.$el, dragConfig);
     this.update();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Object): void {
     const { background } = this.state;
     const newBackground = 'hsl(' + nextProps.color.get('hue') + ', 100%, 50%)';
     if (newBackground !== background) {
@@ -32,7 +38,7 @@ export default class SvPanel extends Component {
     }
   }
 
-  update(props) {
+  update(props: ?Object): void {
     const { color } = props || this.props;
     const saturation = color.get('saturation');
     const value = color.get('value');
@@ -46,7 +52,7 @@ export default class SvPanel extends Component {
     })
   }
 
-  handleDrag(event) {
+  handleDrag(event: MouseEvent): void {
     const { color } = this.props;
     const { onChange } = this.context;
     const el = this.$el;
@@ -70,7 +76,7 @@ export default class SvPanel extends Component {
     });
   }
 
-  render() {
+  render(): React.Element<any> {
     const { cursorTop, cursorLeft, background } = this.state;
     return (
       <div

@@ -1,12 +1,19 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Step extends Component {
-  constructor(props) {
+
+  static defaultProps = {
+    status: 'wait'
+  }
+
+  constructor(props: Object) {
     super(props);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { title, icon, description, status, direction, style, lineStyle, stepNumber } = this.props;
     const directionClass = `is-${direction}`;
     const statusClass = `is-${status}`;
@@ -27,10 +34,7 @@ export default class Step extends Component {
             <i className="el-step__line-inner" style={lineStyle}></i>
           </div>
           <span className="el-step__icon">
-            {
-              (status !== 'success' && status !== 'error') ? iconNode :
-              <i className={'el-icon-' + (status === 'success' ? 'check' : 'close')}></i>
-            }
+            {(status !== 'success' && status !== 'error') ? iconNode : <i className={'el-icon-' + (status === 'success' ? 'check' : 'close')}></i>}
           </span>
         </div>
         <div className="el-step__main">
@@ -50,16 +54,12 @@ export default class Step extends Component {
 }
 
 Step.propTypes = {
-  title: PropTypes.node,
-  icon: PropTypes.node,
-  description: PropTypes.node,
+  title: PropTypes.string,
+  icon: PropTypes.string,
+  description: PropTypes.string,
   status: PropTypes.string,
   direction: PropTypes.string,
   style: PropTypes.object,
   lineStyle: PropTypes.object,
   stepNumber: PropTypes.number,
-}
-
-Step.defaultProps = {
-  status: 'wait',
 }
