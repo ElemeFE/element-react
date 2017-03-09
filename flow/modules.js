@@ -3,3 +3,15 @@ declare module 'react-click-outside' {
     (): any
   }
 }
+
+declare module 'throttle-debounce/throttle' {
+  declare var exports: {
+    (): any
+  }
+}
+
+declare module 'throttle-debounce/debounce' {
+  declare var exports: {
+    (): any
+  }
+}
