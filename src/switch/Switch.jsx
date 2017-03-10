@@ -1,9 +1,18 @@
+/* @flow */
+
 import React from 'react'
 import {Component, PropTypes, View, Transition} from '../../libs'
 
-export default class Switch extends Component {
+type State = {
+  value: boolean,
+  coreWidth: number,
+  buttonStyle: Object,
+};
 
-  constructor(props) {
+export default class Switch extends Component {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -23,7 +32,7 @@ export default class Switch extends Component {
     this.updateSwitch();
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: Object) {
     this.setState({ value: props.value }, () => {
       this.updateSwitch();
     });
@@ -52,7 +61,7 @@ export default class Switch extends Component {
     this.refs.core.style.backgroundColor = newColor;
   }
 
-  handleChange(e) {
+  handleChange(e: Object) {
     this.setState({
       value: e.target.checked
     }, () => {
