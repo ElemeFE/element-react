@@ -6,7 +6,7 @@ import {Component, PropTypes, View, Transition} from '../../libs'
 type State = {
   value: boolean,
   coreWidth: number,
-  buttonStyle: Object,
+  buttonStyle: Object
 };
 
 export default class Switch extends Component {
