@@ -70,8 +70,10 @@ var FormItem = function (_Component) {
             }
           });
 
-          _reactDom2.default.findDOMNode(this.parent()).addEventListener('blur', this.onFieldBlur.bind(this));
-          _reactDom2.default.findDOMNode(this.parent()).addEventListener('change', this.onFieldChange.bind(this));
+          var parent = _reactDom2.default.findDOMNode(this.parent());
+
+          parent.addEventListener('blur', this.onFieldBlur.bind(this));
+          parent.addEventListener('change', this.onFieldChange.bind(this));
         }
       }
     }

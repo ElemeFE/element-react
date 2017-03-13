@@ -111,7 +111,7 @@ var Menu = function (_Component) {
     }
   }, {
     key: 'handleSelect',
-    value: function handleSelect(index, indexPath, route, instance) {
+    value: function handleSelect(index, indexPath, instance) {
       var _this2 = this;
 
       var _state = this.state,
@@ -132,10 +132,6 @@ var Menu = function (_Component) {
         }
 
         openedMenus = [];
-      }
-
-      if (this.props.router && route) {
-        history.pushState(null, null, route);
       }
 
       this.setState({ activeIndex: activeIndex, openedMenus: openedMenus }, function () {
@@ -180,7 +176,7 @@ var Menu = function (_Component) {
         var menuItem = menuItems[value];
         var indexPath = menuItem.indexPath();
 
-        _this4.handleSelect(value, indexPath, null, menuItem);
+        _this4.handleSelect(value, indexPath, menuItem);
       });
     }
   }, {
@@ -224,7 +220,6 @@ Menu.propTypes = {
   defaultOpeneds: _libs.PropTypes.array,
   theme: _libs.PropTypes.string,
   uniqueOpened: _libs.PropTypes.bool,
-  router: _libs.PropTypes.bool,
   menuTrigger: _libs.PropTypes.string,
   onSelect: _libs.PropTypes.func,
   onOpen: _libs.PropTypes.func,

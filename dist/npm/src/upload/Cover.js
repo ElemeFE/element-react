@@ -85,16 +85,15 @@ var Cover = function (_Component) {
   return Cover;
 }(_libs.Component);
 
+Cover.defaultProps = {
+  onFile: Function
+};
 var _default = Cover;
 exports.default = _default;
 
 
 Cover.propTypes = {
   onFile: _libs.PropTypes.func
-};
-
-Cover.defaultProps = {
-  onFile: function onFile() {}
 };
 ;
 

@@ -51,17 +51,14 @@ var CheckboxGroup = function (_Component) {
   }, {
     key: 'onChange',
     value: function onChange(e, label, value) {
-      var _state = this.state,
-          options = _state.options,
-          values = _state.values;
+      var options = this.state.options;
 
-      var newOptions = void 0,
-          newValues = void 0;
+      var newOptions = void 0;
       if (e.target.checked) {
         newOptions = options.concat(value || label);
       } else {
         newOptions = options.filter(function (v) {
-          return v != value && v !== label;
+          return v !== value && v !== label;
         });
       }
 

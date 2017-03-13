@@ -81,7 +81,8 @@ var ColorPicker = function (_Component) {
     }
   }, {
     key: 'confirmValue',
-    value: function confirmValue(value) {
+    value: function confirmValue() {
+      var value = this.state.value;
       var onChange = this.props.onChange;
 
       this.setState({ showPicker: false }, function () {
@@ -152,7 +153,10 @@ var ColorPicker = function (_Component) {
             g = _color$toRgb.g,
             b = _color$toRgb.b;
 
-        displayedColor = showAlpha ? 'rgba(' + r + ', ' + g + ', ' + b + ', ' + color.get('alpha') / 100 + ')' : 'rgb(' + r + ', ' + g + ', ' + b + ')';
+        var alpha = color.get('alpha');
+        if (typeof alpha === 'number') {
+          displayedColor = showAlpha ? 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha / 100 + ')' : 'rgb(' + r + ', ' + g + ', ' + b + ')';
+        }
       }
       return _react2.default.createElement(
         'div',

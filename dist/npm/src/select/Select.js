@@ -30,10 +30,6 @@ var _libs = require('../../libs');
 
 var _resizeEvent = require('../../libs/utils/resize-event');
 
-var _Dropdown = require('./Dropdown');
-
-var _Dropdown2 = _interopRequireDefault(_Dropdown);
-
 var _tag = require('../tag');
 
 var _tag2 = _interopRequireDefault(_tag);
@@ -80,7 +76,13 @@ var Select = function (_Component) {
       cachedPlaceHolder: props.placeholder,
       currentPlaceholder: props.placeholder,
       selectedLabel: '',
-      value: props.value
+      selectedInit: false,
+      visible: false,
+      value: props.value,
+      selected: props.multiple ? [] : {},
+      valueChangeBySelected: false,
+      voidRemoteQuery: false,
+      query: ''
     };
 
     if (props.multiple) {
@@ -277,7 +279,8 @@ var Select = function (_Component) {
 
         if (!multiple) {
           if (dropdownUl && selected) {
-            bottomOverflowBeforeHidden = _reactDom2.default.findDOMNode(selected).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
+            var element = _reactDom2.default.findDOMNode(selected);
+            bottomOverflowBeforeHidden = element.getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
           }
 
           if (selected && selected.props.value) {
@@ -596,12 +599,12 @@ var Select = function (_Component) {
     key: 'deletePrevTag',
     value: function deletePrevTag(e) {
       if (e.target.value.length <= 0 && !this.toggleLastOptionHitState()) {
-        var selected = this.state.selected;
+        var _selected2 = this.state.selected;
 
 
-        selected.pop();
+        _selected2.pop();
 
-        this.setState({ selected: selected });
+        this.setState({ selected: _selected2 });
       }
     }
   }, {
@@ -742,15 +745,15 @@ var Select = function (_Component) {
 
       var skip = void 0;
 
-      if (!this.optionsAllDisabled(options)) {
+      if (options.length != options.filter(function (item) {
+        return item.props.disabled === true;
+      }).length) {
         if (direction === 'next') {
           hoverIndex++;
 
           if (hoverIndex === options.length) {
             hoverIndex = 0;
           }
-
-          this.resetScrollTop();
 
           if (options[hoverIndex].props.disabled === true || options[hoverIndex].props.groupDisabled === true || !options[hoverIndex].state.visible) {
             skip = 'next';
@@ -764,8 +767,6 @@ var Select = function (_Component) {
             hoverIndex = options.length - 1;
           }
 
-          this.resetScrollTop();
-
           if (options[hoverIndex].props.disabled === true || options[hoverIndex].props.groupDisabled === true || !options[hoverIndex].state.visible) {
             skip = 'prev';
           }
@@ -776,26 +777,25 @@ var Select = function (_Component) {
         if (skip) {
           _this7.navigateOptions(skip);
         }
+
+        _this7.resetScrollTop();
       });
     }
   }, {
     key: 'resetScrollTop',
     value: function resetScrollTop() {
-      // let { hoverIndex, options, dropdownUl } = this.state;
-      //
-      // console.log(options, hoverIndex, options[hoverIndex]);
-      //
-      // let bottomOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
-      // let topOverflowDistance = ReactDOM.findDOMNode(options[hoverIndex]).getBoundingClientRect().top - this.popper.getBoundingClientRect().top;
-      //
-      // if (bottomOverflowDistance > 0) {
-      //   dropdownUl.scrollTop += bottomOverflowDistance;
-      // }
-      // if (topOverflowDistance < 0) {
-      //   dropdownUl.scrollTop += topOverflowDistance;
-      // }
-      //
-      // this.setState({ dropdownUl });
+      var element = _reactDom2.default.findDOMNode(this.state.options[this.state.hoverIndex]);
+      var bottomOverflowDistance = element.getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
+      var topOverflowDistance = element.getBoundingClientRect().top - this.popper.getBoundingClientRect().top;
+
+      if (this.state.dropdownUl) {
+        if (bottomOverflowDistance > 0) {
+          this.state.dropdownUl.scrollTop += bottomOverflowDistance;
+        }
+        if (topOverflowDistance < 0) {
+          this.state.dropdownUl.scrollTop += topOverflowDistance;
+        }
+      }
     }
   }, {
     key: 'selectOption',
@@ -811,8 +811,8 @@ var Select = function (_Component) {
     }
   }, {
     key: 'deleteSelected',
-    value: function deleteSelected(event) {
-      event.stopPropagation();
+    value: function deleteSelected(e) {
+      e.stopPropagation();
 
       this.setState({
         selected: {},
@@ -1069,8 +1069,12 @@ var Select = function (_Component) {
             _libs.View,
             { show: visible && this.emptyText() !== false },
             _react2.default.createElement(
-              _Dropdown2.default,
-              { ref: 'popper' },
+              'div',
+              { ref: 'popper', className: this.classNames('el-select-dropdown', {
+                  'is-multiple': multiple
+                }), style: {
+                  minWidth: inputWidth
+                } },
               _react2.default.createElement(
                 _libs.View,
                 { show: options.length > 0 && filteredOptionsCount > 0 && !loading },
@@ -1100,7 +1104,6 @@ Select.childContextTypes = {
 };
 
 Select.propTypes = {
-  name: _libs.PropTypes.string,
   value: _libs.PropTypes.any,
   size: _libs.PropTypes.string,
   disabled: _libs.PropTypes.bool,

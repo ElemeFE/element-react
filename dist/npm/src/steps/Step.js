@@ -99,23 +99,22 @@ var Step = function (_Component) {
   return Step;
 }(_libs.Component);
 
+Step.defaultProps = {
+  status: 'wait'
+};
 var _default = Step;
 exports.default = _default;
 
 
 Step.propTypes = {
-  title: _libs.PropTypes.node,
-  icon: _libs.PropTypes.node,
-  description: _libs.PropTypes.node,
+  title: _libs.PropTypes.string,
+  icon: _libs.PropTypes.string,
+  description: _libs.PropTypes.string,
   status: _libs.PropTypes.string,
   direction: _libs.PropTypes.string,
   style: _libs.PropTypes.object,
   lineStyle: _libs.PropTypes.object,
   stepNumber: _libs.PropTypes.number
-};
-
-Step.defaultProps = {
-  status: 'wait'
 };
 ;
 

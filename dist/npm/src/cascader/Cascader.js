@@ -79,6 +79,11 @@ var Cascader = function (_Component) {
       };
     }
   }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.input = _reactDom2.default.findDOMNode(this.refs.input);
+    }
+  }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
       this.setState({
@@ -103,7 +108,7 @@ var Cascader = function (_Component) {
           if (this.popperJS) {
             this.popperJS.update();
           } else {
-            this.popperJS = new _popper2.default(_reactDom2.default.findDOMNode(this.refs.input), this.refs.menu, {
+            this.popperJS = new _popper2.default(this.input, this.refs.menu, {
               gpuAcceleration: false
             });
           }
@@ -144,7 +149,7 @@ var Cascader = function (_Component) {
         value: this.state.currentValue.slice(0),
         visible: true,
         options: this.props.options,
-        inputWidth: _reactDom2.default.findDOMNode(this.refs.input).offsetWidth - 2
+        inputWidth: this.input.offsetWidth - 2
       });
     }
   }, {

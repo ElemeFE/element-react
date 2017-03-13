@@ -29,8 +29,8 @@ var Checkbox = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
 
     _this.state = {
-      checked: Boolean(props.checked || props.defaultChecked),
-      focus: Boolean(props.focus),
+      checked: props.checked,
+      focus: props.focus,
       label: _this.getLabel(props)
     };
     return _this;

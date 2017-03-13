@@ -35,7 +35,8 @@ var InputNumber = function (_Component) {
     var _this = _possibleConstructorReturn(this, (InputNumber.__proto__ || Object.getPrototypeOf(InputNumber)).call(this, props));
 
     _this.state = {
-      value: props.defaultValue
+      value: props.defaultValue,
+      inputActive: false
     };
     return _this;
   }

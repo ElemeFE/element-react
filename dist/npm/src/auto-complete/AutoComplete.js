@@ -69,10 +69,12 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      var reference = _reactDom2.default.findDOMNode(this.refs.input);
       var visible = this.suggestionVisible();
+      var reference = _reactDom2.default.findDOMNode(this.inputNode);
 
-      this.refs.suggestions.onVisibleChange(visible, reference.offsetWidth);
+      if (reference instanceof HTMLElement) {
+        this.suggestionsNode.onVisibleChange(visible, reference.offsetWidth);
+      }
     }
   }, {
     key: 'getData',
@@ -94,15 +96,17 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'handleChange',
     value: function handleChange(e) {
-      var value = e.target.value;
+      if (e.target instanceof HTMLInputElement) {
+        var _value = e.target.value;
 
-      this.setState({ inputValue: value });
+        this.setState({ inputValue: _value });
 
-      if (!this.props.triggerOnFocus && !value) {
-        this.setState({ suggestions: [] });return;
+        if (!this.props.triggerOnFocus && !_value) {
+          this.setState({ suggestions: [] });return;
+        }
+
+        this.getData(_value);
       }
-
-      this.getData(value);
     }
   }, {
     key: 'handleFocus',
@@ -153,30 +157,31 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'highlight',
     value: function highlight(index) {
-      if (!this.suggestionVisible() || this.state.loading) {
-        return;
-      }
+      if (!this.suggestionVisible() || this.state.loading) return;
       if (index < 0) index = 0;
       if (index >= this.state.suggestions.length) {
         index = this.state.suggestions.length - 1;
       }
+      var reference = _reactDom2.default.findDOMNode(this.suggestionsNode);
+      if (reference instanceof HTMLElement) {
+        var suggestion = document.querySelector('.el-autocomplete-suggestion__wrap');
+        var suggestionList = document.querySelectorAll('.el-autocomplete-suggestion__list li');
+        if (suggestion instanceof HTMLElement && suggestionList instanceof NodeList) {
+          var highlightItem = suggestionList[index];
+          var scrollTop = suggestion.scrollTop;
+          var offsetTop = highlightItem.offsetTop;
 
-      var suggestion = _reactDom2.default.findDOMNode(this.refs.suggestions).querySelector('.el-autocomplete-suggestion__wrap');
-      var suggestionList = suggestion.querySelectorAll('.el-autocomplete-suggestion__list li');
+          if (offsetTop + highlightItem.scrollHeight > scrollTop + suggestion.clientHeight) {
+            suggestion.scrollTop += highlightItem.scrollHeight;
+          }
 
-      var highlightItem = suggestionList[index];
-      var scrollTop = suggestion.scrollTop;
-      var offsetTop = highlightItem.offsetTop;
+          if (offsetTop < scrollTop) {
+            suggestion.scrollTop -= highlightItem.scrollHeight;
+          }
 
-      if (offsetTop + highlightItem.scrollHeight > scrollTop + suggestion.clientHeight) {
-        suggestion.scrollTop += highlightItem.scrollHeight;
+          this.setState({ highlightedIndex: index });
+        }
       }
-
-      if (offsetTop < scrollTop) {
-        suggestion.scrollTop -= highlightItem.scrollHeight;
-      }
-
-      this.setState({ highlightedIndex: index });
     }
 
     /* Computed Methods */
@@ -212,6 +217,8 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this5 = this;
+
       var _props = this.props,
           disabled = _props.disabled,
           placeholder = _props.placeholder,
@@ -231,7 +238,9 @@ var AutoComplete = function (_Component) {
         'div',
         { style: this.style(), className: this.className('el-autocomplete') },
         _react2.default.createElement(_input2.default, {
-          ref: 'input',
+          ref: function ref(node) {
+            return _this5.inputNode = node;
+          },
           value: inputValue,
           disabled: disabled,
           placeholder: placeholder,
@@ -247,7 +256,9 @@ var AutoComplete = function (_Component) {
           onKeyDown: this.onKeyDown.bind(this)
         }),
         _react2.default.createElement(_Suggestions2.default, {
-          ref: 'suggestions',
+          ref: function ref(node) {
+            return _this5.suggestionsNode = node;
+          },
           className: this.classNames(popperClass),
           suggestions: suggestions
         })
@@ -258,27 +269,13 @@ var AutoComplete = function (_Component) {
   return AutoComplete;
 }(_libs.Component);
 
-AutoComplete.childContextTypes = {
-  component: _libs.PropTypes.any
-};
-
-AutoComplete.propTypes = {
-  popperClass: _libs.PropTypes.string,
-  placeholder: _libs.PropTypes.string,
-  disabled: _libs.PropTypes.bool,
-  name: _libs.PropTypes.string,
-  size: _libs.PropTypes.string,
-  value: _libs.PropTypes.string,
-  autofocus: _libs.PropTypes.bool,
-  fetchSuggestions: _libs.PropTypes.func,
-  triggerOnFocus: _libs.PropTypes.bool,
-  customItem: _libs.PropTypes.any,
-  onSelect: _libs.PropTypes.func,
-  onIconClick: _libs.PropTypes.func
-};
-
 AutoComplete.defaultProps = {
   triggerOnFocus: true
+};
+
+
+AutoComplete.childContextTypes = {
+  component: _libs.PropTypes.any
 };
 
 var _default = (0, _reactClickOutside2.default)(AutoComplete);

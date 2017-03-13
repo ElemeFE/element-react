@@ -8,7 +8,7 @@ type State = {
 
 export default class CheckboxGroup extends Component {
   state: State;
-  
+
   constructor(props: Object) {
     super(props);
     this.state = {
@@ -28,7 +28,7 @@ export default class CheckboxGroup extends Component {
     return { isWrap: true };
   }
 
-  onChange(e: any, label: string, value: string) {
+  onChange(e: Object, label: string, value: string) {
     const { options } = this.state;
     let newOptions;
     if (e.target.checked) {

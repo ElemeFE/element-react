@@ -87,8 +87,6 @@ CollapseItem.propTypes = {
   title: _libs.PropTypes.node,
   name: _libs.PropTypes.string
 };
-
-CollapseItem.defaultProps = {};
 ;
 
 var _temp = function () {

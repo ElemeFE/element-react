@@ -48,7 +48,7 @@ var Suggestions = function (_Component) {
   _createClass(Suggestions, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      var reference = _reactDom2.default.findDOMNode(this.parent().refs.input);
+      var reference = _reactDom2.default.findDOMNode(this.parent().inputNode);
 
       if (this.state.showPopper) {
         if (this.popperJS) {
@@ -77,10 +77,14 @@ var Suggestions = function (_Component) {
   }, {
     key: 'onVisibleChange',
     value: function onVisibleChange(visible, inputWidth) {
-      this.setState({
-        dropdownWidth: inputWidth,
-        showPopper: visible
-      });
+      var _this2 = this;
+
+      setTimeout(function () {
+        _this2.setState({
+          dropdownWidth: inputWidth,
+          showPopper: visible
+        });
+      }, 0);
     }
   }, {
     key: 'parent',
@@ -95,7 +99,7 @@ var Suggestions = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var customItem = this.parent().props.customItem;
       var _parent$state = this.parent().state,
@@ -141,8 +145,8 @@ var Suggestions = function (_Component) {
                   'li',
                   {
                     key: index,
-                    className: _this2.classNames({ 'highlighted': highlightedIndex === index }),
-                    onClick: _this2.select.bind(_this2, item) },
+                    className: _this3.classNames({ 'highlighted': highlightedIndex === index }),
+                    onClick: _this3.select.bind(_this3, item) },
                   !customItem ? item.value : _react2.default.createElement(customItem, {
                     index: index,
                     item: item
@@ -165,10 +169,6 @@ exports.default = _default;
 
 Suggestions.contextTypes = {
   component: _libs.PropTypes.any
-};
-
-Suggestions.propTypes = {
-  suggestions: _libs.PropTypes.array
 };
 ;
 

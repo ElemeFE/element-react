@@ -20,8 +20,6 @@ var _utils = require('./utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -97,10 +95,17 @@ var BodyItem = function (_Component) {
           isHiglight = _props2.isHiglight,
           selected = _props2.selected;
 
-      var rootClassName = this.classNames(_defineProperty({
+      var classSet = {
         'hover-row': this.state.hover,
         'current-row': isHiglight
-      }, rowClassName ? rowClassName(itemData, rowIndex) : '', true));
+      };
+
+      if (rowClassName) {
+        var clasName = rowClassName(itemData, rowIndex);
+        classSet[rowClassName] = true;
+      }
+
+      var rootClassName = this.classNames(classSet);
 
       return _react2.default.createElement(
         'tr',
@@ -116,7 +121,12 @@ var BodyItem = function (_Component) {
             _this2.onMouseState(false);
           } },
         columns.map(function (column, idx) {
-          var content = column.render ? column.render(itemData, column) : itemData[column.property];
+          var content = void 0;
+          if (column.render) {
+            content = column.render(itemData, column);
+          } else {
+            content = itemData[column.property];
+          }
           var className = _this2.classNames({
             'is-hidden': !_this2.props.fixed && column.fixed,
             'is-center': column.align == 'center',
@@ -156,11 +166,6 @@ var BodyItem = function (_Component) {
 
 BodyItem.contextTypes = {
   $owerTable: _react2.default.PropTypes.object
-};
-
-BodyItem.propTypes = {
-  columns: _libs.PropTypes.array.isRequired,
-  itemData: _libs.PropTypes.object.isRequired
 };
 
 var TableBody = function (_Component2) {
@@ -296,11 +301,6 @@ exports.default = _default;
 
 TableBody.contextTypes = {
   $owerTable: _react2.default.PropTypes.object
-};
-
-TableBody.propTypes = {
-  columns: _libs.PropTypes.array.isRequired,
-  data: _libs.PropTypes.array.isRequired
 };
 ;
 

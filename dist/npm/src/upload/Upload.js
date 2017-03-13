@@ -86,7 +86,10 @@ var Upload = function (_Component) {
       var target = fileList.find(function (item) {
         return item.uid === file.uid;
       });
-      return target;
+      if (target) {
+        return target;
+      }
+      return null;
     }
   }, {
     key: 'handleStart',
@@ -122,10 +125,12 @@ var Upload = function (_Component) {
       var fileList = this.state.fileList;
 
       var _file = this.getFile(file);
-      _file.percentage = e.percent || 0;
-      _file.status = 'uploading';
-      this.props.onProgress(e, _file, fileList);
-      this.setState({ fileList: fileList });
+      if (_file) {
+        _file.percentage = e.percent || 0;
+        _file.status = 'uploading';
+        this.props.onProgress(e, _file, fileList);
+        this.setState({ fileList: fileList });
+      }
     }
   }, {
     key: 'handleSuccess',
@@ -155,12 +160,14 @@ var Upload = function (_Component) {
       var fileList = this.state.fileList;
 
       var _file = this.getFile(file);
-      _file.status = 'fail';
-      fileList.splice(fileList.indexOf(_file), 1);
-      this.setState({ fileList: fileList }, function () {
-        _this3.props.onError(err, _file, fileList);
-        _this3.props.onChange(_file, fileList);
-      });
+      if (_file) {
+        _file.status = 'fail';
+        fileList.splice(fileList.indexOf(_file), 1);
+        this.setState({ fileList: fileList }, function () {
+          _this3.props.onError(err, _file, fileList);
+          _this3.props.onChange(_file, fileList);
+        });
+      }
     }
   }, {
     key: 'handleRemove',
@@ -170,10 +177,12 @@ var Upload = function (_Component) {
       var fileList = this.state.fileList;
 
       var _file = this.getFile(file);
-      fileList.splice(fileList.indexOf(_file), 1);
-      this.setState({ fileList: fileList }, function () {
-        return _this4.props.onRemove(file, fileList);
-      });
+      if (_file) {
+        fileList.splice(fileList.indexOf(_file), 1);
+        this.setState({ fileList: fileList }, function () {
+          return _this4.props.onRemove(file, fileList);
+        });
+      }
     }
   }, {
     key: 'handlePreview',
@@ -291,6 +300,21 @@ var Upload = function (_Component) {
   return Upload;
 }(_libs.Component);
 
+Upload.defaultProps = {
+  headers: {},
+  name: 'file',
+  type: 'select',
+  listType: 'text',
+  fileList: [],
+  showFileList: true,
+  autoUpload: true,
+  onRemove: function onRemove() {},
+  onPreview: function onPreview() {},
+  onProgress: function onProgress() {},
+  onSuccess: function onSuccess() {},
+  onError: function onError() {},
+  onChange: function onChange() {}
+};
 var _default = Upload;
 exports.default = _default;
 
@@ -323,22 +347,6 @@ Upload.propTypes = {
   onError: _libs.PropTypes.func,
   onChange: _libs.PropTypes.func,
   className: _libs.PropTypes.string
-};
-
-Upload.defaultProps = {
-  headers: {},
-  name: 'file',
-  type: 'select',
-  listType: 'text',
-  fileList: [],
-  showFileList: true,
-  autoUpload: true,
-  onRemove: function onRemove() {},
-  onPreview: function onPreview() {},
-  onProgress: function onProgress() {},
-  onSuccess: function onSuccess() {},
-  onError: function onError() {},
-  onChange: function onChange() {}
 };
 ;
 

@@ -83,26 +83,24 @@ var Canvas = function (_React$Component) {
       var _this2 = this;
 
       if (this.shouldUpdate) {
-        (function () {
-          var div = _this2.refs.source;
+        var div = this.refs.source;
 
-          if (div instanceof HTMLElement) {
-            require(['../../src'], function (Element) {
-              var args = ['context', 'React'],
-                  argv = [_this2, _react2.default];
+        if (div instanceof HTMLElement) {
+          require(['../../src'], function (Element) {
+            var args = ['context', 'React'],
+                argv = [_this2, _react2.default];
 
-              for (var key in Element) {
-                args.push(key);
-                argv.push(Element[key]);
-              }
+            for (var key in Element) {
+              args.push(key);
+              argv.push(Element[key]);
+            }
 
-              args.push(_this2.component);
+            args.push(_this2.component);
 
-              _reactDom2.default.unmountComponentAtNode(div);
-              _reactDom2.default.render(new (Function.prototype.bind.apply(Function, [null].concat(args)))().apply(null, argv), div);
-            });
-          }
-        })();
+            _reactDom2.default.unmountComponentAtNode(div);
+            _reactDom2.default.render(new (Function.prototype.bind.apply(Function, [null].concat(args)))().apply(null, argv), div);
+          });
+        }
       }
 
       delete this.shouldUpdate;

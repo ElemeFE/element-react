@@ -79,6 +79,8 @@ var Option = function (_Component) {
           return el.props.value;
         }).indexOf(this.props.value) > -1;
       }
+
+      return false;
     }
   }, {
     key: 'hoverItem',
