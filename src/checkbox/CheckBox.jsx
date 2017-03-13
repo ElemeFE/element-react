@@ -10,13 +10,13 @@ type State = {
 
 export default class Checkbox extends Component {
   state: State;
-  
+
   constructor(props: Object) {
     super(props);
-    const { checked, focus} = this.props;
+
     this.state = {
-      checked: checked,
-      focus: focus,
+      checked: props.checked,
+      focus: props.focus,
       label: this.getLabel(props)
     };
   }
@@ -39,7 +39,7 @@ export default class Checkbox extends Component {
     });
   }
 
-  onChange(e: any) {
+  onChange(e: Object) {
     const { label } = this.state;
     const { trueLabel, falseLabel, value} = this.props;
     const checked = e.target.checked;

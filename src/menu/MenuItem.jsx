@@ -1,10 +1,14 @@
+/* @flow */
+
 import React from 'react';
 import { PropTypes } from '../../libs';
 
 import MixinComponent from './MixinComponent';
 
 export default class MenuItem extends MixinComponent {
-  constructor(props) {
+  instanceType: string;
+
+  constructor(props: Object) {
     super(props);
 
     this.instanceType = 'MenuItem';
@@ -18,12 +22,11 @@ export default class MenuItem extends MixinComponent {
     this.rootMenu().handleSelect(
       this.props.index,
       this.indexPath(),
-      this.props.route || this.props.index,
       this
     );
   }
 
-  active() {
+  active(): boolean {
     return this.props.index === this.rootMenu().state.activeIndex;
   }
 
@@ -45,6 +48,5 @@ export default class MenuItem extends MixinComponent {
 
 MenuItem.propTypes = {
   index: PropTypes.string.isRequired,
-  route: PropTypes.object,
   disabled: PropTypes.bool
 };

@@ -1,10 +1,19 @@
+/* @flow */
+
 import React from 'react';
 import { PropTypes } from '../../libs';
 
 import MixinComponent from './MixinComponent';
 
+type State = {
+  paddingLeft: number
+};
+
 export default class MenuItemGroup extends MixinComponent {
-  constructor(props) {
+  state: State;
+  instanceType: string;
+
+  constructor(props: Object) {
     super(props);
 
     this.instanceType = 'MenuItemGroup';

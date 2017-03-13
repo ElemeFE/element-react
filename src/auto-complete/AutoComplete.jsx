@@ -68,6 +68,7 @@ class AutoComplete extends Component {
   componentDidUpdate(): void {
     const visible = this.suggestionVisible();
     const reference = ReactDOM.findDOMNode(this.inputNode);
+
     if (reference instanceof HTMLElement) {
       this.suggestionsNode.onVisibleChange(visible, reference.offsetWidth);
     }

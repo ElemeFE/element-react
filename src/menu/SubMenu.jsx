@@ -1,11 +1,20 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { PropTypes, View } from '../../libs';
 
 import MixinComponent from './MixinComponent';
 
+type State = {
+  active: boolean
+};
+
 export default class SubMenu extends MixinComponent {
-  constructor(props) {
+  state: State;
+  instanceType: string;
+
+  constructor(props: Object) {
     super(props);
 
     this.instanceType = 'SubMenu';
@@ -15,7 +24,7 @@ export default class SubMenu extends MixinComponent {
     };
   }
 
-  getChildContext() {
+  getChildContext(): Object {
     return {
       component: this
     };
@@ -26,7 +35,7 @@ export default class SubMenu extends MixinComponent {
     this.initEvents();
   }
 
-  onItemSelect(index, indexPath) {
+  onItemSelect(index: number, indexPath: Array<number>) {
     this.setState({
       active: indexPath.indexOf(this.props.index) !== -1
     });
@@ -54,7 +63,7 @@ export default class SubMenu extends MixinComponent {
 
   initEvents() {
     if (this.rootMenu().props.mode === 'horizontal' && this.rootMenu().props.menuTrigger === 'hover') {
-      const triggerElm = ReactDOM.findDOMNode(this);
+      const triggerElm: any = ReactDOM.findDOMNode(this);
 
       triggerElm.addEventListener('mouseenter', this.handleMouseenter.bind(this));
       triggerElm.addEventListener('mouseleave', this.handleMouseleave.bind(this));
@@ -65,7 +74,7 @@ export default class SubMenu extends MixinComponent {
     }
   }
 
-  opened() {
+  opened(): boolean {
     return this.rootMenu().state.openedMenus.indexOf(this.props.index) !== -1;
   }
 

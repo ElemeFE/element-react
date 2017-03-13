@@ -1,8 +1,10 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Col extends Component {
-  getStyle() {
+  getStyle(): Object {
     const style = {};
 
     if (this.context.gutter) {

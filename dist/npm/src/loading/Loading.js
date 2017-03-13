@@ -57,14 +57,19 @@ var Loading = function (_Component) {
       }
     }
   }, {
+    key: 'documentBody',
+    value: function documentBody() {
+      return document.body;
+    }
+  }, {
     key: 'disableScroll',
     value: function disableScroll() {
-      document.body.style.setProperty('overflow', 'hidden');
+      this.documentBody().style.setProperty('overflow', 'hidden');
     }
   }, {
     key: 'enableScroll',
     value: function enableScroll() {
-      document.body.style.removeProperty('overflow');
+      this.documentBody().style.removeProperty('overflow');
     }
   }, {
     key: 'render',

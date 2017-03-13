@@ -36,10 +36,7 @@ var AjaxUpload = function (_Component) {
   function AjaxUpload(props) {
     _classCallCheck(this, AjaxUpload);
 
-    var _this = _possibleConstructorReturn(this, (AjaxUpload.__proto__ || Object.getPrototypeOf(AjaxUpload)).call(this, props));
-
-    _this.state = {};
-    return _this;
+    return _possibleConstructorReturn(this, (AjaxUpload.__proto__ || Object.getPrototypeOf(AjaxUpload)).call(this, props));
   }
 
   _createClass(AjaxUpload, [{
@@ -50,12 +47,14 @@ var AjaxUpload = function (_Component) {
   }, {
     key: 'handleChange',
     value: function handleChange(e) {
-      var files = e.target.files;
-      if (!files) {
-        return;
+      if (e.target instanceof HTMLInputElement) {
+        var files = e.target.files;
+        if (!files) {
+          return;
+        }
+        this.uploadFiles(files);
+        this.refs.input.value = null;
       }
-      this.uploadFiles(files);
-      this.refs.input.value = null;
     }
   }, {
     key: 'uploadFiles',
@@ -177,6 +176,9 @@ var AjaxUpload = function (_Component) {
   return AjaxUpload;
 }(_libs.Component);
 
+AjaxUpload.defaultProps = {
+  name: 'file'
+};
 var _default = AjaxUpload;
 exports.default = _default;
 
@@ -198,10 +200,6 @@ AjaxUpload.propTypes = {
   autoUpload: _libs.PropTypes.bool,
   listType: _libs.PropTypes.string,
   fileList: _libs.PropTypes.array
-};
-
-AjaxUpload.defaultProps = {
-  name: 'file'
 };
 ;
 

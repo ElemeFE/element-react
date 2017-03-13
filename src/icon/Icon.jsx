@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+import { Component, PropTypes } from '../../libs';
 
 export default class Icon extends Component {
   render() {

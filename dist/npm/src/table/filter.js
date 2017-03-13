@@ -148,15 +148,15 @@ var Filter = function (_Component) {
           _react2.default.createElement(
             _checkbox2.default.Group,
             {
-              options: defaultCondi ? defaultCondi : [],
+              options: defaultCondi ? defaultCondi : checked,
               onChange: function onChange(opts) {
                 _this3.onFilterChange(opts);
               },
               className: 'el-table-filter__checkbox-group' },
             filters.map(function (item, idx) {
               return _react2.default.createElement(_checkbox2.default, {
-                value: item,
                 key: idx,
+                value: item,
                 label: item.text });
             })
           )
@@ -190,11 +190,6 @@ var Filter = function (_Component) {
 }(_libs.Component);
 
 ;
-
-Filter.propTypes = {
-  filters: _libs.PropTypes.array,
-  onFilter: _libs.PropTypes.func
-};
 
 Filter.defaultProps = {
   filters: [],

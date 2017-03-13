@@ -85,6 +85,9 @@ var Collapse = function (_Component) {
   return Collapse;
 }(_libs.Component);
 
+Collapse.defaultProps = {
+  value: []
+};
 var _default = Collapse;
 exports.default = _default;
 
@@ -92,10 +95,6 @@ exports.default = _default;
 Collapse.propTypes = {
   accordion: _libs.PropTypes.bool,
   value: _libs.PropTypes.oneOfType([_libs.PropTypes.array, _libs.PropTypes.string])
-};
-
-Collapse.defaultProps = {
-  value: []
 };
 ;
 
