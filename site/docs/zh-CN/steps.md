@@ -124,5 +124,5 @@ render() {
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
 | title | 标题 | string | — | — |
-| description | 描述性文字 | string | — | — |
+| description | 描述性文字 | string/ReactElement | — | — |
 | icon | 图标 | Element Icon 提供的图标，如果要使用自定义图标可以通过自定义element的方式写入 | string | — |

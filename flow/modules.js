@@ -1,3 +1,9 @@
+declare module 'classnames' {
+  declare var exports: {
+    (): any
+  }
+}
+
 declare module 'react-click-outside' {
   declare var exports: {
     (): any
