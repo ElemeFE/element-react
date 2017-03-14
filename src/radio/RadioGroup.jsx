@@ -1,14 +1,16 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class RadioGroup extends Component {
-  getChildContext() {
+  getChildContext(): Object {
     return {
       component: this
     };
   }
 
-  onChange(value) {
+  onChange(value: mixed) {
     if (this.props.onChange) {
       this.props.onChange({
         target: Object.assign(this.refs.RadioGroup, { value })

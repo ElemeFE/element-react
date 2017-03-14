@@ -109,7 +109,7 @@ exports.default = _default;
 Step.propTypes = {
   title: _libs.PropTypes.string,
   icon: _libs.PropTypes.string,
-  description: _libs.PropTypes.string,
+  description: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.node]),
   status: _libs.PropTypes.string,
   direction: _libs.PropTypes.string,
   style: _libs.PropTypes.object,

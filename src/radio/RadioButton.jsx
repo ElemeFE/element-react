@@ -1,22 +1,24 @@
+/* @flow */
+
 import React from 'react';
 import { PropTypes } from '../../libs';
 
 import Radio from './Radio';
 
 export default class RadioButton extends Radio {
-  parent() {
+  parent(): Object {
     return this.context.component;
   }
 
-  size() {
+  size(): string {
     return this.parent().props.size;
   }
 
-  isDisabled() {
+  isDisabled(): boolean {
     return this.props.disabled || this.parent().props.disabled;
   }
 
-  activeStyle() {
+  activeStyle(): Object {
     return {
       backgroundColor: this.parent().props.fill || '',
       borderColor: this.parent().props.fill || '',

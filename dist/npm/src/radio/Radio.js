@@ -82,12 +82,14 @@ var Radio = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var checked = this.state.checked;
+      var _state = this.state,
+          checked = _state.checked,
+          focus = _state.focus;
       var _props = this.props,
           disabled = _props.disabled,
-          focus = _props.focus,
           value = _props.value,
           children = _props.children;
+
 
       return _react2.default.createElement(
         'label',
