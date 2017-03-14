@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
 import debounce from 'throttle-debounce/debounce';
+import StyleSheet from '../../libs/utils/style';
 import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
@@ -11,6 +12,12 @@ import { addResizeListener, removeResizeListener } from '../../libs/utils/resize
 import Tag from '../tag';
 import Input from '../input';
 import i18n from '../locale';
+
+StyleSheet.reset(`
+  .el-select-dropdown {
+    position: absolute !important;
+  }
+`)
 
 type State = {
   options: Array<Object>,
@@ -61,8 +68,8 @@ class Select extends Component {
       selectedLabel: '',
       selectedInit: false,
       visible: false,
+      selected: undefined,
       value: props.value,
-      selected: props.multiple ? [] : {},
       valueChangeBySelected: false,
       voidRemoteQuery: false,
       query: ''
