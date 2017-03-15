@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
@@ -6,7 +8,7 @@ export default class Loading extends Component {
     this.enableScroll();
   }
 
-  getStyle() {
+  getStyle(): Object {
     if (this.props.fullscreen) {
       this.disableScroll();
 
@@ -27,12 +29,16 @@ export default class Loading extends Component {
     }
   }
 
+  documentBody(): any {
+    return document.body;
+  }
+
   disableScroll() {
-    document.body.style.setProperty('overflow', 'hidden');
+    this.documentBody().style.setProperty('overflow', 'hidden');
   }
 
   enableScroll() {
-    document.body.style.removeProperty('overflow');
+    this.documentBody().style.removeProperty('overflow');
   }
 
   render() {

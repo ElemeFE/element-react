@@ -52,7 +52,9 @@ var DropdownMenu = function (_Component) {
         if (this.popperJS) {
           this.popperJS.update();
         } else {
-          this.popperJS = new _popper2.default(_reactDom2.default.findDOMNode(this.parent()), this.refs.popper, {
+          var parent = _reactDom2.default.findDOMNode(this.parent());
+
+          this.popperJS = new _popper2.default(parent, this.refs.popper, {
             placement: this.placement()
           });
         }

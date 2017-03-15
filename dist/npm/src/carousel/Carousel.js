@@ -349,6 +349,7 @@ Carousel.propTypes = {
   indicatorPosition: _libs.PropTypes.string,
   indicator: _libs.PropTypes.bool,
   arrow: _libs.PropTypes.string,
+  type: _libs.PropTypes.string,
   onChange: _libs.PropTypes.func
 };
 

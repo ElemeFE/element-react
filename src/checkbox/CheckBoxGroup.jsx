@@ -1,16 +1,22 @@
+/* @flow */
 import React, { Children } from 'react';
 import { Component, PropTypes } from '../../libs'
 
-export default class CheckboxGroup extends Component {
+type State = {
+  options: Array<string>,
+}
 
-  constructor(props) {
+export default class CheckboxGroup extends Component {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
     this.state = {
       options: this.props.options || []
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Object) {
     if (nextProps.options !== this.props.options) {
       this.setState({
         options: nextProps.options
@@ -22,13 +28,13 @@ export default class CheckboxGroup extends Component {
     return { isWrap: true };
   }
 
-  onChange(e, label, value) {
-    const { options, values } = this.state;
-    let newOptions, newValues;
+  onChange(e: Object, label: string, value: string) {
+    const { options } = this.state;
+    let newOptions;
     if (e.target.checked) {
       newOptions = options.concat(value || label);
     } else {
-      newOptions = options.filter(v =>v != value && v !== label);
+      newOptions = options.filter(v =>v !== value && v !== label);
     }
 
     this.setState({

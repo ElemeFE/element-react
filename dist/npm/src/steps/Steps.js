@@ -102,6 +102,12 @@ var Steps = function (_Component) {
   return Steps;
 }(_libs.Component);
 
+Steps.defaultProps = {
+  direction: 'horizontal',
+  finishStatus: 'finish',
+  processStatus: 'process',
+  active: 0
+};
 var _default = Steps;
 exports.default = _default;
 
@@ -114,13 +120,6 @@ Steps.propTypes = {
   direction: _libs.PropTypes.oneOf(['vertical', 'horizontal']),
   finishStatus: _libs.PropTypes.oneOf(statusMap),
   processStatus: _libs.PropTypes.oneOf(statusMap)
-};
-
-Steps.defaultProps = {
-  direction: 'horizontal',
-  finishStatus: 'finish',
-  processStatus: 'process',
-  active: 0
 };
 ;
 

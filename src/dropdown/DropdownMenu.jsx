@@ -1,10 +1,18 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
+type State = {
+  showPopper: boolean
+};
+
 export default class DropdownMenu extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -19,7 +27,9 @@ export default class DropdownMenu extends Component {
       if (this.popperJS) {
         this.popperJS.update();
       } else {
-        this.popperJS = new Popper(ReactDOM.findDOMNode(this.parent()), this.refs.popper, {
+        const parent: any = ReactDOM.findDOMNode(this.parent());
+
+        this.popperJS = new Popper(parent, this.refs.popper, {
           placement: this.placement()
         });
       }
@@ -38,17 +48,17 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  onVisibleChange(visible) {
+  onVisibleChange(visible: boolean) {
     this.setState({
       showPopper: visible
     })
   }
 
-  parent() {
+  parent(): Object {
     return this.context.component;
   }
 
-  placement() {
+  placement(): string {
     return `bottom-${this.parent().props.menuAlign}`;
   }
 

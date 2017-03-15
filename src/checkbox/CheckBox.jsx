@@ -1,18 +1,27 @@
+/* @flow */
 import React from 'react'
 import { Component, PropTypes } from '../../libs'
 
-export default class Checkbox extends Component {
+type State = {
+  checked: boolean,
+  focus: boolean,
+  label: string,
+}
 
-  constructor(props) {
+export default class Checkbox extends Component {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
+
     this.state = {
-      checked: Boolean(props.checked || props.defaultChecked),
-      focus: Boolean(props.focus),
+      checked: props.checked,
+      focus: props.focus,
       label: this.getLabel(props)
     };
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps: Object){
     this.setState({
       checked: nextProps.checked, focus: nextProps.focus, label: this.getLabel(nextProps)
     })
@@ -30,7 +39,7 @@ export default class Checkbox extends Component {
     });
   }
 
-  onChange(e) {
+  onChange(e: Object) {
     const { label } = this.state;
     const { trueLabel, falseLabel, value} = this.props;
     const checked = e.target.checked;
@@ -54,7 +63,7 @@ export default class Checkbox extends Component {
     });
   }
 
-  getLabel(props) {
+  getLabel(props: Object) {
     if (props.trueLabel || props.falseLabel) {
       return props.checked ? props.trueLabel : props.falseLabel;
     }else {

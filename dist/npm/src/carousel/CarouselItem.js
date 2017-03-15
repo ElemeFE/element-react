@@ -84,7 +84,8 @@ var CarouselItem = function (_Component) {
   }, {
     key: 'translateItem',
     value: function translateItem(index, activeIndex) {
-      var parentWidth = _reactDom2.default.findDOMNode(this.parent()).offsetWidth;
+      var parent = _reactDom2.default.findDOMNode(this.parent());
+      var parentWidth = parent.offsetWidth;
       var length = this.parent().state.items.length;
 
       if (index !== activeIndex && length > 2) {
@@ -168,10 +169,6 @@ exports.default = _default;
 
 CarouselItem.contextTypes = {
   component: _libs.PropTypes.any
-};
-
-CarouselItem.propTypes = {
-  name: _libs.PropTypes.string
 };
 ;
 

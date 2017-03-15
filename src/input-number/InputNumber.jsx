@@ -1,25 +1,35 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import Input from '../input';
 import { accAdd, accSub } from './util';
 
+type State = {
+  value: number,
+  inputActive: boolean
+};
+
 export default class InputNumber extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
-      value: props.defaultValue
+      value: props.defaultValue,
+      inputActive: false
     };
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: Object) {
     if (props.value != this.props.value) {
       this.setState({ value: props.value });
     }
   }
 
-  onKeyDown(e) {
+  onKeyDown(e: Object) {
     e.preventDefault();
 
     switch (e.keyCode) {
@@ -44,7 +54,7 @@ export default class InputNumber extends Component {
     this.setState({ value });
   }
 
-  onInput(value) {
+  onInput(value: number) {
     this.setState({ value }, this.onChange);
   }
 
@@ -54,11 +64,11 @@ export default class InputNumber extends Component {
     }
   }
 
-  minDisabled() {
+  minDisabled(): boolean {
     return this.state.value - this.props.step < this.props.min;
   }
 
-  maxDisabled() {
+  maxDisabled(): boolean {
     return this.state.value + this.props.step > this.props.max;
   }
 
@@ -92,7 +102,7 @@ export default class InputNumber extends Component {
     this.setState({ value, inputActive }, this.onChange);
   }
 
-  activeInput(disabled) {
+  activeInput(disabled: boolean) {
     if (!this.props.disabled && !disabled) {
       this.setState({
         inputActive: true
@@ -100,7 +110,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  inactiveInput(disabled) {
+  inactiveInput(disabled: boolean) {
     if (!this.props.disabled && !disabled) {
       this.setState({
         inputActive: false

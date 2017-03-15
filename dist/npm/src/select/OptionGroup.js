@@ -30,13 +30,6 @@ var OptionGroup = function (_Component) {
   }
 
   _createClass(OptionGroup, [{
-    key: 'getChildContext',
-    value: function getChildContext() {
-      return {
-        disabled: this.props.disabled
-      };
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -67,13 +60,8 @@ var _default = OptionGroup;
 exports.default = _default;
 
 
-OptionGroup.childContextTypes = {
-  disabled: _libs.PropTypes.bool
-};
-
 OptionGroup.propTypes = {
-  label: _libs.PropTypes.string,
-  disabled: _libs.PropTypes.bool
+  label: _libs.PropTypes.string
 };
 ;
 

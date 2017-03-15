@@ -30,7 +30,6 @@ export default class Suggestions extends Component {
   }
 
   componentDidUpdate(): void {
-
     const reference = ReactDOM.findDOMNode(this.parent().inputNode);
 
     if (this.state.showPopper) {
@@ -58,10 +57,12 @@ export default class Suggestions extends Component {
   }
 
   onVisibleChange(visible: boolean, inputWidth: string): void {
-    this.setState({
-      dropdownWidth: inputWidth,
-      showPopper: visible
-    })
+    setTimeout(() => {
+      this.setState({
+        dropdownWidth: inputWidth,
+        showPopper: visible
+      })
+    }, 0);
   }
 
   parent(): Component {

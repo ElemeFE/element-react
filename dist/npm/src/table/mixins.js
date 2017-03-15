@@ -8,7 +8,6 @@ exports.scheduleLayout = exports.calculateBodyWidth = exports.calculateFixedWidt
 var _utils = require('./utils');
 
 var MIN_COLUMN_WIDTH = 48;
-
 var defaultColumn = exports.defaultColumn = {
   default: {
     order: ''
@@ -128,9 +127,7 @@ var enhanceColumns = exports.enhanceColumns = function enhanceColumns() {
   };
 };
 
-var calculateFixedWidth = exports.calculateFixedWidth = function calculateFixedWidth() {
-  var fxiedColumns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
+var calculateFixedWidth = exports.calculateFixedWidth = function calculateFixedWidth(fxiedColumns) {
   var width = fxiedColumns.reduce(function (pre, next) {
     var preWidth = pre;
     var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
@@ -141,14 +138,15 @@ var calculateFixedWidth = exports.calculateFixedWidth = function calculateFixedW
 
 var calculateBodyWidth = exports.calculateBodyWidth = function calculateBodyWidth(columns, owerTableWidth) {
   var bodyMinWidth = calcuateColumnsTotalWidth(columns);
-  if (bodyMinWidth < owerTableWidth) {
-    return owerTableWidth;
-  } else {
-    return bodyMinWidth;
-  }
+  return bodyMinWidth < owerTableWidth ? owerTableWidth : bodyMinWidth;
 };
 
-var scheduleLayout = exports.scheduleLayout = function scheduleLayout(columns, owerTableWidth, scrollY, fit) {
+var scheduleLayout = exports.scheduleLayout = function scheduleLayout() {
+  var columns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var owerTableWidth = arguments[1];
+  var scrollY = arguments[2];
+  var fit = arguments[3];
+
   var layout = {};
   var columnsWithNoWidth = columns.filter(function (col) {
     return typeof col.width == 'undefined';
@@ -164,17 +162,18 @@ var scheduleLayout = exports.scheduleLayout = function scheduleLayout(columns, o
   }, 0);
 
   var gutterWidth = scrollY ? (0, _utils.getScrollBarWidth)() : 0;
-  owerTableWidth -= gutterWidth;
 
-  if (bodyMinWidth <= owerTableWidth && fit) {
-    (function () {
-      var remainWidthForEach = (owerTableWidth - calcuateColumnsTotalWidth(columnsWithWidth)) / columnsWithNoWidth.length;
-      remainWidthForEach = remainWidthForEach < MIN_COLUMN_WIDTH ? MIN_COLUMN_WIDTH : remainWidthForEach;
-      columnsWithNoWidth.forEach(function (col) {
-        col.realWidth = remainWidthForEach;
-      });
-      bodyMinWidth = calcuateColumnsTotalWidth(columns);
-    })();
+  if (typeof owerTableWidth == 'number') {
+    owerTableWidth -= gutterWidth;
+  }
+
+  if (typeof owerTableWidth == 'number' && bodyMinWidth <= owerTableWidth && fit) {
+    var remainWidthForEach = (owerTableWidth - calcuateColumnsTotalWidth(columnsWithWidth)) / columnsWithNoWidth.length;
+    remainWidthForEach = remainWidthForEach < MIN_COLUMN_WIDTH ? MIN_COLUMN_WIDTH : remainWidthForEach;
+    columnsWithNoWidth.forEach(function (col) {
+      col.realWidth = remainWidthForEach;
+    });
+    bodyMinWidth = calcuateColumnsTotalWidth(columns);
   } else {
     bodyMinWidth = calcuateColumnsTotalWidth(columns);
   }

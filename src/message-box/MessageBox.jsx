@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import Button from '../button';
@@ -11,8 +13,15 @@ const typeMap = {
   error: 'circle-cross'
 };
 
+type State = {
+  visible: boolean,
+  editorErrorMessage?: string
+};
+
 export default class MessageBox extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -26,15 +35,15 @@ export default class MessageBox extends Component {
     })
   }
 
-  onChange(event) {
+  onChange(event: Object) {
     this.validate(event.target.value);
   }
 
-  typeClass() {
+  typeClass(): string {
     return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
   }
 
-  validate(value) {
+  validate(value: string): boolean {
     const { inputPattern, inputValidator, inputErrorMessage } = this.props;
     let editorErrorMessage;
 
@@ -60,7 +69,7 @@ export default class MessageBox extends Component {
     return !editorErrorMessage;
   }
 
-  handleAction(action) {
+  handleAction(action: string) {
     const { modal, promise, showInput } = this.props;
 
     if (modal) {

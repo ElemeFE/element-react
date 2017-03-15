@@ -39,16 +39,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function converSelectRange(props) {
   var selectableRange = [];
   if (props.selectableRange) {
-    (function () {
-      var ranges = props.selectableRange;
-      var parser = _constants.TYPE_VALUE_RESOLVER_MAP.datetimerange.parser;
-      var format = _constants.DEFAULT_FORMATS.timerange;
+    var ranges = props.selectableRange;
+    var parser = _constants.TYPE_VALUE_RESOLVER_MAP.datetimerange.parser;
+    var format = _constants.DEFAULT_FORMATS.timerange;
 
-      ranges = Array.isArray(ranges) ? ranges : [ranges];
-      selectableRange = ranges.map(function (range) {
-        return parser(range, format);
-      });
-    })();
+    ranges = Array.isArray(ranges) ? ranges : [ranges];
+    selectableRange = ranges.map(function (range) {
+      return parser(range, format);
+    });
   }
   return selectableRange;
 }

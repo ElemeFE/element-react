@@ -1,4 +1,6 @@
-export function accSub(arg1, arg2) {
+/* @flow */
+
+export function accSub(arg1: number, arg2: number): number {
   var r1, r2, m, n;
   try {
     r1 = arg1.toString().split('.')[1].length;
@@ -15,7 +17,7 @@ export function accSub(arg1, arg2) {
   return parseFloat(((arg1 * m - arg2 * m) / m).toFixed(n));
 }
 
-export function accAdd(arg1, arg2) {
+export function accAdd(arg1: number, arg2: number): number {
   var r1, r2, m, c;
   try {
     r1 = arg1.toString().split('.')[1].length;

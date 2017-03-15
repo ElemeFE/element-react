@@ -3,18 +3,18 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
 var scrollBarWidth = void 0;
 
 var getScrollBarWidth = exports.getScrollBarWidth = function getScrollBarWidth() {
   if (scrollBarWidth !== undefined) return scrollBarWidth;
-
   var outer = document.createElement('div');
+  var body = document.body || outer;
+
   outer.style.visibility = 'hidden';
   outer.style.width = '100px';
   outer.style.position = 'absolute';
   outer.style.top = '-9999px';
-  document.body.appendChild(outer);
+  body.appendChild(outer);
 
   var widthNoScroll = outer.offsetWidth;
   outer.style.overflow = 'scroll';
@@ -24,7 +24,8 @@ var getScrollBarWidth = exports.getScrollBarWidth = function getScrollBarWidth()
   outer.appendChild(inner);
 
   var widthWithScroll = inner.offsetWidth;
-  outer.parentNode.removeChild(outer);
+  var outerParent = outer.parentNode || body;
+  outerParent.removeChild(outer);
 
   return widthNoScroll - widthWithScroll;
 };

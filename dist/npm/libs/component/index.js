@@ -67,10 +67,6 @@ Component.propTypes = {
   className: _react2.default.PropTypes.string,
   style: _react2.default.PropTypes.object
 };
-
-Component.defaultProps = {
-  style: {}
-};
 ;
 
 var _temp = function () {

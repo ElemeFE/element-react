@@ -45,14 +45,15 @@ var SvPanel = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      (0, _draggable2.default)(this.$el, {
+      var dragConfig = {
         drag: function drag(event) {
           _this2.handleDrag(event);
         },
         end: function end(event) {
           _this2.handleDrag(event);
         }
-      });
+      };
+      (0, _draggable2.default)(this.$el, dragConfig);
       this.update();
     }
   }, {

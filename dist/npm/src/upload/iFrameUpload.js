@@ -80,9 +80,11 @@ var IframeUpload = function (_Component) {
   }, {
     key: 'handleChange',
     value: function handleChange(e) {
-      var file = e.target.value;
-      if (file) {
-        this.uploadFiles(file);
+      if (e.target instanceof HTMLInputElement) {
+        var file = e.target.files[0];
+        if (file) {
+          this.uploadFiles(file);
+        }
       }
     }
   }, {
@@ -193,6 +195,9 @@ var IframeUpload = function (_Component) {
   return IframeUpload;
 }(_libs.Component);
 
+IframeUpload.defaultProps = {
+  name: 'file'
+};
 var _default = IframeUpload;
 exports.default = _default;
 
@@ -207,10 +212,6 @@ IframeUpload.propTypes = {
   onSuccess: _libs.PropTypes.func,
   onError: _libs.PropTypes.func,
   listType: _libs.PropTypes.string
-};
-
-IframeUpload.defaultProps = {
-  name: 'file'
 };
 ;
 

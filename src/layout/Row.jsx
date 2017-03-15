@@ -1,14 +1,16 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Row extends Component {
-  getChildContext() {
+  getChildContext(): Object {
     return {
       gutter: this.props.gutter
     };
   }
 
-  getStyle() {
+  getStyle(): Object {
     const style = {};
 
     if (this.props.gutter) {

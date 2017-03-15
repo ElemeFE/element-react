@@ -68,6 +68,7 @@ var Table = function (_Component) {
       headerHeight: '',
       realTableHeaderHeight: '',
       realTableHeight: '',
+      realTableWidth: '',
       resizeProxyVisible: false,
 
       scrollY: false, //表格竖Y轴是否有滚动条,
@@ -88,16 +89,18 @@ var Table = function (_Component) {
     value: function componentDidMount() {
       this.initLayout();
 
-      Object.defineProperty(this, 'filterContainer', {
+      var des = {
         get: this._filterContainer.bind(this)
-      });
+      };
+      Object.defineProperty(this, 'filterContainer', des);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       if (this._filterContainer instanceof HTMLElement) {
-        _reactDom2.default.unmountComponentAtNode(this._filterContainer);
-        document.body.removeChild(this._filterContainer);
+        var body = document.body || document;
+        _reactDom2.default.unmountComponentAtNode(this.filterContainer);
+        body.removeChild(this.filterContainer);
       }
     }
   }, {
@@ -120,9 +123,10 @@ var Table = function (_Component) {
     value: function _filterContainer() {
       if (!this._filterCon) {
         this._filterCon = document.createElement('div');
-        this._filterCon.style = "position:absolute;left:0;top:0";
+        this._filterCon.style.cssText = "position:absolute;left:0;top:0";
         this._filterCon.id = "__filter__" + Math.random(32).toString().slice(2);
-        document.body.appendChild(this._filterCon);
+        var body = document.body || document.createElement('body');
+        body.appendChild(this._filterCon);
       }
 
       return this._filterCon;
@@ -140,7 +144,7 @@ var Table = function (_Component) {
       var headerComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
       var thisTableWidth = parseFloat(headerComputedStyle.getPropertyValue('width'));
       var realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
-      var bodyWidth = (0, _mixins.scheduleLayout)(this.state._columns, thisTableWidth, undefined, fit).bodyWidth;
+      var bodyWidth = (0, _mixins.scheduleLayout)(this.state._columns, thisTableWidth, 0, fit).bodyWidth;
       var headerHeight = this.refs.headerWrapper.offsetHeight;
       var bodyHeight = height ? height - headerHeight : '';
 
@@ -166,7 +170,7 @@ var Table = function (_Component) {
           scrollY = _state.scrollY;
 
 
-      var layout = (0, _mixins.scheduleLayout)(_columns, realTableWidth, scrollY, this.props.fit);
+      var layout = (0, _mixins.scheduleLayout)(_columns, realTableWidth, Number(scrollY), this.props.fit);
       this.setState({
         bodyWidth: layout.bodyWidth
       }, function () {
@@ -196,15 +200,17 @@ var Table = function (_Component) {
     }
   }, {
     key: 'onScrollBodyWrapper',
-    value: function onScrollBodyWrapper(e) {
-      var target = e ? e.target : this.refs.bodyWrapper;
+    value: function onScrollBodyWrapper() {
+      var target = arguments[0] ? arguments[0].target : this.refs.bodyWrapper;
       var headerWrapper = this.refs.headerWrapper;
       var fixedBodyWrapper = this.refs.fixedBodyWrapper;
       var rightFixedBodyWrapper = this.refs.rightFixedBodyWrapper;
 
-      headerWrapper.scrollLeft = target.scrollLeft;
-      fixedBodyWrapper && (fixedBodyWrapper.scrollTop = target.scrollTop);
-      rightFixedBodyWrapper && (rightFixedBodyWrapper.scrollTop = target.scrollTop);
+      if (target instanceof HTMLDivElement) {
+        headerWrapper.scrollLeft = target.scrollLeft;
+        fixedBodyWrapper && (fixedBodyWrapper.scrollTop = target.scrollTop);
+        rightFixedBodyWrapper && (rightFixedBodyWrapper.scrollTop = target.scrollTop);
+      }
     }
   }, {
     key: 'sortBy',
@@ -396,23 +402,6 @@ exports.default = _default;
 
 Table.childContextTypes = {
   $owerTable: _react2.default.PropTypes.object
-};
-
-Table.propTypes = {
-  columns: _libs.PropTypes.array.isRequired,
-  data: _libs.PropTypes.array.isRequired,
-  height: _libs.PropTypes.number,
-  stripe: _libs.PropTypes.bool,
-  border: _libs.PropTypes.bool,
-  fit: _libs.PropTypes.bool,
-  rowClassName: _libs.PropTypes.func,
-  style: _libs.PropTypes.object,
-  highlightCurrentRow: _libs.PropTypes.bool,
-
-  //Event
-  onCurrentChange: _libs.PropTypes.func,
-  onSelectAll: _libs.PropTypes.func,
-  onSelectChange: _libs.PropTypes.func
 };
 
 Table.defaultProps = {
