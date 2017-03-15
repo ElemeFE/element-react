@@ -1,10 +1,8 @@
 [ignore]
-.*/node_modules/.*
 
 [include]
 
 [libs]
-flow
 
 [options]
-esproposal.class_static_fields=enable
+esproposal.class_static_fields = enable
