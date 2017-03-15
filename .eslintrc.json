@@ -7,11 +7,6 @@
     "commonjs": true,
     "es6": true
   },
-  "settings": {
-    "flowtype": {
-      "onlyFilesWithFlowAnnotation": true
-    }
-  },
   "rules": {
     "jsx-a11y/no-static-element-interactions": 0,
     "react/self-closing-comp": 0,

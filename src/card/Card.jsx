@@ -1,8 +1,16 @@
+/* @flow */
+
 import React, { PropTypes } from 'react';
 import { Component } from '../../libs';
 
 export default class Card extends Component {
-  render() {
+  static defaultProps = {
+    bodyStyle: {
+      padding: '20px'
+    }
+  }
+  
+  render(): React.Element<any> {
     const { header, bodyStyle, children } = this.props;
     return (
       <div style={this.style()} className={this.className('el-card')}>
@@ -20,10 +28,4 @@ export default class Card extends Component {
 Card.propTypes = {
   header: PropTypes.node,
   bodyStyle: PropTypes.object
-};
-
-Card.defaultProps = {
-  bodyStyle: {
-    padding: '20px'
-  }
 };
