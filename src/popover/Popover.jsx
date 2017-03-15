@@ -1,20 +1,31 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
-export default class Popover extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {};
+export default class Popover extends Component {
+  static defaultProps = {
+    visibleArrow: true,
+    transition: 'fade-in-linear',
+    trigger: 'click',
+    placement: 'bottom',
+    width: 150
   }
 
-  componentDidMount() {
+  constructor(props: Object) {
+    super(props);
+  }
+
+  componentDidMount(): void {
     const { trigger } = this.props, popper = this.refs.popper;
 
     this.element = ReactDOM.findDOMNode(this);
     this.reference = ReactDOM.findDOMNode(this.refs.reference);
+
+    if (this.reference === null) return;
 
     if (trigger === 'click') {
       this.reference.addEventListener('click', () => {
@@ -23,7 +34,7 @@ export default class Popover extends Component {
         });
       });
 
-      document.addEventListener('click', e => {
+      document.addEventListener('click', (e: Event): void => {
         if (!this.element || this.element.contains(e.target) ||
             !this.reference || this.reference.contains(e.target) ||
             !popper || popper.contains(e.target)) return;
@@ -49,7 +60,7 @@ export default class Popover extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     const { showPopper } = this.state;
 
     if (showPopper) {
@@ -73,7 +84,7 @@ export default class Popover extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: Object): void {
     if (props.visible != this.props.visible) {
       this.setState({
         showPopper: props.visible
@@ -81,7 +92,7 @@ export default class Popover extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.reference.parentNode.replaceChild(this.reference.cloneNode(true), this.reference);
 
     if (this.popperJS) {
@@ -89,7 +100,7 @@ export default class Popover extends Component {
     }
   }
 
-  handleMouseEnter() {
+  handleMouseEnter(): void {
     clearTimeout(this.timer);
 
     this.setState({
@@ -97,7 +108,7 @@ export default class Popover extends Component {
     });
   }
 
-  handleMouseLeave() {
+  handleMouseLeave(): void {
     this.timer = setTimeout(() => {
       this.setState({
         showPopper: false
@@ -105,7 +116,7 @@ export default class Popover extends Component {
     }, 200);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { transition, popperClass, width, title, content, visibleArrow } = this.props;
 
     return (
@@ -136,11 +147,3 @@ Popover.propTypes = {
   visible: PropTypes.bool,
   visibleArrow: PropTypes.bool
 }
-
-Popover.defaultProps = {
-  visibleArrow: true,
-  transition: 'fade-in-linear',
-  trigger: 'click',
-  placement: 'bottom',
-  width: 150
-};

@@ -1,9 +1,27 @@
+/* @flow */
+
 import React from 'react';
 import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
+type State = {
+  showPopper: boolean;
+}
+
 export default class Tooltip extends Component {
-  constructor(props) {
+  state: State;
+
+  static defaultProps = {
+    effect: "dark",
+    placement: "bottom",
+    disabled: false,
+    transition: "fade-in-linear",
+    visibleArrow: true,
+    openDelay: 0,
+    manual: false
+  }
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -11,7 +29,7 @@ export default class Tooltip extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: Object): void {
     if (props.visible != this.props.visible) {
       this.setState({
         showPopper: props.visible
@@ -19,7 +37,7 @@ export default class Tooltip extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     const { showPopper } = this.state;
 
     if (showPopper) {
@@ -44,13 +62,13 @@ export default class Tooltip extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.popperJS) {
       this.popperJS.destroy();
     }
   }
 
-  showPopper() {
+  showPopper(): void {
     if (this.props.manual) return ;
 
     this.timeout = setTimeout(() => {
@@ -58,14 +76,14 @@ export default class Tooltip extends Component {
     }, this.props.openDelay);
   }
 
-  hidePopper() {
+  hidePopper(): void {
     if (this.props.manual) return ;
 
     clearTimeout(this.timeout);
     this.setState({ showPopper: false});
   }
 
-  render() {
+  render(): React.Element<any> {
     const { effect, content, disabled, transition, visibleArrow } = this.props;
 
     return (
@@ -105,14 +123,4 @@ Tooltip.propTypes = {
   manual: PropTypes.bool,
   // 手动控制状态的展示
   visible: PropTypes.bool
-};
-
-Tooltip.defaultProps = {
-  effect: "dark",
-  placement: "bottom",
-  disabled: false,
-  transition: "fade-in-linear",
-  visibleArrow: true,
-  openDelay: 0,
-  manual: false
 };

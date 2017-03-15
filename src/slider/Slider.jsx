@@ -1,30 +1,51 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import InputNumber from '../input-number';
 import SliderButton from './Button';
 
+type State = {
+  firstValue: number,
+  secondValue: number,
+  oldValue: number | Array<number>,
+  precision: number,
+  inputValue: number,
+  dragging: boolean,
+}
+
 export default class Slider extends Component {
-  constructor(props) {
+  state: State;
+
+  static defaultProps = {
+    showInputControls: true,
+    min: 0,
+    max: 100,
+    step: 1,
+    value: 0
+  }
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
-      firstValue: null,
-      secondValue: null,
-      oldValue: null,
+      firstValue: 0,
+      secondValue: 0,
+      oldValue: 0,
       precision: 0,
-      inputValue: null,
+      inputValue: 0,
       dragging: false
     }
   }
 
-  getChildContext() {
+  getChildContext(): Object {
     return {
       component: this
     };
   }
 
-  componentDidMount() {
+  componentWillMount(): void {
     const { range, value, min, max, step } = this.props;
     let { firstValue, secondValue, oldValue, inputValue, precision } = this.state;
 
@@ -59,13 +80,14 @@ export default class Slider extends Component {
     this.setState({ firstValue, secondValue, oldValue, inputValue, precision });
   }
 
-  componentDidUpdate(props, state) {
+  componentWillUpdate(props: Object, state: State): void {
     if (props.min != this.props.min || props.max != this.props.max) {
       this.setValues();
     }
 
     if (props.value != this.props.value) {
-      if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && this.props.value.every((item, index) => item === oldVal[index])) {
+      const { oldValue } = this.state;
+      if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && Array.isArray(oldValue) && this.props.value.every((item, index) => item === oldValue[index])) {
         return;
       }
 
@@ -93,11 +115,11 @@ export default class Slider extends Component {
     }
   }
 
-  valueChanged() {
+  valueChanged(): boolean {
     const { range, value } = this.props;
     const { oldValue } = this.state;
 
-    if (range) {
+    if (range && Array.isArray(oldValue)) {
       return ![this.minValue(), this.maxValue()]
         .every((item, index) => item === oldValue[index]);
     } else {
@@ -105,7 +127,7 @@ export default class Slider extends Component {
     }
   }
 
-  setValues() {
+  setValues(): void {
     const { range, value, min, max } = this.props;
     let { firstValue, secondValue, oldValue, inputValue } = this.state;
 
@@ -147,7 +169,7 @@ export default class Slider extends Component {
     this.forceUpdate();
   }
 
-  setPosition(percent) {
+  setPosition(percent: number): void {
     const { range, min, max } = this.props;
     const { firstValue, secondValue } = this.state;
 
@@ -168,7 +190,7 @@ export default class Slider extends Component {
     this.refs[button].setPosition(percent);
   }
 
-  onSliderClick(event) {
+  onSliderClick(event: SyntheticMouseEvent): void {
     if (this.props.disabled || this.state.dragging) return;
 
     const sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
@@ -177,32 +199,32 @@ export default class Slider extends Component {
   }
 
   /* Watched Methods */
-  onValueChanged(val) {
+  onValueChanged(val: number | Array<number>): void {
     if (this.props.onChange) {
       this.props.onChange(val);
     }
   }
 
-  onInputValueChanged(e) {
+  onInputValueChanged(e: number): void {
     this.setState({
       inputValue: e,
       firstValue: e
     });
   }
 
-  onFirstValueChange(e) {
+  onFirstValueChange(e: number): void {
     this.setState({
       firstValue: e
     });
   }
 
-  onSecondValueChange(e) {
+  onSecondValueChange(e: number): void {
     this.setState({
       secondValue: e
     });
   }
 
-  onDraggingChanged(val) {
+  onDraggingChanged(val: boolean): void {
     if (!val) {
       this.setValues();
     }
@@ -210,11 +232,11 @@ export default class Slider extends Component {
 
   /* Computed Methods */
 
-  sliderWidth() {
+  sliderWidth(): number {
     return parseInt(this.refs.slider.offsetWidth, 10);
   }
 
-  stops() {
+  stops(): Array<number> {
     const { range, min, max, step } = this.props;
     const { firstValue } = this.state;
 
@@ -236,7 +258,7 @@ export default class Slider extends Component {
     }
   }
 
-  minValue() {
+  minValue(): number {
     return Math.min(this.state.firstValue, this.state.secondValue);
   }
 
@@ -244,19 +266,19 @@ export default class Slider extends Component {
     return Math.max(this.state.firstValue, this.state.secondValue);
   }
 
-  barWidth() {
+  barWidth(): string {
     return this.props.range
       ? `${ 100 * (this.maxValue() - this.minValue()) / (this.props.max - this.props.min) }%`
       : `${ 100 * (this.state.firstValue - this.props.min) / (this.props.max - this.props.min) }%`;
   }
 
-  barLeft() {
+  barLeft(): string {
     return this.props.range
       ? `${ 100 * (this.minValue() - this.props.min) / (this.props.max - this.props.min) }%`
       : '0%';
   }
 
-  render() {
+  render(): React.Element<any> {
     const { showInput, showStops, showInputControls, range, step, disabled, min, max } = this.props;
     const { inputValue, firstValue, secondValue } = this.state;
 
@@ -321,12 +343,4 @@ Slider.propTypes = {
   disabled: PropTypes.bool,
   range: PropTypes.bool,
   onChange: PropTypes.func
-}
-
-Slider.defaultProps = {
-  showInputControls: true,
-  min: 0,
-  max: 100,
-  step: 1,
-  value: 0
 }
