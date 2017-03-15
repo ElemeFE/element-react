@@ -1,69 +1,92 @@
+/* @flow */
+
 import React, { PropTypes } from 'react';
 import { Component, View } from '../../libs';
 
+type State = {
+  bodyOverflow: string,
+}
+
 export default class Dialog extends Component {
-  constructor(props) {
+  state: State;
+
+  static defaultProps = {
+    visible: false,
+    title: '',
+    size: 'small',
+    top: '15%',
+    modal: true,
+    lockScroll: true,
+    closeOnClickModal: true,
+    closeOnPressEscape: true
+  }
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
-      bodyOverflow: null
+      bodyOverflow: ''
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.willOpen(this.props, nextProps)){
-      if (this.props.lockScroll) {
-        if (!this.state.bodyOverflow) {
-          this.setState({
-            bodyOverflow: document.body.style.overflow
-          });
+  componentWillReceiveProps(nextProps: Object): void {
+
+      if (this.willOpen(this.props, nextProps)){
+        if (this.props.lockScroll && document.body && document.body.style) {
+          if (!this.state.bodyOverflow) {
+            this.setState({
+              bodyOverflow: document.body.style.overflow
+            });
+          }
+          document.body.style.overflow = 'hidden';
         }
-        document.body.style.overflow = 'hidden';
       }
-    }
 
-    if (this.willClose(this.props, nextProps) && this.props.lockScroll) {
-      if (this.props.modal && this.state.bodyOverflow !== 'hidden') {
-        document.body.style.overflow = this.state.bodyOverflow;
+      if (this.willClose(this.props, nextProps) && this.props.lockScroll) {
+        if (this.props.modal && this.state.bodyOverflow !== 'hidden' && document.body && document.body.style) {
+          document.body.style.overflow = this.state.bodyOverflow;
+        }
       }
-    }
+
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Object) {
     if (this.willOpen(prevProps, this.props)){
       this.refs.wrap.focus();
     }
   }
 
   componentWillUnmount() {
-    document.body.style.removeProperty('overflow');
+    if (document.body && document.body.style) document.body.style.removeProperty('overflow');
   }
 
-  onKeyDown(e) {
+  onKeyDown(e: SyntheticKeyboardEvent) {
     if (this.props.closeOnPressEscape && e.keyCode === 27) {
       this.close(e);
     }
   }
 
-  handleWrapperClick(e) {
-    if (this.props.closeOnClickModal && e.target === e.currentTarget) {
-      this.close(e);
+  handleWrapperClick(e: Event) {
+    if (e.target instanceof HTMLDivElement) {
+      if (this.props.closeOnClickModal && e.target === e.currentTarget) {
+        this.close(e);
+      }
     }
   }
 
-  close(e) {
+  close(e: Event | SyntheticKeyboardEvent) {
     this.props.onCancel(e);
   }
 
-  willOpen(prevProps, nextProps) {
+  willOpen(prevProps: Object, nextProps: Object) {
     return (!prevProps.visible && nextProps.visible);
   }
 
-  willClose(prevProps, nextProps) {
+  willClose(prevProps: Object, nextProps: Object) {
     return (prevProps.visible && !nextProps.visible);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { visible, title, size, top, modal, customClass } = this.props;
 
     return (
@@ -119,15 +142,4 @@ Dialog.propTypes = {
   closeOnPressEscape: PropTypes.bool,
   // 点击遮罩层或右上角叉或取消按钮的回调
   onCancel: PropTypes.func.isRequired
-};
-
-Dialog.defaultProps = {
-  visible: false,
-  title: '',
-  size: 'small',
-  top: '15%',
-  modal: true,
-  lockScroll: true,
-  closeOnClickModal: true,
-  closeOnPressEscape: true
 };
