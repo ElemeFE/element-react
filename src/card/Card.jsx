@@ -9,7 +9,7 @@ export default class Card extends Component {
       padding: '20px'
     }
   }
-  
+
   render(): React.Element<any> {
     const { header, bodyStyle, children } = this.props;
     return (

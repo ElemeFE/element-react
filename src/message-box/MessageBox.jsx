@@ -35,7 +35,7 @@ export default class MessageBox extends Component {
     })
   }
 
-  onChange(event: Object) {
+  onChange(event: SyntheticInputEvent): void {
     this.validate(event.target.value);
   }
 
@@ -69,7 +69,7 @@ export default class MessageBox extends Component {
     return !editorErrorMessage;
   }
 
-  handleAction(action: string) {
+  handleAction(action: string): void {
     const { modal, promise, showInput } = this.props;
 
     if (modal) {
@@ -102,7 +102,7 @@ export default class MessageBox extends Component {
     this.close();
   }
 
-  close() {
+  close(): void {
     this.setState({
       visible: false
     });
@@ -112,7 +112,7 @@ export default class MessageBox extends Component {
     }, 200);
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <div>
         <div style={{ position: 'absolute', zIndex: 2001 }}>

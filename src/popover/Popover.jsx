@@ -19,7 +19,7 @@ export default class Popover extends Component {
     super(props);
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     const { trigger } = this.props, popper = this.refs.popper;
 
     this.element = ReactDOM.findDOMNode(this);
@@ -84,7 +84,7 @@ export default class Popover extends Component {
     }
   }
 
-  componentWillReceiveProps(props: Object): void {
+  componentWillReceiveProps(props: Object) {
     if (props.visible != this.props.visible) {
       this.setState({
         showPopper: props.visible

@@ -29,7 +29,7 @@ export default class Tooltip extends Component {
     }
   }
 
-  componentWillReceiveProps(props: Object): void {
+  componentWillReceiveProps(props: Object) {
     if (props.visible != this.props.visible) {
       this.setState({
         showPopper: props.visible

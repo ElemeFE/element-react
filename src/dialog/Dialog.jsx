@@ -50,23 +50,23 @@ export default class Dialog extends Component {
 
   }
 
-  componentDidUpdate(prevProps: Object) {
+  componentDidUpdate(prevProps: Object): void {
     if (this.willOpen(prevProps, this.props)){
       this.refs.wrap.focus();
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (document.body && document.body.style) document.body.style.removeProperty('overflow');
   }
 
-  onKeyDown(e: SyntheticKeyboardEvent) {
+  onKeyDown(e: SyntheticKeyboardEvent): void {
     if (this.props.closeOnPressEscape && e.keyCode === 27) {
       this.close(e);
     }
   }
 
-  handleWrapperClick(e: Event) {
+  handleWrapperClick(e: SyntheticEvent): void {
     if (e.target instanceof HTMLDivElement) {
       if (this.props.closeOnClickModal && e.target === e.currentTarget) {
         this.close(e);
@@ -74,15 +74,15 @@ export default class Dialog extends Component {
     }
   }
 
-  close(e: Event | SyntheticKeyboardEvent) {
+  close(e: SyntheticEvent | SyntheticKeyboardEvent): void {
     this.props.onCancel(e);
   }
 
-  willOpen(prevProps: Object, nextProps: Object) {
+  willOpen(prevProps: Object, nextProps: Object): boolean {
     return (!prevProps.visible && nextProps.visible);
   }
 
-  willClose(prevProps: Object, nextProps: Object) {
+  willClose(prevProps: Object, nextProps: Object): boolean {
     return (prevProps.visible && !nextProps.visible);
   }
 

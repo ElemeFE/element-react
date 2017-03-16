@@ -3,7 +3,7 @@
 import { Component, PropTypes } from '../../libs';
 
 export default class MixinComponent extends Component {
-  parent(): Object {
+  parent(): Component {
     return this.context.component;
   }
 
@@ -22,7 +22,7 @@ export default class MixinComponent extends Component {
     return path;
   }
 
-  rootMenu(): Object {
+  rootMenu(): Component {
     let parent = this.parent();
 
     while (parent.instanceType !== 'Menu') {
