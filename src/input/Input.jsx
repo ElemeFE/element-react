@@ -1,10 +1,25 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import calcTextareaHeight from './calcTextareaHeight'
 
+type State = {
+  textareaStyle: null | { height: string }
+}
+
 export default class Input extends Component {
-  constructor(props) {
+  state: State;
+
+  static defaultProps = {
+    type: 'text',
+    autosize: false,
+    rows: 2,
+    autoComplete: 'off'
+  }
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -18,24 +33,24 @@ export default class Input extends Component {
 
   /* <Instance Methods */
 
-  focus() {
+  focus(): void {
     (this.refs.input || this.refs.textarea).focus();
   }
 
-  blur() {
+  blur(): void {
     (this.refs.input || this.refs.textarea).blur();
   }
 
   /* Instance Methods> */
 
-  fixControlledValue(value) {
+  fixControlledValue(value: mixed): mixed {
     if (typeof value === 'undefined' || value === null) {
       return '';
     }
     return value;
   }
 
-  handleChange(e) {
+  handleChange(e: SyntheticEvent): void {
     const { onChange } = this.props;
 
     if (onChange) {
@@ -45,22 +60,22 @@ export default class Input extends Component {
     this.resizeTextarea();
   }
 
-  handleFocus(e) {
+  handleFocus(e: SyntheticEvent): void {
     const { onFocus } = this.props;
     if (onFocus) onFocus(e)
   }
 
-  handleBlur(e) {
+  handleBlur(e: SyntheticEvent): void {
     const { onBlur } = this.props;
     if (onBlur) onBlur(e)
   }
 
-  handleIconClick(e) {
+  handleIconClick(e: SyntheticEvent): void {
     const { onIconClick } = this.props;
     if (onIconClick) onIconClick(e)
   }
 
-  resizeTextarea() {
+  resizeTextarea(): void {
     const { autosize, type } = this.props;
 
     if (!autosize || type !== 'textarea') {
@@ -75,7 +90,7 @@ export default class Input extends Component {
     });
   }
 
-  render() {
+  render(): React.Element<any> {
     const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave,
       ...otherProps
     } = this.props;
@@ -173,11 +188,4 @@ Input.propTypes = {
   // form related
   form: PropTypes.string,
   validating: PropTypes.bool,
-}
-
-Input.defaultProps = {
-  type: 'text',
-  autosize: false,
-  rows: 2,
-  autoComplete: 'off'
 }

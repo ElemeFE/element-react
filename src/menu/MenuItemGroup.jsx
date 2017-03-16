@@ -27,7 +27,7 @@ export default class MenuItemGroup extends MixinComponent {
     this.initPadding();
   }
 
-  initPadding() {
+  initPadding(): void {
     let level = 0, parent = this.parent(), component = parent.instanceType;
 
     while (component !== 'Menu') {
@@ -44,7 +44,7 @@ export default class MenuItemGroup extends MixinComponent {
     });
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <li style={this.style()} className={this.className('el-menu-item-group')}>
         <div className="el-menu-item-group__title" style={{

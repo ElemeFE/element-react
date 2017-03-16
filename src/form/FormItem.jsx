@@ -49,19 +49,19 @@ export default class FormItem extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.parent().removeField(this);
   }
 
-  parent(): Object {
+  parent(): Component {
     return this.context.component;
   }
 
-  onFieldBlur() {
+  onFieldBlur(): void {
     this.validate('blur');
   }
 
-  onFieldChange() {
+  onFieldChange(): void {
     if (this.validateDisabled) {
       this.validateDisabled = false;
 
@@ -71,7 +71,7 @@ export default class FormItem extends Component {
     this.validate('change');
   }
 
-  validate(trigger: string, cb: Function) {
+  validate(trigger: string, cb: Function): void {
     let { validating, valid, error } = this.state;
 
     var rules = this.getFilteredRule(trigger);
@@ -97,7 +97,7 @@ export default class FormItem extends Component {
     this.setState({ validating, valid, error });
   }
 
-  getInitialValue(): mixed {
+  getInitialValue(): string | void {
     var value = this.parent().props.model[this.props.prop];
 
     if (value === undefined) {
@@ -107,7 +107,7 @@ export default class FormItem extends Component {
     }
   }
 
-  resetField() {
+  resetField(): void {
     let { valid, error } = this.state;
 
     valid = true;
@@ -142,7 +142,7 @@ export default class FormItem extends Component {
     });
   }
 
-  labelStyle(): Object {
+  labelStyle(): { width: number } {
     var ret = {};
     var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
     if (labelWidth) {
@@ -151,7 +151,7 @@ export default class FormItem extends Component {
     return ret;
   }
 
-  contentStyle(): Object {
+  contentStyle(): { marginLeft: number } {
     var ret = {};
     var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
     if (labelWidth) {
@@ -167,7 +167,7 @@ export default class FormItem extends Component {
     return temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
   }
 
-  render() {
+  render(): React.Element<any> {
     const { error, validating, isRequired } = this.state;
     const { label, required } = this.props;
 
