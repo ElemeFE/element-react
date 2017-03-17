@@ -24,7 +24,7 @@ export default class SubMenu extends MixinComponent {
     };
   }
 
-  getChildContext(): Object {
+  getChildContext(): { component: SubMenu } {
     return {
       component: this
     };
@@ -35,17 +35,17 @@ export default class SubMenu extends MixinComponent {
     this.initEvents();
   }
 
-  onItemSelect(index: number, indexPath: Array<number>) {
+  onItemSelect(index: number, indexPath: Array<number>): void {
     this.setState({
       active: indexPath.indexOf(this.props.index) !== -1
     });
   }
 
-  handleClick() {
+  handleClick(): void {
     this.rootMenu().handleSubmenuClick(this.props.index, this.indexPath());
   }
 
-  handleMouseenter() {
+  handleMouseenter(): void {
     clearTimeout(this.timeout);
 
     this.timeout = setTimeout(() => {
@@ -53,7 +53,7 @@ export default class SubMenu extends MixinComponent {
     }, 300);
   }
 
-  handleMouseleave() {
+  handleMouseleave(): void {
     clearTimeout(this.timeout);
 
     this.timeout = setTimeout(() => {
@@ -61,7 +61,7 @@ export default class SubMenu extends MixinComponent {
     }, 300);
   }
 
-  initEvents() {
+  initEvents(): void {
     if (this.rootMenu().props.mode === 'horizontal' && this.rootMenu().props.menuTrigger === 'hover') {
       const triggerElm: any = ReactDOM.findDOMNode(this);
 
@@ -78,7 +78,7 @@ export default class SubMenu extends MixinComponent {
     return this.rootMenu().state.openedMenus.indexOf(this.props.index) !== -1;
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <li style={this.style()} className={this.className('el-submenu', {
         'is-active': this.state.active,

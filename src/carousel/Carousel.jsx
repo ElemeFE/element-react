@@ -6,21 +6,21 @@ import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
 type State = {
-  items: Array<any>,
+  items: Array<Component>,
   activeIndex: number,
   containerWidth: number,
-  timer: any,
+  timer: ?number,
   hover: boolean
 };
 
 type Context = {
-  component: any
+  component: Carousel
 };
 
 export default class Carousel extends Component {
   state: State;
-  throttledArrowClick: Function;
-  throttledIndicatorHover: Function;
+  throttledArrowClick: (index: number) => void;
+  throttledIndicatorHover: (index: number) => void;
 
   constructor(props: Object) {
     super(props);
@@ -60,7 +60,7 @@ export default class Carousel extends Component {
     this.startTimer();
   }
 
-  componentDidUpdate(props: Object, state: Object) {
+  componentDidUpdate(props: Object, state: State): void {
     if (state.activeIndex != this.state.activeIndex) {
       this.resetItemPosition();
 
@@ -70,21 +70,21 @@ export default class Carousel extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     removeResizeListener(this.refs.root, this.resetItemPosition.bind(this));
   }
 
-  handleMouseEnter() {
+  handleMouseEnter(): void {
     this.setState({ hover: true });
     this.pauseTimer();
   }
 
-  handleMouseLeave() {
+  handleMouseLeave(): void {
     this.setState({ hover: false });
     this.startTimer();
   }
 
-  itemInStage(item: any, index: number): mixed {
+  itemInStage(item: Component, index: number): mixed {
     const length = this.state.items.length;
 
     if (index === length - 1 && item.state.inStage && this.state.items[0].state.active ||
@@ -98,7 +98,7 @@ export default class Carousel extends Component {
     return false;
   }
 
-  handleButtonEnter(arrow: mixed) {
+  handleButtonEnter(arrow: mixed): void {
     this.state.items.forEach((item, index) => {
       if (arrow === this.itemInStage(item, index)) {
         item.setState({ hover: true });
@@ -106,19 +106,19 @@ export default class Carousel extends Component {
     });
   }
 
-  handleButtonLeave() {
+  handleButtonLeave(): void {
     this.state.items.forEach(item => {
       item.setState({ hover: false });
     });
   }
 
-  resetItemPosition() {
+  resetItemPosition(): void {
     this.state.items.forEach((item, index) => {
       item.translateItem(index, this.state.activeIndex);
     });
   }
 
-  playSlides() {
+  playSlides(): void {
     let { activeIndex } = this.state;
 
     if (activeIndex < this.state.items.length - 1) {
@@ -130,26 +130,26 @@ export default class Carousel extends Component {
     this.setState({ activeIndex });
   }
 
-  pauseTimer() {
+  pauseTimer(): void {
     clearInterval(this.timer);
   }
 
-  startTimer() {
+  startTimer(): void {
     if (this.props.interval <= 0 || !this.props.autoplay) return;
     this.timer = setInterval(this.playSlides.bind(this), Number(this.props.interval));
   }
 
-  addItem(item: any) {
+  addItem(item: Component): void {
     this.state.items.push(item);
     this.setActiveItem(0);
   }
 
-  removeItem(item: any) {
+  removeItem(item: Component): void {
     this.state.items.splice(this.state.items.indexOf(item), 1);
     this.setActiveItem(0);
   }
 
-  setActiveItem(index: number) {
+  setActiveItem(index: number): void {
     let { activeIndex } = this.state;
 
     if (typeof index === 'string') {
@@ -181,21 +181,21 @@ export default class Carousel extends Component {
     this.setState({ activeIndex });
   }
 
-  prev() {
+  prev(): void {
     this.setActiveItem(this.state.activeIndex - 1);
   }
 
-  next() {
+  next(): void {
     this.setActiveItem(this.state.activeIndex + 1);
   }
 
-  handleIndicatorClick(index: number) {
+  handleIndicatorClick(index: number): void {
     this.setState({
       activeIndex: index
     });
   }
 
-  handleIndicatorHover(index: number) {
+  handleIndicatorHover(index: number): void {
     if (this.props.trigger === 'hover' && index !== this.state.activeIndex) {
       this.setState({
         activeIndex: index
@@ -203,7 +203,7 @@ export default class Carousel extends Component {
     }
   }
 
-  render() {
+  render(): React.Element<any> {
     const { type, height, arrow, indicatorPosition } = this.props;
     const { hover, activeIndex, items } = this.state;
 

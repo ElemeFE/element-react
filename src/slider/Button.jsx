@@ -1,10 +1,28 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import Tooltip from '../tooltip';
 
+type State = {
+  hovering: boolean,
+  dragging: boolean,
+  startX: number,
+  currentX: number,
+  startPosition: number,
+  newPosition: number,
+  oldValue: number
+}
+
 export default class SliderButton extends Component {
-  constructor(props) {
+  state: State;
+
+  static defaultProps = {
+    value: 0
+  }
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -13,12 +31,12 @@ export default class SliderButton extends Component {
       startX: 0,
       currentX: 0,
       startPosition: 0,
-      newPosition: null,
+      newPosition: 0,
       oldValue: props.value
     }
   }
 
-  parent() {
+  parent(): Component {
     return this.context.component;
   }
 
@@ -30,21 +48,21 @@ export default class SliderButton extends Component {
     // this.$refs.tooltip && (this.$refs.tooltip.showPopper = false);
   }
 
-  handleMouseEnter() {
+  handleMouseEnter(): void {
     this.showTooltip();
     this.setState({
       hovering: true
     });
   }
 
-  handleMouseLeave() {
+  handleMouseLeave(): void {
     this.hideTooltip();
     this.setState({
       hovering: false
     });
   }
 
-  onButtonDown(event) {
+  onButtonDown(event: SyntheticMouseEvent) {
     if (this.disabled()) return;
 
     this.onDragStart(event);
@@ -54,7 +72,7 @@ export default class SliderButton extends Component {
     window.addEventListener('contextmenu', this.onDragEnd.bind(this));
   }
 
-  onDragStart(event) {
+  onDragStart(event: SyntheticMouseEvent) {
     this.setState({
       dragging: true,
       startX: event.clientX,
@@ -64,7 +82,7 @@ export default class SliderButton extends Component {
     });
   }
 
-  onDragging(event) {
+  onDragging(event: SyntheticMouseEvent) {
     if (this.state.dragging) {
       this.showTooltip();
 
@@ -101,7 +119,7 @@ export default class SliderButton extends Component {
     }
   }
 
-  setPosition(newPosition) {
+  setPosition(newPosition: number) {
     if (newPosition < 0) {
       newPosition = 0;
     } else if (newPosition > 100) {
@@ -126,31 +144,31 @@ export default class SliderButton extends Component {
 
   /* Computed Methods */
 
-  disabled() {
+  disabled(): boolean {
     return this.parent().props.disabled;
   }
 
-  max() {
+  max(): number {
     return this.parent().props.max;
   }
 
-  min() {
+  min(): number {
     return this.parent().props.min;
   }
 
-  step() {
+  step(): number {
     return this.parent().props.step;
   }
 
-  precision() {
+  precision(): number {
     return this.parent().state.precision;
   }
 
-  currentPosition() {
+  currentPosition(): string {
     return `${ (this.props.value - this.min()) / (this.max() - this.min()) * 100 }%`;
   }
 
-  render() {
+  render(): React.Element<any> {
     const { hovering, dragging } = this.state;
 
     return (
@@ -182,8 +200,4 @@ SliderButton.contextTypes = {
 SliderButton.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.number
-};
-
-SliderButton.defaultProps = {
-  value: 0
 };

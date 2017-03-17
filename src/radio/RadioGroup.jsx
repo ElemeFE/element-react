@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class RadioGroup extends Component {
-  getChildContext(): Object {
+  getChildContext(): { component: RadioGroup } {
     return {
       component: this
     };

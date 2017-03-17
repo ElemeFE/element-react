@@ -21,3 +21,11 @@ declare module 'throttle-debounce/debounce' {
     (): any
   }
 }
+
+declare module 'async-validator' {
+  declare class AsyncValidator {
+    constructor(options: Object): void;
+    validate(param?: any): void;
+  }
+  declare var exports: typeof AsyncValidator;
+}

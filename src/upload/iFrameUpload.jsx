@@ -22,7 +22,7 @@ export default class IframeUpload extends Component {
     }
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     const { action, onSuccess, onError } = this.props;
     const { file } = this.state;
     window.addEventListener('message', event => {

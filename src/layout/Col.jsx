@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Col extends Component {
-  getStyle(): Object {
+  getStyle(): { paddingLeft: string, paddingRight: string } {
     const style = {};
 
     if (this.context.gutter) {
@@ -15,7 +15,7 @@ export default class Col extends Component {
     return style;
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <div className={this.className('el-col', `el-col-${this.props.span}`,
         this.props.offset && `el-col-offset-${this.props.offset}`,
