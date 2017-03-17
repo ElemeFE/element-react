@@ -1,4 +1,5 @@
 /* @flow */
+
 import React from 'react'
 import { Component, PropTypes } from '../../libs'
 
@@ -21,57 +22,59 @@ export default class Checkbox extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps: Object){
+  componentWillReceiveProps(nextProps: Object): void {
     this.setState({
       checked: nextProps.checked, focus: nextProps.focus, label: this.getLabel(nextProps)
     })
   }
 
-  onFocus() {
+  onFocus(): void {
     this.setState({
       focus: true
     });
   }
 
-  onBlur() {
+  onBlur(): void {
     this.setState({
       focus: false
     });
   }
 
-  onChange(e: Object) {
+  onChange(e: SyntheticEvent): void {
     const { label } = this.state;
     const { trueLabel, falseLabel, value} = this.props;
-    const checked = e.target.checked;
-    let newLabel = label;
+    if (e.target instanceof HTMLInputElement) {
+      const checked = e.target.checked;
+      let newLabel = label;
 
-    if (this.props.trueLabel || this.props.falseLabel) {
-      newLabel = checked ? trueLabel : falseLabel;
-    }
-
-    if (this.props.onChange) {
-      if (this.context.isWrap) {
-        this.props.onChange(e, label, value);
-      } else {
-        this.props.onChange(e, label, value);
+      if (this.props.trueLabel || this.props.falseLabel) {
+        newLabel = checked ? trueLabel : falseLabel;
       }
-    }
 
-    this.setState({
-      checked: checked,
-      label: newLabel,
-    });
+      if (this.props.onChange) {
+        if (this.context.isWrap) {
+          this.props.onChange(e, label, value);
+        } else {
+          this.props.onChange(e, label, value);
+        }
+      }
+
+      this.setState({
+        checked: checked,
+        label: newLabel,
+      });
+    }
   }
 
-  getLabel(props: Object) {
+  getLabel(props: Object): string {
     if (props.trueLabel || props.falseLabel) {
       return props.checked ? props.trueLabel : props.falseLabel;
-    }else {
+    } else {
       return props.label;
     }
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <label style={this.style()} className={this.className('el-checkbox')}>
         <span className={this.classNames('el-checkbox__input', {

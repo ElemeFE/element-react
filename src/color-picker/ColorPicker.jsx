@@ -26,7 +26,7 @@ class ColorPicker extends Component {
     }
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     const { value, color } = this.state;
     if (value) {
       color.fromString(value);

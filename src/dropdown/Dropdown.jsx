@@ -22,7 +22,7 @@ class Dropdown extends Component {
     }
   }
 
-  getChildContext(): Object {
+  getChildContext(): { component: Dropdown } {
     return {
       component: this
     };
@@ -32,33 +32,33 @@ class Dropdown extends Component {
     this.initEvent();
   }
 
-  componentWillUpdate(props: Object, state: State) {
+  componentWillUpdate(props: Object, state: State): void {
     if (state.visible != this.state.visible) {
       this.refs.dropdown.onVisibleChange(state.visible);
     }
   }
 
-  handleClickOutside() {
+  handleClickOutside(): void {
     if (this.state.visible) {
       this.setState({ visible: false });
     }
   }
 
-  show() {
+  show(): void {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => this.setState({ visible: true }), 250);
   }
 
-  hide() {
+  hide(): void {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => this.setState({ visible: false }), 150);
   }
 
-  handleClick() {
+  handleClick(): void {
     this.setState({ visible: !this.state.visible });
   }
 
-  initEvent() {
+  initEvent(): void {
     const { trigger, splitButton } = this.props;
     const triggerElm: any = ReactDOM.findDOMNode(splitButton ? this.refs.trigger : this.refs.default);
 
@@ -75,7 +75,7 @@ class Dropdown extends Component {
     }
   }
 
-  handleMenuItemClick(command: string, instance: any) {
+  handleMenuItemClick(command: string, instance: Component): void {
     this.setState({
       visible: false
     });
@@ -85,7 +85,7 @@ class Dropdown extends Component {
     }
   }
 
-  render() {
+  render(): React.Element<any> {
     const { splitButton, type, size, menu } = this.props;
 
     return (

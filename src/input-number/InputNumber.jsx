@@ -29,7 +29,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  onKeyDown(e: Object) {
+  onKeyDown(e: SyntheticKeyboardEvent): void {
     e.preventDefault();
 
     switch (e.keyCode) {
@@ -44,7 +44,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  onBlur() {
+  onBlur(): void {
     let value = Number(this.state.value);
 
     if (isNaN(value) || value > this.props.max || value < this.props.min) {
@@ -54,11 +54,11 @@ export default class InputNumber extends Component {
     this.setState({ value });
   }
 
-  onInput(value: number) {
+  onInput(value: number): void {
     this.setState({ value }, this.onChange);
   }
 
-  onChange() {
+  onChange(): void {
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
     }
@@ -72,7 +72,7 @@ export default class InputNumber extends Component {
     return this.state.value + this.props.step > this.props.max;
   }
 
-  increase() {
+  increase(): void {
     const { step, max, disabled } = this.props;
     let { value, inputActive } = this.state;
 
@@ -87,7 +87,7 @@ export default class InputNumber extends Component {
     this.setState({ value, inputActive }, this.onChange);
   }
 
-  decrease() {
+  decrease(): void {
     const { step, min, disabled } = this.props;
     let { value, inputActive } = this.state;
 
@@ -102,7 +102,7 @@ export default class InputNumber extends Component {
     this.setState({ value, inputActive }, this.onChange);
   }
 
-  activeInput(disabled: boolean) {
+  activeInput(disabled: boolean): void {
     if (!this.props.disabled && !disabled) {
       this.setState({
         inputActive: true
@@ -110,7 +110,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  inactiveInput(disabled: boolean) {
+  inactiveInput(disabled: boolean): void {
     if (!this.props.disabled && !disabled) {
       this.setState({
         inputActive: false
@@ -118,7 +118,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  render() {
+  render(): React.Element<any> {
     const { controls, disabled } = this.props;
 
     return (

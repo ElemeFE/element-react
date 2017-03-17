@@ -1,4 +1,5 @@
 /* @flow */
+
 import React, { Children } from 'react';
 import { Component, PropTypes } from '../../libs'
 
@@ -16,7 +17,7 @@ export default class CheckboxGroup extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps: Object) {
+  componentWillReceiveProps(nextProps: Object): void {
     if (nextProps.options !== this.props.options) {
       this.setState({
         options: nextProps.options
@@ -24,29 +25,31 @@ export default class CheckboxGroup extends Component {
     }
   }
 
-  getChildContext () {
+  getChildContext (): { isWrap: boolean } {
     return { isWrap: true };
   }
 
-  onChange(e: Object, label: string, value: string) {
+  onChange(e: SyntheticEvent, label: string, value: string): void {
     const { options } = this.state;
     let newOptions;
-    if (e.target.checked) {
-      newOptions = options.concat(value || label);
-    } else {
-      newOptions = options.filter(v =>v !== value && v !== label);
-    }
+    if (e.target instanceof HTMLInputElement) {
+      if (e.target.checked) {
+        newOptions = options.concat(value || label);
+      } else {
+        newOptions = options.filter(v =>v !== value && v !== label);
+      }
 
-    this.setState({
-      options: newOptions
-    });
+      this.setState({
+        options: newOptions
+      });
 
-    if (this.props.onChange) {
-      this.props.onChange(newOptions);
+      if (this.props.onChange) {
+        this.props.onChange(newOptions);
+      }
     }
   }
 
-  render() {
+  render(): React.Element<any> {
     const { options } = this.state;
     const children = Children.map(this.props.children, (child, index) => {
       return React.cloneElement(

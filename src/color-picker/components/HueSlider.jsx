@@ -16,7 +16,7 @@ export default class HueSlider extends Component {
     }
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     const { bar, thumb } = this.refs;
     const dragConfig: DragOptions = {
       drag: event => {
@@ -31,7 +31,7 @@ export default class HueSlider extends Component {
     this.update();
   }
 
-  handleClick(event: MouseEvent): void {
+  handleClick(event: SyntheticMouseEvent): void {
     const thumb = this.refs.thumb;
     const target = event.target;
     if (target !== thumb) {
@@ -39,7 +39,7 @@ export default class HueSlider extends Component {
     }
   }
 
-  handleDrag(event: MouseEvent): void {
+  handleDrag(event: SyntheticMouseEvent): void {
     const rect = this.$el.getBoundingClientRect();
     const { thumb } = this.refs;
     const { vertical, color } = this.props;
