@@ -32,11 +32,7 @@ export default class Radio extends Component {
 
     if (checked) {
       if (this.props.onChange) {
-        if (this.props.hasOwnProperty('model')) {
-          this.props.onChange(this.props.value);
-        } else {
-          this.props.onChange(e);
-        }
+        this.props.onChange(this.props.value);
       }
     }
 

@@ -40,9 +40,7 @@ var RadioGroup = function (_Component) {
     key: 'onChange',
     value: function onChange(value) {
       if (this.props.onChange) {
-        this.props.onChange({
-          target: Object.assign(this.refs.RadioGroup, { value: value })
-        });
+        this.props.onChange(value);
       }
     }
   }, {

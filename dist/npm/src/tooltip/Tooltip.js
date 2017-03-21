@@ -152,6 +152,15 @@ var Tooltip = function (_Component) {
   return Tooltip;
 }(_libs.Component);
 
+Tooltip.defaultProps = {
+  effect: "dark",
+  placement: "bottom",
+  disabled: false,
+  transition: "fade-in-linear",
+  visibleArrow: true,
+  openDelay: 0,
+  manual: false
+};
 var _default = Tooltip;
 exports.default = _default;
 
@@ -175,16 +184,6 @@ Tooltip.propTypes = {
   manual: _libs.PropTypes.bool,
   // 手动控制状态的展示
   visible: _libs.PropTypes.bool
-};
-
-Tooltip.defaultProps = {
-  effect: "dark",
-  placement: "bottom",
-  disabled: false,
-  transition: "fade-in-linear",
-  visibleArrow: true,
-  openDelay: 0,
-  manual: false
 };
 ;
 

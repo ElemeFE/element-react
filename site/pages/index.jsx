@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import Install from './install';
 import QuickStart from './quick-start';
@@ -116,23 +117,44 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      page: this.getPage() || 'layout' // Do not change this line
-    };
+    this.state = {};
   }
 
-  componentDidMount() {
+  componentWillMount() {
     window.addEventListener("hashchange", () => {
-      this.setState({
-        page: this.getPage()
-      });
-
       window.scrollTo(0, 0);
+
+      this.setPage();
     }, false);
   }
 
+  componentDidMount() {
+    this.setPage(() => {
+      if (!this.state.locale) {
+        this.setLocale('zh-CN');
+      }
+    });
+  }
+
+  setLocale(locale) {
+    localStorage.setItem('ELEMENT_LANGUAGE', locale);
+    window.location.hash = `/${locale}/${this.state.page}`;
+  }
+
   getPage() {
-    return location.hash.substr(1);
+    const routes = location.hash.match(/(?:\/(.+))?\/(.+)/);
+
+    if (routes) {
+      this.state.locale = routes[1];
+
+      return routes[2];
+    }
+
+    return 'layout';
+  }
+
+  setPage(fn) {
+    this.setState({ page: this.getPage() }, fn);
   }
 
   getComponent(page) {
@@ -140,7 +162,11 @@ export default class App extends React.Component {
       return Object.assign(a, b);
     }, {}), pages.documents);
 
-    return this.components[page].component;
+    const result = this.components[page];
+
+    if (result) {
+      return React.createElement(result.component);
+    }
   }
 
   render() {
@@ -162,9 +188,9 @@ export default class App extends React.Component {
                 <a href="http://element.eleme.io/#/zh-CN/resource">资源</a>
               </li>
               <li className="nav-item">
-                <span className="nav-lang active">中文</span>
+                <span className={classnames('nav-lang', { active: this.state.locale === 'zh-CN'})} onClick={this.setLocale.bind(this, 'zh-CN')}>中文</span>
                 <span> / </span>
-                <span className="nav-lang">En</span>
+                <span className={classnames('nav-lang', { active: this.state.locale === 'en-US'})} onClick={this.setLocale.bind(this, 'en-US')}>En</span>
               </li>
             </ul>
           </div>
@@ -179,7 +205,7 @@ export default class App extends React.Component {
                     Object.keys(pages.documents).map(page => {
                       return (
                         <li className="nav-item" key={page}>
-                          <a href={`#${page}`} className={page === this.state.page ? 'active' : ''}>{pages.documents[page].title}</a>
+                          <a href={`/#/${this.state.locale}/${page}`} className={page === this.state.page ? 'active' : ''}>{pages.documents[page].title}</a>
                         </li>
                       )
                     })
@@ -198,7 +224,7 @@ export default class App extends React.Component {
                             Object.keys(pages.components[group]).map(page => {
                               return (
                                 <li key={page} className="nav-item">
-                                  <a href={`#${page}`} className={page === this.state.page ? 'active' : ''}>{pages.components[group][page].title}</a>
+                                  <a href={`/#/${this.state.locale}/${page}`} className={page === this.state.page ? 'active' : ''}>{pages.components[group][page].title}</a>
                                 </li>
                               )
                             })
@@ -211,11 +237,7 @@ export default class App extends React.Component {
               </li>
             </ul>
           </nav>
-          <div className="content">
-            {
-              React.createElement(this.getComponent(this.state.page))
-            }
-          </div>
+          <div className="content">{ this.getComponent(this.state.page) }</div>
         </div>
         <footer className="footer">
           <div className="container">

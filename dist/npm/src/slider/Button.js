@@ -38,7 +38,7 @@ var SliderButton = function (_Component) {
       startX: 0,
       currentX: 0,
       startPosition: 0,
-      newPosition: null,
+      newPosition: 0,
       oldValue: props.value
     };
     return _this;
@@ -236,6 +236,9 @@ var SliderButton = function (_Component) {
   return SliderButton;
 }(_libs.Component);
 
+SliderButton.defaultProps = {
+  value: 0
+};
 var _default = SliderButton;
 exports.default = _default;
 
@@ -247,10 +250,6 @@ SliderButton.contextTypes = {
 SliderButton.propTypes = {
   onChange: _libs.PropTypes.func.isRequired,
   value: _libs.PropTypes.number
-};
-
-SliderButton.defaultProps = {
-  value: 0
 };
 ;
 

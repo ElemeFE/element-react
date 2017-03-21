@@ -6,7 +6,6 @@
 
 :::demo 通过value属性控制当前显示的颜色。
 ```js
-
 render() {
   const color1 = '#20a0ff';
   const color2 = null;
@@ -23,7 +22,6 @@ render() {
     </div>
   )
 }
-
 ```
 :::
 
@@ -39,7 +37,6 @@ render() {
     </div>
   )
 }
-
 ```
 :::
 

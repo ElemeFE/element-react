@@ -155,20 +155,25 @@ render() {
 
 根据具体目标和制约因素，选择最佳的标签对齐方式。
 
-顶部对齐
-
-::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `top` 时标签会置于表单域的顶部
+::: demo 通过设置 `labelPosition` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `top` 时标签会置于表单域的顶部
 ```js
 constructor(props) {
   super(props);
 
   this.state = {
+    labelPosition: 'right',
     form: {
       name: '',
       region: '',
       type: ''
     }
   };
+}
+
+onPositionChange(e) {
+  this.setState({
+    labelPosition: e
+  });
 }
 
 onChange(key, e) {
@@ -179,103 +184,25 @@ onChange(key, e) {
 
 render() {
   return (
-    <Form labelPosition="top" model={this.state.form} className="demo-form-stacked">
-      <Form.Item label="名称">
-        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
-      </Form.Item>
-      <Form.Item label="活动区域">
-        <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')}></Input>
-      </Form.Item>
-      <Form.Item label="活动展开形式">
-        <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}></Input>
-      </Form.Item>
-    </Form>
-  )
-}
-```
-:::
-
-右对齐
-
-::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，默认不设置的情况下标签是右对齐的
-```js
-constructor(props) {
-  super(props);
-
-  this.state = {
-    form: {
-      name: '',
-      region: '',
-      type: ''
-    }
-  };
-}
-
-onChange(key, e) {
-  this.setState({
-    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
-  });
-}
-
-render() {
-  return (
-    <Form model={this.state.form} labelWidth="80">
-      <Form.Item label="名称">
-        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
-      </Form.Item>
-      <Form.Item label="活动区域">
-        <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')}></Input>
-      </Form.Item>
-      <Form.Item label="活动形式">
-        <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}></Input>
-      </Form.Item>
-    </Form>
-  )
-}
-```
-:::
-
-左对齐
-
-::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `left` 时标签会变为左对齐
-```js
-constructor(props) {
-  super(props);
-
-  this.state = {
-    form: {
-      name: '',
-      region: '',
-      type: ''
-    }
-  };
-}
-
-onSubmit(e) {
-  e.preventDefault();
-
-  console.log('submit!');
-}
-
-onChange(key, e) {
-  this.setState({
-    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
-  });
-}
-
-render() {
-  return (
-    <Form model={this.state.form} labelPosition="left" onSubmit={this.onSubmit.bind(this)} labelWidth="80">
-      <Form.Item label="名称">
-        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
-      </Form.Item>
-      <Form.Item label="活动区域">
-        <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')}></Input>
-      </Form.Item>
-      <Form.Item label="活动形式">
-        <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}></Input>
-      </Form.Item>
-    </Form>
+    <div>
+      <Radio.Group size="small" value={this.state.labelPosition} onChange={this.onPositionChange.bind(this)}>
+        <Radio.Button value="left">左对齐</Radio.Button>
+        <Radio.Button value="right">右对齐</Radio.Button>
+        <Radio.Button value="top">顶部对齐</Radio.Button>
+      </Radio.Group>
+      <div style={{ margin: 20 }}></div>
+      <Form labelPosition={this.state.labelPosition} labelWidth="100" model={this.state.form} className="demo-form-stacked">
+        <Form.Item label="名称">
+          <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
+        </Form.Item>
+        <Form.Item label="活动区域">
+          <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')}></Input>
+        </Form.Item>
+        <Form.Item label="活动展开形式">
+          <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}></Input>
+        </Form.Item>
+      </Form>
+    </div>
   )
 }
 ```
@@ -354,7 +281,7 @@ onChange(key, e) {
 
 render() {
   return (
-    <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
+    <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="80" className="demo-ruleForm">
       <Form.Item label="活动名称" prop="name">
         <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
       </Form.Item>

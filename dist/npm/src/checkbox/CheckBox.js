@@ -66,25 +66,27 @@ var Checkbox = function (_Component) {
           falseLabel = _props.falseLabel,
           value = _props.value;
 
-      var checked = e.target.checked;
-      var newLabel = label;
+      if (e.target instanceof HTMLInputElement) {
+        var _checked = e.target.checked;
+        var newLabel = label;
 
-      if (this.props.trueLabel || this.props.falseLabel) {
-        newLabel = checked ? trueLabel : falseLabel;
-      }
-
-      if (this.props.onChange) {
-        if (this.context.isWrap) {
-          this.props.onChange(e, label, value);
-        } else {
-          this.props.onChange(e, label, value);
+        if (this.props.trueLabel || this.props.falseLabel) {
+          newLabel = _checked ? trueLabel : falseLabel;
         }
-      }
 
-      this.setState({
-        checked: checked,
-        label: newLabel
-      });
+        if (this.props.onChange) {
+          if (this.context.isWrap) {
+            this.props.onChange(e, label, value);
+          } else {
+            this.props.onChange(e, label, value);
+          }
+        }
+
+        this.setState({
+          checked: _checked,
+          label: newLabel
+        });
+      }
     }
   }, {
     key: 'getLabel',

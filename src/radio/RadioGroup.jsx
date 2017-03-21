@@ -12,9 +12,7 @@ export default class RadioGroup extends Component {
 
   onChange(value: mixed) {
     if (this.props.onChange) {
-      this.props.onChange({
-        target: Object.assign(this.refs.RadioGroup, { value })
-      })
+      this.props.onChange(value)
     }
   }
 

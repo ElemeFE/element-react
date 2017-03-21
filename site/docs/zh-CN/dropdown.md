@@ -61,9 +61,7 @@ render() {
           <Dropdown.Item>双皮奶</Dropdown.Item>
           <Dropdown.Item>蚵仔煎</Dropdown.Item>
         </Dropdown.Menu>
-      )}>
-        更多菜单
-      </Dropdown>
+      )}>更多菜单</Dropdown>
     </div>
   )
 }
@@ -121,6 +119,62 @@ render() {
 ```
 :::
 
+### 菜单隐藏方式
+
+可以`hideOnClick`属性来配置。
+
+:::demo 下拉菜单默认在点击菜单项后会被隐藏，将`hideOnClick`属性默认为`false`可以关闭此功能。
+```js
+render() {
+  return (
+    <Dropdown hideOnClick={false} menu={(
+      <Dropdown.Menu>
+        <Dropdown.Item>黄金糕</Dropdown.Item>
+        <Dropdown.Item>狮子头</Dropdown.Item>
+        <Dropdown.Item>螺蛳粉</Dropdown.Item>
+        <Dropdown.Item disabled>双皮奶</Dropdown.Item>
+        <Dropdown.Item divided>蚵仔煎</Dropdown.Item>
+      </Dropdown.Menu>
+    )}>
+      <span className="el-dropdown-link">
+        下拉菜单<i className="el-icon-caret-bottom el-icon--right"></i>
+      </span>
+    </Dropdown>
+  )
+}
+```
+:::
+
+### 指令事件
+
+点击菜单项后会触发事件，用户可以通过相应的菜单项 key 进行不同的操作
+
+:::demo
+```js
+handleCommand(command) {
+  Message('click on item ' + command);
+}
+
+render() {
+  return (
+    <Dropdown onCommand={this.handleCommand.bind(this)} menu={(
+      <Dropdown.Menu>
+        <Dropdown.Item command="a">黄金糕</Dropdown.Item>
+        <Dropdown.Item command="b">狮子头</Dropdown.Item>
+        <Dropdown.Item command="c">螺蛳粉</Dropdown.Item>
+        <Dropdown.Item command="d" disabled>双皮奶</Dropdown.Item>
+        <Dropdown.Item command="e" divided>蚵仔煎</Dropdown.Item>
+      </Dropdown.Menu>
+    )}>
+      <span className="el-dropdown-link">
+        下拉菜单<i className="el-icon-caret-bottom el-icon--right"></i>
+      </span>
+    </Dropdown>
+  )
+}
+```
+:::
+
 ### Dropdown Attributes
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
@@ -129,6 +183,7 @@ render() {
 | splitButton  | 下拉触发元素呈现为按钮组    | boolean  |    —  |  false |
 | menuAlign    | 菜单水平对齐方向     | string          | start, end  | end |
 | trigger       | 触发下拉的行为     | string          | hover, click  | hover |
+| hideOnClick | 是否在点击菜单项后隐藏菜单     | boolean          | — | true |
 
 ### Dropdown Events
 | 事件名称      | 说明    | 回调参数      |

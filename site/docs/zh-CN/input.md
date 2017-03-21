@@ -63,6 +63,32 @@ render() {
 ```
 :::
 
+### 可自适应文本高度的文本域
+
+通过设置 `autosize` 属性可以使得文本域的高度能够根据文本内容自动进行调整，并且 `autosize` 还可以设定为一个对象，指定最小行数和最大行数。
+
+::: demo
+```js
+render() {
+  return (
+    <div>
+      <Input
+        type="textarea"
+        autosize={true}
+        placeholder="请输入内容"
+      />
+      <div style={{ margin: '20px 0' }}></div>
+      <Input
+        type="textarea"
+        autosize={{ minRows: 2, maxRows: 4}}
+        placeholder="请输入内容"
+      />
+    </div>
+  )
+}
+```
+:::
+
 ### 复合型输入框
 
 可前置或后置元素，一般为标签或按钮

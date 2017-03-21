@@ -31,7 +31,7 @@ export default class Markdown extends React.Component {
   }
 
   render() {
-    const document = this.document(navigator.language);
+    const document = this.document(localStorage.getItem('ELEMENT_LANGUAGE') || navigator.language);
 
     if (typeof document === 'string') {
       this.components.clear();

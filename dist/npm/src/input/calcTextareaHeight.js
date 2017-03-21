@@ -32,7 +32,7 @@ function calcTextareaHeight(targetNode) {
 
   if (!hiddenTextarea) {
     hiddenTextarea = document.createElement('textarea');
-    document.body.appendChild(hiddenTextarea);
+    document.body && document.body.appendChild(hiddenTextarea);
   }
 
   var _calculateNodeStyling = calculateNodeStyling(targetNode),

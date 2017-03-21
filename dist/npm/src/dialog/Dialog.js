@@ -29,7 +29,7 @@ var Dialog = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Dialog.__proto__ || Object.getPrototypeOf(Dialog)).call(this, props));
 
     _this.state = {
-      bodyOverflow: null
+      bodyOverflow: ''
     };
     return _this;
   }
@@ -37,8 +37,9 @@ var Dialog = function (_Component) {
   _createClass(Dialog, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
+
       if (this.willOpen(this.props, nextProps)) {
-        if (this.props.lockScroll) {
+        if (this.props.lockScroll && document.body && document.body.style) {
           if (!this.state.bodyOverflow) {
             this.setState({
               bodyOverflow: document.body.style.overflow
@@ -49,7 +50,7 @@ var Dialog = function (_Component) {
       }
 
       if (this.willClose(this.props, nextProps) && this.props.lockScroll) {
-        if (this.props.modal && this.state.bodyOverflow !== 'hidden') {
+        if (this.props.modal && this.state.bodyOverflow !== 'hidden' && document.body && document.body.style) {
           document.body.style.overflow = this.state.bodyOverflow;
         }
       }
@@ -64,7 +65,7 @@ var Dialog = function (_Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      document.body.style.removeProperty('overflow');
+      if (document.body && document.body.style) document.body.style.removeProperty('overflow');
     }
   }, {
     key: 'onKeyDown',
@@ -76,8 +77,10 @@ var Dialog = function (_Component) {
   }, {
     key: 'handleWrapperClick',
     value: function handleWrapperClick(e) {
-      if (this.props.closeOnClickModal && e.target === e.currentTarget) {
-        this.close(e);
+      if (e.target instanceof HTMLDivElement) {
+        if (this.props.closeOnClickModal && e.target === e.currentTarget) {
+          this.close(e);
+        }
       }
     }
   }, {
@@ -164,6 +167,16 @@ var Dialog = function (_Component) {
   return Dialog;
 }(_libs.Component);
 
+Dialog.defaultProps = {
+  visible: false,
+  title: '',
+  size: 'small',
+  top: '15%',
+  modal: true,
+  lockScroll: true,
+  closeOnClickModal: true,
+  closeOnPressEscape: true
+};
 var _default = Dialog;
 exports.default = _default;
 
@@ -189,17 +202,6 @@ Dialog.propTypes = {
   closeOnPressEscape: _react.PropTypes.bool,
   // 点击遮罩层或右上角叉或取消按钮的回调
   onCancel: _react.PropTypes.func.isRequired
-};
-
-Dialog.defaultProps = {
-  visible: false,
-  title: '',
-  size: 'small',
-  top: '15%',
-  modal: true,
-  lockScroll: true,
-  closeOnClickModal: true,
-  closeOnPressEscape: true
 };
 ;
 
