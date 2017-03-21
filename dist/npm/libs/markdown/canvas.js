@@ -138,7 +138,7 @@ var Canvas = function (_React$Component) {
           _react2.default.createElement(
             'span',
             null,
-            '\u9690\u85CF\u4EE3\u7801'
+            this.props.locale.hide
           )
         ) : _react2.default.createElement(
           'div',
@@ -147,7 +147,7 @@ var Canvas = function (_React$Component) {
           _react2.default.createElement(
             'span',
             null,
-            '\u663E\u793A\u4EE3\u7801'
+            this.props.locale.show
           )
         )
       );
@@ -159,6 +159,15 @@ var Canvas = function (_React$Component) {
 
 var _default = Canvas;
 exports.default = _default;
+
+
+Canvas.propTypes = {
+  locale: _react2.default.PropTypes.object
+};
+
+Canvas.defaultProps = {
+  locale: {}
+};
 ;
 
 var _temp = function () {
