@@ -54,20 +54,22 @@ var CheckboxGroup = function (_Component) {
       var options = this.state.options;
 
       var newOptions = void 0;
-      if (e.target.checked) {
-        newOptions = options.concat(value || label);
-      } else {
-        newOptions = options.filter(function (v) {
-          return v !== value && v !== label;
+      if (e.target instanceof HTMLInputElement) {
+        if (e.target.checked) {
+          newOptions = options.concat(value || label);
+        } else {
+          newOptions = options.filter(function (v) {
+            return v !== value && v !== label;
+          });
+        }
+
+        this.setState({
+          options: newOptions
         });
-      }
 
-      this.setState({
-        options: newOptions
-      });
-
-      if (this.props.onChange) {
-        this.props.onChange(newOptions);
+        if (this.props.onChange) {
+          this.props.onChange(newOptions);
+        }
       }
     }
   }, {

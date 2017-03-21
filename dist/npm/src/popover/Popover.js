@@ -34,10 +34,7 @@ var Popover = function (_Component) {
   function Popover(props) {
     _classCallCheck(this, Popover);
 
-    var _this = _possibleConstructorReturn(this, (Popover.__proto__ || Object.getPrototypeOf(Popover)).call(this, props));
-
-    _this.state = {};
-    return _this;
+    return _possibleConstructorReturn(this, (Popover.__proto__ || Object.getPrototypeOf(Popover)).call(this, props));
   }
 
   _createClass(Popover, [{
@@ -50,6 +47,8 @@ var Popover = function (_Component) {
 
       this.element = _reactDom2.default.findDOMNode(this);
       this.reference = _reactDom2.default.findDOMNode(this.refs.reference);
+
+      if (this.reference === null) return;
 
       if (trigger === 'click') {
         this.reference.addEventListener('click', function () {
@@ -195,6 +194,13 @@ var Popover = function (_Component) {
   return Popover;
 }(_libs.Component);
 
+Popover.defaultProps = {
+  visibleArrow: true,
+  transition: 'fade-in-linear',
+  trigger: 'click',
+  placement: 'bottom',
+  width: 150
+};
 var _default = Popover;
 exports.default = _default;
 
@@ -209,14 +215,6 @@ Popover.propTypes = {
   transition: _libs.PropTypes.string,
   visible: _libs.PropTypes.bool,
   visibleArrow: _libs.PropTypes.bool
-};
-
-Popover.defaultProps = {
-  visibleArrow: true,
-  transition: 'fade-in-linear',
-  trigger: 'click',
-  placement: 'bottom',
-  width: 150
 };
 ;
 

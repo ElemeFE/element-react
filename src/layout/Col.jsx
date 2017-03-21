@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Col extends Component {
-  getStyle(): Object {
+  getStyle(): { paddingLeft: string, paddingRight: string } {
     const style = {};
 
     if (this.context.gutter) {
@@ -15,7 +15,7 @@ export default class Col extends Component {
     return style;
   }
 
-  render() {
+  render(): React.Element<any> {
     let classList = [];
 
     ['span', 'offset', 'pull', 'push'].forEach(prop => {
@@ -42,7 +42,7 @@ export default class Col extends Component {
         classList.push(`el-col-${size}-${Number(this.props[size])}`);
       }
     });
-
+    
     return (
       <div
         className={this.className('el-col', classList)}

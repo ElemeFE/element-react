@@ -19,7 +19,7 @@ export default class AjaxUpload extends Component {
     return str.indexOf('image') !== -1;
   }
 
-  handleChange(e: Event): void {
+  handleChange(e: SyntheticEvent): void {
     if (e.target instanceof HTMLInputElement) {
       const files = e.target.files;
       if (!files) {

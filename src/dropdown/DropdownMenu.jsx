@@ -20,7 +20,7 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     const { showPopper } = this.state;
 
     if (showPopper) {
@@ -42,19 +42,19 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.popperJS) {
       this.popperJS.destroy();
     }
   }
 
-  onVisibleChange(visible: boolean) {
+  onVisibleChange(visible: boolean): void {
     this.setState({
       showPopper: visible
     })
   }
 
-  parent(): Object {
+  parent(): Component {
     return this.context.component;
   }
 
@@ -62,7 +62,7 @@ export default class DropdownMenu extends Component {
     return `bottom-${this.parent().props.menuAlign}`;
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <Transition name="md-fade-bottom">
         <View show={this.state.showPopper}>

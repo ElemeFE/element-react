@@ -27,7 +27,7 @@ export default class Radio extends Component {
     }
   }
 
-  onChange(e: Object) {
+  onChange(e: SyntheticInputEvent) {
     const checked = e.target.checked;
 
     if (checked) {

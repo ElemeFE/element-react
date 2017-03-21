@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 type State = {
-  fields: {},
+  fields: Object,
   fieldLength: number
 };
 
@@ -20,23 +20,23 @@ export default class Form extends Component {
     }
   }
 
-  getChildContext(): Object {
+  getChildContext(): { component: Form } {
     return {
       component: this
     };
   }
 
-  addField(field: any) {
+  addField(field: Component): void {
     this.state.fields[field.props.prop] = field;
     this.state.fieldLength++;
   }
 
-  removeField(field: any) {
+  removeField(field: Component): void {
     delete this.state.fields[field.props.prop];
     this.state.fieldLength--;
   }
 
-  resetFields() {
+  resetFields(): void {
     const { fields } = this.state;
 
     for (const key in fields) {
@@ -44,7 +44,7 @@ export default class Form extends Component {
     }
   }
 
-  validate(callback: Function) {
+  validate(callback: Function): void {
     const { fields, fieldLength } = this.state;
     let count = 0, valid = true;
 
@@ -61,7 +61,7 @@ export default class Form extends Component {
     }
   }
 
-  validateField(prop: string, cb: Function) {
+  validateField(prop: string, cb: Function): void {
     const { fields } = this.state;
     const field = fields[prop];
 
@@ -72,7 +72,7 @@ export default class Form extends Component {
     field.validate('', cb);
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <form style={this.style()} className={this.className('el-form', this.props.labelPosition && `el-form--label-${this.props.labelPosition}`, {
         'el-form--inline': this.props.inline

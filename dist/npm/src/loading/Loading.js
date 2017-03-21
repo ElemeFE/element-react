@@ -64,12 +64,18 @@ var Loading = function (_Component) {
   }, {
     key: 'disableScroll',
     value: function disableScroll() {
-      this.documentBody().style.setProperty('overflow', 'hidden');
+      var documentBody = this.documentBody();
+      if (documentBody) {
+        documentBody.style.setProperty('overflow', 'hidden');
+      }
     }
   }, {
     key: 'enableScroll',
     value: function enableScroll() {
-      this.documentBody().style.removeProperty('overflow');
+      var documentBody = this.documentBody();
+      if (documentBody) {
+        documentBody.style.removeProperty('overflow');
+      }
     }
   }, {
     key: 'render',

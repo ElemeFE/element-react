@@ -31,11 +31,11 @@ export default class CarouselItem extends Component {
     };
   }
 
-  componentWillMount() {
+  componentWillMount(): void {
     this.parent().addItem(this);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.parent().removeItem(this);
   }
 

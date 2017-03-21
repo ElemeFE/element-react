@@ -37,11 +37,11 @@ var Slider = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, props));
 
     _this.state = {
-      firstValue: null,
-      secondValue: null,
-      oldValue: null,
+      firstValue: 0,
+      secondValue: 0,
+      oldValue: 0,
       precision: 0,
-      inputValue: null,
+      inputValue: 0,
       dragging: false
     };
     return _this;
@@ -55,8 +55,8 @@ var Slider = function (_Component) {
       };
     }
   }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
       var _props = this.props,
           range = _props.range,
           value = _props.value,
@@ -102,15 +102,17 @@ var Slider = function (_Component) {
       this.setState({ firstValue: firstValue, secondValue: secondValue, oldValue: oldValue, inputValue: inputValue, precision: precision });
     }
   }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(props, state) {
+    key: 'componentWillUpdate',
+    value: function componentWillUpdate(props, state) {
       if (props.min != this.props.min || props.max != this.props.max) {
         this.setValues();
       }
 
       if (props.value != this.props.value) {
-        if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && this.props.value.every(function (item, index) {
-          return item === oldVal[index];
+        var _oldValue = this.state.oldValue;
+
+        if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && Array.isArray(_oldValue) && this.props.value.every(function (item, index) {
+          return item === _oldValue[index];
         })) {
           return;
         }
@@ -147,7 +149,7 @@ var Slider = function (_Component) {
       var oldValue = this.state.oldValue;
 
 
-      if (range) {
+      if (range && Array.isArray(oldValue)) {
         return ![this.minValue(), this.maxValue()].every(function (item, index) {
           return item === oldValue[index];
         });
@@ -400,6 +402,13 @@ var Slider = function (_Component) {
   return Slider;
 }(_libs.Component);
 
+Slider.defaultProps = {
+  showInputControls: true,
+  min: 0,
+  max: 100,
+  step: 1,
+  value: 0
+};
 var _default = Slider;
 exports.default = _default;
 
@@ -419,14 +428,6 @@ Slider.propTypes = {
   disabled: _libs.PropTypes.bool,
   range: _libs.PropTypes.bool,
   onChange: _libs.PropTypes.func
-};
-
-Slider.defaultProps = {
-  showInputControls: true,
-  min: 0,
-  max: 100,
-  step: 1,
-  value: 0
 };
 ;
 

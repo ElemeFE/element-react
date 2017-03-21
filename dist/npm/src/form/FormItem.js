@@ -40,6 +40,7 @@ var FormItem = function (_Component) {
 
     _this.state = {
       error: '',
+      valid: false,
       validating: false,
       isRequired: false
     };
@@ -71,9 +72,10 @@ var FormItem = function (_Component) {
           });
 
           var parent = _reactDom2.default.findDOMNode(this.parent());
-
-          parent.addEventListener('blur', this.onFieldBlur.bind(this));
-          parent.addEventListener('change', this.onFieldChange.bind(this));
+          if (parent) {
+            parent.addEventListener('blur', this.onFieldBlur.bind(this));
+            parent.addEventListener('change', this.onFieldChange.bind(this));
+          }
         }
       }
     }

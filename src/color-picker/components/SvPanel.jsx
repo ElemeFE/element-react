@@ -17,7 +17,7 @@ export default class SvPanel extends Component {
     }
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     const dragConfig: DragOptions = {
       drag: event => {
         this.handleDrag(event);
@@ -52,7 +52,7 @@ export default class SvPanel extends Component {
     })
   }
 
-  handleDrag(event: MouseEvent): void {
+  handleDrag(event: SyntheticMouseEvent): void {
     const { color } = this.props;
     const { onChange } = this.context;
     const el = this.$el;

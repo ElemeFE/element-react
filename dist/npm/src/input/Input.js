@@ -206,6 +206,12 @@ var Input = function (_Component) {
   return Input;
 }(_libs.Component);
 
+Input.defaultProps = {
+  type: 'text',
+  autosize: false,
+  rows: 2,
+  autoComplete: 'off'
+};
 var _default = Input;
 exports.default = _default;
 
@@ -248,13 +254,6 @@ Input.propTypes = {
   // form related
   form: _libs.PropTypes.string,
   validating: _libs.PropTypes.bool
-};
-
-Input.defaultProps = {
-  type: 'text',
-  autosize: false,
-  rows: 2,
-  autoComplete: 'off'
 };
 ;
 

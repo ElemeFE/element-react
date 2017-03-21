@@ -41,7 +41,7 @@ export default class Tabs extends Component {
     };
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     this.calcBarStyle(true);
   }
 
@@ -72,7 +72,7 @@ export default class Tabs extends Component {
     onTabAdd && onTabAdd();
   }
 
-  handleTabRemove(tab: React.Element<any>, index: number, e: Event): void {
+  handleTabRemove(tab: React.Element<any>, index: number, e: SyntheticEvent): void {
     const { children, currentName } = this.state;
     const { onTabRemove, onTabEdit } = this.props;
 
@@ -97,7 +97,7 @@ export default class Tabs extends Component {
     });
   }
 
-  handleTabClick(tab: React.Element<any>, e: Event): void | boolean {
+  handleTabClick(tab: React.Element<any>, e: SyntheticEvent): void | boolean {
     if (tab.props.disabled) {
       return false;
     }

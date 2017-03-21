@@ -17,7 +17,7 @@ export default class AlphaSlider extends Component {
     }
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     const { bar, thumb } = this.refs;
     const dragConfig: DragOptions = {
       drag: event => {
@@ -32,7 +32,7 @@ export default class AlphaSlider extends Component {
     this.update();
   }
 
-  handleClick(event: MouseEvent): void {
+  handleClick(event: SyntheticMouseEvent): void {
     const thumb = this.refs.thumb;
     const target = event.target;
     if (target !== thumb) {
@@ -40,7 +40,7 @@ export default class AlphaSlider extends Component {
     }
   }
 
-  handleDrag(event: MouseEvent): void {
+  handleDrag(event: SyntheticMouseEvent): void {
     const { vertical, color } = this.props;
     const { onChange } = this.context;
     const rect = this.$el.getBoundingClientRect();
