@@ -205,7 +205,7 @@ export default class App extends React.Component {
                     Object.keys(pages.documents).map(page => {
                       return (
                         <li className="nav-item" key={page}>
-                          <a href={`/#/${this.state.locale}/${page}`} className={page === this.state.page ? 'active' : ''}>{pages.documents[page].title}</a>
+                          <a href={`#/${this.state.locale}/${page}`} className={page === this.state.page ? 'active' : ''}>{pages.documents[page].title}</a>
                         </li>
                       )
                     })
@@ -224,7 +224,7 @@ export default class App extends React.Component {
                             Object.keys(pages.components[group]).map(page => {
                               return (
                                 <li key={page} className="nav-item">
-                                  <a href={`/#/${this.state.locale}/${page}`} className={page === this.state.page ? 'active' : ''}>{pages.components[group][page].title}</a>
+                                  <a href={`#/${this.state.locale}/${page}`} className={page === this.state.page ? 'active' : ''}>{pages.components[group][page].title}</a>
                                 </li>
                               )
                             })
