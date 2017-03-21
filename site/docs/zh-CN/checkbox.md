@@ -36,7 +36,7 @@ render() {
 
 适用于多个勾选框绑定到同一个数组的情景，通过是否勾选来表示这一组选项中的项。
 
-:::demo checkbox-group元素能把多个 checkbox 管理为一组，只需要在 Group 中使用options绑定Array类型的变量即可，label属性除了改变 checkbox 按钮后的介绍外，同时也是该 checkbox 对应的值，label与数组中的元素值相对应，如果存在指定的值则为选中状态，否则为不选中。
+:::demo Checkbox.Group元素能把多个 checkbox 管理为一组，只需要在 Group 中使用options绑定Array类型的变量即可，label属性除了改变 checkbox 按钮后的介绍外，同时也是该 checkbox 对应的值，label与数组中的元素值相对应，如果存在指定的值则为选中状态，否则为不选中。
 
 ```js
 constructor(props) {
@@ -96,16 +96,16 @@ handleCheckedCitiesChange(value) {
 }
 
 render() {
-  const cbItem = this.state.cities.map((city, index) => 
+  const cbItem = this.state.cities.map((city, index) =>
     <Checkbox key={index} label={city}></Checkbox>
   );
- 
+
   return (
     <div>
       <Checkbox checked={this.state.checkAll} indeterminate={this.state.isIndeterminate} onChange={(e) => this.handleCheckAllChange(e)}>全选</Checkbox>
       <div style={{margin: '15px 0'}}></div>
-      <Checkbox.Group 
-        options={this.state.checkedCities} 
+      <Checkbox.Group
+        options={this.state.checkedCities}
         onChange={(value) => this.handleCheckedCitiesChange(value)}>
         {cbItem}
       </Checkbox.Group>
@@ -115,11 +115,10 @@ render() {
 ```
 :::
 
-
 ### Checkbox Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| label     | 选中状态的值（只有在Checkbox-group下有意义）   | string    |       —        |      —   |
+| label     | 选中状态的值（只有在Checkbox.Group下有意义）   | string    |       —        |      —   |
 | trueLabel  | 选中时的值    | string, number   | — | — |
 | falseLabel  | 没有选中时的值    | string, number   | — | — |
 | disabled  | 按钮禁用    | boolean   | — | false |
@@ -131,12 +130,12 @@ render() {
 |---------- |-------- |---------- |
 | onChange  | 当绑定值变化时触发的事件 |  event 事件对象  |
 
-### Checkbox-group Attributes
+### Checkbox.Group Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
 | options  | 指定可选项    | array   | — | [ ] |
 
-### Checkbox-group Events
+### Checkbox.Group Events
 | 事件名称 | 说明 | 回调参数 |
 |---------- |-------- |---------- |
 | onChange  | 当绑定值变化时触发的事件 |  value 所有选中项  |

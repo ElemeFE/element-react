@@ -1,6 +1,6 @@
 {
   "name": "element-react",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "Element UI for React",
   "private": false,
   "main": "dist/npm/index.js",
@@ -55,6 +55,7 @@
     "node-sass": "^4.5.0",
     "raw-loader": "^0.5.1",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-router": "^4.0.0",
     "react-test-renderer": "^15.4.2",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.13.2",

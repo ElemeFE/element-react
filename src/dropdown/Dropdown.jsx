@@ -76,9 +76,11 @@ class Dropdown extends Component {
   }
 
   handleMenuItemClick(command: string, instance: any) {
-    this.setState({
-      visible: false
-    });
+    if (this.props.hideOnClick) {
+      this.setState({
+        visible: false
+      });
+    }
 
     if (this.props.onCommand) {
       this.props.onCommand(command, instance);
@@ -123,11 +125,13 @@ Dropdown.propTypes = {
   trigger: PropTypes.oneOf(['hover', 'click']),
   menuAlign: PropTypes.oneOf(['start', 'end']),
   splitButton: PropTypes.bool,
+  hideOnClick: PropTypes.bool,
   onClick: PropTypes.func,
   onCommand: PropTypes.func
 }
 
 Dropdown.defaultProps = {
+  hideOnClick: true,
   trigger: 'hover',
   menuAlign: 'end'
 }

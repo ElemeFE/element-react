@@ -2,7 +2,7 @@
 
 可同时展开多个面板，面板之间不影响
 
-:::demo 
+:::demo
 ```js
 render() {
   const activeName = "1";
@@ -61,7 +61,6 @@ render() {
     </Collapse>
   )
 }
-
 ```
 :::
 

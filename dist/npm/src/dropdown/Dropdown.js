@@ -121,9 +121,11 @@ var Dropdown = function (_Component) {
   }, {
     key: 'handleMenuItemClick',
     value: function handleMenuItemClick(command, instance) {
-      this.setState({
-        visible: false
-      });
+      if (this.props.hideOnClick) {
+        this.setState({
+          visible: false
+        });
+      }
 
       if (this.props.onCommand) {
         this.props.onCommand(command, instance);
@@ -177,11 +179,13 @@ Dropdown.propTypes = {
   trigger: _libs.PropTypes.oneOf(['hover', 'click']),
   menuAlign: _libs.PropTypes.oneOf(['start', 'end']),
   splitButton: _libs.PropTypes.bool,
+  hideOnClick: _libs.PropTypes.bool,
   onClick: _libs.PropTypes.func,
   onCommand: _libs.PropTypes.func
 };
 
 Dropdown.defaultProps = {
+  hideOnClick: true,
   trigger: 'hover',
   menuAlign: 'end'
 };

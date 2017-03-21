@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -44,9 +46,32 @@ var Col = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
+      var classList = [];
+
+      ['span', 'offset', 'pull', 'push'].forEach(function (prop) {
+        if (_this2.props[prop]) {
+          classList.push(prop !== 'span' ? 'el-col-' + prop + '-' + _this2.props[prop] : 'el-col-' + _this2.props[prop]);
+        }
+      });
+
+      ['xs', 'sm', 'md', 'lg'].forEach(function (size) {
+        if (_typeof(_this2.props[size]) === 'object') {
+          var props = _this2.props[size];
+          Object.keys(props).forEach(function (prop) {
+            classList.push(prop !== 'span' ? 'el-col-' + size + '-' + prop + '-' + props[prop] : 'el-col-' + size + '-' + props[prop]);
+          });
+        } else {
+          classList.push('el-col-' + size + '-' + Number(_this2.props[size]));
+        }
+      });
+
       return _react2.default.createElement(
         'div',
-        { className: this.className('el-col', 'el-col-' + this.props.span, this.props.offset && 'el-col-offset-' + this.props.offset, this.props.pull && 'el-col-pull-' + this.props.pull, this.props.push && 'el-col-push-' + this.props.push), style: this.style(this.getStyle()) },
+        {
+          className: this.className('el-col', classList),
+          style: this.style(this.getStyle()) },
         this.props.children
       );
     }
@@ -64,10 +89,18 @@ Col.contextTypes = {
 };
 
 Col.propTypes = {
-  span: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]).isRequired,
+  span: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
   offset: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
   pull: _libs.PropTypes.number,
-  push: _libs.PropTypes.number
+  push: _libs.PropTypes.number,
+  xs: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string, _libs.PropTypes.object]),
+  sm: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string, _libs.PropTypes.object]),
+  md: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string, _libs.PropTypes.object]),
+  lg: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string, _libs.PropTypes.object])
+};
+
+Col.defaultProps = {
+  span: 24
 };
 ;
 

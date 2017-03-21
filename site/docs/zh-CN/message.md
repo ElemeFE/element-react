@@ -27,21 +27,21 @@ render() {
 
 ```js
 open() {
-  Message('这是一条消息提示');
-}
-
-open2() {
   Message({
     message: '恭喜你，这是一条成功消息',
     type: 'success'
   });
 }
 
-open3() {
+open2() {
   Message({
     message: '警告哦，这是一条警告消息',
     type: 'warning'
   });
+}
+
+open3() {
+  Message('这是一条消息提示');
 }
 
 open4() {
@@ -71,23 +71,24 @@ render() {
 open5() {
   Message({
     showClose: true,
-    message: '这是一条消息提示'
+    message: '恭喜你，这是一条成功消息',
+    type: 'success'
   });
 }
 
 open6() {
   Message({
     showClose: true,
-    message: '恭喜你，这是一条成功消息',
-    type: 'success'
+    message: '警告哦，这是一条警告消息',
+    type: 'warning'
   });
 }
 
 open7() {
   Message({
     showClose: true,
-    message: '警告哦，这是一条警告消息',
-    type: 'warning'
+    message: '这是一条消息提示',
+    type: 'info'
   });
 }
 
@@ -121,7 +122,7 @@ element 为 Vue.prototype 添加了全局方法 $message。因此在 vue instanc
 单独引入 `Message`：
 
 ```
-import { Message } from 'element-ui';
+import { Message } from 'element-react';
 ```
 
 此时调用方法为 `Message(options)`。我们也为每个 type 定义了各自的方法，如 `Message.success(options)`。

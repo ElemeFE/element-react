@@ -6,7 +6,7 @@
 
 有两种触发子菜单的方式
 
-:::demo 只需为 Cascader 的`options`属性指定选项数组即可渲染出一个级联选择器。通过`expand-trigger`可以定义展开子级菜单的触发方式。本例还展示了`change`事件，它的参数为 Cascader 的绑定值：一个由各级菜单的值所组成的数组。
+:::demo 只需为 Cascader 的`options`属性指定选项数组即可渲染出一个级联选择器。通过`expandTrigger`可以定义展开子级菜单的触发方式。本例还展示了`onChange`事件，它的参数为 Cascader 的绑定值：一个由各级菜单的值所组成的数组。
 ```js
 constructor(props) {
   super(props);

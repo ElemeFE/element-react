@@ -31,8 +31,8 @@ render() {
           <span>这是一段信息</span>
         </Dialog.Body>
         <Dialog.Footer className="dialog-footer">
-          <Button onClick={ () => this.setState({ dialogVisible: false }) }>取 消</Button>
-          <Button type="primary" onClick={ () => this.setState({ dialogVisible: false }) }>确 定</Button>
+          <Button onClick={ () => this.setState({ dialogVisible: false }) }>取消</Button>
+          <Button type="primary" onClick={ () => this.setState({ dialogVisible: false }) }>确定</Button>
         </Dialog.Footer>
       </Dialog>
     </div>

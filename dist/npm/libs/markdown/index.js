@@ -94,7 +94,7 @@ var Markdown = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var document = this.document(navigator.language);
+      var document = this.document(localStorage.getItem('ELEMENT_LANGUAGE') || navigator.language);
 
       if (typeof document === 'string') {
         this.components.clear();

@@ -74,7 +74,7 @@ export default class FormItem extends Component {
   validate(trigger: string, cb: Function) {
     let { validating, valid, error } = this.state;
 
-    var rules = this.getFilteredRule(trigger);
+    const rules = this.getFilteredRule(trigger);
 
     if (!rules || rules.length === 0) {
       cb && cb();
@@ -83,9 +83,9 @@ export default class FormItem extends Component {
 
     validating = true;
 
-    var descriptor = { [this.props.prop]: rules };
-    var validator = new AsyncValidator(descriptor);
-    var model = { [this.props.prop]: this.fieldValue() };
+    const descriptor = { [this.props.prop]: rules };
+    const validator = new AsyncValidator(descriptor);
+    const model = { [this.props.prop]: this.fieldValue() };
 
     validator.validate(model, { firstFields: true }, errors => {
       valid = !errors;
@@ -98,7 +98,7 @@ export default class FormItem extends Component {
   }
 
   getInitialValue(): mixed {
-    var value = this.parent().props.model[this.props.prop];
+    const value = this.parent().props.model[this.props.prop];
 
     if (value === undefined) {
       return value;
@@ -127,15 +127,15 @@ export default class FormItem extends Component {
   }
 
   getRules(): [] {
-    var formRules = this.parent().props.rules;
-    var selfRuels = this.props.rules;
+    let formRules = this.parent().props.rules;
+    let selfRuels = this.props.rules;
 
     formRules = formRules ? formRules[this.props.prop] : [];
     return [].concat(selfRuels || formRules || []);
   }
 
   getFilteredRule(trigger: string): [] {
-    var rules = this.getRules();
+    const rules = this.getRules();
 
     return rules.filter(rule => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1;
@@ -143,27 +143,37 @@ export default class FormItem extends Component {
   }
 
   labelStyle(): Object {
-    var ret = {};
-    var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
+    const ret = {};
+
+    if (this.parent().props.labelPosition === 'top') return ret;
+
+    const labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
+
     if (labelWidth) {
       ret.width = Number(labelWidth);
     }
+
     return ret;
   }
 
   contentStyle(): Object {
-    var ret = {};
-    var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
+    const ret = {};
+
+    if (this.parent().props.labelPosition === 'top' || this.parent().props.inline) return ret;
+
+    const labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
+
     if (labelWidth) {
       ret.marginLeft = Number(labelWidth);
     }
+
     return ret;
   }
 
   fieldValue(): mixed {
-    var model = this.parent().props.model;
+    const model = this.parent().props.model;
     if (!model || !this.props.prop) { return; }
-    var temp = this.props.prop.split(':');
+    const temp = this.props.prop.split(':');
     return temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
   }
 
@@ -203,7 +213,7 @@ FormItem.contextTypes = {
 
 FormItem.propTypes = {
   label: PropTypes.string,
-  labelWidth: PropTypes.string,
+  labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   prop: PropTypes.string,
   required: PropTypes.bool,
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array])

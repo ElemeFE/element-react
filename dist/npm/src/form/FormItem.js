@@ -190,20 +190,30 @@ var FormItem = function (_Component) {
     key: 'labelStyle',
     value: function labelStyle() {
       var ret = {};
+
+      if (this.parent().props.labelPosition === 'top') return ret;
+
       var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
+
       if (labelWidth) {
         ret.width = Number(labelWidth);
       }
+
       return ret;
     }
   }, {
     key: 'contentStyle',
     value: function contentStyle() {
       var ret = {};
+
+      if (this.parent().props.labelPosition === 'top' || this.parent().props.inline) return ret;
+
       var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
+
       if (labelWidth) {
         ret.marginLeft = Number(labelWidth);
       }
+
       return ret;
     }
   }, {
@@ -271,7 +281,7 @@ FormItem.contextTypes = {
 
 FormItem.propTypes = {
   label: _libs.PropTypes.string,
-  labelWidth: _libs.PropTypes.string,
+  labelWidth: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
   prop: _libs.PropTypes.string,
   required: _libs.PropTypes.bool,
   rules: _libs.PropTypes.oneOfType([_libs.PropTypes.object, _libs.PropTypes.array])
