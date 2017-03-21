@@ -55,6 +55,7 @@
     "node-sass": "^4.5.0",
     "raw-loader": "^0.5.1",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-intl": "^2.2.3",
     "react-router": "^4.0.0",
     "react-test-renderer": "^15.4.2",
     "sass-loader": "^6.0.3",

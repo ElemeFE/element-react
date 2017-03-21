@@ -96,14 +96,22 @@ export default class Canvas extends React.Component {
         {
           this.state.showBlock ?
             <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
-              <i className="el-icon-caret-top"></i><span>隐藏代码</span>
+              <i className="el-icon-caret-top"></i><span>{this.props.locale.hide}</span>
             </div>
             :
             <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
-              <i className="el-icon-caret-bottom"></i><span>显示代码</span>
+              <i className="el-icon-caret-bottom"></i><span>{this.props.locale.show}</span>
             </div>
         }
       </div>
     )
   }
 }
+
+Canvas.propTypes = {
+  locale: React.PropTypes.object
+};
+
+Canvas.defaultProps = {
+  locale: {}
+};
