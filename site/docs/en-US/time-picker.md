@@ -1,12 +1,12 @@
-## Time Picker 时间选择器
+## Time Picker
 
- 用于选择或输入日期
+Use Time Picker for time input.
 
-### 固定时间点
+### Fixed time picker
 
-提供几个固定的时间点供用户选择
+Provide a list of fixed time for users to choose.
 
-:::demo 使用 `TimeSelect` 标签，分别通过`star`、`end`和`step`指定可选的起始时间、结束时间和步长
+:::demo Use `TimeSelect` label, then assign start time, end time and time step with `start`, `end` and `step`.
 ```js
 constructor(props) {
   super(props)
@@ -29,17 +29,19 @@ render() {
       maxTime="12:30"
       onChange={this.handleUpdate.bind(this)}
       value={this.state.value}
-      placeholder="选择时间"
+      placeholder="Select time"
       />
   )
 }
 ```
 :::
 
-### 任意时间点
+### Arbitrary time picker
 
-可以选择任意时间
-:::demo 使用 `TimePicker` 标签，分别通过`star`、`end`和`step`指定可选的起始时间、结束时间和步长
+Can pick an arbitrary time.
+
+:::demo Use `TimePicker` label, and you can limit the time range by using `selectableRange`.
+
 ```js
 constructor(props) {
   super(props)
@@ -57,7 +59,7 @@ render() {
     <TimePicker
       onChange={this.handleUpdate.bind(this)}
       selectableRange="18:30:00 - 20:30:00"
-      placeholder="选择时间"
+      placeholder="Arbitrary time"
       value={this.state.value}
       />
   )
@@ -67,9 +69,9 @@ render() {
 
 
 
-### 固定时间范围
+### Fixed time range
 
-若先选择开始时间，则结束时间内备选项的状态会随之改变
+If start time is picked at first, then the end time will change accordingly.
 
 :::demo
 ```js
@@ -100,7 +102,7 @@ render() {
         end="18:30"
         onChange={this.handleStartUpdate.bind(this)}
         value={this.state.startDate}
-        placeholder="选择时间"
+        placeholder="Start time"
         />
 
       <TimeSelect
@@ -110,7 +112,7 @@ render() {
         onChange={this.handleEndUpdate.bind(this)}
         value={this.state.endDate}
         minTime={this.state.startDate}
-        placeholder="选择时间"
+        placeholder="End time"
         />
     </div>
 
@@ -120,11 +122,12 @@ render() {
 :::
 
 
-### 任意时间范围
+### Arbitrary time range
 
-可选择任意的时间范围
+Can pick an arbitrary time range.
 
-:::demo blah
+:::demo We can pick a time range by adding an `isRange` attribute.
+
 ```js
 constructor(props) {
   super(props)
@@ -142,7 +145,7 @@ render() {
     <TimeRangePicker
       pickerWidth={300}
       onChange={this.handleUpdate.bind(this)}
-      placeholder="选择时间"
+      placeholder="Pick a time range"
       value={this.state.value}
       />
   )
@@ -152,37 +155,37 @@ render() {
 
 
 ### 公共参数
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+| Attribute      | Description          | Type      | Accepted Values                           | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| align | 对齐方式 | string | left, center, right | left |
-| placeholder | 占位内容 | string | — | — |
-| format | 时间格式化(TimePicker) | string | 小时：`HH`，分：`mm`，秒：`ss` | 'HH:mm:ss' |
-| isShowTrigger | 是否显示图标 | bool | - | - |
-| isReadOnly | 只读 | boolean | — | false |
-| isDisabled | 是否禁用 | boolean | — | false |
+| align | alignment | string | left, center, right | left |
+| placeholder | placeholder | string | — | — |
+| format | format of the picker | string | hour `HH`, minute `mm`, second `ss` |
+| isShowTrigger | whether DatePicker show trigger | bool | - | - |
+| isReadOnly | whether DatePicker is read only | boolean | — | false |
+| isDisabled | whether DatePicker is disabled | boolean | — | false |
 | onFocus | onFocus | func:(TimeSelectReactComponent)=>{} | — | - |
 | onBlur | onBlur | func:(TimeSelectReactComponent)=>{} | — | - |
 | onChange | onChange | func:(value)=>{} | — | - |
 
 ### TimeSelect
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+| Attribute      | Description          | Type      | Accepted Values                           | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | 值 | date/null | — | - |
-| start | 开始时间 | string | — | 09:00 |
-| end | 结束时间 | string | — | 18:00 |
-| step | 间隔时间 | string | — | 00:30 |
-| minTime | 最小时间 | date | — | - |
-| maxTime | 最大时间 | date | — | - |
+| value | value of the picker | date/null | — | - |
+| start | start time | string | — | 09:00 |
+| end | end time | string | — | 18:00 |
+| step | time step | string | — | 00:30 |
+| minTime |  minimum time, any time before this time will be disabled | date | — | - |
+| maxTime | maximum time, any time after this time will be disabled | date | — | - |
 
 ### TimePicker
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+| Attribute      | Description          | Type      | Accepted Values                           | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | 值 | date/null | — | - |
-| selectableRange | 可选时间段，例如<br>`'18:30:00 - 20:30:00'`<br>或者传入数组<br>`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/string[] | — | — |
+| value | value of the picker | date/null | — | - |
+| selectableRange | available time range, e.g.`'18:30:00 - 20:30:00'`or`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/array | string/string[] | — | — |
 
 
 ### TimeRangePicker
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+| Attribute      | Description          | Type      | Accepted Values                           | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | 值 | date[]/null | — | - |
-| selectableRange | 可选时间段，例如<br>`'18:30:00 - 20:30:00'`<br>或者传入数组<br>`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/string[] | — | — |
+| value | value of the picker | date[]/null | — | - |
+| selectableRange | available time range, e.g.`'18:30:00 - 20:30:00'`or`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/array | string/string[] | — | — |
