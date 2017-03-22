@@ -215,7 +215,7 @@ handleChange(file, fileList) {
 
 You can drag your file to a certain area to upload it.
 
-::: demo 
+::: demo
 ```js
 render() {
   return (
@@ -275,29 +275,29 @@ submitUpload() {
 
 ### Upload Attribute
 
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+| Attribute      | Description          | Type      | Accepted Values                | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| action | 必选参数, 上传的地址 | string | — | — |
-| headers | 可选参数, 设置上传的请求头部 | object | — | — |
-| multiple | 可选参数, 是否支持多选文件 | boolean | — | — |
-| data | 可选参数, 上传时附带的额外参数 | object | — | — |
-| name | 可选参数, 上传的文件字段名 | string | — | file |
-| withCredentials | 支持发送 cookie 凭证信息 | boolean | — | false |
-| showFileList | 是否显示已上传文件列表 | boolean | — | true |
-| drag | 可选参数，是否支持拖拽 | boolean | - | - |
-| accept | 可选参数, 接受上传的[文件类型](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept)（thumbnailMode 模式下此参数无效）| string | — | — |
-| onPreview | 可选参数, 点击已上传的文件链接时的钩子, 可以通过 file.response 拿到服务端返回数据 | function(file) | — | — |
-| onRemove | 可选参数, 文件列表移除文件时的钩子 | function(file, fileList) | — | — |
-| onSuccess | 可选参数, 文件上传成功时的钩子 | function(response, file, fileList) | — | — |
-| onError | 可选参数, 文件上传失败时的钩子 | function(err, response, file) | — | — |
-| onProgress | 可选参数, 文件上传时的钩子 | function(event, file, fileList) | — | — |
-| onChange | 可选参数, 文件状态改变时的钩子，上传成功或者失败时都会被调用 | function(file, fileList) | — | — |
-| beforeUpload | 可选参数, 上传文件之前的钩子，参数为上传的文件，若返回 false 或者 Promise 则停止上传。 | function(file) | — | — |
-| listType | 文件列表的类型 | string | text/picture/picture-card | text |
-| autoUpload | 是否在选取文件后立即进行上传 | boolean | — | true |
-| fileList | 上传的文件列表, 例如: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}] | array | — | [] |
+| action | required, request URL | string | — | — |
+| headers | request headers | object | — | — |
+| multiple | whether uploading multiple files is permitted | boolean | — | — |
+| data | additions options of request | object | — | — |
+| name | key name for uploaded file | string | — | file |
+| withCredentials | whether cookies are sent | boolean | — | false |
+| showFileList | whether to show the uploaded file list | boolean | — | true |
+| drag | whether to activate drag and drop mode | boolean | - | - |
+| accept | accepted [file types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept)| string | — | — |
+| onPreview | hook function when clicking the uploaded files | function(file) | — | — |
+| onRemove | hook function when files are removed | function(file, fileList) | — | — |
+| onSuccess | hook function when uploaded successfully | function(response, file, fileList) | — | — |
+| onError | hook function when some errors occurs | function(err, response, file) | — | — |
+| onProgress | hook function when some progress occurs | function(event, file, fileList) | — | — |
+| onChange | hook function when file status change | function(file, fileList) | — | — |
+| beforeUpload | hook function before uploading with the file to be uploaded as its parameter. If `false` or a `Promise` is returned, uploading will be aborted | function(file) | — | — |
+| listType | type of fileList | string | text/picture/picture-card | text |
+| autoUpload | whether to auto upload file | boolean | — | true |
+| fileList | default uploaded files, i.e: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}] | array | — | [] |
 
 ### Methods
-| 方法名      | 说明          | 参数 |
+| Event Name      | Description       | Parameters |
 |---------- |-------------- | -- |
-| clearFiles | 清空已上传的文件列表 | — |
+| clearFiles | clear the uploaded file list | — |

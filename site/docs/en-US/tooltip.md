@@ -14,47 +14,47 @@ render() {
     <div className="box">
       <div className="top">
         <Tooltip className="item" effect="dark" content="Top Left prompts info" placement="top-start">
-          <Button>上左</Button>
+          <Button>top-start</Button>
         </Tooltip>
         <Tooltip className="item" effect="dark" content="Top Center prompts info" placement="top">
-          <Button>上边</Button>
+          <Button>top</Button>
         </Tooltip>
         <Tooltip className="item" effect="dark" content="Top Right prompts info" placement="top-end">
-          <Button>上右</Button>
+          <Button>top-end</Button>
         </Tooltip>
       </div>
       <div className="left">
         <Tooltip className="item" effect="dark" content="Left Top prompts info" placement="left-start">
-          <Button>左上</Button>
+          <Button>left-start</Button>
         </Tooltip>
         <Tooltip className="item" effect="dark" content="Left Center prompts info" placement="left">
-          <Button>左边</Button>
+          <Button>left</Button>
         </Tooltip>
         <Tooltip className="item" effect="dark" content="Left Bottom prompts info" placement="left-end">
-          <Button>左下</Button>
+          <Button>left-end</Button>
         </Tooltip>
       </div>
 
       <div className="right">
         <Tooltip className="item" effect="dark" content="Right Top prompts info" placement="right-start">
-          <Button>右上</Button>
+          <Button>right-start</Button>
         </Tooltip>
         <Tooltip className="item" effect="dark" content="Right Center prompts info" placement="right">
-          <Button>右边</Button>
+          <Button>right</Button>
         </Tooltip>
         <Tooltip className="item" effect="dark" content="Right Bottom prompts info" placement="right-end">
-          <Button>右下</Button>
+          <Button>right-end</Button>
         </Tooltip>
       </div>
       <div className="bottom">
         <Tooltip className="item" effect="dark" content="Bottom Left prompts info" placement="bottom-start">
-          <Button>下左</Button>
+          <Button>bottom-start</Button>
         </Tooltip>
         <Tooltip className="item" effect="dark" content="Bottom Center prompts info" placement="bottom">
-          <Button>下边</Button>
+          <Button>bottom</Button>
         </Tooltip>
         <Tooltip className="item" effect="dark" content="Bottom Right prompts info" placement="bottom-end">
-          <Button>下右</Button>
+          <Button>bottom-end</Button>
         </Tooltip>
       </div>
     </div>
@@ -96,7 +96,7 @@ render() {
     <Tooltip
       placement="top"
       content={
-        <div>多行信息<br/>第二行信息</div>
+        <div>multiple lines<br/>second line</div>
       }
     >
       <Button>Top center</Button>
@@ -126,8 +126,8 @@ constructor(props){
 
 render() {
   return (
-    <Tooltip disabled={ this.state.disabled } content="点击关闭 tooltip 功能" placement="bottom" effect="light">
-      <Button onClick={ e => this.setState({ disabled: true}) }>点击关闭 tooltip 功能</Button>
+    <Tooltip disabled={ this.state.disabled } content="click to close tooltip function" placement="bottom" effect="light">
+      <Button onClick={ e => this.setState({ disabled: true}) }>{`click to ${this.state.disabled ? 'active' : 'close' } tooltip function`}</Button>
     </Tooltip>
   )
 }
