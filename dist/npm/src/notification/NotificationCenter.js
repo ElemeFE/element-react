@@ -40,7 +40,7 @@ function NotificationCenter() {
 
   var instances = document.getElementsByClassName(className);
 
-  props.top = 0;
+  props.top = props.offset || 0;
 
   for (var i = 0, len = instances.length; i < len; i++) {
     props.top += instances[i].offsetHeight + 16;

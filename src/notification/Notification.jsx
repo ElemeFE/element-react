@@ -72,13 +72,13 @@ export default class Notification extends Component {
               zIndex: 9999
           }} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
             {
-              this.props.type && <i className={this.classNames('el-notification__icon', this.typeClass())} />
+              this.props.type && <i className={this.classNames('el-notification__icon', this.typeClass(), this.props.iconClass)} />
             }
-            <div className="el-notification__group" style={{
-              marginLeft: this.typeClass() ? '55px' : '0'
-            }}>
-              <span>{this.props.title}</span>
-              <p>{this.props.message}</p>
+            <div className={this.classNames('el-notification__group', {
+              'is-with-icon': this.typeClass() || this.props.iconClass
+            })}>
+              <h2 className="el-notification__title">{this.props.title}</h2>
+              <div className="el-notification__content">{this.props.message}</div>
               <div className="el-notification__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div>
             </div>
           </div>
@@ -93,6 +93,7 @@ Notification.propTypes = {
   title: PropTypes.string,
   message: PropTypes.string,
   duration: PropTypes.number,
+  iconClass: PropTypes.string,
   top: PropTypes.number
 }
 
