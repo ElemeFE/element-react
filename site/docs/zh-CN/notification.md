@@ -83,9 +83,27 @@ open6() {
 ```
 :::
 
-### 全局方法
+### 带有偏移
 
-Element 为 `Vue.prototype` 添加了全局方法 `$notify`。因此在 vue instance 中可以采用本页面中的方式调用 Notification。
+让 Notification 偏移一些位置
+
+::: demo Notification 提供设置偏移量的功能，通过设置 `offset` 字段，可以使弹出的消息距屏幕顶部偏移一段距离。注意在同一时刻，所有的 Notification 实例应当具有一个相同的偏移量。
+```js
+render() {
+  return (
+    <Button plain={true} onClick={this.open.bind(this)}>偏移的通知</Button>
+  )
+}
+
+open() {
+  Notification({
+    title: '成功',
+    message: '这是一条成功的提示消息',
+    offset: 100
+  });
+}
+```
+:::
 
 ### 单独引用
 
@@ -97,11 +115,20 @@ import { Notification } from 'element-ui';
 
 此时调用方法为 `Notification(options)`。我们也为每个 type 定义了各自的方法，如 `Notification.success(options)`。
 
-### Options
+### 参数
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | title | 标题 | string | — | — |
-| message | 说明文字 | string | — | — |
+| message | 说明文字 | string/ReactElement | — | — |
 | type | 主题样式，如果不在可选值内将被忽略 | string | success/warning/info/error | — |
+| iconClass | 自定义图标的类名。若设置了 `type`，则 `iconClass` 会被覆盖 | string | — | — |
 | duration | 显示时间, 毫秒。设为 0 则不会自动关闭 | number | — | 4500 |
 | onClose | 关闭时的回调函数 | function | — | — |
+| offset | 偏移的距离，在同一时刻，所有的 Notification 实例应当具有一个相同的偏移量 | number | — | 0 |
+
+### 方法
+调用 `Notification` 会返回当前 Notification 的实例。如果需要手动关闭实例，可以调用它的 `close` 方法。
+
+| 方法名 | 说明 |
+| ---- | ---- |
+| close | 关闭当前的 Notification |

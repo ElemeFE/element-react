@@ -194,21 +194,19 @@ export default class TimeSpinner extends Component {
               viewClass="el-time-spinner__list"
               viewComponent="ul"
               >
-              <ul className="el-time-spinner__list">
-                {
-                  secondsList.map((disabled, idx) => {
-                    return (
-                      <li
-                        key={idx}
-                        onClick={() => this.handleChange('seconds', idx)}
-                        className={this.classNames('el-time-spinner__item', {
-                          'active': idx === seconds,
-                        })}
-                        >{idx}</li>
-                    )
-                  })
-                }
-              </ul>
+              {
+                secondsList.map((disabled, idx) => {
+                  return (
+                    <li
+                      key={idx}
+                      onClick={() => this.handleChange('seconds', idx)}
+                      className={this.classNames('el-time-spinner__item', {
+                        'active': idx === seconds,
+                      })}
+                      >{idx}</li>
+                  )
+                })
+              }
             </Scrollbar>
           )
         }
