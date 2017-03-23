@@ -9,7 +9,7 @@ import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FOR
 import { Errors, require_condition, IDGenerator } from '../../libs/utils';
 
 /*
-todo: 
+todo:
   handle animation popup
 */
 
@@ -73,8 +73,8 @@ export default class BasePicker extends Component {
   /**
    * onPicked should only be called from picker pannel instance
    * and should never return a null date instance
-   * 
-   * @param value: Date|Date[]
+   *
+   * @param value: Date|Date[]|null
    * @param isKeepPannel: boolean = false
    */
   onPicked(value, isKeepPannel = false) {//only change input value on picked triggered
@@ -97,8 +97,7 @@ export default class BasePicker extends Component {
       TYPE_VALUE_RESOLVER_MAP[this.type] ||
       TYPE_VALUE_RESOLVER_MAP['default']
     ).formatter;
-    const format = DEFAULT_FORMATS[this.type];
-    const result = formatter(tdate, this.props.format || format);
+    const result = formatter(tdate, this.getFormat());
 
     return result;
   }
@@ -111,7 +110,11 @@ export default class BasePicker extends Component {
       TYPE_VALUE_RESOLVER_MAP[type] ||
       TYPE_VALUE_RESOLVER_MAP['default']
     ).parser;
-    return parser(dateStr, this.props.format || DEFAULT_FORMATS[type]);
+    return parser(dateStr, this.getFormat());
+  }
+
+  getFormat() {
+    return this.props.format || DEFAULT_FORMATS[this.type]
   }
 
   propsToState(props) {
@@ -123,6 +126,11 @@ export default class BasePicker extends Component {
       state.text = ''
       state.value = null
     }
+
+    if (state.value == null) {
+      state.value = new Date()
+    }
+
     return state
   }
 
@@ -155,46 +163,9 @@ export default class BasePicker extends Component {
 
   handleKeydown(evt) {
     const keyCode = evt.keyCode;
-    const target = evt.target;
-    let selectionStart = target.selectionStart;
-    let selectionEnd = target.selectionEnd;
-    let length = target.value.length;
-
-    const hidePicker = () => {
-      this.setState({ pickerVisible: false })
-    }
-
     // tab
     if (keyCode === 9) {
-      hidePicker()
-
-      // enter
-    } else if (keyCode === 13) {
-      hidePicker()
-      evt.target.blur()//this trigger's handleBlur func
-      // left
-    } else if (keyCode === 37) {
-      evt.preventDefault();
-
-      if (selectionEnd === length && selectionStart === length) {
-        target.selectionStart = length - 2;
-      } else if (selectionStart >= 3) {
-        target.selectionStart -= 3;
-      } else {
-        target.selectionStart = 0;
-      }
-      target.selectionEnd = target.selectionStart + 2;
-      // right
-    } else if (keyCode === 39) {
-      evt.preventDefault();
-      if (selectionEnd === 0 && selectionStart === 0) {
-        target.selectionEnd = 2;
-      } else if (selectionEnd <= length - 3) {
-        target.selectionEnd += 3;
-      } else {
-        target.selectionEnd = length;
-      }
-      target.selectionStart = target.selectionEnd - 2;
+      this.setState({ pickerVisible: false });
     }
   }
 
@@ -216,7 +187,7 @@ export default class BasePicker extends Component {
 
   // return true on condition
   //  * input is parsable to date
-  //  * also meet your other condition 
+  //  * also meet your other condition
   isInputValid(value) {
     const parseable = this.parseDate(value)
     if (!parseable) {
@@ -244,15 +215,15 @@ export default class BasePicker extends Component {
     }
   }
 
-  handleClickIcon(){
+  handleClickIcon() {
     const {isReadOnly, isDisabled} = this.props
     const {text} = this.state
 
-    if (isReadOnly || isDisabled) return 
-    if (!text){
+    if (isReadOnly || isDisabled) return
+    if (!text) {
       this.togglePickerVisible()
-    }else{
-      this.setState({text: '', value: null, pickerVisible: false})
+    } else {
+      this.setState({ text: '', value: null, pickerVisible: false })
       this.props.onChange(null)
     }
   }
@@ -261,22 +232,22 @@ export default class BasePicker extends Component {
     const {isReadOnly, placeholder, isDisabled} = this.props;
     const {pickerVisible, value, text, isShowClose} = this.state;
 
-    const createIconSlot = ()=>{
-      if (this.calcIsShowTrigger()){
+    const createIconSlot = () => {
+      if (this.calcIsShowTrigger()) {
         const cls = isShowClose ? 'el-icon-close' : this.triggerClass()
         return (
           <i
             className={this.classNames('el-input__icon', cls)}
             onClick={this.handleClickIcon.bind(this)}
-            onMouseEnter={()=>{
-              if (isReadOnly || isDisabled) return 
-              if (text){
-                this.setState({isShowClose: true})
+            onMouseEnter={() => {
+              if (isReadOnly || isDisabled) return
+              if (text) {
+                this.setState({ isShowClose: true })
               }
-            }}
-            onMouseLeave={()=>{
-              this.setState({isShowClose: false})
-            }}
+            } }
+            onMouseLeave={() => {
+              this.setState({ isShowClose: false })
+            } }
             ></i>
         )
       } else {
@@ -284,18 +255,18 @@ export default class BasePicker extends Component {
       }
     }
 
-    const createPickerPanel = ()=>{
-      if (pickerVisible){
+    const createPickerPanel = () => {
+      if (pickerVisible) {
         return this.pickerPanel(
-          this.state, 
+          this.state,
           Object.assign({}, this.props, {
-            getPopperRefElement: ()=>ReactDOM.findDOMNode(this.refs.inputRoot),
-            popperMixinOption:{
+            getPopperRefElement: () => ReactDOM.findDOMNode(this.refs.inputRoot),
+            popperMixinOption: {
               placement: PLACEMENT_MAP[this.props.align] || PLACEMENT_MAP.left
             }
           })
         )
-      }else{
+      } else {
         return null
       }
     }
@@ -319,9 +290,9 @@ export default class BasePicker extends Component {
           target={document}
           eventName="click"
           func={this.handleClickOutside.bind(this)} />
-        
+
         <Input
-          className="el-date-editor"
+          className={this.classNames(`el-date-editor el-date-editor--${this.type}`)}
           readOnly={isReadOnly}
           disabled={isDisabled}
           type="text"
@@ -341,12 +312,11 @@ export default class BasePicker extends Component {
           } }
           ref="inputRoot"
           value={text}
-          iconSlot={createIconSlot()}
+          icon={createIconSlot()}
           />
-          
-        { createPickerPanel() }
+
+        {createPickerPanel()}
       </span>
     )
   }
 }
-

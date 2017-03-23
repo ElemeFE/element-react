@@ -1,14 +1,22 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
-const TYPE_CLASSES_MAP = {
+type State = {
+  visible: boolean
+};
+
+const TYPE_CLASSES_MAP: {[type: string]: string} = {
   'success': 'el-icon-circle-check',
   'warning': 'el-icon-warning',
   'error': 'el-icon-circle-cross'
 };
 
 export default class Alert extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -29,7 +37,7 @@ export default class Alert extends Component {
   render() {
     return (
       <Transition name="el-alert-fade" duration="200">
-        <View key={Math.random()} show={this.state.visible}>
+        <View key={this.state.visible} show={this.state.visible}>
           <div style={this.style()} className={this.className('el-alert', `el-alert--${ this.props.type }`)}>
             {
               this.props.showIcon && <i className={this.classNames('el-alert__icon', TYPE_CLASSES_MAP[this.props.type] || 'el-icon-information', {

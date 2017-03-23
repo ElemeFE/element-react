@@ -29,9 +29,11 @@ var Switch = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, props));
 
     _this.state = {
-      value: Boolean(props.value),
-      disabled: Boolean(props.disabled),
-      width: props.width === 0 ? _this.hasText() ? 58 : 46 : props.width
+      value: props.value,
+      coreWidth: props.width,
+      buttonStyle: {
+        transform: ''
+      }
     };
     return _this;
   }
@@ -39,25 +41,33 @@ var Switch = function (_Component) {
   _createClass(Switch, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      if (this.props.width === 0) {
+        this.state.coreWidth = this.hasText() ? 58 : 46;
+      }
+
       this.updateSwitch();
     }
   }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate() {
-      this.updateSwitch();
-      if (this.props.onChange) {
-        this.props.onChange(this.state.value);
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      var _this2 = this;
+
+      this.setState({ value: props.value }, function () {
+        _this2.updateSwitch();
+      });
+
+      if (props.width) {
+        this.setState({ coreWidth: props.width });
       }
     }
   }, {
     key: 'updateSwitch',
     value: function updateSwitch() {
-      if (!this.state.disabled) {
-        if (this.props.onColor || this.props.offColor) {
-          this.handleCoreColor();
-        }
-      }
       this.handleButtonTransform();
+
+      if (this.props.onColor || this.props.offColor) {
+        this.setBackgroundColor();
+      }
     }
   }, {
     key: 'hasText',
@@ -65,41 +75,59 @@ var Switch = function (_Component) {
       return this.props.onText || this.props.offText;
     }
   }, {
-    key: 'handleMiscClick',
-    value: function handleMiscClick() {
-      if (!this.state.disabled) {
-        this.setState({
-          value: !this.state.value
-        });
-      }
+    key: 'setBackgroundColor',
+    value: function setBackgroundColor() {
+      var newColor = this.state.value ? this.props.onColor : this.props.offColor;
+
+      this.refs.core.style.borderColor = newColor;
+      this.refs.core.style.backgroundColor = newColor;
     }
   }, {
-    key: 'handleCoreColor',
-    value: function handleCoreColor() {
-      this.refs.core.style.borderColor = this.state.value ? this.props.onColor : this.props.offColor;
-      this.refs.core.style.backgroundColor = this.state.value ? this.props.onColor : this.props.offColor;
+    key: 'handleChange',
+    value: function handleChange(e) {
+      var _this3 = this;
+
+      this.setState({
+        value: e.target.checked
+      }, function () {
+        _this3.updateSwitch();
+
+        if (_this3.props.onChange) {
+          _this3.props.onChange(_this3.state.value);
+        }
+      });
     }
   }, {
     key: 'handleButtonTransform',
     value: function handleButtonTransform() {
-      this.refs.button.style.transform = this.state.value ? 'translate3d(' + (this.state.width - 20) + 'px, 2px, 0)' : 'translate3d(2px, 2px, 0)';
+      var _state = this.state,
+          value = _state.value,
+          coreWidth = _state.coreWidth,
+          buttonStyle = _state.buttonStyle;
+
+
+      buttonStyle.transform = value ? 'translate(' + (coreWidth - 20) + 'px, 2px)' : 'translate(2px, 2px)';
+
+      this.setState({ buttonStyle: buttonStyle });
     }
   }, {
     key: 'render',
     value: function render() {
       var _props = this.props,
           name = _props.name,
+          disabled = _props.disabled,
           onText = _props.onText,
           offText = _props.offText,
           onIconClass = _props.onIconClass,
           offIconClass = _props.offIconClass;
-      var _state = this.state,
-          value = _state.value,
-          disabled = _state.disabled,
-          width = _state.width;
+      var _state2 = this.state,
+          value = _state2.value,
+          coreWidth = _state2.coreWidth,
+          buttonStyle = _state2.buttonStyle;
+
 
       return _react2.default.createElement(
-        'div',
+        'label',
         {
           style: this.style(),
           className: this.className('el-switch', {
@@ -111,12 +139,18 @@ var Switch = function (_Component) {
           { show: disabled },
           _react2.default.createElement('div', { className: 'el-switch__mask' })
         ),
-        _react2.default.createElement('input', { className: 'el-switch__input', type: 'checkbox', checked: value, name: name,
-          disabled: disabled, style: { display: 'none' }, onChange: function onChange() {} }),
+        _react2.default.createElement('input', {
+          className: 'el-switch__input',
+          type: 'checkbox',
+          checked: value,
+          name: name,
+          disabled: disabled,
+          onChange: this.handleChange.bind(this)
+        }),
         _react2.default.createElement(
           'span',
-          { className: 'el-switch__core', ref: 'core', onClick: this.handleMiscClick.bind(this), style: { 'width': width + 'px' } },
-          _react2.default.createElement('span', { className: 'el-switch__button', ref: 'button' })
+          { className: 'el-switch__core', ref: 'core', style: { 'width': coreWidth + 'px' } },
+          _react2.default.createElement('span', { className: 'el-switch__button', style: Object.assign({}, buttonStyle) })
         ),
         _react2.default.createElement(
           _libs.Transition,
@@ -126,9 +160,11 @@ var Switch = function (_Component) {
             { show: value },
             _react2.default.createElement(
               'div',
-              { className: 'el-switch__label el-switch__label--left', onClick: this.handleMiscClick.bind(this),
-                style: { 'width': width + 'px' } },
-              onIconClass && _react2.default.createElement('i', { className: 'onIconClass' }),
+              {
+                className: 'el-switch__label el-switch__label--left',
+                style: { 'width': coreWidth + 'px' }
+              },
+              onIconClass && _react2.default.createElement('i', { className: onIconClass }),
               !onIconClass && onText && _react2.default.createElement(
                 'span',
                 null,
@@ -142,12 +178,14 @@ var Switch = function (_Component) {
           { name: 'label-fade' },
           _react2.default.createElement(
             _libs.View,
-            { show: !this.state.value },
+            { show: !value },
             _react2.default.createElement(
               'div',
-              { className: 'el-switch__label el-switch__label--right', onClick: this.handleMiscClick.bind(this),
-                style: { 'width': this.state.width + 'px' } },
-              offIconClass && _react2.default.createElement('i', { className: 'offIconClass' }),
+              {
+                className: 'el-switch__label el-switch__label--right',
+                style: { 'width': coreWidth + 'px' }
+              },
+              offIconClass && _react2.default.createElement('i', { className: offIconClass }),
               !offIconClass && offText && _react2.default.createElement(
                 'span',
                 null,
@@ -191,8 +229,7 @@ Switch.defaultProps = {
   offText: 'OFF',
   onColor: '',
   offColor: '',
-  name: '',
-  onChange: undefined
+  name: ''
 };
 ;
 

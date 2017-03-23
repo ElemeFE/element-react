@@ -12,7 +12,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _utils = require('../../libs/utils');
+var _debounce = require('throttle-debounce/debounce');
+
+var _debounce2 = _interopRequireDefault(_debounce);
 
 var _BasePicker2 = require('./BasePicker');
 
@@ -50,7 +52,7 @@ var TimeRangePicker = function (_BasePicker) {
 
     var _this = _possibleConstructorReturn(this, (TimeRangePicker.__proto__ || Object.getPrototypeOf(TimeRangePicker)).call(this, props, 'timerange', {}));
 
-    _this._onSelectionChange = (0, _utils.debounce)(_this.onSelectionChange.bind(_this), 200);
+    _this._onSelectionChange = (0, _debounce2.default)(200, _this.onSelectionChange.bind(_this));
     return _this;
   }
 

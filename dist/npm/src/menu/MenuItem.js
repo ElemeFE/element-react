@@ -44,7 +44,7 @@ var MenuItem = function (_MixinComponent) {
   }, {
     key: 'handleClick',
     value: function handleClick() {
-      this.rootMenu().handleSelect(this.props.index, this.indexPath(), this.props.route || this.props.index, this);
+      this.rootMenu().handleSelect(this.props.index, this.indexPath(), this);
     }
   }, {
     key: 'active',
@@ -78,7 +78,6 @@ exports.default = _default;
 
 MenuItem.propTypes = {
   index: _libs.PropTypes.string.isRequired,
-  route: _libs.PropTypes.object,
   disabled: _libs.PropTypes.bool
 };
 ;

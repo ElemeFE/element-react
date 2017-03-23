@@ -38,7 +38,7 @@ render() {
     <Input
       icon="time"
       placeholder="请选择日期"
-      onClick={e => this.handleIconClick(e)}
+      onIconClick={e => this.handleIconClick(e)}
     />
   )
 }
@@ -63,6 +63,32 @@ render() {
 ```
 :::
 
+### 可自适应文本高度的文本域
+
+通过设置 `autosize` 属性可以使得文本域的高度能够根据文本内容自动进行调整，并且 `autosize` 还可以设定为一个对象，指定最小行数和最大行数。
+
+::: demo
+```js
+render() {
+  return (
+    <div>
+      <Input
+        type="textarea"
+        autosize={true}
+        placeholder="请输入内容"
+      />
+      <div style={{ margin: '20px 0' }}></div>
+      <Input
+        type="textarea"
+        autosize={{ minRows: 2, maxRows: 4}}
+        placeholder="请输入内容"
+      />
+    </div>
+  )
+}
+```
+:::
+
 ### 复合型输入框
 
 可前置或后置元素，一般为标签或按钮
@@ -74,7 +100,7 @@ render() {
     <div>
       <Input placeholder="请输入内容" prepend="Http://" />
       <Input placeholder="请输入内容" append=".com" />
-      <Input placeholder="请输入内容" style={{width: '300px'}} prepend={
+      <Input placeholder="请输入内容" prepend={
         <Select value="">
           {
             ['餐厅名', '订单号', '用户电话'].map((item, index) => <Select.Option key={index} label={item} value={index} />)
@@ -303,6 +329,7 @@ render() {
       fetchSuggestions={this.querySearch.bind(this)}
       customItem={this.props.customItem}
       placeholder="请输入内容"
+      icon="edit"
       onSelect={this.handleSelect.bind(this)}
     ></AutoComplete>
   )
@@ -408,7 +435,7 @@ render() {
 ```
 :::
 
-### Input API
+### Input Attributes
 
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
@@ -420,28 +447,31 @@ render() {
 | disabled      | 禁用            | boolean         | — | false   |
 | size          | 输入框尺寸，只在 `type!="textarea"` 时有效      | string          | large, small, mini  | — |
 | icon          | 输入框尾部图标    | string          | — | — |
-| iconSlot      | 输入框尾部图标    | ReactElement          | — | — |
 | rows          | 输入框行数，只对 `type="textarea"` 有效  |  number | — |  2   |
 | autosize      | 自适应内容高度，只对 `type="textarea"` 有效，可传入对象，如，{ minRows: 2, maxRows: 6 }  |  boolean/object | — |  false   |
+| autoComplete | 原生属性，自动补全 | string | on, off | off |
+| name | 原生属性 | string | — | — |
+| readonly | 原生属性，是否只读 | boolean | — | false |
+| max | 原生属性，设置最大值 | — | — | — |
+| min | 原生属性，设置最小值 | — | — | — |
+| step | 原生属性，设置输入字段的合法数字间隔 | — | — | — |
+| resize | 控制是否能被用户缩放 | string | none, both, horizontal, vertical | — |
+| autofocus | 原生属性，自动获取焦点 | boolean | true, false | false |
+| onIconClick | 点击 Input 内的图标的钩子函数 | function | — | — |
 
-### Input Events
-| 事件名称 | 说明 | 回调参数 |
-|---------|--------|---------|
-| handleIconClick | 点击 Input 内的图标时触发 | event |
-| handleInput | input输入内容时触发 | event |
-| handlePressEnter | enter键被按下时触发 | event |
-| handleFocus | 输入框获得焦点时触发 | event |
-| handleBlur | 输入框失去焦点时触发 | event |
-
-### Autocomplete API
+### Autocomplete Attributes
 
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | placeholder   | 输入框占位文本   | string          | — | — |
 | disabled      | 禁用            | boolean         | — | false   |
 | value         | 必填值输入绑定值   | string  | — | — |
-| customItem  | 通过该参数指定自定义的输入建议列表项的组件名 | string  | — | — |
+| customItem  | 通过该参数指定自定义的输入建议列表项的组件名 | Element  | — | — |
 | fetchSuggestions | 返回输入建议的方法，仅当你的输入建议数据 resolve 时，通过调用 callback(data:[]) 来返回它  | Function(queryString, callback)  | — | — |
+| popperClass | Autocomplete 下拉列表的类名 | string | — | — |
+| triggerOnFocus | 是否在输入框 focus 时显示建议列表 | boolean | — | true |
+| onIconClick | 点击图标的回调函数 | function | — | — |
+| icon          | 输入框尾部图标    | string          | — | — |
 
 ### Autocomplete Events
 | 事件名称 | 说明 | 回调参数 |

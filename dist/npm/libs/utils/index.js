@@ -7,7 +7,8 @@ exports.IDGenerator = exports.DateUtils = exports.Errors = exports.ReactUtils = 
 exports.watchPropertyChange = watchPropertyChange;
 exports.createPropType = createPropType;
 exports.hashCode = hashCode;
-exports.debounce = debounce;
+exports.pick = pick;
+exports.range = range;
 
 var _date = require('./date');
 
@@ -125,20 +126,33 @@ function hashCode(str) {
   return hash;
 }
 
-function debounce(func, delayms) {
-  var timeout = null;
-  return function () {
-    var _this = this;
+function pick(obj, keys) {
+  (0, _assert.require_condition)(obj != null && Array.isArray(keys));
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+  var r = {};
+  keys.forEach(function (e) {
+    return r[e] = obj[e];
+  });
+  return r;
+}
 
-    if (timeout != null) clearTimeout(timeout);
-    timeout = setTimeout(function () {
-      return func.apply(_this, args);
-    }, delayms);
-  };
+function range(start, stop, step) {
+  if (stop == null) {
+    stop = start || 0;
+    start = 0;
+  }
+  if (!step) {
+    step = stop < start ? -1 : 1;
+  }
+
+  var length = Math.max(Math.ceil((stop - start) / step), 0);
+  var range = Array(length);
+
+  for (var idx = 0; idx < length; idx++, start += step) {
+    range[idx] = start;
+  }
+
+  return range;
 }
 
 ;
@@ -154,7 +168,9 @@ var _temp = function () {
 
   __REACT_HOT_LOADER__.register(hashCode, 'hashCode', 'libs/utils/index.js');
 
-  __REACT_HOT_LOADER__.register(debounce, 'debounce', 'libs/utils/index.js');
+  __REACT_HOT_LOADER__.register(pick, 'pick', 'libs/utils/index.js');
+
+  __REACT_HOT_LOADER__.register(range, 'range', 'libs/utils/index.js');
 }();
 
 ;

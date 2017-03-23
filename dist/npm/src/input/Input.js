@@ -47,6 +47,22 @@ var Input = function (_Component) {
     value: function componentDidMount() {
       this.resizeTextarea();
     }
+
+    /* <Instance Methods */
+
+  }, {
+    key: 'focus',
+    value: function focus() {
+      (this.refs.input || this.refs.textarea).focus();
+    }
+  }, {
+    key: 'blur',
+    value: function blur() {
+      (this.refs.input || this.refs.textarea).blur();
+    }
+
+    /* Instance Methods> */
+
   }, {
     key: 'fixControlledValue',
     value: function fixControlledValue(value) {
@@ -121,8 +137,7 @@ var Input = function (_Component) {
           rows = _props2.rows,
           onMouseEnter = _props2.onMouseEnter,
           onMouseLeave = _props2.onMouseLeave,
-          iconSlot = _props2.iconSlot,
-          otherProps = _objectWithoutProperties(_props2, ['type', 'size', 'prepend', 'append', 'icon', 'autoComplete', 'validating', 'rows', 'onMouseEnter', 'onMouseLeave', 'iconSlot']);
+          otherProps = _objectWithoutProperties(_props2, ['type', 'size', 'prepend', 'append', 'icon', 'autoComplete', 'validating', 'rows', 'onMouseEnter', 'onMouseLeave']);
 
       var classname = this.classNames(type === 'textarea' ? 'el-textarea' : 'el-input', size && 'el-input--' + size, {
         'is-disabled': this.props.disabled,
@@ -140,15 +155,6 @@ var Input = function (_Component) {
       delete otherProps.style;
       delete otherProps.autosize;
       delete otherProps.onIconClick;
-
-      var createIconSlot = function createIconSlot() {
-        if (iconSlot) return iconSlot;else if (icon) return _react2.default.createElement(
-          'i',
-          { className: 'el-input__icon el-icon-' + icon },
-          prepend
-        );
-        return null;
-      };
 
       if (type === 'textarea') {
         return _react2.default.createElement(
@@ -173,7 +179,11 @@ var Input = function (_Component) {
             { className: 'el-input-group__prepend' },
             prepend
           ),
-          createIconSlot(),
+          typeof icon != 'string' ? icon : _react2.default.createElement(
+            'i',
+            { className: 'el-input__icon el-icon-' + icon, onClick: this.handleIconClick.bind(this) },
+            prepend
+          ),
           _react2.default.createElement('input', _extends({}, otherProps, {
             ref: 'input',
             className: 'el-input__inner',
@@ -196,6 +206,12 @@ var Input = function (_Component) {
   return Input;
 }(_libs.Component);
 
+Input.defaultProps = {
+  type: 'text',
+  autosize: false,
+  rows: 2,
+  autoComplete: 'off'
+};
 var _default = Input;
 exports.default = _default;
 
@@ -203,8 +219,7 @@ exports.default = _default;
 Input.propTypes = {
   // base
   type: _libs.PropTypes.string,
-  icon: _libs.PropTypes.string,
-  iconSlot: _react2.default.PropTypes.element,
+  icon: _libs.PropTypes.oneOfType([_libs.PropTypes.element, _libs.PropTypes.string]),
   disabled: _libs.PropTypes.bool,
   name: _libs.PropTypes.string,
   placeholder: _libs.PropTypes.string,
@@ -239,13 +254,6 @@ Input.propTypes = {
   // form related
   form: _libs.PropTypes.string,
   validating: _libs.PropTypes.bool
-};
-
-Input.defaultProps = {
-  type: 'text',
-  autosize: false,
-  rows: 2,
-  autoComplete: 'off'
 };
 ;
 

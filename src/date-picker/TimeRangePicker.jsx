@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { debounce } from '../../libs/utils'
+import debounce from 'throttle-debounce/debounce';
 
 import BasePicker from './BasePicker'
 import TimeRangePanel from './panel/TimeRangePanel'
@@ -17,7 +16,7 @@ export default class TimeRangePicker extends BasePicker {
 
   constructor(props) {
     super(props, 'timerange', {})
-    this._onSelectionChange = debounce(this.onSelectionChange.bind(this), 200)
+    this._onSelectionChange = debounce(200, this.onSelectionChange.bind(this))
   }
 
   onSelectionChange(start, end) {

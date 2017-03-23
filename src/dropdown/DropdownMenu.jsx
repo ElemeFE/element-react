@@ -1,10 +1,18 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popper from '../../vendor/popper';
+import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
+type State = {
+  showPopper: boolean
+};
+
 export default class DropdownMenu extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -12,27 +20,49 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  componentDidUpdate() {
-    this.popperJS = new Popper(ReactDOM.findDOMNode(this.parent()), this.refs.popper, {
-      placement: this.placement()
-    });
+  componentDidUpdate(): void {
+    const { showPopper } = this.state;
+
+    if (showPopper) {
+      if (this.popperJS) {
+        this.popperJS.update();
+      } else {
+        const parent: any = ReactDOM.findDOMNode(this.parent());
+
+        this.popperJS = new Popper(parent, this.refs.popper, {
+          placement: this.placement()
+        });
+      }
+    } else {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
+
+      delete this.popperJS;
+    }
   }
 
-  onVisibleChange(visible) {
+  componentWillUnmount(): void {
+    if (this.popperJS) {
+      this.popperJS.destroy();
+    }
+  }
+
+  onVisibleChange(visible: boolean): void {
     this.setState({
       showPopper: visible
     })
   }
 
-  parent() {
+  parent(): Component {
     return this.context.component;
   }
 
-  placement() {
+  placement(): string {
     return `bottom-${this.parent().props.menuAlign}`;
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <Transition name="md-fade-bottom">
         <View show={this.state.showPopper}>

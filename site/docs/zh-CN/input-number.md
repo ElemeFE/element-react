@@ -78,6 +78,35 @@ render() {
 ```
 :::
 
+### 尺寸
+
+额外提供了 `large`、`small` 两种尺寸的数字输入框
+
+:::demo
+
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    num4: 1,
+    num5: 1,
+    num6: 1
+  }
+}
+
+render() {
+  return (
+    <div>
+      <InputNumber size="large" defaultValue={this.state.num4}></InputNumber>
+      <InputNumber defaultValue={this.state.num5}></InputNumber>
+      <InputNumber size="small" defaultValue={this.state.num6}></InputNumber>
+    </div>
+  )
+}
+```
+:::
+
 ### Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |----------|-------------- |----------|--------------------------------  |-------- |
@@ -88,6 +117,7 @@ render() {
 | step     | 计数器步长           | number   | — | 1 |
 | size     | 计数器尺寸           | string   | large, small | — |
 | disabled | 是否禁用计数器        | boolean | — | false |
+| controls | 是否使用控制按钮        | boolean | — | true |
 
 ### Events
 | 事件名称 | 说明 | 回调参数 |

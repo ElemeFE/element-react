@@ -1,29 +1,56 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import calcTextareaHeight from './calcTextareaHeight'
 
+type State = {
+  textareaStyle: null | { height: string }
+}
+
 export default class Input extends Component {
-  constructor(props) {
+  state: State;
+
+  static defaultProps = {
+    type: 'text',
+    autosize: false,
+    rows: 2,
+    autoComplete: 'off'
+  }
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
       textareaStyle: null
-    }
+    };
   }
 
   componentDidMount() {
     this.resizeTextarea();
   }
 
-  fixControlledValue(value) {
+  /* <Instance Methods */
+
+  focus(): void {
+    (this.refs.input || this.refs.textarea).focus();
+  }
+
+  blur(): void {
+    (this.refs.input || this.refs.textarea).blur();
+  }
+
+  /* Instance Methods> */
+
+  fixControlledValue(value: mixed): mixed {
     if (typeof value === 'undefined' || value === null) {
       return '';
     }
     return value;
   }
 
-  handleChange(e) {
+  handleChange(e: SyntheticEvent): void {
     const { onChange } = this.props;
 
     if (onChange) {
@@ -33,22 +60,22 @@ export default class Input extends Component {
     this.resizeTextarea();
   }
 
-  handleFocus(e) {
+  handleFocus(e: SyntheticEvent): void {
     const { onFocus } = this.props;
     if (onFocus) onFocus(e)
   }
 
-  handleBlur(e) {
+  handleBlur(e: SyntheticEvent): void {
     const { onBlur } = this.props;
     if (onBlur) onBlur(e)
   }
 
-  handleIconClick(e) {
+  handleIconClick(e: SyntheticEvent): void {
     const { onIconClick } = this.props;
     if (onIconClick) onIconClick(e)
   }
 
-  resizeTextarea() {
+  resizeTextarea(): void {
     const { autosize, type } = this.props;
 
     if (!autosize || type !== 'textarea') {
@@ -63,8 +90,8 @@ export default class Input extends Component {
     });
   }
 
-  render() {
-    const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave, iconSlot,
+  render(): React.Element<any> {
+    const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave,
       ...otherProps
     } = this.props;
 
@@ -88,12 +115,6 @@ export default class Input extends Component {
     delete otherProps.autosize;
     delete otherProps.onIconClick;
 
-    const createIconSlot = ()=>{
-      if (iconSlot) return iconSlot
-      else if (icon) return <i className={`el-input__icon el-icon-${icon}`}>{prepend}</i>
-      return null
-    }
-
     if (type === 'textarea') {
       return (
         <div style={this.style()} className={this.className(classname)}>
@@ -112,7 +133,7 @@ export default class Input extends Component {
       return (
         <div style={this.style()} className={this.className(classname)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
           { prepend && <div className="el-input-group__prepend">{prepend}</div> }
-          { createIconSlot() }
+          { typeof icon != 'string' ? icon : <i className={`el-input__icon el-icon-${icon}`} onClick={this.handleIconClick.bind(this)}>{prepend}</i> }
           <input { ...otherProps }
             ref="input"
             className="el-input__inner"
@@ -132,8 +153,7 @@ export default class Input extends Component {
 Input.propTypes = {
   // base
   type: PropTypes.string,
-  icon: PropTypes.string,
-  iconSlot: React.PropTypes.element,
+  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   disabled: PropTypes.bool,
   name: PropTypes.string,
   placeholder: PropTypes.string,
@@ -168,11 +188,4 @@ Input.propTypes = {
   // form related
   form: PropTypes.string,
   validating: PropTypes.bool,
-}
-
-Input.defaultProps = {
-  type: 'text',
-  autosize: false,
-  rows: 2,
-  autoComplete: 'off'
 }

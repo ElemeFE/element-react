@@ -339,6 +339,54 @@ Object.defineProperty(exports, 'TimeRangePicker', {
     return _datePicker.TimeRangePicker;
   }
 });
+Object.defineProperty(exports, 'DatePicker', {
+  enumerable: true,
+  get: function get() {
+    return _datePicker.DatePicker;
+  }
+});
+Object.defineProperty(exports, 'DateRangePicker', {
+  enumerable: true,
+  get: function get() {
+    return _datePicker.DateRangePicker;
+  }
+});
+
+var _carousel = require('./carousel');
+
+Object.defineProperty(exports, 'Carousel', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_carousel).default;
+  }
+});
+
+var _collapse = require('./collapse');
+
+Object.defineProperty(exports, 'Collapse', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_collapse).default;
+  }
+});
+
+var _colorPicker = require('./color-picker');
+
+Object.defineProperty(exports, 'ColorPicker', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_colorPicker).default;
+  }
+});
+
+var _cascader = require('./cascader');
+
+Object.defineProperty(exports, 'Cascader', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_cascader).default;
+  }
+});
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

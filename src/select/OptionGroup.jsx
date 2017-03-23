@@ -1,13 +1,9 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class OptionGroup extends Component {
-  getChildContext() {
-    return {
-      disabled: this.props.disabled
-    };
-  }
-
   render() {
     return (
       <ul style={this.style()} className={this.className('el-select-group__wrap')}>
@@ -22,11 +18,6 @@ export default class OptionGroup extends Component {
   }
 }
 
-OptionGroup.childContextTypes = {
-  disabled: PropTypes.bool
-};
-
 OptionGroup.propTypes = {
   label: PropTypes.string,
-  disabled: PropTypes.bool
 };

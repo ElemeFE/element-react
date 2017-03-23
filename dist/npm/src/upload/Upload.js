@@ -42,22 +42,40 @@ var Upload = function (_Component) {
 
     _this.state = {
       fileList: [],
-      dragOver: false,
-      draging: false,
       tempIndex: 1
     };
     return _this;
   }
 
   _createClass(Upload, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.init(this.props);
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.init(nextProps);
+    }
+  }, {
+    key: 'init',
+    value: function init(props) {
+      var tempIndex = this.state.tempIndex;
+      var fileList = props.fileList;
+
+      var uploadFiles = fileList.map(function (file) {
+        file.uid = file.uid || Date.now() + tempIndex++;
+        file.status = 'success';
+        return file;
+      });
+      this.setState({ fileList: uploadFiles });
+    }
+  }, {
     key: 'getChildContext',
     value: function getChildContext() {
-      var fileList = this.state.fileList;
-
       return {
         onPreview: this.handlePreview.bind(this),
-        onRemove: this.handleRemove.bind(this),
-        fileList: fileList
+        onRemove: this.handleRemove.bind(this)
       };
     }
   }, {
@@ -68,33 +86,36 @@ var Upload = function (_Component) {
       var target = fileList.find(function (item) {
         return item.uid === file.uid;
       });
-      return target;
+      if (target) {
+        return target;
+      }
+      return null;
     }
   }, {
     key: 'handleStart',
     value: function handleStart(file) {
       var _state = this.state,
-          fileList = _state.fileList,
-          tempIndex = _state.tempIndex;
+          tempIndex = _state.tempIndex,
+          fileList = _state.fileList;
 
       file.uid = Date.now() + tempIndex++;
       var _file = {
-        status: 'uploading',
+        status: 'ready',
         name: file.name,
         size: file.size,
         percentage: 0,
         uid: file.uid,
-        showProgress: true
+        raw: file
       };
-      if (this.props.thumbnailMode) {
-        try {
-          _file.url = URL.createObjectURL(file);
-        } catch (err) {
-          throw err;
-        }
+      try {
+        _file.url = URL.createObjectURL(file);
+      } catch (err) {
+        console.error(err);
+        return;
       }
+      fileList.push(_file);
       this.setState({
-        fileList: fileList.concat(_file),
+        fileList: fileList,
         tempIndex: tempIndex
       });
     }
@@ -104,8 +125,12 @@ var Upload = function (_Component) {
       var fileList = this.state.fileList;
 
       var _file = this.getFile(file);
-      _file.percentage = e.percent || 0;
-      this.setState({ fileList: fileList });
+      if (_file) {
+        _file.percentage = e.percent || 0;
+        _file.status = 'uploading';
+        this.props.onProgress(e, _file, fileList);
+        this.setState({ fileList: fileList });
+      }
     }
   }, {
     key: 'handleSuccess',
@@ -116,47 +141,53 @@ var Upload = function (_Component) {
 
       var _file = this.getFile(file);
       if (_file) {
-        _file.status = 'finished';
+        _file.status = 'success';
         _file.response = res;
-        this.setState({ fileList: fileList });
-        this.props.onSuccess(res, _file, this.fileList);
+
         setTimeout(function () {
-          _file.showProgress = false;
-          _this2.setState({ fileList: fileList });
+          _this2.setState({ fileList: fileList }, function () {
+            _this2.props.onSuccess(res, _file, fileList);
+            _this2.props.onChange(_file, fileList);
+          });
         }, 1000);
       }
     }
   }, {
     key: 'handleError',
-    value: function handleError(err, response, file) {
+    value: function handleError(err, file) {
       var _this3 = this;
 
-      var _file = this.getFile(file);
       var fileList = this.state.fileList;
 
-      _file.status = 'fail';
-      fileList.splice(fileList.indexOf(_file), 1);
-      this.setState({ fileList: fileList }, function () {
-        return _this3.props.onError(err, response, file);
-      });
+      var _file = this.getFile(file);
+      if (_file) {
+        _file.status = 'fail';
+        fileList.splice(fileList.indexOf(_file), 1);
+        this.setState({ fileList: fileList }, function () {
+          _this3.props.onError(err, _file, fileList);
+          _this3.props.onChange(_file, fileList);
+        });
+      }
     }
   }, {
     key: 'handleRemove',
     value: function handleRemove(file) {
       var _this4 = this;
 
-      var _file = this.getFile(file);
       var fileList = this.state.fileList;
 
-      fileList.splice(fileList.indexOf(_file), 1);
-      this.setState({ fileList: fileList }, function () {
-        return _this4.props.onRemove(file, fileList);
-      });
+      var _file = this.getFile(file);
+      if (_file) {
+        fileList.splice(fileList.indexOf(_file), 1);
+        this.setState({ fileList: fileList }, function () {
+          return _this4.props.onRemove(file, fileList);
+        });
+      }
     }
   }, {
     key: 'handlePreview',
     value: function handlePreview(file) {
-      if (file.status === 'finished') {
+      if (file.status === 'success') {
         this.props.onPreview(file);
       }
     }
@@ -168,23 +199,34 @@ var Upload = function (_Component) {
       });
     }
   }, {
+    key: 'submit',
+    value: function submit() {
+      var _this5 = this;
+
+      this.state.fileList.filter(function (file) {
+        return file.status === 'ready';
+      }).forEach(function (file) {
+        _this5.refs['upload-inner'].upload(file.raw, file);
+      });
+    }
+  }, {
     key: 'showCover',
     value: function showCover() {
       var fileList = this.state.fileList;
 
       var file = fileList[fileList.length - 1];
-      return this.props.thumbnailMode && file && file.status !== 'fail';
+      return file && file.status !== 'fail';
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       var fileList = this.state.fileList;
       var _props = this.props,
-          showUploadList = _props.showUploadList,
-          thumbnailMode = _props.thumbnailMode,
-          type = _props.type,
+          showFileList = _props.showFileList,
+          autoUpload = _props.autoUpload,
+          drag = _props.drag,
           tip = _props.tip,
           action = _props.action,
           multiple = _props.multiple,
@@ -193,14 +235,17 @@ var Upload = function (_Component) {
           headers = _props.headers,
           name = _props.name,
           data = _props.data,
-          accept = _props.accept;
+          accept = _props.accept,
+          listType = _props.listType,
+          className = _props.className;
 
       var uploadList = void 0;
-      if (showUploadList && !thumbnailMode && fileList.length) {
-        uploadList = _react2.default.createElement(_UploadList2.default, null);
+      if (showFileList && fileList.length) {
+        uploadList = _react2.default.createElement(_UploadList2.default, { listType: listType, fileList: fileList });
       }
       var restProps = {
-        type: type,
+        autoUpload: autoUpload,
+        drag: drag,
         action: action,
         multiple: multiple,
         beforeUpload: beforeUpload,
@@ -208,72 +253,75 @@ var Upload = function (_Component) {
         headers: headers,
         name: name,
         data: data,
-        accept: thumbnailMode ? 'image/*' : accept,
+        accept: accept,
+        listType: listType,
         onStart: function onStart(file) {
-          return _this5.handleStart(file);
+          return _this6.handleStart(file);
         },
         onProgress: function onProgress(e, file) {
-          return _this5.handleProgress(e, file);
+          return _this6.handleProgress(e, file);
         },
         onSuccess: function onSuccess(res, file) {
-          return _this5.handleSuccess(res, file);
+          return _this6.handleSuccess(res, file);
         },
         onError: function onError(error, res, file) {
-          return _this5.handleError(error, res, file);
+          return _this6.handleError(error, res, file);
         },
         onPreview: function onPreview(file) {
-          return _this5.handlePreview(file);
+          return _this6.handlePreview(file);
         },
         onRemove: function onRemove(file) {
-          return _this5.handleRemove(file);
+          return _this6.handleRemove(file);
         },
         ref: 'upload-inner',
         showCover: this.showCover()
       };
-      var children = _react2.default.Children.map(this.props.children, function (child) {
-        return _react2.default.cloneElement(child);
-      });
+      var trigger = this.props.trigger || this.props.children;
       var uploadComponent = typeof FormData !== 'undefined' ? _react2.default.createElement(
         _AjaxUpload2.default,
         restProps,
-        children
+        trigger
       ) : _react2.default.createElement(
         'iFrameUpload',
         restProps,
-        children
+        trigger
       );
-      if (type === 'select') {
-        return _react2.default.createElement(
-          'div',
-          { className: 'el-upload' },
-          uploadList,
-          uploadComponent,
-          tip
-        );
-      }
-      if (type === 'drag') {
-        return _react2.default.createElement(
-          'div',
-          { style: this.style(), className: this.className('el-upload') },
-          uploadComponent,
-          tip,
-          uploadList
-        );
-      }
+      return _react2.default.createElement(
+        'div',
+        { className: className },
+        listType === 'picture-card' ? uploadList : '',
+        this.props.trigger ? [uploadComponent, this.props.children] : uploadComponent,
+        tip,
+        listType !== 'picture-card' ? uploadList : ''
+      );
     }
   }]);
 
   return Upload;
 }(_libs.Component);
 
+Upload.defaultProps = {
+  headers: {},
+  name: 'file',
+  type: 'select',
+  listType: 'text',
+  fileList: [],
+  showFileList: true,
+  autoUpload: true,
+  onRemove: function onRemove() {},
+  onPreview: function onPreview() {},
+  onProgress: function onProgress() {},
+  onSuccess: function onSuccess() {},
+  onError: function onError() {},
+  onChange: function onChange() {}
+};
 var _default = Upload;
 exports.default = _default;
 
 
 Upload.childContextTypes = {
   onPreview: _libs.PropTypes.func,
-  onRemove: _libs.PropTypes.func,
-  fileList: _libs.PropTypes.array
+  onRemove: _libs.PropTypes.func
 };
 
 Upload.propTypes = {
@@ -283,27 +331,22 @@ Upload.propTypes = {
   multiple: _libs.PropTypes.bool,
   name: _libs.PropTypes.string,
   withCredentials: _libs.PropTypes.bool,
-  thumbnailMode: _libs.PropTypes.bool,
-  showUploadList: _libs.PropTypes.bool,
+  showFileList: _libs.PropTypes.bool,
+  fileList: _libs.PropTypes.array,
+  autoUpload: _libs.PropTypes.bool,
   accept: _libs.PropTypes.string,
-  type: _libs.PropTypes.oneOf(['select', 'drag']),
+  drag: _libs.PropTypes.bool,
+  listType: _libs.PropTypes.oneOf(['text', 'picture', 'picture-card']),
   tip: _libs.PropTypes.node,
+  trigger: _libs.PropTypes.node,
   beforeUpload: _libs.PropTypes.func,
   onRemove: _libs.PropTypes.func,
   onPreview: _libs.PropTypes.func,
+  onProgress: _libs.PropTypes.func,
   onSuccess: _libs.PropTypes.func,
-  onError: _libs.PropTypes.func
-};
-
-Upload.defaultProps = {
-  headers: {},
-  name: 'file',
-  type: 'select',
-  showUploadList: true,
-  onRemove: function onRemove() {},
-  onPreview: function onPreview() {},
-  onSuccess: function onSuccess() {},
-  onError: function onError() {}
+  onError: _libs.PropTypes.func,
+  onChange: _libs.PropTypes.func,
+  className: _libs.PropTypes.string
 };
 ;
 

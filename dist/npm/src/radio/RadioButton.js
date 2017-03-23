@@ -34,23 +34,47 @@ var RadioButton = function (_Radio) {
   }
 
   _createClass(RadioButton, [{
+    key: 'parent',
+    value: function parent() {
+      return this.context.component;
+    }
+  }, {
+    key: 'size',
+    value: function size() {
+      return this.parent().props.size;
+    }
+  }, {
+    key: 'isDisabled',
+    value: function isDisabled() {
+      return this.props.disabled || this.parent().props.disabled;
+    }
+  }, {
+    key: 'activeStyle',
+    value: function activeStyle() {
+      return {
+        backgroundColor: this.parent().props.fill || '',
+        borderColor: this.parent().props.fill || '',
+        color: this.parent().props.textColor || ''
+      };
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'label',
-        { style: this.style(), className: this.className('el-radio-button', this.props.size && 'el-radio-button--' + this.props.size, {
+        { style: this.style(), className: this.className('el-radio-button', this.props.size && 'el-radio-button--' + this.size(), {
             'is-active': this.state.checked
           }) },
         _react2.default.createElement('input', {
           type: 'radio',
           className: 'el-radio-button__orig-radio',
           checked: this.state.checked,
-          disabled: this.props.disabled,
+          disabled: this.isDisabled(),
           onChange: this.onChange.bind(this)
         }),
         _react2.default.createElement(
           'span',
-          { className: 'el-radio-button__inner' },
+          { className: 'el-radio-button__inner', style: this.state.checked ? this.activeStyle() : {} },
           this.props.children || this.props.value
         )
       );
@@ -64,9 +88,14 @@ var _default = RadioButton;
 exports.default = _default;
 
 
+RadioButton.contextTypes = {
+  component: _libs.PropTypes.any
+};
+
 RadioButton.propTypes = {
-  value: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]).isRequired,
-  disabled: _libs.PropTypes.bool
+  value: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
+  disabled: _libs.PropTypes.bool,
+  name: _libs.PropTypes.string
 };
 ;
 

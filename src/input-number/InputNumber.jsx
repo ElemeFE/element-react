@@ -1,25 +1,35 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import Input from '../input';
 import { accAdd, accSub } from './util';
 
+type State = {
+  value: number,
+  inputActive: boolean
+};
+
 export default class InputNumber extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
-      value: props.defaultValue
+      value: props.defaultValue,
+      inputActive: false
     };
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: Object) {
     if (props.value != this.props.value) {
       this.setState({ value: props.value });
     }
   }
 
-  onKeyDown(e) {
+  onKeyDown(e: SyntheticKeyboardEvent): void {
     e.preventDefault();
 
     switch (e.keyCode) {
@@ -34,7 +44,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  onBlur() {
+  onBlur(): void {
     let value = Number(this.state.value);
 
     if (isNaN(value) || value > this.props.max || value < this.props.min) {
@@ -44,29 +54,25 @@ export default class InputNumber extends Component {
     this.setState({ value });
   }
 
-  onInput(value) {
+  onInput(value: number): void {
     this.setState({ value }, this.onChange);
   }
 
-  onChange() {
+  onChange(): void {
     if (this.props.onChange) {
-      this.props.onChange({
-        target: {
-          value: this.state.value
-        }
-      });
+      this.props.onChange(this.state.value);
     }
   }
 
-  minDisabled() {
+  minDisabled(): boolean {
     return this.state.value - this.props.step < this.props.min;
   }
 
-  maxDisabled() {
+  maxDisabled(): boolean {
     return this.state.value + this.props.step > this.props.max;
   }
 
-  increase() {
+  increase(): void {
     const { step, max, disabled } = this.props;
     let { value, inputActive } = this.state;
 
@@ -81,7 +87,7 @@ export default class InputNumber extends Component {
     this.setState({ value, inputActive }, this.onChange);
   }
 
-  decrease() {
+  decrease(): void {
     const { step, min, disabled } = this.props;
     let { value, inputActive } = this.state;
 
@@ -96,7 +102,7 @@ export default class InputNumber extends Component {
     this.setState({ value, inputActive }, this.onChange);
   }
 
-  activeInput(disabled) {
+  activeInput(disabled: boolean): void {
     if (!this.props.disabled && !disabled) {
       this.setState({
         inputActive: true
@@ -104,7 +110,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  inactiveInput(disabled) {
+  inactiveInput(disabled: boolean): void {
     if (!this.props.disabled && !disabled) {
       this.setState({
         inputActive: false
@@ -112,11 +118,38 @@ export default class InputNumber extends Component {
     }
   }
 
-  render() {
+  render(): React.Element<any> {
+    const { controls, disabled } = this.props;
+
     return (
       <div style={this.style()} className={this.className('el-input-number', this.props.size && `el-input-number--${this.props.size}`, {
-        'is-disabled': this.props.disabled
+        'is-disabled': disabled,
+        'is-without-controls': !controls
       })}>
+        {
+          controls && (
+            <span
+              className={this.classNames("el-input-number__decrease", {
+                'is-disabled': this.minDisabled()
+              })}
+              onClick={this.decrease.bind(this)}
+            >
+              <i className="el-icon-minus"></i>
+            </span>
+          )
+        }
+        {
+          controls && (
+            <span
+              className={this.classNames("el-input-number__increase", {
+                'is-disabled': this.maxDisabled()
+              })}
+              onClick={this.increase.bind(this)}
+            >
+              <i className="el-icon-plus"></i>
+            </span>
+          )
+        }
         <Input
           ref="input"
           className={this.classNames({
@@ -127,18 +160,6 @@ export default class InputNumber extends Component {
           size={this.props.size}
           onKeyDown={this.onKeyDown.bind(this)}
           onBlur={this.onBlur.bind(this)} />
-        <span className={this.classNames('el-input-number__decrease el-icon-minus', {
-          'is-disabled': this.minDisabled()
-        })}
-          onClick={this.decrease.bind(this)}
-          onMouseEnter={this.activeInput.bind(this, this.minDisabled())}
-          onMouseLeave={this.inactiveInput.bind(this, this.minDisabled())} />
-        <span className={this.classNames('el-input-number__increase el-icon-plus', {
-          'is-disabled': this.maxDisabled()
-        })}
-          onClick={this.increase.bind(this)}
-          onMouseEnter={this.activeInput.bind(this, this.maxDisabled())}
-          onMouseLeave={this.inactiveInput.bind(this, this.maxDisabled())} />
       </div>
     )
   }
@@ -151,12 +172,14 @@ InputNumber.propTypes = {
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   disabled: PropTypes.bool,
+  controls: PropTypes.bool,
   size: PropTypes.string,
   onChange: PropTypes.func
 }
 
 InputNumber.defaultProps = {
   step: 1,
+  controls: true,
   max: Infinity,
   min: 0
 }

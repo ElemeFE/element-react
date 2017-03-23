@@ -14,7 +14,7 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _popper = require('../../vendor/popper');
+var _popper = require('../../libs/utils/popper');
 
 var _popper2 = _interopRequireDefault(_popper);
 
@@ -45,9 +45,33 @@ var DropdownMenu = function (_Component) {
   _createClass(DropdownMenu, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      this.popperJS = new _popper2.default(_reactDom2.default.findDOMNode(this.parent()), this.refs.popper, {
-        placement: this.placement()
-      });
+      var showPopper = this.state.showPopper;
+
+
+      if (showPopper) {
+        if (this.popperJS) {
+          this.popperJS.update();
+        } else {
+          var parent = _reactDom2.default.findDOMNode(this.parent());
+
+          this.popperJS = new _popper2.default(parent, this.refs.popper, {
+            placement: this.placement()
+          });
+        }
+      } else {
+        if (this.popperJS) {
+          this.popperJS.destroy();
+        }
+
+        delete this.popperJS;
+      }
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
     }
   }, {
     key: 'onVisibleChange',

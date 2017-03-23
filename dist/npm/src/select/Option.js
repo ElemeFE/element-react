@@ -50,8 +50,8 @@ var Option = function (_Component) {
       }
     }
   }, {
-    key: 'componentWillUnMount',
-    value: function componentWillUnMount() {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
       this.parent().onOptionDestroy(this);
     }
   }, {
@@ -79,6 +79,8 @@ var Option = function (_Component) {
           return el.props.value;
         }).indexOf(this.props.value) > -1;
       }
+
+      return false;
     }
   }, {
     key: 'hoverItem',

@@ -1,12 +1,14 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class DropdownItem extends Component {
-  handleClick() {
+  handleClick(): void {
     this.context.component.handleMenuItemClick(this.props.command, this);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { disabled, divided } = this.props;
 
     return (

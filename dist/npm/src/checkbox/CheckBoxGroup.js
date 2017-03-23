@@ -35,6 +35,15 @@ var CheckboxGroup = function (_Component) {
   }
 
   _createClass(CheckboxGroup, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.options !== this.props.options) {
+        this.setState({
+          options: nextProps.options
+        });
+      }
+    }
+  }, {
     key: 'getChildContext',
     value: function getChildContext() {
       return { isWrap: true };
@@ -42,27 +51,25 @@ var CheckboxGroup = function (_Component) {
   }, {
     key: 'onChange',
     value: function onChange(e, label, value) {
-      var _state = this.state,
-          options = _state.options,
-          values = _state.values;
+      var options = this.state.options;
 
-      var newOptions = void 0,
-          newValues = void 0;
+      var newOptions = void 0;
+      if (e.target instanceof HTMLInputElement) {
+        if (e.target.checked) {
+          newOptions = options.concat(value || label);
+        } else {
+          newOptions = options.filter(function (v) {
+            return v !== value && v !== label;
+          });
+        }
 
-      if (e.target.checked) {
-        newOptions = options.concat(value || label);
-      } else {
-        newOptions = options.filter(function (v) {
-          return v != value && v !== label;
+        this.setState({
+          options: newOptions
         });
-      }
 
-      this.setState({
-        options: newOptions
-      });
-
-      if (this.props.onChange) {
-        this.props.onChange(newOptions);
+        if (this.props.onChange) {
+          this.props.onChange(newOptions);
+        }
       }
     }
   }, {
@@ -71,7 +78,6 @@ var CheckboxGroup = function (_Component) {
       var _this2 = this;
 
       var options = this.state.options;
-
 
       var children = _react.Children.map(this.props.children, function (child, index) {
         return _react2.default.cloneElement(child, Object.assign({}, child.props, {

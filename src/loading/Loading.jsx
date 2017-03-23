@@ -1,12 +1,21 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Loading extends Component {
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.enableScroll();
   }
 
-  getStyle() {
+  getStyle(): {
+    position: string,
+    top?: number,
+    right?: number,
+    bottom?: number,
+    left?: number,
+    zIndex?: number
+  } {
     if (this.props.fullscreen) {
       this.disableScroll();
 
@@ -27,15 +36,25 @@ export default class Loading extends Component {
     }
   }
 
-  disableScroll() {
-    document.body.style.setProperty('overflow', 'hidden');
+  documentBody(): HTMLElement | null {
+    return document.body;
   }
 
-  enableScroll() {
-    document.body.style.removeProperty('overflow');
+  disableScroll(): void {
+    const documentBody = this.documentBody();
+    if (documentBody) {
+      documentBody.style.setProperty('overflow', 'hidden');
+    }
   }
 
-  render() {
+  enableScroll(): void {
+    const documentBody = this.documentBody();
+    if (documentBody) {
+      documentBody.style.removeProperty('overflow');
+    }
+  }
+
+  render(): React.Element<any> {
     const { loading, fullscreen, text } = this.props;
 
     return (

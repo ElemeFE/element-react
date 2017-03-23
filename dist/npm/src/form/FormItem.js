@@ -40,6 +40,7 @@ var FormItem = function (_Component) {
 
     _this.state = {
       error: '',
+      valid: false,
       validating: false,
       isRequired: false
     };
@@ -70,14 +71,17 @@ var FormItem = function (_Component) {
             }
           });
 
-          _reactDom2.default.findDOMNode(this.parent()).addEventListener('blur', this.onFieldBlur.bind(this));
-          _reactDom2.default.findDOMNode(this.parent()).addEventListener('change', this.onFieldChange.bind(this));
+          var parent = _reactDom2.default.findDOMNode(this.parent());
+          if (parent) {
+            parent.addEventListener('blur', this.onFieldBlur.bind(this));
+            parent.addEventListener('change', this.onFieldChange.bind(this));
+          }
         }
       }
     }
   }, {
-    key: 'componentWillUnMount',
-    value: function componentWillUnMount() {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
       this.parent().removeField(this);
     }
   }, {
@@ -188,20 +192,30 @@ var FormItem = function (_Component) {
     key: 'labelStyle',
     value: function labelStyle() {
       var ret = {};
+
+      if (this.parent().props.labelPosition === 'top') return ret;
+
       var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
+
       if (labelWidth) {
         ret.width = Number(labelWidth);
       }
+
       return ret;
     }
   }, {
     key: 'contentStyle',
     value: function contentStyle() {
       var ret = {};
+
+      if (this.parent().props.labelPosition === 'top' || this.parent().props.inline) return ret;
+
       var labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
+
       if (labelWidth) {
         ret.marginLeft = Number(labelWidth);
       }
+
       return ret;
     }
   }, {
@@ -269,7 +283,7 @@ FormItem.contextTypes = {
 
 FormItem.propTypes = {
   label: _libs.PropTypes.string,
-  labelWidth: _libs.PropTypes.string,
+  labelWidth: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
   prop: _libs.PropTypes.string,
   required: _libs.PropTypes.bool,
   rules: _libs.PropTypes.oneOfType([_libs.PropTypes.object, _libs.PropTypes.array])

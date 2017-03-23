@@ -30,7 +30,7 @@ render() {
 render() {
   return (
     <div>
-      <Button plain={true} disabled={true}>主要按钮</Button>
+      <Button plain={true} disabled={true}>默认按钮</Button>
       <Button type="primary" disabled={true}>主要按钮</Button>
       <Button type="text" disabled={true}>文字按钮</Button>
     </div>

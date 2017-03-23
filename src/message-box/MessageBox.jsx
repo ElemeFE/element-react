@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import Button from '../button';
@@ -11,8 +13,15 @@ const typeMap = {
   error: 'circle-cross'
 };
 
+type State = {
+  visible: boolean,
+  editorErrorMessage?: string
+};
+
 export default class MessageBox extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -26,15 +35,15 @@ export default class MessageBox extends Component {
     })
   }
 
-  onChange(event) {
+  onChange(event: SyntheticInputEvent): void {
     this.validate(event.target.value);
   }
 
-  typeClass() {
+  typeClass(): string {
     return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
   }
 
-  validate(value) {
+  validate(value: string): boolean {
     const { inputPattern, inputValidator, inputErrorMessage } = this.props;
     let editorErrorMessage;
 
@@ -60,7 +69,7 @@ export default class MessageBox extends Component {
     return !editorErrorMessage;
   }
 
-  handleAction(action) {
+  handleAction(action: string): void {
     const { modal, promise, showInput } = this.props;
 
     if (modal) {
@@ -93,7 +102,7 @@ export default class MessageBox extends Component {
     this.close();
   }
 
-  close() {
+  close(): void {
     this.setState({
       visible: false
     });
@@ -103,12 +112,12 @@ export default class MessageBox extends Component {
     }, 200);
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <div>
         <div style={{ position: 'absolute', zIndex: 2001 }}>
           <Transition name="msgbox-fade" duration="300">
-            <View key="el-message-box" show={this.state.visible}>
+            <View key={this.state.visible} show={this.state.visible}>
               <div className="el-message-box__wrapper">
                 <div className="el-message-box">
                   {
@@ -157,7 +166,7 @@ export default class MessageBox extends Component {
           </Transition>
         </div>
         <Transition name="v-modal" duration="200">
-          <View key="v-modal" show={this.state.visible}>
+          <View key={this.state.visible} show={this.state.visible}>
             <div className="v-modal" style={{ zIndex: 1006 }}></div>
           </View>
         </Transition>

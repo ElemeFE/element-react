@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class Checkbox extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/checkbox.md');
-    }
+    return require(`../../docs/${locale}/checkbox.md`);
   }
 }

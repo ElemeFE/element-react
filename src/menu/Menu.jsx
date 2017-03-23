@@ -1,8 +1,20 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
+type State = {
+  activeIndex: number,
+  openedMenus: Array<number>,
+  menuItems: Component,
+  submenus: Component
+};
+
 export default class Menu extends Component {
-  constructor(props) {
+  state: State;
+  instanceType: string;
+
+  constructor(props: Object) {
     super(props);
 
     this.instanceType = 'Menu';
@@ -15,7 +27,7 @@ export default class Menu extends Component {
     }
   }
 
-  getChildContext() {
+  getChildContext(): { component: Menu } {
     return {
       component: this
     };
@@ -25,7 +37,7 @@ export default class Menu extends Component {
     this.openActiveItemMenus();
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props: Object) {
     if (props.defaultActive != this.props.defaultActive) {
       this.defaultActiveChanged(props.defaultActive);
     }
@@ -35,7 +47,7 @@ export default class Menu extends Component {
     }
   }
 
-  openMenu(index, indexPath) {
+  openMenu(index: number, indexPath: Array<number>): void {
     let { openedMenus } = this.state;
 
     if (openedMenus.indexOf(index) !== -1) return;
@@ -51,7 +63,7 @@ export default class Menu extends Component {
     this.setState({ openedMenus });
   }
 
-  closeMenu(index) {
+  closeMenu(index: number): void {
     let { openedMenus } = this.state;
 
     openedMenus.splice(openedMenus.indexOf(index), 1);
@@ -59,7 +71,7 @@ export default class Menu extends Component {
     this.setState({ openedMenus });
   }
 
-  handleSubmenuClick(index, indexPath) {
+  handleSubmenuClick(index: number, indexPath: Array<number>): void {
     let isOpened = this.state.openedMenus.indexOf(index) !== -1;
 
     if (isOpened) {
@@ -77,7 +89,7 @@ export default class Menu extends Component {
     }
   }
 
-  handleSelect(index, indexPath, route, instance) {
+  handleSelect(index: number, indexPath: Array<number>, instance: Component): void {
     let { activeIndex, openedMenus, submenus } = this.state;
 
     activeIndex = index;
@@ -94,10 +106,6 @@ export default class Menu extends Component {
       openedMenus = [];
     }
 
-    if (this.props.router && route) {
-      history.pushState(null, null, route);
-    }
-
     this.setState({ activeIndex, openedMenus }, () => {
       if (this.props.mode === 'vertical') {
         this.openActiveItemMenus();
@@ -105,7 +113,7 @@ export default class Menu extends Component {
     });
   }
 
-  openActiveItemMenus() {
+  openActiveItemMenus(): void {
     let { activeIndex, menuItems, submenus } = this.state;
 
     if (!menuItems[activeIndex]) return;
@@ -120,7 +128,7 @@ export default class Menu extends Component {
     }
   }
 
-  defaultActiveChanged(value) {
+  defaultActiveChanged(value: number): void {
     const { menuItems } = this.state;
 
     this.setState({ activeIndex: value }, () => {
@@ -129,17 +137,17 @@ export default class Menu extends Component {
       let menuItem = menuItems[value];
       let indexPath = menuItem.indexPath();
 
-      this.handleSelect(value, indexPath, null, menuItem);
+      this.handleSelect(value, indexPath, menuItem);
     });
   }
 
-  defaultOpenedsChanged(value) {
+  defaultOpenedsChanged(value: mixed): void {
     this.setState({
       openedMenus: value
     });
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <ul
         style={this.style()}
@@ -164,7 +172,6 @@ Menu.propTypes = {
   defaultOpeneds: PropTypes.array,
   theme: PropTypes.string,
   uniqueOpened: PropTypes.bool,
-  router: PropTypes.bool,
   menuTrigger: PropTypes.string,
   onSelect: PropTypes.func,
   onOpen: PropTypes.func,

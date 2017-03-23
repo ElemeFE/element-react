@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Component, PropTypes } from '../../libs';
 import Pager from './Pager';
 import Select from '../select';
@@ -27,6 +26,7 @@ const Next = (props) => {
 }
 
 class Sizes extends Component{
+
   render(){
     const { onSizeChange, internalPageSize } = this.props;
 
@@ -93,11 +93,12 @@ export default class Pagination extends Component{
   constructor(props, context){
     super(props, context);
 
-    const { currentPage, pageSizes,  pageSize, total, pageCount} = this.props;
+    const { currentPage, pageSizes,  pageSize, total, pageCount, layout } = this.props;
     let internalPageSize = 0;
-
-    if (Array.isArray(pageSizes)) {
+    if (layout.split(',').indexOf('sizes') > -1 && Array.isArray(pageSizes)) {
       internalPageSize = pageSizes.indexOf(pageSize) > -1 ? pageSize : pageSizes[0];
+    } else {
+      internalPageSize = pageSize
     }
 
     this.state = {
@@ -109,19 +110,19 @@ export default class Pagination extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    const { currentPage, pageSizes,  pageSize, total, pageCount} = this.props;
+    const { currentPage, pageSizes,  pageSize, total, pageCount } = this.props;
 
-    if(nextProps.currentPage != currentPage || 
-      nextProps.pageSizes != pageSizes || 
+    if(nextProps.currentPage != currentPage ||
+      nextProps.pageSizes != pageSizes ||
       nextProps.pageSize != pageSize ||
       nextProps.total != total ||
       nextProps.pageCount != pageCount){
 
       let internalPageSize = this.state.internalPageSize;
-      if (Array.isArray(nextProps.pageSizes)) {
+      if (nextProps.layout.split(',').indexOf('sizes') > -1 && Array.isArray(nextProps.pageSizes)) {
         internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1 ?nextProps.pageSize : nextProps.pageSizes[0];
       }
-      
+
       this.setState({
         internalPageSize: internalPageSize,
         total: nextProps.total,

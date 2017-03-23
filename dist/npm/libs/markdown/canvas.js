@@ -14,13 +14,13 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _babelStandalone = require('babel-standalone');
-
 var _marked = require('marked');
 
 var _marked2 = _interopRequireDefault(_marked);
 
-var _highlight2 = require('../../vendor/highlight');
+var _babelStandalone = require('babel-standalone');
+
+var _highlight2 = require('./highlight');
 
 var _highlight3 = _interopRequireDefault(_highlight2);
 
@@ -32,8 +32,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Canvas = function (_Component) {
-  _inherits(Canvas, _Component);
+var Canvas = function (_React$Component) {
+  _inherits(Canvas, _React$Component);
 
   function Canvas(props) {
     _classCallCheck(this, Canvas);
@@ -83,26 +83,24 @@ var Canvas = function (_Component) {
       var _this2 = this;
 
       if (this.shouldUpdate) {
-        (function () {
-          var div = _this2.refs.source;
+        var div = this.refs.source;
 
-          if (div instanceof HTMLElement) {
-            require(['../../src'], function (Element) {
-              var args = ['context', 'React'],
-                  argv = [_this2, _react2.default];
+        if (div instanceof HTMLElement) {
+          require(['../../src'], function (Element) {
+            var args = ['context', 'React'],
+                argv = [_this2, _react2.default];
 
-              for (var key in Element) {
-                args.push(key);
-                argv.push(Element[key]);
-              }
+            for (var key in Element) {
+              args.push(key);
+              argv.push(Element[key]);
+            }
 
-              args.push(_this2.component);
+            args.push(_this2.component);
 
-              _reactDom2.default.unmountComponentAtNode(div);
-              _reactDom2.default.render(new (Function.prototype.bind.apply(Function, [null].concat(args)))().apply(null, argv), div);
-            });
-          }
-        })();
+            _reactDom2.default.unmountComponentAtNode(div);
+            _reactDom2.default.render(new (Function.prototype.bind.apply(Function, [null].concat(args)))().apply(null, argv), div);
+          });
+        }
       }
 
       delete this.shouldUpdate;
@@ -140,7 +138,7 @@ var Canvas = function (_Component) {
           _react2.default.createElement(
             'span',
             null,
-            '\u9690\u85CF\u4EE3\u7801'
+            this.props.locale.hide
           )
         ) : _react2.default.createElement(
           'div',
@@ -149,7 +147,7 @@ var Canvas = function (_Component) {
           _react2.default.createElement(
             'span',
             null,
-            '\u663E\u793A\u4EE3\u7801'
+            this.props.locale.show
           )
         )
       );
@@ -157,10 +155,19 @@ var Canvas = function (_Component) {
   }]);
 
   return Canvas;
-}(_react.Component);
+}(_react2.default.Component);
 
 var _default = Canvas;
 exports.default = _default;
+
+
+Canvas.propTypes = {
+  locale: _react2.default.PropTypes.object
+};
+
+Canvas.defaultProps = {
+  locale: {}
+};
 ;
 
 var _temp = function () {

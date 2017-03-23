@@ -58,6 +58,11 @@ var Card = function (_Component) {
   return Card;
 }(_libs.Component);
 
+Card.defaultProps = {
+  bodyStyle: {
+    padding: '20px'
+  }
+};
 var _default = Card;
 exports.default = _default;
 
@@ -65,12 +70,6 @@ exports.default = _default;
 Card.propTypes = {
   header: _react.PropTypes.node,
   bodyStyle: _react.PropTypes.object
-};
-
-Card.defaultProps = {
-  bodyStyle: {
-    padding: '20px'
-  }
 };
 ;
 

@@ -1,79 +1,89 @@
+/* @flow */
+
 import React from 'react'
 import { Component, PropTypes } from '../../libs'
 
-export default class Checkbox extends Component {
+type State = {
+  checked: boolean,
+  focus: boolean,
+  label: string,
+}
 
-  constructor(props) {
+export default class Checkbox extends Component {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
+
     this.state = {
-      checked: Boolean(props.checked || props.defaultChecked),
-      focus: Boolean(props.focus),
+      checked: props.checked,
+      focus: props.focus,
       label: this.getLabel(props)
     };
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps: Object): void {
     this.setState({
       checked: nextProps.checked, focus: nextProps.focus, label: this.getLabel(nextProps)
     })
   }
 
-  onFocus() {
+  onFocus(): void {
     this.setState({
       focus: true
     });
   }
 
-  onBlur() {
+  onBlur(): void {
     this.setState({
       focus: false
     });
   }
 
-  onChange(e) {
+  onChange(e: SyntheticEvent): void {
     const { label } = this.state;
     const { trueLabel, falseLabel, value} = this.props;
-    const checked = e.target.checked;
-    let newLabel = label;
+    if (e.target instanceof HTMLInputElement) {
+      const checked = e.target.checked;
+      let newLabel = label;
 
-    if (this.props.trueLabel || this.props.falseLabel) {
-      newLabel = checked ? trueLabel : falseLabel;
-    }
-
-    if (this.props.onChange) {
-      if (this.context.isWrap) {
-        this.props.onChange(e, label, value);
-      } else {
-        this.props.onChange(e, label, value);
+      if (this.props.trueLabel || this.props.falseLabel) {
+        newLabel = checked ? trueLabel : falseLabel;
       }
-    }
 
-    this.setState({
-      checked: checked,
-      label: newLabel,
-    });
+      if (this.props.onChange) {
+        if (this.context.isWrap) {
+          this.props.onChange(e, label, value);
+        } else {
+          this.props.onChange(e, label, value);
+        }
+      }
+
+      this.setState({
+        checked: checked,
+        label: newLabel,
+      });
+    }
   }
 
-  getLabel(props) {
+  getLabel(props: Object): string {
     if (props.trueLabel || props.falseLabel) {
       return props.checked ? props.trueLabel : props.falseLabel;
-    }else {
+    } else {
       return props.label;
     }
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <label style={this.style()} className={this.className('el-checkbox')}>
-        <span className="el-checkbox__input">
-          <span
-            className={this.classNames("el-checkbox__inner", {
-              'is-disabled': this.props.disabled,
-              'is-checked': this.state.checked,
-              'is-indeterminate': this.props.indeterminate,
-              'is-focus': this.state.focus
-            })}>
-          </span>
+        <span className={this.classNames('el-checkbox__input', {
+          'is-disabled': this.props.disabled,
+          'is-checked': this.state.checked,
+          'is-indeterminate': this.props.indeterminate,
+          'is-focus': this.state.focus
+        })}>
+          <span className="el-checkbox__inner"></span>
           <input
             className="el-checkbox__original"
             type="checkbox"

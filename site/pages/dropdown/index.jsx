@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class Dropdown extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/dropdown.md');
-    }
+    return require(`../../docs/${locale}/dropdown.md`);
   }
 }

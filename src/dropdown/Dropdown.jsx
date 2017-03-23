@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
@@ -5,8 +7,14 @@ import { Component, PropTypes } from '../../libs';
 
 import Button from '../button';
 
+type State = {
+  visible: boolean
+};
+
 class Dropdown extends Component {
-  constructor(props) {
+  state: State;
+
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -14,7 +22,7 @@ class Dropdown extends Component {
     }
   }
 
-  getChildContext() {
+  getChildContext(): { component: Dropdown } {
     return {
       component: this
     };
@@ -24,39 +32,41 @@ class Dropdown extends Component {
     this.initEvent();
   }
 
-  componentWillUpdate(props, state) {
+  componentWillUpdate(props: Object, state: State): void {
     if (state.visible != this.state.visible) {
       this.refs.dropdown.onVisibleChange(state.visible);
     }
   }
 
-  handleClickOutside() {
-    this.setState({ visible: false });
+  handleClickOutside(): void {
+    if (this.state.visible) {
+      this.setState({ visible: false });
+    }
   }
 
-  show() {
+  show(): void {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => this.setState({ visible: true }), 250);
   }
 
-  hide() {
+  hide(): void {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => this.setState({ visible: false }), 150);
   }
 
-  handleClick() {
+  handleClick(): void {
     this.setState({ visible: !this.state.visible });
   }
 
-  initEvent() {
+  initEvent(): void {
     const { trigger, splitButton } = this.props;
-    const triggerElm = ReactDOM.findDOMNode(splitButton ? this.refs.trigger : this.refs.default);
+    const triggerElm: any = ReactDOM.findDOMNode(splitButton ? this.refs.trigger : this.refs.default);
 
     if (trigger === 'hover') {
       triggerElm.addEventListener('mouseenter', this.show.bind(this));
       triggerElm.addEventListener('mouseleave', this.hide.bind(this));
 
-      let dropdownElm = ReactDOM.findDOMNode(this.refs.dropdown);
+      let dropdownElm: any = ReactDOM.findDOMNode(this.refs.dropdown);
 
       dropdownElm.addEventListener('mouseenter', this.show.bind(this));
       dropdownElm.addEventListener('mouseleave', this.hide.bind(this));
@@ -65,17 +75,19 @@ class Dropdown extends Component {
     }
   }
 
-  handleMenuItemClick(command, instance) {
-    this.setState({
-      visible: false
-    });
+  handleMenuItemClick(command: string, instance: Component): void {
+    if (this.props.hideOnClick) {
+      this.setState({
+        visible: false
+      });
+    }
 
     if (this.props.onCommand) {
       this.props.onCommand(command, instance);
     }
   }
 
-  render() {
+  render(): React.Element<any> {
     const { splitButton, type, size, menu } = this.props;
 
     return (
@@ -113,11 +125,13 @@ Dropdown.propTypes = {
   trigger: PropTypes.oneOf(['hover', 'click']),
   menuAlign: PropTypes.oneOf(['start', 'end']),
   splitButton: PropTypes.bool,
+  hideOnClick: PropTypes.bool,
   onClick: PropTypes.func,
   onCommand: PropTypes.func
 }
 
 Dropdown.defaultProps = {
+  hideOnClick: true,
   trigger: 'hover',
   menuAlign: 'end'
 }

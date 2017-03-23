@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class Dialog extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/dialog.md');
-    }
+    return require(`../../docs/${locale}/dialog.md`);
   }
 }

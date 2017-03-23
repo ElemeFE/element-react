@@ -1,10 +1,16 @@
 {
-  "extends": [ "airbnb", "eslint:recommended" ],
-  "plugins": [ "react", "jsx-a11y" ],
+  "parser": "babel-eslint",
+  "extends": [ "airbnb", "eslint:recommended", "plugin:flowtype/recommended" ],
+  "plugins": [ "react", "jsx-a11y", "flowtype" ],
   "env": {
     "browser": true,
     "commonjs": true,
     "es6": true
+  },
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
   },
   "rules": {
     "jsx-a11y/no-static-element-interactions": 0,
@@ -16,6 +22,7 @@
     "react/jsx-boolean-value": 0,
     "react/no-did-mount-set-state": 1,
     "react/jsx-first-prop-new-line": 0,
+    "react/require-default-props": 0,
     "jsx-a11y/img-has-alt": 0,
     "jsx-a11y/label-has-for": 0,
     "import/no-named-as-default-member": 0,
@@ -23,11 +30,12 @@
     "import/prefer-default-export": 0,
     "no-empty": 1,
     "no-console": 1,
-    "react/sort-comp": 1,
+    "react/sort-comp": 0,
     "react/prefer-stateless-function": 0,
     "react/prop-types": [1, { "ignore": ["children", "key"] }],
     "react/no-find-dom-node": 1,
     "react/no-unused-prop-types": 1,
-    "react/forbid-prop-types": [1, { "forbid": ["array"] }]
+    "react/forbid-prop-types": [1, { "forbid": ["array"] }],
+    "react/no-array-index-key": 0
   }
 }

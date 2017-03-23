@@ -35,7 +35,8 @@ var InputNumber = function (_Component) {
     var _this = _possibleConstructorReturn(this, (InputNumber.__proto__ || Object.getPrototypeOf(InputNumber)).call(this, props));
 
     _this.state = {
-      value: props.defaultValue
+      value: props.defaultValue,
+      inputActive: false
     };
     return _this;
   }
@@ -85,11 +86,7 @@ var InputNumber = function (_Component) {
     key: 'onChange',
     value: function onChange() {
       if (this.props.onChange) {
-        this.props.onChange({
-          target: {
-            value: this.state.value
-          }
-        });
+        this.props.onChange(this.state.value);
       }
     }
   }, {
@@ -167,11 +164,37 @@ var InputNumber = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _props3 = this.props,
+          controls = _props3.controls,
+          disabled = _props3.disabled;
+
+
       return _react2.default.createElement(
         'div',
         { style: this.style(), className: this.className('el-input-number', this.props.size && 'el-input-number--' + this.props.size, {
-            'is-disabled': this.props.disabled
+            'is-disabled': disabled,
+            'is-without-controls': !controls
           }) },
+        controls && _react2.default.createElement(
+          'span',
+          {
+            className: this.classNames("el-input-number__decrease", {
+              'is-disabled': this.minDisabled()
+            }),
+            onClick: this.decrease.bind(this)
+          },
+          _react2.default.createElement('i', { className: 'el-icon-minus' })
+        ),
+        controls && _react2.default.createElement(
+          'span',
+          {
+            className: this.classNames("el-input-number__increase", {
+              'is-disabled': this.maxDisabled()
+            }),
+            onClick: this.increase.bind(this)
+          },
+          _react2.default.createElement('i', { className: 'el-icon-plus' })
+        ),
         _react2.default.createElement(_input2.default, {
           ref: 'input',
           className: this.classNames({
@@ -181,19 +204,7 @@ var InputNumber = function (_Component) {
           disabled: this.props.disabled,
           size: this.props.size,
           onKeyDown: this.onKeyDown.bind(this),
-          onBlur: this.onBlur.bind(this) }),
-        _react2.default.createElement('span', { className: this.classNames('el-input-number__decrease el-icon-minus', {
-            'is-disabled': this.minDisabled()
-          }),
-          onClick: this.decrease.bind(this),
-          onMouseEnter: this.activeInput.bind(this, this.minDisabled()),
-          onMouseLeave: this.inactiveInput.bind(this, this.minDisabled()) }),
-        _react2.default.createElement('span', { className: this.classNames('el-input-number__increase el-icon-plus', {
-            'is-disabled': this.maxDisabled()
-          }),
-          onClick: this.increase.bind(this),
-          onMouseEnter: this.activeInput.bind(this, this.maxDisabled()),
-          onMouseLeave: this.inactiveInput.bind(this, this.maxDisabled()) })
+          onBlur: this.onBlur.bind(this) })
       );
     }
   }]);
@@ -212,12 +223,14 @@ InputNumber.propTypes = {
   max: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
   min: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
   disabled: _libs.PropTypes.bool,
+  controls: _libs.PropTypes.bool,
   size: _libs.PropTypes.string,
   onChange: _libs.PropTypes.func
 };
 
 InputNumber.defaultProps = {
   step: 1,
+  controls: true,
   max: Infinity,
   min: 0
 };

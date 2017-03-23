@@ -97,27 +97,27 @@ var Notification = function (_Component) {
         { name: 'el-notification-fade', duration: '300' },
         _react2.default.createElement(
           _libs.View,
-          { key: Math.random(), show: this.state.visible },
+          { key: this.state.visible, show: this.state.visible },
           _react2.default.createElement(
             'div',
             { className: 'el-notification', style: {
                 top: this.props.top,
                 zIndex: 9999
               }, onMouseEnter: this.stopTimer.bind(this), onMouseLeave: this.startTimer.bind(this) },
-            this.props.type && _react2.default.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass()) }),
+            this.props.type && _react2.default.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass(), this.props.iconClass) }),
             _react2.default.createElement(
               'div',
-              { className: 'el-notification__group', style: {
-                  marginLeft: this.typeClass() ? '55px' : '0'
-                } },
+              { className: this.classNames('el-notification__group', {
+                  'is-with-icon': this.typeClass() || this.props.iconClass
+                }) },
               _react2.default.createElement(
-                'span',
-                null,
+                'h2',
+                { className: 'el-notification__title' },
                 this.props.title
               ),
               _react2.default.createElement(
-                'p',
-                null,
+                'div',
+                { className: 'el-notification__content' },
                 this.props.message
               ),
               _react2.default.createElement('div', { className: 'el-notification__closeBtn el-icon-close', onClick: this.onClose.bind(this) })
@@ -140,6 +140,7 @@ Notification.propTypes = {
   title: _libs.PropTypes.string,
   message: _libs.PropTypes.string,
   duration: _libs.PropTypes.number,
+  iconClass: _libs.PropTypes.string,
   top: _libs.PropTypes.number
 };
 

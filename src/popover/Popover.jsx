@@ -1,13 +1,31 @@
+/* @flow */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popper from '../../vendor/popper';
+import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
+type State = {
+  showPopper: boolean
+};
+
 export default class Popover extends Component {
-  constructor(props) {
+  state: State;
+
+  static defaultProps = {
+    visibleArrow: true,
+    transition: 'fade-in-linear',
+    trigger: 'click',
+    placement: 'bottom',
+    width: 150
+  }
+
+  constructor(props: Object) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      showPopper: false
+    };
   }
 
   componentDidMount() {
@@ -16,6 +34,8 @@ export default class Popover extends Component {
     this.element = ReactDOM.findDOMNode(this);
     this.reference = ReactDOM.findDOMNode(this.refs.reference);
 
+    if (this.reference === null) return;
+
     if (trigger === 'click') {
       this.reference.addEventListener('click', () => {
         this.setState({
@@ -23,7 +43,7 @@ export default class Popover extends Component {
         });
       });
 
-      document.addEventListener('click', e => {
+      document.addEventListener('click', (e: Event): void => {
         if (!this.element || this.element.contains(e.target) ||
             !this.reference || this.reference.contains(e.target) ||
             !popper || popper.contains(e.target)) return;
@@ -47,11 +67,33 @@ export default class Popover extends Component {
         this.reference.addEventListener('mouseup', () => { this.setState({ showPopper: false })});
       }
     }
-
-    this.initialPopper();
   }
 
-  componentWillReceiveProps(props) {
+  componentDidUpdate(): void {
+    const { showPopper } = this.state;
+
+    if (showPopper) {
+      if (this.popperJS) {
+        this.popperJS.update();
+      } else {
+        if (this.refs.arrow) {
+          this.refs.arrow.setAttribute('x-arrow', '');
+        }
+
+        this.popperJS = new Popper(this.reference, this.refs.popper, {
+          placement: this.props.placement
+        });
+      }
+    } else {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
+
+      delete this.popperJS;
+    }
+  }
+
+  componentWillReceiveProps(props: Object) {
     if (props.visible != this.props.visible) {
       this.setState({
         showPopper: props.visible
@@ -59,21 +101,15 @@ export default class Popover extends Component {
     }
   }
 
-  componentWillUnMount() {
+  componentWillUnmount(): void {
     this.reference.parentNode.replaceChild(this.reference.cloneNode(true), this.reference);
-  }
 
-  initialPopper() {
-    if (this.refs.arrow) {
-      this.refs.arrow.setAttribute('x-arrow', '');
+    if (this.popperJS) {
+      this.popperJS.destroy();
     }
-
-    this.popperJS = new Popper(this.reference, this.refs.popper, {
-      placement: this.props.placement
-    });
   }
 
-  handleMouseEnter() {
+  handleMouseEnter(): void {
     clearTimeout(this.timer);
 
     this.setState({
@@ -81,7 +117,7 @@ export default class Popover extends Component {
     });
   }
 
-  handleMouseLeave() {
+  handleMouseLeave(): void {
     this.timer = setTimeout(() => {
       this.setState({
         showPopper: false
@@ -89,12 +125,12 @@ export default class Popover extends Component {
     }, 200);
   }
 
-  render() {
+  render(): React.Element<any> {
     const { transition, popperClass, width, title, content, visibleArrow } = this.props;
 
     return (
       <span>
-        <Transition name={transition}>
+        <Transition name={transition} duration={200}>
           <View show={this.state.showPopper}>
             <div ref="popper" className={this.className('el-popover', popperClass)} style={this.style({ width: Number(width) })}>
               { title && <div className="el-popover__title">{title}</div> }
@@ -120,11 +156,3 @@ Popover.propTypes = {
   visible: PropTypes.bool,
   visibleArrow: PropTypes.bool
 }
-
-Popover.defaultProps = {
-  visibleArrow: true,
-  transition: 'fade-in-linear',
-  trigger: 'click',
-  placement: 'bottom',
-  width: 150
-};

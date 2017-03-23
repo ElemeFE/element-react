@@ -35,7 +35,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var mapPropsToState = function mapPropsToState(props) {
   var state = {
     format: props.format || 'HH:mm:ss',
-    currentDate: props.currentDate || Date() //todo: handle update.
+    currentDate: props.currentDate || Date()
   };
   state.isShowSeconds = (state.format || '').indexOf('ss') !== -1;
   return state;

@@ -166,6 +166,14 @@ var Progress = function (_Component) {
   return Progress;
 }(_libs.Component);
 
+Progress.defaultProps = {
+  type: 'line',
+  percentage: 0,
+  strokeWidth: 6,
+  width: 126,
+  showText: true,
+  textInside: false
+};
 var _default = Progress;
 exports.default = _default;
 
@@ -178,15 +186,6 @@ Progress.propTypes = {
   width: _libs.PropTypes.number,
   textInside: _libs.PropTypes.bool,
   showText: _libs.PropTypes.bool
-};
-
-Progress.defaultProps = {
-  type: 'line',
-  percentage: 0,
-  strokeWidth: 6,
-  width: 126,
-  showText: true,
-  textInside: false
 };
 ;
 

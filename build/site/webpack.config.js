@@ -15,20 +15,13 @@ module.exports = {
     filename: '[chunkhash:12].js'
   },
   plugins: [
-    new ExtractTextPlugin('[chunkhash:12].css'),
-    new HtmlWebpackPlugin({
-      template: './index.html'
-    })
+    new ExtractTextPlugin({ filename: '[chunkhash:12].css' }),
+    new HtmlWebpackPlugin({ template: './index.html' })
   ].concat(process.env.TRAVIS_CI ? [] : [
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       mangle: {
         keep_fnames: true
-      },
-      compress: {
-        warnings: false
       },
       output: {
         comments: false
@@ -36,13 +29,13 @@ module.exports = {
     })
   ]),
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        loaders: ['babel'],
+        loader: 'babel-loader',
         include: [
           path.join(basePath, 'site'),
           path.join(basePath, 'src'),
@@ -51,23 +44,26 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style', 'css')
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })
       },
       {
         test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
-        loader: 'file?name=[hash:12].[ext]'
+        loader: 'file-loader?name=[hash:12].[ext]'
       },
       {
         test: /\.(jpe?g|png|gif)(\?.+)?$/,
-        loader: 'url?name=[hash:12].[ext]&limit=25000'
+        loader: 'url-loader?name=[hash:12].[ext]&limit=25000'
       },
       {
         test: /\.md$/,
-        loader : 'raw'
+        loader : 'raw-loader'
       }
     ]
   }

@@ -1,12 +1,18 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class RadioGroup extends Component {
-  onChange(value) {
+  getChildContext(): { component: RadioGroup } {
+    return {
+      component: this
+    };
+  }
+
+  onChange(value: mixed) {
     if (this.props.onChange) {
-      this.props.onChange({
-        target: Object.assign(this.refs.RadioGroup, { value })
-      })
+      this.props.onChange(value)
     }
   }
 
@@ -27,8 +33,15 @@ export default class RadioGroup extends Component {
   }
 }
 
+RadioGroup.childContextTypes = {
+  component: PropTypes.any
+};
+
 RadioGroup.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool,
   size: PropTypes.string,
+  textColor: PropTypes.string,
+  fill: PropTypes.string,
   onChange: PropTypes.func
 }

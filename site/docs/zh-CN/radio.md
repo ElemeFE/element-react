@@ -26,8 +26,8 @@ onChange(value, event) {
 render() {
   return (
     <div>
-      <Radio value="1" checked={this.state.value === '1'} onChange={this.onChange.bind(this, '1')}>备选项</Radio>
-      <Radio value="2" checked={this.state.value === '2'} onChange={this.onChange.bind(this, '2')}>备选项</Radio>
+      <Radio value="1" checked={this.state.value === 1} onChange={this.onChange.bind(this, 1)}>备选项</Radio>
+      <Radio value="2" checked={this.state.value === 2} onChange={this.onChange.bind(this, 2)}>备选项</Radio>
     </div>
   )
 }
@@ -96,24 +96,40 @@ constructor(props) {
   super(props);
 
   this.state = {
-    value: '北京'
+    radio3: '上海',
+    radio4: '上海',
+    radio5: '上海'
   }
 }
 
-onChange(event) {
+onChange(key, event) {
   this.setState({
-    value: event.target.value
+    [key]: event.target.value
   });
 }
 
 render() {
   return (
-    <Radio.Group value={this.state.value} onChange={this.onChange.bind(this)}>
-      <Radio.Button value="上海" />
-      <Radio.Button value="北京" />
-      <Radio.Button value="广州" disabled={true} />
-      <Radio.Button value="深圳" />
-    </Radio.Group>
+    <div>
+      <Radio.Group value={this.state.radio3} onChange={this.onChange.bind(this, 'radio3')}>
+        <Radio.Button value="上海" />
+        <Radio.Button value="北京" />
+        <Radio.Button value="广州" />
+        <Radio.Button value="深圳" />
+      </Radio.Group>
+      <Radio.Group value={this.state.radio4} onChange={this.onChange.bind(this, 'radio4')}>
+        <Radio.Button value="上海" />
+        <Radio.Button value="北京" />
+        <Radio.Button value="广州" disabled={true} />
+        <Radio.Button value="深圳" />
+      </Radio.Group>
+      <Radio.Group value={this.state.radio5} disabled={true}>
+        <Radio.Button value="上海" />
+        <Radio.Button value="北京" />
+        <Radio.Button value="广州" />
+        <Radio.Button value="深圳" />
+      </Radio.Group>
+    </div>
   )
 }
 ```
@@ -122,21 +138,24 @@ render() {
 ### Radio Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| label     | Radio 的 value   | string,number    |       —        |      —   |
+| value     | Radio 的 value   | string,number,boolean    |       —        |      —   |
 | disabled  | 是否禁用    | boolean   | — | false   |
+| name | 原生 name 属性 | string    |      —         |     —    |
 
 ### Radio-group Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
 | size     | Radio 按钮组尺寸   | string  | large, small  |    —     |
+| fill  | 按钮激活时的填充色和边框色    | string   | — | #20a0ff   |
+| textColor  | 按钮激活时的文本颜色    | string   | — | #ffffff   |
 
 ### Radio-group Events
 | 事件名称 | 说明 | 回调参数 |
 |---------- |-------- |---------- |
-| change  | 绑定值变化时触发的事件 |  选中的 Radio label 值  |
+| onChange  | 绑定值变化时触发的事件 |  选中的 Radio label 值  |
 
 ### Radio-button Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| label     | Radio 的 value  | string,number  |        —       |     —    |
+| value     | Radio 的 value  | string,number  |        —       |     —    |
 | disabled  | 是否禁用    | boolean   | — | false   |

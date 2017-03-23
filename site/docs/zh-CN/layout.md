@@ -158,6 +158,25 @@ render() {
 ```
 :::
 
+### 响应式布局
+
+参照了 Bootstrap 的 响应式设计，预设了四个响应尺寸：`xs`、`sm`、`md`和`lg`。
+
+::: demo
+```js
+render() {
+  return (
+    <Layout.Row gutter="10">
+      <Layout.Col xs="8" sm="6" md="4" lg="3"><div className="grid-content bg-purple"></div></Layout.Col>
+      <Layout.Col xs="4" sm="6" md="8" lg="9"><div className="grid-content bg-purple-light"></div></Layout.Col>
+      <Layout.Col xs="4" sm="6" md="8" lg="9"><div className="grid-content bg-purple"></div></Layout.Col>
+      <Layout.Col xs="8" sm="6" md="4" lg="3"><div className="grid-content bg-purple-light"></div></Layout.Col>
+    </Layout.Row>
+  )
+}
+```
+:::
+
 ### Row Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |

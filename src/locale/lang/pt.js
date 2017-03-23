@@ -1,5 +1,9 @@
 export default {
   el: {
+    colorpicker: {
+      confirm: 'Confirmar',
+      clear: 'Limpar'
+    },
     datepicker: {
       now: 'Agora',
       today: 'Hoje',
@@ -12,7 +16,7 @@ export default {
       startTime: 'Hora de inicio',
       endDate: 'Data de fim',
       endTime: 'Hora de fim',
-      year: 'Ano',
+      year: '',
       month1: 'Janeiro',
       month2: 'Fevereiro',
       month3: 'Março',
@@ -56,6 +60,10 @@ export default {
       noData: 'Sem dados',
       placeholder: 'Selecione'
     },
+    cascader: {
+      noMatch: 'Sem correspondência',
+      placeholder: 'Selecione'
+    },
     pagination: {
       goto: 'Ir para',
       pagesize: '/pagina',
@@ -77,6 +85,9 @@ export default {
       confirmFilter: 'Confirmar',
       resetFilter: 'Limpar',
       clearFilter: 'Todos'
+    },
+    tree: {
+      emptyText: 'Sem dados'
     }
   }
 };

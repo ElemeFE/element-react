@@ -6,7 +6,7 @@
 
 在表格等容器中加载数据时显示。
 
-:::demo 在 Loading 组件中，Element 准备了自定义命令`v-loading`，只需要绑定`Boolean`即可。默认状况下，Loading 遮罩会插入到绑定元素的子节点，通过添加`body`修饰符，可以使遮罩插入至 DOM 中的 body 上。
+:::demo 在 Loading 组件中，Element 准备了自定义命令`loading`，只需要绑定`Boolean`即可。默认状况下，Loading 遮罩会插入到绑定元素的子节点，通过添加`body`修饰符，可以使遮罩插入至 DOM 中的 body 上。
 
 ```js
 constructor(props) {

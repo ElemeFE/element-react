@@ -29,14 +29,15 @@ var Tabs = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Tabs.__proto__ || Object.getPrototypeOf(Tabs)).call(this, props));
 
     var children = props.children,
-        activeName = props.activeName;
+        activeName = props.activeName,
+        value = props.value;
 
 
     children = _react2.default.Children.toArray(children);
 
     _this.state = {
       children: children,
-      currentName: activeName || children[0].props.name,
+      currentName: value || activeName || children[0].props.name,
       barStyle: {}
     };
     return _this;
@@ -59,6 +60,31 @@ var Tabs = function (_Component) {
           return _this2.calcBarStyle();
         });
       }
+
+      if (nextProps.value !== this.props.value) {
+        this.setState({
+          currentName: nextProps.value
+        }, function () {
+          return _this2.calcBarStyle();
+        });
+      }
+
+      if (nextProps.children !== this.props.children) {
+        this.setState({
+          children: _react2.default.Children.toArray(nextProps.children)
+        });
+      }
+    }
+  }, {
+    key: 'handleTabAdd',
+    value: function handleTabAdd() {
+      var _props = this.props,
+          onTabAdd = _props.onTabAdd,
+          onTabEdit = _props.onTabEdit;
+
+
+      onTabEdit && onTabEdit('add');
+      onTabAdd && onTabAdd();
     }
   }, {
     key: 'handleTabRemove',
@@ -66,7 +92,9 @@ var Tabs = function (_Component) {
       var _state = this.state,
           children = _state.children,
           currentName = _state.currentName;
-      var onTabRemove = this.props.onTabRemove;
+      var _props2 = this.props,
+          onTabRemove = _props2.onTabRemove,
+          onTabEdit = _props2.onTabEdit;
 
 
       e.stopPropagation();
@@ -85,6 +113,7 @@ var Tabs = function (_Component) {
       this.setState({
         children: children
       }, function () {
+        onTabEdit && onTabEdit('remove', tab);
         onTabRemove && onTabRemove(tab, e);
       });
     }
@@ -92,6 +121,10 @@ var Tabs = function (_Component) {
     key: 'handleTabClick',
     value: function handleTabClick(tab, e) {
       var _this3 = this;
+
+      if (tab.props.disabled) {
+        return false;
+      }
 
       this.setState({
         currentName: tab.props.name
@@ -147,15 +180,27 @@ var Tabs = function (_Component) {
           children = _state2.children,
           currentName = _state2.currentName,
           barStyle = _state2.barStyle;
-      var _props = this.props,
-          type = _props.type,
-          closable = _props.closable;
+      var _props3 = this.props,
+          type = _props3.type,
+          addable = _props3.addable,
+          closable = _props3.closable,
+          editable = _props3.editable;
 
       var tabsCls = this.classNames({
         'el-tabs': true,
         'el-tabs--card': type === 'card',
         'el-tabs--border-card': type === 'border-card'
       });
+      var addButton = editable || addable ? _react2.default.createElement(
+        'span',
+        {
+          className: 'el-tabs__new-tab',
+          onClick: function onClick() {
+            return _this5.handleTabAdd();
+          }
+        },
+        _react2.default.createElement('i', { className: 'el-icon-plus' })
+      ) : null;
       this.tabs = [];
 
       return _react2.default.createElement(
@@ -164,40 +209,53 @@ var Tabs = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'el-tabs__header' },
-          _react2.default.Children.map(children, function (item, index) {
-            var _item$props = item.props,
-                name = _item$props.name,
-                label = _item$props.label,
-                disabled = _item$props.disabled;
-
-            var tabCls = _this5.classNames({
-              'el-tabs__item': true,
-              'is-active': name === currentName,
-              'is-disabled': disabled,
-              'is-closable': closable
-            });
-
-            return _react2.default.createElement(
-              'div',
-              { key: 'el-tabs__item-' + index, ref: function ref(tab) {
-                  return tab && _this5.tabs.push(tab);
-                }, name: name, className: tabCls, onClick: function onClick(e) {
-                  return _this5.handleTabClick(item, e);
-                } },
-              label,
-              _react2.default.createElement(
-                _libs.View,
-                { show: closable },
-                _react2.default.createElement('span', { className: 'el-icon-close', onClick: function onClick(e) {
-                    return _this5.handleTabRemove(item, index, e);
-                  } })
-              )
-            );
-          }),
+          addButton,
           _react2.default.createElement(
-            _libs.View,
-            { show: !type },
-            _react2.default.createElement('div', { className: 'el-tabs__active-bar', style: barStyle })
+            'div',
+            { className: 'el-tabs__nav-wrap' },
+            _react2.default.createElement(
+              'div',
+              { className: 'el-tabs__nav-scroll' },
+              _react2.default.createElement(
+                'div',
+                { className: 'el-tabs__nav' },
+                _react2.default.Children.map(children, function (item, index) {
+                  var _item$props = item.props,
+                      name = _item$props.name,
+                      label = _item$props.label,
+                      disabled = _item$props.disabled;
+
+                  var tabCls = _this5.classNames({
+                    'el-tabs__item': true,
+                    'is-active': name === currentName,
+                    'is-disabled': disabled,
+                    'is-closable': closable || item.props.closable
+                  });
+
+                  return _react2.default.createElement(
+                    'div',
+                    { key: 'el-tabs__item-' + index, ref: function ref(tab) {
+                        return tab && _this5.tabs.push(tab);
+                      }, name: name, className: tabCls, onClick: function onClick(e) {
+                        return _this5.handleTabClick(item, e);
+                      } },
+                    label,
+                    _react2.default.createElement(
+                      _libs.View,
+                      { show: editable || closable || item.props.closable },
+                      _react2.default.createElement('span', { className: 'el-icon-close', onClick: function onClick(e) {
+                          return _this5.handleTabRemove(item, index, e);
+                        } })
+                    )
+                  );
+                }),
+                _react2.default.createElement(
+                  _libs.View,
+                  { show: !type },
+                  _react2.default.createElement('div', { className: 'el-tabs__active-bar', style: barStyle })
+                )
+              )
+            )
           )
         ),
         _react2.default.createElement(
@@ -232,14 +290,21 @@ exports.default = _default;
 
 Tabs.propTypes = {
   type: _libs.PropTypes.oneOf(['card', 'border-card']),
-  closable: _libs.PropTypes.bool,
   activeName: _libs.PropTypes.string,
+  value: _libs.PropTypes.string,
+  closable: _libs.PropTypes.bool,
+  addable: _libs.PropTypes.bool,
+  editable: _libs.PropTypes.bool,
   onTabClick: _libs.PropTypes.func,
-  onTabRemove: _libs.PropTypes.func
+  onTabRemove: _libs.PropTypes.func,
+  onTabAdd: _libs.PropTypes.func,
+  onTabEdit: _libs.PropTypes.func
 };
 
 Tabs.defaultProps = {
-  closable: false
+  closable: false,
+  addable: false,
+  edidable: false
 };
 ;
 

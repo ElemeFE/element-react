@@ -12,9 +12,11 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _libs = require('../../libs');
+var _debounce = require('throttle-debounce/debounce');
 
-var _utils = require('../../libs/utils');
+var _debounce2 = _interopRequireDefault(_debounce);
+
+var _libs = require('../../libs');
 
 var _BasePicker2 = require('./BasePicker');
 
@@ -37,16 +39,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function converSelectRange(props) {
   var selectableRange = [];
   if (props.selectableRange) {
-    (function () {
-      var ranges = props.selectableRange;
-      var parser = _constants.TYPE_VALUE_RESOLVER_MAP.datetimerange.parser;
-      var format = _constants.DEFAULT_FORMATS.timerange;
+    var ranges = props.selectableRange;
+    var parser = _constants.TYPE_VALUE_RESOLVER_MAP.datetimerange.parser;
+    var format = _constants.DEFAULT_FORMATS.timerange;
 
-      ranges = Array.isArray(ranges) ? ranges : [ranges];
-      selectableRange = ranges.map(function (range) {
-        return parser(range, format);
-      });
-    })();
+    ranges = Array.isArray(ranges) ? ranges : [ranges];
+    selectableRange = ranges.map(function (range) {
+      return parser(range, format);
+    });
   }
   return selectableRange;
 }
@@ -77,7 +77,7 @@ var TimePicker = function (_BasePicker) {
 
     var _this = _possibleConstructorReturn(this, (TimePicker.__proto__ || Object.getPrototypeOf(TimePicker)).call(this, props, 'time', {}));
 
-    _this._onSelectionChange = (0, _utils.debounce)(_this.onSelectionChange.bind(_this), 200);
+    _this._onSelectionChange = (0, _debounce2.default)(200, _this.onSelectionChange.bind(_this));
     return _this;
   }
 

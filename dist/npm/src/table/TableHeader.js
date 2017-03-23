@@ -69,7 +69,8 @@ var TableHeader = function (_Component) {
 
       if (!this.dragging) {
         var rect = target.getBoundingClientRect();
-        var bodyStyle = document.body.style;
+        var body = document.body || target;
+        var bodyStyle = body.style;
 
         if (rect.width > 12 && rect.right - event.pageX < 8) {
           bodyStyle.cursor = 'col-resize';
@@ -86,78 +87,78 @@ var TableHeader = function (_Component) {
       var _this2 = this;
 
       if (this.draggingColumn && this.$ower.props.border) {
-        (function () {
-          _this2.dragging = true;
+        this.dragging = true;
 
-          var columnEl = event.target;
-          while (columnEl && columnEl.tagName !== 'TH') {
-            columnEl = columnEl.parentNode;
+        var columnEl = event.target;
+        var body = document.body || columnEl;
+
+        while (columnEl && columnEl.tagName !== 'TH') {
+          columnEl = columnEl.parentNode;
+        }
+
+        this.$ower.setState({ resizeProxyVisible: true });
+
+        var tableEl = _reactDom2.default.findDOMNode(this.context.$owerTable);
+        var pos = tableEl.getBoundingClientRect() || { left: 0 };
+        var tableLeft = pos.left;
+        var columnRect = columnEl.getBoundingClientRect();
+        var minLeft = columnRect.left - tableLeft + 30;
+
+        columnEl.classList.add('noclick');
+
+        this.state.dragState = {
+          startMouseLeft: event.clientX,
+          startLeft: columnRect.right - tableLeft,
+          startColumnLeft: columnRect.left - tableLeft,
+          tableLeft: tableLeft
+        };
+
+        var resizeProxy = this.context.$owerTable.refs.resizeProxy;
+        resizeProxy.style.left = this.state.dragState.startLeft + 'px';
+
+        var preventFunc = function preventFunc() {
+          return false;
+        };
+
+        var handleMouseMove = function handleMouseMove(event) {
+          var deltaLeft = event.clientX - _this2.state.dragState.startMouseLeft;
+          var proxyLeft = _this2.state.dragState.startLeft + deltaLeft;
+
+          resizeProxy.style.left = Math.max(minLeft, proxyLeft) + 'px';
+        };
+
+        var handleMouseUp = function handleMouseUp() {
+          if (_this2.dragging) {
+            var finalLeft = parseInt(resizeProxy.style.left, 10);
+            var columnWidth = finalLeft - _this2.state.dragState.startColumnLeft;
+            //width本应为配置的高度， 如果改变过宽度， realWidth 与 width永远保持一致
+            //这列不再参与宽度的自动重新分配
+            column.realWidth = column.width = column.minWidth > columnWidth ? column.minWidth : columnWidth;
+
+            _this2.context.$owerTable.scheduleLayout();
+
+            body.style.cursor = '';
+            _this2.dragging = false;
+            _this2.draggingColumn = null;
+            _this2.dragState = {};
+
+            _this2.context.$owerTable.setState({ resizeProxyVisible: false });
           }
 
-          _this2.$ower.setState({ resizeProxyVisible: true });
+          document.removeEventListener('mousemove', handleMouseMove);
+          document.removeEventListener('mouseup', handleMouseUp);
+          document.removeEventListener('selectstart', preventFunc);
+          document.removeEventListener('dragstart', preventFunc);
 
-          var tableEl = _reactDom2.default.findDOMNode(_this2.context.$owerTable);
-          var tableLeft = tableEl.getBoundingClientRect().left;
-          var columnRect = columnEl.getBoundingClientRect();
-          var minLeft = columnRect.left - tableLeft + 30;
+          setTimeout(function () {
+            columnEl.classList.remove('noclick');
+          }, 0);
+        };
 
-          columnEl.classList.add('noclick');
-
-          _this2.state.dragState = {
-            startMouseLeft: event.clientX,
-            startLeft: columnRect.right - tableLeft,
-            startColumnLeft: columnRect.left - tableLeft,
-            tableLeft: tableLeft
-          };
-
-          var resizeProxy = _this2.context.$owerTable.refs.resizeProxy;
-          resizeProxy.style.left = _this2.state.dragState.startLeft + 'px';
-
-          document.onselectstart = function () {
-            return false;
-          };
-          document.ondragstart = function () {
-            return false;
-          };
-
-          var handleMouseMove = function handleMouseMove(event) {
-            var deltaLeft = event.clientX - _this2.state.dragState.startMouseLeft;
-            var proxyLeft = _this2.state.dragState.startLeft + deltaLeft;
-
-            resizeProxy.style.left = Math.max(minLeft, proxyLeft) + 'px';
-          };
-
-          var handleMouseUp = function handleMouseUp() {
-            if (_this2.dragging) {
-              var finalLeft = parseInt(resizeProxy.style.left, 10);
-              var columnWidth = finalLeft - _this2.state.dragState.startColumnLeft;
-              //width本应为配置的高度， 如果改变过宽度， realWidth 与 width永远保持一致
-              //这列不再参与宽度的自动重新分配
-              column.realWidth = column.width = columnWidth;
-
-              _this2.context.$owerTable.scheduleLayout();
-
-              document.body.style.cursor = '';
-              _this2.dragging = false;
-              _this2.draggingColumn = null;
-              _this2.dragState = {};
-
-              _this2.context.$owerTable.setState({ resizeProxyVisible: false });
-            }
-
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
-            document.onselectstart = null;
-            document.ondragstart = null;
-
-            setTimeout(function () {
-              columnEl.classList.remove('noclick');
-            }, 0);
-          };
-
-          document.addEventListener('mousemove', handleMouseMove);
-          document.addEventListener('mouseup', handleMouseUp);
-        })();
+        document.addEventListener('selectstart', preventFunc);
+        document.addEventListener('dragstart', preventFunc);
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
       }
     }
   }, {
@@ -345,7 +346,7 @@ var TableHeader = function (_Component) {
                 )
               );
             }),
-            !fixed && isScrollY && _react2.default.createElement('th', { className: 'gutter', style: { width: (0, _utils.getScrollBarWidth)() + 'px' } })
+            !fixed && isScrollY && _react2.default.createElement('th', { className: 'gutter', style: { width: (0, _utils.getScrollBarWidth)() } })
           )
         )
       );
@@ -361,10 +362,6 @@ exports.default = _default;
 
 TableHeader.contextTypes = {
   $owerTable: _react2.default.PropTypes.object
-};
-
-TableHeader.propTypes = {
-  columns: _libs.PropTypes.array.isRequired
 };
 ;
 

@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class Badge extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/badge.md');
-    }
+    return require(`../../docs/${locale}/badge.md`);
   }
 }

@@ -1,8 +1,19 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
+type Props = {
+  children: React.Element<any>,
+  value: number | string,
+  max: number,
+  isDot: boolean,
+}
+
 export default class Badge extends Component {
-  render() {
+  props: Props;
+
+  render(): React.Element<any> {
     const { children, value, max, isDot } = this.props;
     const className = this.classNames({
       'el-badge__content': true,

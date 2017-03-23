@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class Color extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/color.md');
-    }
+    return require(`../../docs/${locale}/color.md`);
   }
 }

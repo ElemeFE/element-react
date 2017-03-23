@@ -1,14 +1,24 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Cover from './Cover';
+import type { IframeUploadState } from './Types';
 
 export default class IframeUpload extends Component {
-  constructor(props) {
+  state: IframeUploadState;
+
+  static defaultProps = {
+    name: 'file',
+  }
+
+  constructor(props: Object) {
     super(props);
     this.state = {
       dragOver: false,
       file: null,
-      disabled: false
+      disabled: false,
+      frameName: 'frame-' + Date.now(),
     }
   }
 
@@ -27,19 +37,28 @@ export default class IframeUpload extends Component {
     }, false);
   }
 
-  onload() {
+  onload(): void {
     this.setState({ disabled: false });
   }
 
-  onDrop(e) {
+  onDrop(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ dragOver: false });
     this.uploadFiles(e.dataTransfer.files); // TODO
   }
 
-  handleChange(e) {
-    const file = e.target.files[0];
-    this.setState({ file });
+  handleChange(e: SyntheticInputEvent): void {
+    if (e.target instanceof HTMLInputElement) {
+      const file: File = e.target.files[0];
+      if (file) {
+        this.uploadFiles(file);
+      }
+    }
+  }
+
+  uploadFiles(file: File): void {
+    if (this.state.disabled) return;
+    this.setState({ disabled: false, file });
     this.props.onStart && this.props.onStart(file);
     const formNode = this.refs.form;
     const dataSpan = this.refs.data;
@@ -52,37 +71,30 @@ export default class IframeUpload extends Component {
     dataSpan.innerHTML = inputs.join('');
     formNode.submit();
     dataSpan.innerHTML = '';
-
-    this.setState({
-      file,
-      disabled: true,
-    });
   }
 
-  handleClick() {
+  handleClick(): void {
     if (!this.state.disabled) {
       this.refs.input.click();
     }
   }
 
-  handleDragover(e) {
+  handleDragover(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ onDrop: true });
   }
 
-  handleDragleave(e) {
+  handleDragleave(e: SyntheticDragEvent): void {
     e.preventDefault();
     this.setState({ onDrop: false });
   }
 
-  render() {
-    const { type, action, name, accept, showCover } = this.props;
-    const frameName = 'frame-' + Date.now();
+  render(): React.Element<any> {
+    const { drag, action, name, accept, listType } = this.props;
+    const { frameName } = this.state;
     const classes = this.classNames({
-      'el-upload__inner': true,
-      'el-dragger': type === 'drag',
-      'is-dragOver': this.state.dragOver,
-      'is-showCover': this.showCover()
+      'el-upload': true,
+      [`el-upload--${listType}`]: true,
     });
     return (
       <div
@@ -110,14 +122,14 @@ export default class IframeUpload extends Component {
           <input type="hidden" name="documentDomain" value={document.domain} />
           <span ref="data"></span>
         </form>
-        {showCover ? <Cover onClick={() => this.handleClick()} />: React.children.map(this.props.children, child => React.cloneElement(child))}
+        {drag ? <Cover onFile={file => this.uploadFiles(file)}>{this.props.children}</Cover> : this.props.children}
       </div>
     );
   }
 }
 
 IframeUpload.propTypes = {
-  type: PropTypes.string,
+  drag: PropTypes.bool,
   data: PropTypes.object,
   action: PropTypes.string.isRequired,
   name: PropTypes.string,
@@ -125,9 +137,5 @@ IframeUpload.propTypes = {
   onStart: PropTypes.func,
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
-  showCover: PropTypes.bool,
-}
-
-IframeUpload.defaultProps = {
-  name: 'file',
+  listType: PropTypes.string,
 }

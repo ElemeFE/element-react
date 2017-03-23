@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class Form extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/form.md');
-    }
+    return require(`../../docs/${locale}/form.md`);
   }
 }

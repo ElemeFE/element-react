@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import ReactDom from 'react-dom';
 import Checkbox from '../checkbox';
@@ -5,8 +6,13 @@ import { Component, PropTypes } from '../../libs';
 import { getScrollBarWidth } from './utils'
 import Filter from './filter'
 
+import type { Column, TableHeaderProps, TableHeaderState } from './Types';
+
 export default class TableHeader extends  Component{
-  constructor(props, context){
+  props: TableHeaderProps;
+  state: TableHeaderState;
+
+  constructor(props: TableHeaderProps, context: Object){
     super(props, context);
 
     this.$ower = context.$owerTable;
@@ -21,7 +27,7 @@ export default class TableHeader extends  Component{
     };
   }
 
-  handleMouseMove(event, column){
+  handleMouseMove(event:Object, column:Object){
     let target = event.target;
     while (target && target.tagName !== 'TH') {
       target = target.parentNode;
@@ -37,7 +43,8 @@ export default class TableHeader extends  Component{
 
     if (!this.dragging) {
       let rect = target.getBoundingClientRect();
-      var bodyStyle = document.body.style;
+      let body = document.body || target;
+      let bodyStyle = body.style;
 
       if (rect.width > 12 && rect.right - event.pageX < 8) {
         bodyStyle.cursor = 'col-resize';
@@ -49,19 +56,22 @@ export default class TableHeader extends  Component{
     }
   }
 
-  handleMouseDown(event, column){
+  handleMouseDown(event:Object, column:Object){
     if (this.draggingColumn && this.$ower.props.border) {
       this.dragging = true;
 
       let columnEl = event.target;
+      let body = document.body || columnEl;
+
       while (columnEl && columnEl.tagName !== 'TH') {
         columnEl = columnEl.parentNode;
       }
 
       this.$ower.setState({resizeProxyVisible: true});
 
-      const tableEl = ReactDom.findDOMNode(this.context.$owerTable);
-      const tableLeft = tableEl.getBoundingClientRect().left;
+      const tableEl:any = ReactDom.findDOMNode(this.context.$owerTable);
+      const pos:Object = tableEl.getBoundingClientRect() || {left: 0};
+      const tableLeft = pos.left;
       const columnRect = columnEl.getBoundingClientRect();
       const minLeft = columnRect.left - tableLeft + 30;
 
@@ -77,10 +87,9 @@ export default class TableHeader extends  Component{
       const resizeProxy = this.context.$owerTable.refs.resizeProxy;
       resizeProxy.style.left = this.state.dragState.startLeft + 'px';
 
-      document.onselectstart = function() { return false; };
-      document.ondragstart = function() { return false; };
+      const preventFunc = function() { return false; };
 
-      const handleMouseMove = (event) => {
+      const handleMouseMove = (event:Object) => {
         const deltaLeft = event.clientX - this.state.dragState.startMouseLeft;
         const proxyLeft = this.state.dragState.startLeft + deltaLeft;
 
@@ -93,11 +102,11 @@ export default class TableHeader extends  Component{
           const columnWidth = finalLeft - this.state.dragState.startColumnLeft;
           //width本应为配置的高度， 如果改变过宽度， realWidth 与 width永远保持一致
           //这列不再参与宽度的自动重新分配
-          column.realWidth = column.width = columnWidth;
+          column.realWidth = column.width = (column.minWidth > columnWidth? column.minWidth:columnWidth);
 
           this.context.$owerTable.scheduleLayout();
 
-          document.body.style.cursor = '';
+          body.style.cursor = '';
           this.dragging = false;
           this.draggingColumn = null;
           this.dragState = {};
@@ -107,26 +116,28 @@ export default class TableHeader extends  Component{
 
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
-        document.onselectstart = null;
-        document.ondragstart = null;
+        document.removeEventListener('selectstart', preventFunc);
+        document.removeEventListener('dragstart', preventFunc);
 
         setTimeout(function() {
           columnEl.classList.remove('noclick');
         }, 0);
       };
 
+      document.addEventListener('selectstart', preventFunc);
+      document.addEventListener('dragstart', preventFunc);
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     }
   }
 
-  onAllChecked(checked){
+  onAllChecked(checked: boolean){
     const body = this.context.$owerTable.refs.mainBody;
     this.setState({allChecked: checked});
     body.selectAll(checked);
   }
 
-  onSort(column){
+  onSort(column: Object){
     const { sortStatus } = this.state;
     let  nextStatus;
 
@@ -143,7 +154,7 @@ export default class TableHeader extends  Component{
     this.context.$owerTable.sortBy(nextStatus, column.property, column.sortMethod);
   }
 
-  onFilter(e, filters, columnData){
+  onFilter(e:any, filters:any, columnData:Object){
     const { filterParams } = this.state;
 
     e.stopPropagation();
@@ -187,7 +198,7 @@ export default class TableHeader extends  Component{
     );
   }
 
-  onFilterAction(column, filterCondi){
+  onFilterAction(column:Object, filterCondi:Array<Object>){
     const { filterParams } = this.state;
 
     filterParams.column = filterCondi && filterCondi.length? column : null
@@ -196,9 +207,9 @@ export default class TableHeader extends  Component{
     this.context.$owerTable.filterBy(column, filterCondi);
   }
 
-  getPosByEle(el){
-    let y = el.offsetTop;
-    let x = el.offsetLeft;
+  getPosByEle(el:any){
+    let y:number = el.offsetTop;
+    let x:number = el.offsetLeft;
 
     while(el = el.offsetParent){
       y += el.offsetTop;
@@ -280,7 +291,7 @@ export default class TableHeader extends  Component{
             }
 
             {
-              !fixed && isScrollY&& <th className="gutter" style={{ width:  getScrollBarWidth()+ 'px' }}></th>
+              !fixed && isScrollY&& <th className="gutter" style={{ width:  getScrollBarWidth() }}></th>
             }
           </tr>
         </thead>
@@ -291,8 +302,4 @@ export default class TableHeader extends  Component{
 
 TableHeader.contextTypes = {
   $owerTable: React.PropTypes.object
-};
-
-TableHeader.propTypes = {
-  columns: PropTypes.array.isRequired
 };

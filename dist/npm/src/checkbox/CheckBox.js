@@ -29,8 +29,8 @@ var Checkbox = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
 
     _this.state = {
-      checked: Boolean(props.checked || props.defaultChecked),
-      focus: Boolean(props.focus),
+      checked: props.checked,
+      focus: props.focus,
       label: _this.getLabel(props)
     };
     return _this;
@@ -66,25 +66,27 @@ var Checkbox = function (_Component) {
           falseLabel = _props.falseLabel,
           value = _props.value;
 
-      var checked = e.target.checked;
-      var newLabel = label;
+      if (e.target instanceof HTMLInputElement) {
+        var _checked = e.target.checked;
+        var newLabel = label;
 
-      if (this.props.trueLabel || this.props.falseLabel) {
-        newLabel = checked ? trueLabel : falseLabel;
-      }
-
-      if (this.props.onChange) {
-        if (this.context.isWrap) {
-          this.props.onChange(e, label, value);
-        } else {
-          this.props.onChange(e, label, value);
+        if (this.props.trueLabel || this.props.falseLabel) {
+          newLabel = _checked ? trueLabel : falseLabel;
         }
-      }
 
-      this.setState({
-        checked: checked,
-        label: newLabel
-      });
+        if (this.props.onChange) {
+          if (this.context.isWrap) {
+            this.props.onChange(e, label, value);
+          } else {
+            this.props.onChange(e, label, value);
+          }
+        }
+
+        this.setState({
+          checked: _checked,
+          label: newLabel
+        });
+      }
     }
   }, {
     key: 'getLabel',
@@ -103,14 +105,13 @@ var Checkbox = function (_Component) {
         { style: this.style(), className: this.className('el-checkbox') },
         _react2.default.createElement(
           'span',
-          { className: 'el-checkbox__input' },
-          _react2.default.createElement('span', {
-            className: this.classNames("el-checkbox__inner", {
+          { className: this.classNames('el-checkbox__input', {
               'is-disabled': this.props.disabled,
               'is-checked': this.state.checked,
               'is-indeterminate': this.props.indeterminate,
               'is-focus': this.state.focus
-            }) }),
+            }) },
+          _react2.default.createElement('span', { className: 'el-checkbox__inner' }),
           _react2.default.createElement('input', {
             className: 'el-checkbox__original',
             type: 'checkbox',

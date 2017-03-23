@@ -15,8 +15,8 @@ constructor(props) {
     form: {
       name: '',
       region: '',
-      date1: '',
-      date2: '',
+      date1: null,
+      date2: null,
       delivery: false,
       type: [],
       resource: '',
@@ -31,11 +31,17 @@ onSubmit(e) {
   console.log('submit!');
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form model={this.state.form} labelWidth="80" onSubmit={this.onSubmit.bind(this)}>
       <Form.Item label="活动名称">
-        <Input value={this.state.form.name}></Input>
+        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
       </Form.Item>
       <Form.Item label="活动区域">
         <Select value={this.state.form.region} placeholder="请选择活动区域">
@@ -45,18 +51,31 @@ render() {
       </Form.Item>
       <Form.Item label="活动时间">
         <Layout.Col span="11">
-
+          <Form.Item prop="date1">
+            <DatePicker
+              value={this.state.form.date1}
+              placeholder="选择日期"
+              onChange={this.onChange.bind(this, 'date1')}
+            />
+          </Form.Item>
         </Layout.Col>
         <Layout.Col className="line" span="2">-</Layout.Col>
         <Layout.Col span="11">
-
+          <Form.Item prop="date2">
+            <TimePicker
+              value={this.state.form.date2}
+              selectableRange="18:30:00 - 20:30:00"
+              placeholder="选择时间"
+              onChange={this.onChange.bind(this, 'date2')}
+            />
+          </Form.Item>
         </Layout.Col>
       </Form.Item>
       <Form.Item label="即时配送">
         <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
       </Form.Item>
       <Form.Item label="活动性质">
-        <Checkbox.Group value={this.state.form.type}>
+        <Checkbox.Group value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}>
           <Checkbox label="美食/餐厅线上活动" name="type"></Checkbox>
           <Checkbox label="地推活动" name="type"></Checkbox>
           <Checkbox label="线下主题活动" name="type"></Checkbox>
@@ -70,7 +89,7 @@ render() {
         </Radio.Group>
       </Form.Item>
       <Form.Item label="活动形式">
-        <Input type="textarea" value={this.state.form.desc}></Input>
+        <Input type="textarea" value={this.state.form.desc} onChange={this.onChange.bind(this, 'desc')}></Input>
       </Form.Item>
       <Form.Item>
         <Button type="primary" nativeType="submit">立即创建</Button>
@@ -105,11 +124,17 @@ onSubmit(e) {
   console.log('submit!');
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form inline={true} model={this.state.form} onSubmit={this.onSubmit.bind(this)} className="demo-form-inline">
       <Form.Item>
-        <Input value={this.state.form.user} placeholder="审批人"></Input>
+        <Input value={this.state.form.user} placeholder="审批人" onChange={this.onChange.bind(this, 'user')}></Input>
       </Form.Item>
       <Form.Item>
         <Select value={this.state.form.region} placeholder="活动区域">
@@ -130,14 +155,13 @@ render() {
 
 根据具体目标和制约因素，选择最佳的标签对齐方式。
 
-顶部对齐
-
-::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `top` 时标签会置于表单域的顶部
+::: demo 通过设置 `labelPosition` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `top` 时标签会置于表单域的顶部
 ```js
 constructor(props) {
   super(props);
 
   this.state = {
+    labelPosition: 'right',
     form: {
       name: '',
       region: '',
@@ -146,93 +170,39 @@ constructor(props) {
   };
 }
 
-render() {
-  return (
-    <Form labelPosition="top" model={this.state.form} className="demo-form-stacked">
-      <Form.Item label="名称">
-        <Input value={this.state.form.name}></Input>
-      </Form.Item>
-      <Form.Item label="活动区域">
-        <Input value={this.state.form.region}></Input>
-      </Form.Item>
-      <Form.Item label="活动展开形式">
-        <Input value={this.state.form.type}></Input>
-      </Form.Item>
-    </Form>
-  )
+onPositionChange(e) {
+  this.setState({
+    labelPosition: e
+  });
 }
-```
-:::
 
-右对齐
-
-::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，默认不设置的情况下标签是右对齐的
-```js
-constructor(props) {
-  super(props);
-
-  this.state = {
-    form: {
-      name: '',
-      region: '',
-      type: ''
-    }
-  };
+onChange(key, e) {
+  this.setState({
+    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+  });
 }
 
 render() {
   return (
-    <Form model={this.state.form} labelWidth="80">
-      <Form.Item label="活动名称">
-        <Input value={this.state.form.name}></Input>
-      </Form.Item>
-      <Form.Item label="推广地">
-        <Input value={this.state.form.region}></Input>
-      </Form.Item>
-      <Form.Item label="活动形式">
-        <Input value={this.state.form.type}></Input>
-      </Form.Item>
-    </Form>
-  )
-}
-```
-:::
-
-左对齐
-
-::: demo 通过设置 `label-position` 属性可以改变表单域标签的位置，可选值为 `top`、`left`，当设为 `left` 时标签会变为左对齐
-```js
-constructor(props) {
-  super(props);
-
-  this.state = {
-    form: {
-      name: '',
-      region: '',
-      type: ''
-    }
-  };
-}
-
-onSubmit(e) {
-  e.preventDefault();
-
-  console.log('submit!');
-}
-
-render() {
-  return (
-    <Form model={this.state.form} labelPosition="left" onSubmit={this.onSubmit.bind(this)} labelWidth="80">
-      <Form.Item label="活动名称">
-        <Input value={this.state.form.name}></Input>
-      </Form.Item>
-      <Form.Item label="推广地">
-        <Input value={this.state.form.region}></Input>
-      </Form.Item>
-      <Form.Item label="活动形式">
-        <Input value={this.state.form.type}></Input>
-      </Form.Item>
-    </Form>
+    <div>
+      <Radio.Group size="small" value={this.state.labelPosition} onChange={this.onPositionChange.bind(this)}>
+        <Radio.Button value="left">左对齐</Radio.Button>
+        <Radio.Button value="right">右对齐</Radio.Button>
+        <Radio.Button value="top">顶部对齐</Radio.Button>
+      </Radio.Group>
+      <div style={{ margin: 20 }}></div>
+      <Form labelPosition={this.state.labelPosition} labelWidth="100" model={this.state.form} className="demo-form-stacked">
+        <Form.Item label="名称">
+          <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
+        </Form.Item>
+        <Form.Item label="活动区域">
+          <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')}></Input>
+        </Form.Item>
+        <Form.Item label="活动展开形式">
+          <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}></Input>
+        </Form.Item>
+      </Form>
+    </div>
   )
 }
 ```
@@ -251,8 +221,8 @@ constructor(props) {
     form: {
       name: '',
       region: '',
-      date1: '',
-      date2: '',
+      date1: null,
+      date2: null,
       delivery: false,
       type: [],
       resource: '',
@@ -303,14 +273,20 @@ handleReset(e) {
   this.refs.form.resetFields();
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign({}, this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
-    <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
+    <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="80" className="demo-ruleForm">
       <Form.Item label="活动名称" prop="name">
-        <Input value={this.state.form.name}></Input>
+        <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
       </Form.Item>
       <Form.Item label="活动区域" prop="region">
-        <Select value={this.state.form.region} placeholder="请选择活动区域">
+        <Select value={this.state.form.region} placeholder="请选择活动区域" onChange={this.onChange.bind(this, 'region')}>
           <Select.Option label="区域一" value="shanghai"></Select.Option>
           <Select.Option label="区域二" value="beijing"></Select.Option>
         </Select>
@@ -318,21 +294,30 @@ render() {
       <Form.Item label="活动时间" required={true}>
         <Layout.Col span="11">
           <Form.Item prop="date1">
-
+            <DatePicker
+              value={this.state.form.date1}
+              placeholder="选择日期"
+              onChange={this.onChange.bind(this, 'date1')}
+            />
           </Form.Item>
         </Layout.Col>
         <Layout.Col className="line" span="2">-</Layout.Col>
         <Layout.Col span="11">
           <Form.Item prop="date2">
-
+            <TimePicker
+              value={this.state.form.date2}
+              selectableRange="18:30:00 - 20:30:00"
+              placeholder="选择时间"
+              onChange={this.onChange.bind(this, 'date2')}
+            />
           </Form.Item>
         </Layout.Col>
       </Form.Item>
-      <Form.Item label="即时配送">
-        <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
+      <Form.Item label="即时配送" prop="delivery">
+        <Switch value={this.state.form.delivery} onChange={this.onChange.bind(this, 'delivery')}></Switch>
       </Form.Item>
       <Form.Item label="活动性质" prop="type">
-        <Checkbox.Group value={this.state.form.type}>
+        <Checkbox.Group value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}>
           <Checkbox label="美食/餐厅线上活动" name="type"></Checkbox>
           <Checkbox label="地推活动" name="type"></Checkbox>
           <Checkbox label="线下主题活动" name="type"></Checkbox>
@@ -340,13 +325,13 @@ render() {
         </Checkbox.Group>
       </Form.Item>
       <Form.Item label="特殊资源" prop="resource">
-        <Radio.Group value={this.state.form.resource}>
+        <Radio.Group value={this.state.form.resource} onChange={this.onChange.bind(this, 'resource')}>
           <Radio value="线上品牌商赞助"></Radio>
           <Radio value="线下场地免费"></Radio>
         </Radio.Group>
       </Form.Item>
       <Form.Item label="活动形式" prop="desc">
-        <Input type="textarea" value={this.state.form.desc}></Input>
+        <Input type="textarea" value={this.state.form.desc} onChange={this.onChange.bind(this, 'desc')}></Input>
       </Form.Item>
       <Form.Item>
         <Button type="primary" onClick={this.handleSubmit.bind(this)}>立即创建</Button>
@@ -378,8 +363,8 @@ constructor(props) {
           if (value === '') {
             callback(new Error('请输入密码'));
           } else {
-            if (this.state.ruleForm2.checkPass !== '') {
-              this.ruleForm2.validateField('checkPass');
+            if (this.state.form.checkPass !== '') {
+              this.refs.form.validateField('checkPass');
             }
             callback();
           }
@@ -390,7 +375,7 @@ constructor(props) {
         { validator: (rule, value, callback) => {
           if (value === '') {
             callback(new Error('请再次输入密码'));
-          } else if (value !== this.ruleForm2.pass) {
+          } else if (value !== this.state.form.pass) {
             callback(new Error('两次输入密码不一致!'));
           } else {
             callback();
@@ -438,17 +423,23 @@ handleReset(e) {
   this.refs.form.resetFields();
 }
 
+onChange(key, e) {
+  this.setState({
+    form: Object.assign({}, this.state.form, { [key]: e.target ? e.target.value : e })
+  });
+}
+
 render() {
   return (
     <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-ruleForm">
       <Form.Item label="密码" prop="pass">
-        <Input type="password" value={this.state.form.pass} autoComplete="off"></Input>
+        <Input type="password" value={this.state.form.pass} onChange={this.onChange.bind(this, 'pass')} autoComplete="off" />
       </Form.Item>
       <Form.Item label="确认密码" prop="checkPass">
-        <Input type="password" value={this.state.form.checkPass} autoComplete="off"></Input>
+        <Input type="password" value={this.state.form.checkPass} onChange={this.onChange.bind(this, 'checkPass')} autoComplete="off" />
       </Form.Item>
       <Form.Item label="年龄" prop="age">
-        <Input value={this.state.form.age}></Input>
+        <Input value={this.state.form.age} onChange={this.onChange.bind(this, 'age')}></Input>
       </Form.Item>
       <Form.Item>
         <Button type="primary" onClick={this.handleSubmit.bind(this)}>提交</Button>
@@ -519,11 +510,22 @@ addDomain(e) {
   this.forceUpdate();
 }
 
+onEmailChange(e) {
+  this.setState({
+    form: Object.assign({}, this.state.form, { email: e.target.value })
+  });
+}
+
+onDomainChange(index, e) {
+  this.state.form.domains[index].value = e.target.value;
+  this.forceUpdate();
+}
+
 render() {
   return (
     <Form ref="form" model={this.state.form} rules={this.state.rules} labelWidth="100" className="demo-dynamic">
       <Form.Item prop="email" label="邮箱">
-        <Input value={this.state.form.email}></Input>
+        <Input value={this.state.form.email} onChange={this.onEmailChange.bind(this)}></Input>
       </Form.Item>
       {
         this.state.form.domains.map((domain, index) => {
@@ -539,7 +541,7 @@ render() {
                 }
               }}
             >
-              <Input value={domain.value}></Input>
+              <Input value={domain.value} onChange={this.onDomainChange.bind(this, index)}></Input>
               <Button onClick={this.removeDomain.bind(this, domain)}>删除</Button>
             </Form.Item>
           )

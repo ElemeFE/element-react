@@ -6,8 +6,8 @@ export {require_condition, ReactUtils, Errors}
 
 export function watchPropertyChange(target, property, cb) {
   require_condition(
-    target != null && 
-    typeof property === 'string' && 
+    target != null &&
+    typeof property === 'string' &&
     typeof cb === 'function', 'invalid arguments')
 
   let cache = null
@@ -18,12 +18,12 @@ export function watchPropertyChange(target, property, cb) {
 
   require_condition(cache[property] == null, `duplicated watch on ${target} 's ${property}`)
   cache[property] = cb
-  
+
   let origin = target[property]
 
   Object.defineProperty(target, property, {
     configurable: true,
-    
+
     get() {
       return origin
     },
@@ -69,7 +69,7 @@ export function createPropType(validate) {
 }
 
 // take from :  http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-export function hashCode(str){
+export function hashCode(str) {
   if (str == null||str.length === 0) return 0
 	let hash = 0;
 	for (let i = 0; i < str.length; i++) {
@@ -80,12 +80,31 @@ export function hashCode(str){
 	return hash;
 }
 
-export function debounce(func, delayms){
-  let timeout = null;
-  return function(...args){
-    if (timeout != null) clearTimeout(timeout)
-    timeout = setTimeout(()=>func.apply(this, args), delayms) 
+export function pick(obj, keys) {
+  require_condition(obj != null && Array.isArray(keys))
+
+  const r = {}
+  keys.forEach(e=> r[e]= obj[e])
+  return r
+}
+
+export function range(start, stop, step) {
+  if (stop == null) {
+    stop = start || 0;
+    start = 0;
   }
+  if (!step) {
+    step = stop < start ? -1 : 1;
+  }
+
+  var length = Math.max(Math.ceil((stop - start) / step), 0);
+  var range = Array(length);
+
+  for (var idx = 0; idx < length; idx++, start += step) {
+    range[idx] = start;
+  }
+
+  return range;
 }
 
 export {default as DateUtils} from './date'

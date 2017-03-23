@@ -1,14 +1,16 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Row extends Component {
-  getChildContext() {
+  getChildContext(): { gutter: number | string } {
     return {
       gutter: this.props.gutter
     };
   }
 
-  getStyle() {
+  getStyle(): { marginLeft: string, marginRight: string } {
     const style = {};
 
     if (this.props.gutter) {
@@ -19,7 +21,7 @@ export default class Row extends Component {
     return style;
   }
 
-  render() {
+  render(): React.Element<any> {
     return (
       <div
         className={this.className('el-row',

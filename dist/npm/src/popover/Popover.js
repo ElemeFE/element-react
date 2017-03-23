@@ -14,7 +14,7 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _popper = require('../../vendor/popper');
+var _popper = require('../../libs/utils/popper');
 
 var _popper2 = _interopRequireDefault(_popper);
 
@@ -36,7 +36,9 @@ var Popover = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Popover.__proto__ || Object.getPrototypeOf(Popover)).call(this, props));
 
-    _this.state = {};
+    _this.state = {
+      showPopper: false
+    };
     return _this;
   }
 
@@ -50,6 +52,8 @@ var Popover = function (_Component) {
 
       this.element = _reactDom2.default.findDOMNode(this);
       this.reference = _reactDom2.default.findDOMNode(this.refs.reference);
+
+      if (this.reference === null) return;
 
       if (trigger === 'click') {
         this.reference.addEventListener('click', function () {
@@ -88,8 +92,32 @@ var Popover = function (_Component) {
           });
         }
       }
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      var showPopper = this.state.showPopper;
 
-      this.initialPopper();
+
+      if (showPopper) {
+        if (this.popperJS) {
+          this.popperJS.update();
+        } else {
+          if (this.refs.arrow) {
+            this.refs.arrow.setAttribute('x-arrow', '');
+          }
+
+          this.popperJS = new _popper2.default(this.reference, this.refs.popper, {
+            placement: this.props.placement
+          });
+        }
+      } else {
+        if (this.popperJS) {
+          this.popperJS.destroy();
+        }
+
+        delete this.popperJS;
+      }
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -101,20 +129,13 @@ var Popover = function (_Component) {
       }
     }
   }, {
-    key: 'componentWillUnMount',
-    value: function componentWillUnMount() {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
       this.reference.parentNode.replaceChild(this.reference.cloneNode(true), this.reference);
-    }
-  }, {
-    key: 'initialPopper',
-    value: function initialPopper() {
-      if (this.refs.arrow) {
-        this.refs.arrow.setAttribute('x-arrow', '');
-      }
 
-      this.popperJS = new _popper2.default(this.reference, this.refs.popper, {
-        placement: this.props.placement
-      });
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
     }
   }, {
     key: 'handleMouseEnter',
@@ -153,7 +174,7 @@ var Popover = function (_Component) {
         null,
         _react2.default.createElement(
           _libs.Transition,
-          { name: transition },
+          { name: transition, duration: 200 },
           _react2.default.createElement(
             _libs.View,
             { show: this.state.showPopper },
@@ -178,6 +199,13 @@ var Popover = function (_Component) {
   return Popover;
 }(_libs.Component);
 
+Popover.defaultProps = {
+  visibleArrow: true,
+  transition: 'fade-in-linear',
+  trigger: 'click',
+  placement: 'bottom',
+  width: 150
+};
 var _default = Popover;
 exports.default = _default;
 
@@ -192,14 +220,6 @@ Popover.propTypes = {
   transition: _libs.PropTypes.string,
   visible: _libs.PropTypes.bool,
   visibleArrow: _libs.PropTypes.bool
-};
-
-Popover.defaultProps = {
-  visibleArrow: true,
-  transition: 'fade-in-linear',
-  trigger: 'click',
-  placement: 'bottom',
-  width: 150
 };
 ;
 

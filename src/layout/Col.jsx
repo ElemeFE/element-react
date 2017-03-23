@@ -1,8 +1,10 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Col extends Component {
-  getStyle() {
+  getStyle(): { paddingLeft: string, paddingRight: string } {
     const style = {};
 
     if (this.context.gutter) {
@@ -13,16 +15,41 @@ export default class Col extends Component {
     return style;
   }
 
-  render() {
+  render(): React.Element<any> {
+    let classList = [];
+
+    ['span', 'offset', 'pull', 'push'].forEach(prop => {
+      if (this.props[prop]) {
+        classList.push(
+          prop !== 'span'
+          ? `el-col-${prop}-${this.props[prop]}`
+          : `el-col-${this.props[prop]}`
+        );
+      }
+    });
+
+    ['xs', 'sm', 'md', 'lg'].forEach(size => {
+      if (typeof this.props[size] === 'object') {
+        let props = this.props[size];
+        Object.keys(props).forEach(prop => {
+          classList.push(
+            prop !== 'span'
+            ? `el-col-${size}-${prop}-${props[prop]}`
+            : `el-col-${size}-${props[prop]}`
+          );
+        });
+      } else {
+        classList.push(`el-col-${size}-${Number(this.props[size])}`);
+      }
+    });
+    
     return (
-      <div className={this.className('el-col', `el-col-${this.props.span}`,
-        this.props.offset && `el-col-offset-${this.props.offset}`,
-        this.props.pull && `el-col-pull-${this.props.pull}`,
-        this.props.push && `el-col-push-${this.props.push}`
-      )} style={this.style(this.getStyle())}>
+      <div
+        className={this.className('el-col', classList)}
+        style={this.style(this.getStyle())}>
         {this.props.children}
       </div>
-    )
+    );
   }
 }
 
@@ -31,8 +58,16 @@ Col.contextTypes = {
 };
 
 Col.propTypes = {
-  span: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  span: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pull: PropTypes.number,
-  push: PropTypes.number
+  push: PropTypes.number,
+  xs: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+  sm: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+  md: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+  lg: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object])
+}
+
+Col.defaultProps = {
+  span: 24
 }

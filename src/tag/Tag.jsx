@@ -1,8 +1,10 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
 export default class Tag extends Component {
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
 
     this.state = {
@@ -14,9 +16,11 @@ export default class Tag extends Component {
     this.setState({
       visible: false
     }, () => {
-      if (this.props.onClose) {
-        this.props.onClose();
-      }
+      setTimeout(() => {
+        if (this.props.onClose) {
+          this.props.onClose();
+        }
+      }, this.duration);
     });
   }
 
@@ -24,8 +28,8 @@ export default class Tag extends Component {
     const { type, hit, closable, closeTransition } = this.props;
 
     return(
-      <Transition name={closeTransition ? '' : 'md-fade-center'} duration="200">
-        <View key="el-tag" show={this.state.visible}>
+      <Transition name={closeTransition ? '' : 'el-zoom-in-center'} duration="200">
+        <View key={this.state.visible} show={this.state.visible}>
           <span style={this.style()} className={this.className('el-tag', type && `el-tag--${type}`, {
             'is-hit': hit
           })}>
