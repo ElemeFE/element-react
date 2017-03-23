@@ -2,6 +2,7 @@ module.exports = {
   page: {
     'installation': 'Installation',
     'quick-start': 'Quick Start',
+    'i18n': 'Internationalization',
     'custom-theme': 'Custom Theme',
     'layout': 'Layout',
     'color': 'Color',

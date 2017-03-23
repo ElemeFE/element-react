@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class Radio extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/radio.md');
-    }
+    return require(`../../docs/${locale}/radio.md`);
   }
 }

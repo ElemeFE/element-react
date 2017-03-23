@@ -4,11 +4,6 @@ import './style.scss';
 
 export default class Form extends Markdown {
   document(locale) {
-    switch (locale) {
-      case 'en-US':
-        return require('../../docs/en-US/form.md');
-      default:
-        return require('../../docs/zh-CN/form.md');
-    }
+    return require(`../../docs/${locale}/form.md`);
   }
 }

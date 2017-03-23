@@ -2,8 +2,8 @@ import Markdown from '../../../libs/markdown';
 
 import './style.scss';
 
-export default class Alert extends Markdown {
+export default class i18n extends Markdown {
   document(locale) {
-    return require(`../../docs/${locale}/alert.md`);
+    return require(`../../docs/${locale}/i18n.md`);
   }
 }

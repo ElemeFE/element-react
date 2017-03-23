@@ -5,8 +5,13 @@ import ReactDOM from 'react-dom';
 import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
+type State = {
+  showPopper: boolean
+};
 
 export default class Popover extends Component {
+  state: State;
+
   static defaultProps = {
     visibleArrow: true,
     transition: 'fade-in-linear',
@@ -17,6 +22,10 @@ export default class Popover extends Component {
 
   constructor(props: Object) {
     super(props);
+
+    this.state = {
+      showPopper: false
+    };
   }
 
   componentDidMount() {

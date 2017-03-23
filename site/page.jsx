@@ -1,6 +1,11 @@
 import React from 'react';
+import ScrollToTop from 'react-scroll-up';
 import classnames from 'classnames';
-import { throttle } from 'throttle-debounce';
+
+import { i18n } from '../src';
+
+import en from '../src/locale/lang/en';
+import zh from '../src/locale/lang/zh-CN';
 
 import locales from './locales';
 import pages from './pages';
@@ -9,10 +14,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showBackToTop: false
-    };
-    this.scrollHandler = null;
+    this.state = {};
   }
 
   componentWillMount() {
@@ -29,17 +31,17 @@ export default class App extends React.Component {
         this.setLocale(localStorage.getItem('ELEMENT_LANGUAGE') || 'zh-CN');
       }
     });
-    this.throttledScroll = throttle(500, () => {
-      const showBackToTop = (document.body.scrollTop || document.documentElement.scrollTop) >= 0.5 * document.body.clientHeight;
-      if (this.state.showBackToTop !== showBackToTop) {
-        this.setState({ showBackToTop });
-      }
-    });
-    document.addEventListener('scroll', this.throttledScroll);
   }
 
-  componentWillUnmount() {
-    document.removeEventListener('scroll', this.throttledScroll);
+  componentDidUpdate(props, state) {
+    if (state.locale != this.state.locale) {
+      switch(this.state.locale) {
+        case 'en-US':
+          i18n.use(en); break;
+        default:
+          i18n.use(zh); break;
+      }
+    }
   }
 
   getLocale(key) {
@@ -65,7 +67,9 @@ export default class App extends React.Component {
 
     if (routes) {
       if (locales.hasOwnProperty(routes[1])) {
-        localStorage.setItem('ELEMENT_LANGUAGE', this.state.locale = routes[1]);
+        this.setState({ locale: routes[1] }, () => {
+          localStorage.setItem('ELEMENT_LANGUAGE', this.state.locale);
+        });
       }
 
       return routes[2];
@@ -93,12 +97,6 @@ export default class App extends React.Component {
         }
       });
     }
-  }
-
-  toTop() {
-    this.setState({ showBackToTop: false });
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
   }
 
   render() {
@@ -169,10 +167,14 @@ export default class App extends React.Component {
               </li>
             </ul>
           </nav>
-          <div className="content">{ this.getComponent(this.state.page) }</div>
-        </div>
-        <div className={classnames('page-component-up', { hide: !this.state.showBackToTop})} onClick={this.toTop.bind(this)}>
-          <i className="el-icon-caret-top"></i>
+          <div className="content">
+            { this.getComponent(this.state.page) }
+            <ScrollToTop showUnder={210}>
+              <div className={classnames('page-component-up')}>
+                <i className="el-icon-caret-top"></i>
+              </div>
+            </ScrollToTop>
+          </div>
         </div>
         <footer className="footer">
           <div className="container">
