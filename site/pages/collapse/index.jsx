@@ -4,11 +4,6 @@ import './style.scss';
 
 export default class Collapse extends Markdown {
   document(locale) {
-    switch (locale) {
-      case 'en-US':
-        return require('../../docs/en-US/collapse.md');
-      default:
-        return require('../../docs/zh-CN/collapse.md');
-    }
+    return require(`../../docs/${locale}/collapse.md`);
   }
 }

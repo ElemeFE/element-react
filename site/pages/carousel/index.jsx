@@ -4,11 +4,6 @@ import './style.scss';
 
 export default class Carousel extends Markdown {
   document(locale) {
-    switch (locale) {
-      case 'en-US':
-        return require('../../docs/en-US/carousel.md');
-      default:
-        return require('../../docs/zh-CN/carousel.md');
-    }
+    return require(`../../docs/${locale}/carousel.md`);
   }
 }

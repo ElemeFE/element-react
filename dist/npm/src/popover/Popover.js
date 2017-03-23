@@ -34,7 +34,12 @@ var Popover = function (_Component) {
   function Popover(props) {
     _classCallCheck(this, Popover);
 
-    return _possibleConstructorReturn(this, (Popover.__proto__ || Object.getPrototypeOf(Popover)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Popover.__proto__ || Object.getPrototypeOf(Popover)).call(this, props));
+
+    _this.state = {
+      showPopper: false
+    };
+    return _this;
   }
 
   _createClass(Popover, [{

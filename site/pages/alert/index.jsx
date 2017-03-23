@@ -4,11 +4,6 @@ import './style.scss';
 
 export default class Alert extends Markdown {
   document(locale) {
-    switch (locale) {
-      case 'en-US':
-        return require('../../docs/en-US/alert.md');
-      default:
-        return require('../../docs/zh-CN/alert.md');
-    }
+    return require(`../../docs/${locale}/alert.md`);
   }
 }

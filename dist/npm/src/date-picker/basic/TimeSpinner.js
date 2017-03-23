@@ -293,25 +293,21 @@ var TimeSpinner = function (_Component) {
             viewClass: 'el-time-spinner__list',
             viewComponent: 'ul'
           },
-          _react2.default.createElement(
-            'ul',
-            { className: 'el-time-spinner__list' },
-            secondsList.map(function (disabled, idx) {
-              return _react2.default.createElement(
-                'li',
-                {
-                  key: idx,
-                  onClick: function onClick() {
-                    return _this4.handleChange('seconds', idx);
-                  },
-                  className: _this4.classNames('el-time-spinner__item', {
-                    'active': idx === seconds
-                  })
+          secondsList.map(function (disabled, idx) {
+            return _react2.default.createElement(
+              'li',
+              {
+                key: idx,
+                onClick: function onClick() {
+                  return _this4.handleChange('seconds', idx);
                 },
-                idx
-              );
-            })
-          )
+                className: _this4.classNames('el-time-spinner__item', {
+                  'active': idx === seconds
+                })
+              },
+              idx
+            );
+          })
         )
       );
     }

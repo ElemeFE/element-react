@@ -1,6 +1,6 @@
 module.exports = {
   page: {
-    'install': 'Installation',
+    'installation': 'Installation',
     'quick-start': 'Quick Start',
     'i18n': 'Internationalization',
     'custom-theme': 'Custom Theme',

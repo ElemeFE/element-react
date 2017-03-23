@@ -1,6 +1,6 @@
 module.exports = {
   page: {
-    'install': '安装',
+    'installation': '安装',
     'quick-start': '快速上手',
     'i18n': '国际化',
     'custom-theme': '自定义主题',

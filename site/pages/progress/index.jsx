@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class Progress extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/progress.md');
-    }
+    return require(`../../docs/${locale}/progress.md`);
   }
 }
