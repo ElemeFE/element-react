@@ -64,10 +64,7 @@ et
 
 ```javascript
 import '../theme/index.css'
-import ElementUI from 'element-ui'
-import Vue from 'vue'
-
-Vue.use(ElementUI)
+import 'element-ui'
 ```
 
 ### 搭配插件按需引入组件主题
@@ -82,5 +79,3 @@ Vue.use(ElementUI)
   ]]]
 }
 ```
-
-如果不清楚 `babel-plugin-component` 是什么，请阅读 <a href="#quick-start">快读上手</a> 一节。更多 `element-theme` 用法请参考[项目仓库](https://github.com/ElementUI/element-theme)。

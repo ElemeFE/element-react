@@ -1,9 +1,8 @@
 
 export default {
   documents: {
-    'install': require('./install'),
+    'installation': require('./installation'),
     'quick-start': require('./quick-start'),
-    'i18n': require('./i18n'),
     'custom-theme': require('./custom-theme')
   },
   components: {

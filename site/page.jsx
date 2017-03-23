@@ -22,7 +22,7 @@ export default class App extends React.Component {
   componentDidMount() {
     this.setPage(() => {
       if (!this.state.locale) {
-        this.setLocale('zh-CN');
+        this.setLocale(localStorage.getItem('ELEMENT_LANGUAGE') || 'zh-CN');
       }
     });
   }
@@ -49,12 +49,14 @@ export default class App extends React.Component {
     const routes = location.hash.match(/(?:\/(.+))?\/(.+)/);
 
     if (routes) {
-      localStorage.setItem('ELEMENT_LANGUAGE', this.state.locale = routes[1]);
+      if (locales.hasOwnProperty(routes[1])) {
+        localStorage.setItem('ELEMENT_LANGUAGE', this.state.locale = routes[1]);
+      }
 
       return routes[2];
     }
 
-    return 'install';
+    return 'installation';
   }
 
   setPage(fn) {
