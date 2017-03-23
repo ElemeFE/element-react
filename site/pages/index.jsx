@@ -1,4 +1,3 @@
-
 export default {
   documents: {
     'install': require('./install'),
