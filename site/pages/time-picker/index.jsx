@@ -4,9 +4,6 @@ import './style.scss';
 
 export default class TimePicker extends Markdown {
   document(locale) {
-    switch (locale) {
-      default:
-        return require('../../docs/zh-CN/time-picker.md');
-    }
+    return require(`../../docs/${locale}/time-picker.md`);
   }
 }

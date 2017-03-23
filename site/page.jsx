@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { throttle } from 'throttle-debounce';
 
 import locales from './locales';
 import pages from './pages';
@@ -8,7 +9,10 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      showBackToTop: false
+    };
+    this.scrollHandler = null;
   }
 
   componentWillMount() {
@@ -25,6 +29,17 @@ export default class App extends React.Component {
         this.setLocale(localStorage.getItem('ELEMENT_LANGUAGE') || 'zh-CN');
       }
     });
+    this.throttledScroll = throttle(500, () => {
+      const showBackToTop = (document.body.scrollTop || document.documentElement.scrollTop) >= 0.5 * document.body.clientHeight;
+      if (this.state.showBackToTop !== showBackToTop) {
+        this.setState({ showBackToTop });
+      }
+    });
+    document.addEventListener('scroll', this.throttledScroll);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.throttledScroll);
   }
 
   getLocale(key) {
@@ -78,6 +93,12 @@ export default class App extends React.Component {
         }
       });
     }
+  }
+
+  toTop() {
+    this.setState({ showBackToTop: false });
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }
 
   render() {
@@ -149,6 +170,9 @@ export default class App extends React.Component {
             </ul>
           </nav>
           <div className="content">{ this.getComponent(this.state.page) }</div>
+        </div>
+        <div className={classnames('page-component-up', { hide: !this.state.showBackToTop})} onClick={this.toTop.bind(this)}>
+          <i className="el-icon-caret-top"></i>
         </div>
         <footer className="footer">
           <div className="container">
