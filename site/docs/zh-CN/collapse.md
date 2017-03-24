@@ -105,7 +105,7 @@ render() {
 ### Collapse Events
 | 事件名称 | 说明 | 回调参数 |
 |---------|---------|---------|
-| change | 当前激活面板改变时触发(如果是手风琴模式，参数类型为`string`，否则为`array`) | (activeNames: array/string) |
+| onChange | 当前激活面板改变时触发(如果是手风琴模式，参数类型为`string`，否则为`array`) | (activeNames: array/string) |
 
 
 ### Collapse Item Attributes

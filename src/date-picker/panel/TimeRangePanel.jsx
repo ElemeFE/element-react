@@ -106,7 +106,6 @@ export default class TimeRangePanel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    debugger
     this.setState(mapPropsToState(nextProps));
   }
 

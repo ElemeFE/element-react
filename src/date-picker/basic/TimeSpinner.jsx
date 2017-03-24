@@ -113,7 +113,6 @@ export default class TimeSpinner extends Component {
     this.setState({}, () => {
       this.ajustScrollTop(this.state)
     })
-    debugger
     this.props.onChange(changed)
   }
 
@@ -188,7 +187,8 @@ export default class TimeSpinner extends Component {
           isShowSeconds && (
             <Scrollbar
               onMouseEnter={() => this.emitSelectRange('seconds')}
-              onWheel={() => this.handleScroll('seconds')}
+              onWheel={() => this.handleScroll;
+                ('seconds')}
               ref="seconds"
               className="el-time-spinner__wrapper"
               wrapStyle={{ maxHeight: 'inherit' }}
