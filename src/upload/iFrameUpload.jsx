@@ -9,8 +9,8 @@ export default class IframeUpload extends Component {
   state: IframeUploadState;
 
   static defaultProps = {
-    name: 'file',
-  }
+    name: 'file'
+  };
 
   constructor(props: Object) {
     super(props);
@@ -18,23 +18,27 @@ export default class IframeUpload extends Component {
       dragOver: false,
       file: null,
       disabled: false,
-      frameName: 'frame-' + Date.now(),
-    }
+      frameName: 'frame-' + Date.now()
+    };
   }
 
   componentDidMount() {
     const { action, onSuccess, onError } = this.props;
     const { file } = this.state;
-    window.addEventListener('message', event => {
-      const { origin } = new URL(action);
-      if (event.origin !== origin) return false;
-      const response = event.data;
-      if (response.result === 'success') {
-        onSuccess(response, file);
-      } else if (response.result === 'failed') {
-        onError(response, file);
-      }
-    }, false);
+    window.addEventListener(
+      'message',
+      event => {
+        const { origin } = new URL(action);
+        if (event.origin !== origin) return false;
+        const response = event.data;
+        if (response.result === 'success') {
+          onSuccess(response, file);
+        } else if (response.result === 'failed') {
+          onError(response, file);
+        }
+      },
+      false
+    );
   }
 
   onload(): void {
@@ -66,7 +70,9 @@ export default class IframeUpload extends Component {
     if (typeof data === 'function') {
       data = data(file);
     }
-    const inputs = Object.keys(data).map(key => `<input name="${key}" value="${data[key]}"/>`);
+    const inputs = Object.keys(data).map(
+      key => `<input name="${key}" value="${data[key]}"/>`
+    );
 
     dataSpan.innerHTML = inputs.join('');
     formNode.submit();
@@ -94,7 +100,7 @@ export default class IframeUpload extends Component {
     const { frameName } = this.state;
     const classes = this.classNames({
       'el-upload': true,
-      [`el-upload--${listType}`]: true,
+      [`el-upload--${listType}`]: true
     });
     return (
       <div
@@ -104,25 +110,30 @@ export default class IframeUpload extends Component {
         onDragOver={e => this.handleDragover(e)}
         onDragLeave={e => this.handleDragleave(e)}
       >
-        <iframe
-          onLoad={() => this.onload()}
-          ref="iframe"
-          name={frameName}
+        <iframe onLoad={() => this.onload()} ref="iframe" name={frameName} />
+        <form
+          ref="form"
+          action={action}
+          target={frameName}
+          encType="multipart/form-data"
+          method="POST"
         >
-        </iframe>
-        <form ref="form" action={action} target={frameName} encType="multipart/form-data" method="POST">
           <input
             className="el-upload__input"
             type="file"
             ref="input"
             name={name}
             onChange={e => this.handleChange(e)}
-            accept={accept}>
-          </input>
+            accept={accept}
+          />
           <input type="hidden" name="documentDomain" value={document.domain} />
-          <span ref="data"></span>
+          <span ref="data" />
         </form>
-        {drag ? <Cover onFile={file => this.uploadFiles(file)}>{this.props.children}</Cover> : this.props.children}
+        {drag
+          ? <Cover onFile={file => this.uploadFiles(file)}>
+              {this.props.children}
+            </Cover>
+          : this.props.children}
       </div>
     );
   }
@@ -137,5 +148,5 @@ IframeUpload.propTypes = {
   onStart: PropTypes.func,
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
-  listType: PropTypes.string,
-}
+  listType: PropTypes.string
+};

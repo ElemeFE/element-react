@@ -113,6 +113,7 @@ export default class TimeSpinner extends Component {
     this.setState({}, () => {
       this.ajustScrollTop(this.state)
     })
+    debugger
     this.props.onChange(changed)
   }
 
@@ -144,7 +145,7 @@ export default class TimeSpinner extends Component {
           wrapStyle={{ maxHeight: 'inherit' }}
           viewClass="el-time-spinner__list"
           viewComponent="ul"
-          >
+        >
           {
             hoursList.map((disabled, idx) => {
 
@@ -156,7 +157,7 @@ export default class TimeSpinner extends Component {
                     'active': idx === hours,
                     'disabled': disabled
                   })}
-                  >{idx}</li>)
+                >{idx}</li>)
             })
           }
         </Scrollbar>
@@ -168,7 +169,7 @@ export default class TimeSpinner extends Component {
           wrapStyle={{ maxHeight: 'inherit' }}
           viewClass="el-time-spinner__list"
           viewComponent="ul"
-          >
+        >
           {
             minutesLisit.map((disabled, idx) => {
               return (
@@ -178,7 +179,7 @@ export default class TimeSpinner extends Component {
                   className={this.classNames('el-time-spinner__item', {
                     'active': idx === minutes,
                   })}
-                  >{idx}</li>
+                >{idx}</li>
               )
             })
           }

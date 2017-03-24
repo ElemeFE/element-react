@@ -12,8 +12,8 @@ export default class HueSlider extends Component {
     super(props);
     this.state = {
       thumbLeft: 0,
-      thumbTop: 0,
-    }
+      thumbTop: 0
+    };
   }
 
   componentDidMount() {
@@ -49,12 +49,18 @@ export default class HueSlider extends Component {
       let left = event.clientX - rect.left;
       left = Math.min(left, rect.width - thumb.offsetWidth / 2);
       left = Math.max(thumb.offsetWidth / 2, left);
-      hue = Math.round((left - thumb.offsetWidth / 2) / (rect.width - thumb.offsetWidth) * 360);
+      hue = Math.round(
+        (left - thumb.offsetWidth / 2) / (rect.width - thumb.offsetWidth) * 360
+      );
     } else {
       let top = event.clientY - rect.top;
       top = Math.min(top, rect.height - thumb.offsetHeight / 2);
       top = Math.max(thumb.offsetHeight / 2, top);
-      hue = Math.round((top - thumb.offsetHeight / 2) / (rect.height - thumb.offsetHeight) * 360);
+      hue = Math.round(
+        (top - thumb.offsetHeight / 2) /
+          (rect.height - thumb.offsetHeight) *
+          360
+      );
     }
     color.set('hue', hue);
     this.update();
@@ -92,13 +98,19 @@ export default class HueSlider extends Component {
     const { vertical } = this.props;
     const { thumbLeft, thumbTop } = this.state;
     return (
-      <div ref={el => this.$el = el} className={this.classNames({ 'el-color-hue-slider': true, 'is-vertical': vertical })} style={{float: 'right'}}>
+      <div
+        ref={el => this.$el = el}
+        className={this.classNames({
+          'el-color-hue-slider': true,
+          'is-vertical': vertical
+        })}
+        style={{ float: 'right' }}
+      >
         <div
           className="el-color-hue-slider__bar"
           onClick={e => this.handleClick(e)}
           ref="bar"
-        >
-        </div>
+        />
         <div
           className="el-color-hue-slider__thumb"
           style={{
@@ -106,18 +118,17 @@ export default class HueSlider extends Component {
             top: thumbTop + 'px'
           }}
           ref="thumb"
-        >
-        </div>
+        />
       </div>
-    )
+    );
   }
 }
 
 HueSlider.contextTypes = {
-  onChange: PropTypes.func,
-}
+  onChange: PropTypes.func
+};
 
 HueSlider.propTypes = {
   vertical: PropTypes.bool,
-  color: PropTypes.object.isRequired,
-}
+  color: PropTypes.object.isRequired
+};

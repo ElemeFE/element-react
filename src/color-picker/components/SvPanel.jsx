@@ -13,8 +13,8 @@ export default class SvPanel extends Component {
     this.state = {
       cursorTop: 0,
       cursorLeft: 0,
-      background: 'hsl(0, 100%, 50%)',
-    }
+      background: 'hsl(0, 100%, 50%)'
+    };
   }
 
   componentDidMount() {
@@ -49,7 +49,7 @@ export default class SvPanel extends Component {
       cursorLeft: saturation * width / 100,
       cursorTop: (100 - value) * height / 100,
       background: 'hsl(' + color.get('hue') + ', 100%, 50%)'
-    })
+    });
   }
 
   handleDrag(event: SyntheticMouseEvent): void {
@@ -63,17 +63,20 @@ export default class SvPanel extends Component {
     left = Math.min(left, rect.width);
     top = Math.max(0, top);
     top = Math.min(top, rect.height);
-    this.setState({
-      cursorLeft: left,
-      cursorTop: top,
-      background: 'hsl(' + color.get('hue') + ', 100%, 50%)'
-    }, () => {
-      color.set({
-         saturation: left / rect.width * 100,
-         value: 100 - top / rect.height * 100
-      })
-      onChange(color);
-    });
+    this.setState(
+      {
+        cursorLeft: left,
+        cursorTop: top,
+        background: 'hsl(' + color.get('hue') + ', 100%, 50%)'
+      },
+      () => {
+        color.set({
+          saturation: left / rect.width * 100,
+          value: 100 - top / rect.height * 100
+        });
+        onChange(color);
+      }
+    );
   }
 
   render(): React.Element<any> {
@@ -84,8 +87,8 @@ export default class SvPanel extends Component {
         style={{ backgroundColor: background }}
         ref={el => this.$el = el}
       >
-        <div className="el-color-svpanel__white"></div>
-        <div className="el-color-svpanel__black"></div>
+        <div className="el-color-svpanel__white" />
+        <div className="el-color-svpanel__black" />
         <div
           className="el-color-svpanel__cursor"
           style={{
@@ -93,17 +96,17 @@ export default class SvPanel extends Component {
             left: cursorLeft + 'px'
           }}
         >
-          <div></div>
+          <div />
         </div>
       </div>
-    )
+    );
   }
 }
 
 SvPanel.contextTypes = {
-  onChange: PropTypes.func,
-}
+  onChange: PropTypes.func
+};
 
 SvPanel.propTypes = {
-  color: PropTypes.object.isRequired,
-}
+  color: PropTypes.object.isRequired
+};

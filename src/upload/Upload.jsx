@@ -7,9 +7,8 @@ import iFrameUpload from './iFrameUpload';
 import AjaxUpload from './AjaxUpload';
 import type { UploadState, RawFile, _File, _ProgressEvent } from './Types';
 
-
 export default class Upload extends Component {
-  state: UploadState
+  state: UploadState;
 
   static defaultProps = {
     headers: {},
@@ -24,15 +23,15 @@ export default class Upload extends Component {
     onProgress() {},
     onSuccess() {},
     onError() {},
-    onChange() {},
-  }
+    onChange() {}
+  };
 
   constructor(props: Object) {
     super(props);
     this.state = {
       fileList: [],
-      tempIndex: 1,
-    }
+      tempIndex: 1
+    };
   }
 
   componentWillMount(): void {
@@ -47,22 +46,22 @@ export default class Upload extends Component {
     let { tempIndex } = this.state;
     const { fileList } = props;
     const uploadFiles = fileList.map(file => {
-      file.uid = file.uid || (Date.now() + tempIndex++);
+      file.uid = file.uid || Date.now() + tempIndex++;
       file.status = 'success';
       return file;
-    })
+    });
     this.setState({ fileList: uploadFiles });
   }
 
   getChildContext() {
     return {
       onPreview: this.handlePreview.bind(this),
-      onRemove: this.handleRemove.bind(this),
-    }
+      onRemove: this.handleRemove.bind(this)
+    };
   }
 
   getFile(file: RawFile): ?_File {
-    const { fileList }= this.state;
+    const { fileList } = this.state;
     const target = fileList.find(item => item.uid === file.uid);
     if (target) {
       return target;
@@ -79,7 +78,7 @@ export default class Upload extends Component {
       size: file.size,
       percentage: 0,
       uid: file.uid,
-      raw: file,
+      raw: file
     };
     try {
       _file.url = URL.createObjectURL(file);
@@ -90,8 +89,8 @@ export default class Upload extends Component {
     fileList.push(_file);
     this.setState({
       fileList,
-      tempIndex,
-    })
+      tempIndex
+    });
   }
 
   handleProgress(e: _ProgressEvent, file: RawFile): void {
@@ -112,12 +111,15 @@ export default class Upload extends Component {
       _file.status = 'success';
       _file.response = res;
 
-      setTimeout(() => {
-        this.setState({ fileList },() => {
-          this.props.onSuccess(res, _file, fileList);
-          this.props.onChange(_file, fileList);
-        });
-      }, 1000);
+      setTimeout(
+        () => {
+          this.setState({ fileList }, () => {
+            this.props.onSuccess(res, _file, fileList);
+            this.props.onChange(_file, fileList);
+          });
+        },
+        1000
+      );
     }
   }
 
@@ -151,8 +153,8 @@ export default class Upload extends Component {
 
   clearFiles(): void {
     this.setState({
-      fileList: [],
-    })
+      fileList: []
+    });
   }
 
   submit(): void {
@@ -185,7 +187,7 @@ export default class Upload extends Component {
       data,
       accept,
       listType,
-      className,
+      className
     } = this.props;
     let uploadList;
     if (showFileList && fileList.length) {
@@ -210,18 +212,18 @@ export default class Upload extends Component {
       onPreview: file => this.handlePreview(file),
       onRemove: file => this.handleRemove(file),
       ref: 'upload-inner',
-      showCover: this.showCover(),
+      showCover: this.showCover()
     };
     const trigger = this.props.trigger || this.props.children;
     const uploadComponent = typeof FormData !== 'undefined'
-     ? <AjaxUpload {...restProps}>{trigger}</AjaxUpload>
-     : <iFrameUpload {...restProps}>{trigger}</iFrameUpload>;
+      ? <AjaxUpload {...restProps}>{trigger}</AjaxUpload>
+      : <iFrameUpload {...restProps}>{trigger}</iFrameUpload>;
     return (
       <div className={className}>
         {listType === 'picture-card' ? uploadList : ''}
-        {
-          this.props.trigger ? [uploadComponent, this.props.children] : uploadComponent
-        }
+        {this.props.trigger
+          ? [uploadComponent, this.props.children]
+          : uploadComponent}
         {tip}
         {listType !== 'picture-card' ? uploadList : ''}
       </div>
@@ -231,8 +233,8 @@ export default class Upload extends Component {
 
 Upload.childContextTypes = {
   onPreview: PropTypes.func,
-  onRemove: PropTypes.func,
-}
+  onRemove: PropTypes.func
+};
 
 Upload.propTypes = {
   action: PropTypes.string.isRequired,
@@ -256,5 +258,5 @@ Upload.propTypes = {
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
   onChange: PropTypes.func,
-  className: PropTypes.string,
-}
+  className: PropTypes.string
+};

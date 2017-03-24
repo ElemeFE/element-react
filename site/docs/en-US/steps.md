@@ -6,7 +6,7 @@ Guide the user to complete tasks in accordance with the process. Its steps can b
 
 Simple step bar.
 
-:::demo Set `active` attribute with `Number` type, which indicates the index of steps and starts from 0. You can set `space` attribute when the width of the step needs to be fixed which accepts `Boolean` type. The unit of the `space` attribute is `px`. If not set, it is responsive. Setting the `finish-status` attribute can change the state of the steps that have been completed.
+:::demo Set `active` attribute with `Number` type, which indicates the index of steps and starts from 0. You can set `space` attribute when the width of the step needs to be fixed which accepts `Boolean` type. The unit of the `space` attribute is `px`. If not set, it is responsive. Setting the `finishStatus` attribute can change the state of the steps that have been completed.
 
 ```js
 constructor(props) {
@@ -44,7 +44,7 @@ render() {
 
 Shows the status of the step for each step.
 
-:::demo Use `title` attribute to set the name of the step, or override the attribute by using a named `slot`. We have listed all the slot names for you at the end of this page.
+:::demo Use `title` attribute to set the name of the step.
 
 ```js
 render() {
@@ -81,7 +81,7 @@ render() {
 
 A variety of custom icons can be used in the step bar.
 
-:::demo The icon is set by the `icon` property. The types of icons can be found in the document for the Icon component. In addition, you can customize the icon through a named `slot`.
+:::demo The icon is set by the `icon` property. The types of icons can be found in the document for the Icon component.
 
 ```js
 render() {
@@ -100,7 +100,7 @@ render() {
 
 Vertical step bars.
 
-:::demo You only need to set the `direction` attribute to` vertical` in the `el-steps` element.
+:::demo You only need to set the `direction` attribute to` vertical` in the `Steps` element.
 
 ```js
 render() {
@@ -133,10 +133,3 @@ render() {
 | title | step title | string | — | — |
 | description | step description | string | — | — |
 | icon | step icon | icons provided by Element Icon. Can be overwritten by a named slot if you want to use  custom icons | string | — |
-
-### Step Slot
-| Name | Description |
-|----|----|
-| icon | custom icon |
-| title | step title |
-| description | step description |

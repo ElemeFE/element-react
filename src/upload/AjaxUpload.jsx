@@ -8,8 +8,8 @@ import type { RawFile, _File } from './Types';
 
 export default class AjaxUpload extends Component {
   static defaultProps = {
-    name: 'file',
-  }
+    name: 'file'
+  };
 
   constructor(props: Object) {
     super(props);
@@ -33,8 +33,12 @@ export default class AjaxUpload extends Component {
   uploadFiles(files: FileList): void {
     const { multiple } = this.props;
     let postFiles = Array.prototype.slice.call(files);
-    if (postFiles.length === 0) { return; }
-    if (!multiple) { postFiles = postFiles.slice(0, 1); }
+    if (postFiles.length === 0) {
+      return;
+    }
+    if (!multiple) {
+      postFiles = postFiles.slice(0, 1);
+    }
     postFiles.forEach(file => {
       this.props.onStart(file);
       if (this.props.autoUpload) this.upload(file);
@@ -48,15 +52,20 @@ export default class AjaxUpload extends Component {
     }
     const before = beforeUpload(rawFile);
     if (before && before.then) {
-      before.then(processedFile => {
-        if (Object.prototype.toString.call(processedFile) === '[object File]') {
-          this.post(processedFile);
-        } else {
-          this.post(rawFile);
+      before.then(
+        processedFile => {
+          if (
+            Object.prototype.toString.call(processedFile) === '[object File]'
+          ) {
+            this.post(processedFile);
+          } else {
+            this.post(rawFile);
+          }
+        },
+        () => {
+          if (file) this.onRemove(file);
         }
-      }, () => {
-        if (file) this.onRemove(file);
-      });
+      );
     } else if (before !== false) {
       this.post(rawFile);
     } else {
@@ -65,7 +74,16 @@ export default class AjaxUpload extends Component {
   }
 
   post(file: RawFile): void {
-    const { name: filename, headers, withCredentials, data, action, onProgress, onSuccess, onError } = this.props;
+    const {
+      name: filename,
+      headers,
+      withCredentials,
+      data,
+      action,
+      onProgress,
+      onSuccess,
+      onError
+    } = this.props;
     ajax({
       headers,
       withCredentials,
@@ -89,17 +107,27 @@ export default class AjaxUpload extends Component {
       <div
         className={this.classNames({
           'el-upload': true,
-          [`el-upload--${listType}`]: true,
+          [`el-upload--${listType}`]: true
         })}
         onClick={() => this.handleClick()}
       >
-        {drag ? <Cover onFile={file => this.uploadFiles(file)}>{this.props.children}</Cover> : this.props.children}
-        <input className="el-upload__input" type="file" ref="input" onChange={e => this.handleChange(e)} multiple={multiple} accept={accept} />
+        {drag
+          ? <Cover onFile={file => this.uploadFiles(file)}>
+              {this.props.children}
+            </Cover>
+          : this.props.children}
+        <input
+          className="el-upload__input"
+          type="file"
+          ref="input"
+          onChange={e => this.handleChange(e)}
+          multiple={multiple}
+          accept={accept}
+        />
       </div>
-    )
+    );
   }
 }
-
 
 AjaxUpload.propTypes = {
   drag: PropTypes.bool,
@@ -117,5 +145,5 @@ AjaxUpload.propTypes = {
   beforeUpload: PropTypes.func,
   autoUpload: PropTypes.bool,
   listType: PropTypes.string,
-  fileList: PropTypes.array,
-}
+  fileList: PropTypes.array
+};

@@ -3,7 +3,7 @@ const hsv2hsl = function(hue, sat, val) {
 
   l = (2 - sat) * val;
   sl = sat * val;
-  sl /= (l < 1) ? l : 2 - l;
+  sl /= l < 1 ? l : 2 - l;
   sl = sl || 0;
   l /= 2;
   return [hue, sl, l];
@@ -32,12 +32,12 @@ const bound01 = function(value, max) {
   }
 
   // Handle floating point rounding errors
-  if ((Math.abs(value - max) < 0.000001)) {
+  if (Math.abs(value - max) < 0.000001) {
     return 1;
   }
 
   // Convert into [0, 1] range if it isn't already
-  return (value % max) / parseFloat(max);
+  return value % max / parseFloat(max);
 };
 
 const INT_HEX_MAP = { 10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F' };
@@ -59,7 +59,8 @@ const HEX_INT_MAP = { A: 10, B: 11, C: 12, D: 13, E: 14, F: 15 };
 
 const parseHexChannel = function(hex) {
   if (hex.length === 2) {
-    return (HEX_INT_MAP[hex[0].toUpperCase()] || +hex[0]) * 16 + (HEX_INT_MAP[hex[1].toUpperCase()] || +hex[1]);
+    return (HEX_INT_MAP[hex[0].toUpperCase()] || +hex[0]) * 16 +
+      (HEX_INT_MAP[hex[1].toUpperCase()] || +hex[1]);
   }
 
   return HEX_INT_MAP[hex[1].toUpperCase()] || +hex[1];
@@ -74,10 +75,10 @@ const hsl2hsv = function(hue, sat, light) {
   let v;
 
   light *= 2;
-  sat *= (light <= 1) ? light : 2 - light;
+  sat *= light <= 1 ? light : 2 - light;
   smin *= lmin <= 1 ? lmin : 2 - lmin;
   v = (light + sat) / 2;
-  sv = light === 0 ? (2 * smin) / (lmin + smin) : (2 * sat) / (light + sat);
+  sv = light === 0 ? 2 * smin / (lmin + smin) : 2 * sat / (light + sat);
 
   return {
     h: hue,
@@ -120,7 +121,11 @@ const rgb2hsv = function(r, g, b) {
     h /= 6;
   }
 
-  return { h: Math.round(h * 360), s: Math.round(s * 100), v: Math.round(v * 100) };
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    v: Math.round(v * 100)
+  };
 };
 
 // `hsvToRgb`
@@ -213,8 +218,11 @@ export default class Color {
     };
 
     if (value.indexOf('hsl') !== -1) {
-      const parts = value.replace(/hsla|hsl|\(|\)/gm, '')
-        .split(/\s|,/g).filter((val) => val !== '').map((val, index) => index > 2 ? parseFloat(val) : parseInt(val, 10));
+      const parts = value
+        .replace(/hsla|hsl|\(|\)/gm, '')
+        .split(/\s|,/g)
+        .filter(val => val !== '')
+        .map((val, index) => index > 2 ? parseFloat(val) : parseInt(val, 10));
 
       if (parts.length === 4) {
         this._alpha = Math.floor(parseFloat(parts[3]) * 100);
@@ -224,8 +232,11 @@ export default class Color {
         fromHSV(h, s, v);
       }
     } else if (value.indexOf('hsv') !== -1) {
-      const parts = value.replace(/hsva|hsv|\(|\)/gm, '')
-        .split(/\s|,/g).filter((val) => val !== '').map((val, index) => index > 2 ? parseFloat(val) : parseInt(val, 10));
+      const parts = value
+        .replace(/hsva|hsv|\(|\)/gm, '')
+        .split(/\s|,/g)
+        .filter(val => val !== '')
+        .map((val, index) => index > 2 ? parseFloat(val) : parseInt(val, 10));
 
       if (parts.length === 4) {
         this._alpha = Math.floor(parseFloat(parts[3]) * 100);
@@ -234,8 +245,11 @@ export default class Color {
         fromHSV(parts[0], parts[1], parts[2]);
       }
     } else if (value.indexOf('rgb') !== -1) {
-      const parts = value.replace(/rgba|rgb|\(|\)/gm, '')
-        .split(/\s|,/g).filter((val) => val !== '').map((val, index) => index > 2 ? parseFloat(val) : parseInt(val, 10));
+      const parts = value
+        .replace(/rgba|rgb|\(|\)/gm, '')
+        .split(/\s|,/g)
+        .filter(val => val !== '')
+        .map((val, index) => index > 2 ? parseFloat(val) : parseInt(val, 10));
 
       if (parts.length === 4) {
         this._alpha = Math.floor(parseFloat(parts[3]) * 100);
@@ -270,26 +284,26 @@ export default class Color {
       switch (format) {
         case 'hsl': {
           const hsl = hsv2hsl(_hue, _saturation / 100, _value / 100);
-          this.value = `hsla(${ _hue }, ${ Math.round(hsl[1] * 100) }%, ${ Math.round(hsl[2] * 100) }%, ${ _alpha / 100})`;
+          this.value = `hsla(${_hue}, ${Math.round(hsl[1] * 100)}%, ${Math.round(hsl[2] * 100)}%, ${_alpha / 100})`;
           break;
         }
         case 'hsv':
-          this.value = `hsva(${ _hue }, ${ Math.round(_saturation) }%, ${ Math.round(_value) }%, ${ _alpha / 100})`;
+          this.value = `hsva(${_hue}, ${Math.round(_saturation)}%, ${Math.round(_value)}%, ${_alpha / 100})`;
           break;
         default: {
           const { r, g, b } = hsv2rgb(_hue, _saturation, _value);
-          this.value = `rgba(${r}, ${g}, ${b}, ${ _alpha / 100 })`;
+          this.value = `rgba(${r}, ${g}, ${b}, ${_alpha / 100})`;
         }
       }
     } else {
       switch (format) {
         case 'hsl': {
           const hsl = hsv2hsl(_hue, _saturation / 100, _value / 100);
-          this.value = `hsl(${ _hue }, ${ Math.round(hsl[1] * 100) }%, ${ Math.round(hsl[2] * 100) }%)`;
+          this.value = `hsl(${_hue}, ${Math.round(hsl[1] * 100)}%, ${Math.round(hsl[2] * 100)}%)`;
           break;
         }
         case 'hsv':
-          this.value = `hsv(${ _hue }, ${ Math.round(_saturation) }%, ${ Math.round(_value) }%)`;
+          this.value = `hsv(${_hue}, ${Math.round(_saturation)}%, ${Math.round(_value)}%)`;
           break;
         case 'rgb': {
           const { r, g, b } = hsv2rgb(_hue, _saturation, _value);

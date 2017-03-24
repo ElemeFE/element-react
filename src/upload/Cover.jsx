@@ -5,14 +5,14 @@ import { Component, PropTypes } from '../../libs';
 
 export default class Cover extends Component {
   static defaultProps = {
-    onFile: Function,
-  }
+    onFile: Function
+  };
 
   constructor(props: Object) {
     super(props);
     this.state = {
-      dragOver: false,
-    }
+      dragOver: false
+    };
   }
 
   handleDragover(e: SyntheticDragEvent): void {
@@ -50,5 +50,5 @@ export default class Cover extends Component {
 }
 
 Cover.propTypes = {
-  onFile: PropTypes.func,
-}
+  onFile: PropTypes.func
+};
