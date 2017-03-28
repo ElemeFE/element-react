@@ -6,19 +6,18 @@ import { Component, PropTypes } from '../../libs';
 type PathStyle = {
   strokeDasharray: string,
   strokeDashoffset: string,
-  transition: string,
-}
+  transition: string
+};
 
 export default class Progress extends Component {
-
   static defaultProps = {
     type: 'line',
     percentage: 0,
     strokeWidth: 6,
     width: 126,
     showText: true,
-    textInside: false,
-  }
+    textInside: false
+  };
 
   constructor(props: Object) {
     super(props);
@@ -30,7 +29,10 @@ export default class Progress extends Component {
   }
 
   trackPath(): string {
-    const radius = parseInt(50 - parseFloat(this.relativeStrokeWidth()) / 2, 10);
+    const radius = parseInt(
+      50 - parseFloat(this.relativeStrokeWidth()) / 2,
+      10
+    );
     return `M 50 50 m 0 -${radius} a ${radius} ${radius} 0 1 1 0 ${radius * 2} a ${radius} ${radius} 0 1 1 0 -${radius * 2}`;
   }
 
@@ -64,55 +66,83 @@ export default class Progress extends Component {
   }
 
   iconClass(): string {
-    const { type, status } =  this.props;
+    const { type, status } = this.props;
     return type === 'line'
       ? status === 'success' ? 'el-icon-circle-check' : 'el-icon-circle-cross'
-      : status === 'success' ? 'el-icon-check' : 'el-icon-close'
+      : status === 'success' ? 'el-icon-check' : 'el-icon-close';
   }
 
   progressTextSize(): number {
-    const { type, strokeWidth, width } =  this.props;
-    return type === 'line'
-      ? 12 + strokeWidth * 0.4
-      : width * 0.111111 + 2 ;
+    const { type, strokeWidth, width } = this.props;
+    return type === 'line' ? 12 + strokeWidth * 0.4 : width * 0.111111 + 2;
   }
 
   render(): React.Element<any> {
-    const { type, percentage, status, strokeWidth, textInside, width, showText } = this.props;
+    const {
+      type,
+      percentage,
+      status,
+      strokeWidth,
+      textInside,
+      width,
+      showText
+    } = this.props;
     let progress;
     if (type === 'line') {
       progress = (
         <div className="el-progress-bar">
-          <div className="el-progress-bar__outer" style={{height: `${strokeWidth}px`}}>
-            <div className="el-progress-bar__inner" style={{width: `${percentage}%`}}>
-              {
-                showText && textInside && <div className="el-progress-bar__innerText">{`${percentage}%`}</div>
-              }
+          <div
+            className="el-progress-bar__outer"
+            style={{ height: `${strokeWidth}px` }}
+          >
+            <div
+              className="el-progress-bar__inner"
+              style={{ width: `${percentage}%` }}
+            >
+              {showText &&
+                textInside &&
+                <div className="el-progress-bar__innerText">
+                  {`${percentage}%`}
+                </div>}
             </div>
           </div>
         </div>
-      )
+      );
     } else {
       progress = (
-        <div className="el-progress-circle" style={{height: `${width}px`, width: `${width}px`}}>
+        <div
+          className="el-progress-circle"
+          style={{ height: `${width}px`, width: `${width}px` }}
+        >
           <svg viewBox="0 0 100 100">
-            <path className="el-progress-circle__track" d={this.trackPath()} stroke="#e5e9f2" strokeWidth={this.relativeStrokeWidth()} fill="none" />
-            <path className="el-progress-circle__path" d={this.trackPath()} strokeLinecap="round" stroke={this.stroke()} strokeWidth={this.relativeStrokeWidth()} fill="none" style={this.circlePathStyle()} />
+            <path
+              className="el-progress-circle__track"
+              d={this.trackPath()}
+              stroke="#e5e9f2"
+              strokeWidth={this.relativeStrokeWidth()}
+              fill="none"
+            />
+            <path
+              className="el-progress-circle__path"
+              d={this.trackPath()}
+              strokeLinecap="round"
+              stroke={this.stroke()}
+              strokeWidth={this.relativeStrokeWidth()}
+              fill="none"
+              style={this.circlePathStyle()}
+            />
           </svg>
         </div>
-      )
+      );
     }
-    const progressInfo = showText && !textInside && (
+    const progressInfo = showText &&
+      !textInside &&
       <div
         className="el-progress__text"
-        style={{fontSize: `${this.progressTextSize()}px`}}
+        style={{ fontSize: `${this.progressTextSize()}px` }}
       >
-        {
-          status ? <i className={this.iconClass()} />
-          : `${percentage}%`
-        }
-      </div>
-    );
+        {status ? <i className={this.iconClass()} /> : `${percentage}%`}
+      </div>;
 
     return (
       <div
@@ -120,13 +150,13 @@ export default class Progress extends Component {
         className={this.className('el-progress', `el-progress--${type}`, {
           [`is-${status}`]: !!status,
           'el-progress--without-text': !showText,
-          'el-progress--text-inside': textInside,
+          'el-progress--text-inside': textInside
         })}
       >
         {progress}
         {progressInfo}
       </div>
-    )
+    );
   }
 }
 
@@ -137,5 +167,5 @@ Progress.propTypes = {
   strokeWidth: PropTypes.number,
   width: PropTypes.number,
   textInside: PropTypes.bool,
-  showText: PropTypes.bool,
-}
+  showText: PropTypes.bool
+};

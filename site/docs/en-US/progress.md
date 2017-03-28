@@ -23,7 +23,7 @@ render() {
 
 In this case the percentage takes no additional space.
 
-:::demo `stroke-width` attribute decides the `width` of progress bar, and use `text-inside` attribute to put description inside the progress bar.
+:::demo `strokeWidth` attribute decides the `width` of progress bar, and use `textInside` attribute to put description inside the progress bar.
 ```js
 render() {
   return (

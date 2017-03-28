@@ -20,22 +20,40 @@ export default class PickerDropdown extends Component {
         {showPicker &&
           <div className="el-color-dropdown el-color-picker__panel">
             <div className="el-color-dropdown__main-wrapper">
-              <HueSlider ref="hue" color={color} vertical onChange={color => this.props.onChange(color)}></HueSlider>
-              <SvPanel ref="sl" color={color} onChange={color => this.props.onChange(color)}></SvPanel>
+              <HueSlider
+                ref="hue"
+                color={color}
+                vertical
+                onChange={color => this.props.onChange(color)}
+              />
+              <SvPanel
+                ref="sl"
+                color={color}
+                onChange={color => this.props.onChange(color)}
+              />
             </div>
-            {showAlpha && <AlphaSlider ref="alpha" color={color}></AlphaSlider>}
+            {showAlpha && <AlphaSlider ref="alpha" color={color} />}
             <div className="el-color-dropdown__btns">
               <span className="el-color-dropdown__value">{currentColor}</span>
-              <a href="JavaScript:" className="el-color-dropdown__link-btn" onClick={() => onClear()}>{Locale.t('el.colorpicker.clear')}</a>
-              <button className="el-color-dropdown__btn" onClick={() => onPick()}>{Locale.t('el.colorpicker.confirm')}</button>
+              <a
+                href="JavaScript:"
+                className="el-color-dropdown__link-btn"
+                onClick={() => onClear()}
+              >
+                {Locale.t('el.colorpicker.clear')}
+              </a>
+              <button
+                className="el-color-dropdown__btn"
+                onClick={() => onPick()}
+              >
+                {Locale.t('el.colorpicker.confirm')}
+              </button>
             </div>
-          </div>
-        }
+          </div>}
       </Transition>
-    )
+    );
   }
 }
-
 
 PickerDropdown.propTypes = {
   color: PropTypes.object.isRequired,
@@ -43,11 +61,11 @@ PickerDropdown.propTypes = {
   showAlpha: PropTypes.bool,
   onPick: PropTypes.func,
   onClear: PropTypes.func,
-  onChange: PropTypes.func,
-}
+  onChange: PropTypes.func
+};
 
 PickerDropdown.defaultProps = {
   onPick() {},
   onClear() {},
-  onChange() {},
-}
+  onChange() {}
+};

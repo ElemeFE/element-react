@@ -22,8 +22,8 @@ class ColorPicker extends Component {
       value: this.props.value,
       color: color,
       showPicker: false,
-      showPanelColor: false,
-    }
+      showPanelColor: false
+    };
   }
 
   componentDidMount() {
@@ -37,8 +37,8 @@ class ColorPicker extends Component {
 
   getChildContext() {
     return {
-      onChange: this.handleChange.bind(this),
-    }
+      onChange: this.handleChange.bind(this)
+    };
   }
 
   handleChange(color: ColorType): void {
@@ -52,20 +52,26 @@ class ColorPicker extends Component {
   }
 
   clearValue(): void {
-    this.setState({
-      showPicker: false,
-      showPanelColor: false,
-      value: null,
-    }, () => {
-      this.props.onChange(null);
-      this.resetColor();
-    });
+    this.setState(
+      {
+        showPicker: false,
+        showPanelColor: false,
+        value: null
+      },
+      () => {
+        this.props.onChange(null);
+        this.resetColor();
+      }
+    );
   }
 
   hide(): void {
-    this.setState({
-      showPicker: false,
-    }, () => this.resetColor());
+    this.setState(
+      {
+        showPicker: false
+      },
+      () => this.resetColor()
+    );
   }
 
   resetColor(): void {
@@ -92,22 +98,31 @@ class ColorPicker extends Component {
       const alpha = color.get('alpha');
       if (typeof alpha === 'number') {
         displayedColor = showAlpha
-          ? `rgba(${ r }, ${ g }, ${ b }, ${ alpha / 100 })`
-          : `rgb(${ r }, ${ g }, ${ b })`;
+          ? `rgba(${r}, ${g}, ${b}, ${alpha / 100})`
+          : `rgb(${r}, ${g}, ${b})`;
       }
     }
     return (
       <div className="el-color-picker">
-        <div className="el-color-picker__trigger" onClick={() => this.setState({ showPicker: !showPicker })}>
-          <span className={this.classNames({'el-color-picker__color': true, 'is-alpha': showAlpha })}>
+        <div
+          className="el-color-picker__trigger"
+          onClick={() => this.setState({ showPicker: !showPicker })}
+        >
+          <span
+            className={this.classNames({
+              'el-color-picker__color': true,
+              'is-alpha': showAlpha
+            })}
+          >
             <span
               className="el-color-picker__color-inner"
               style={{ backgroundColor: displayedColor }}
-            >
-            </span>
-            {!value && !showPanelColor && <span className="el-color-picker__empty el-icon-close"></span>}
+            />
+            {!value &&
+              !showPanelColor &&
+              <span className="el-color-picker__empty el-icon-close" />}
           </span>
-          <span className="el-color-picker__icon el-icon-caret-bottom"></span>
+          <span className="el-color-picker__icon el-icon-caret-bottom" />
         </div>
         <PickerDropdown
           ref="dropdown"
@@ -118,20 +133,19 @@ class ColorPicker extends Component {
           showAlpha={showAlpha}
         />
       </div>
-    )
+    );
   }
 }
 
 ColorPicker.childContextTypes = {
-  onChange: PropTypes.func,
-}
-
+  onChange: PropTypes.func
+};
 
 ColorPicker.propTypes = {
   value: PropTypes.string,
   showAlpha: PropTypes.bool,
   colorFormat: PropTypes.string,
-  onChange: PropTypes.func,
-}
+  onChange: PropTypes.func
+};
 
 export default ClickOutside(ColorPicker);
