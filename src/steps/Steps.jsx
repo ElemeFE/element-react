@@ -6,13 +6,12 @@ import { Component, PropTypes } from '../../libs';
 type StatusType = 'wait' | 'process' | 'finish' | 'error' | 'success';
 
 export default class Steps extends Component {
-
   static defaultProps = {
     direction: 'horizontal',
     finishStatus: 'finish',
     processStatus: 'process',
-    active: 0,
-  }
+    active: 0
+  };
 
   calcProgress(status: StatusType, index: number): Object {
     let step = 100;
@@ -26,13 +25,13 @@ export default class Steps extends Component {
         step = 50;
       } else if (status === 'wait') {
         step = 0;
-        style.transitionDelay = (-150 * index) + 'ms';
+        style.transitionDelay = -150 * index + 'ms';
       }
     }
 
     this.props.direction === 'vertical'
-      ? style.height = step + '%'
-      : style.width = step + '%';
+      ? (style.height = step + '%')
+      : (style.width = step + '%');
     return style;
   }
 
@@ -54,24 +53,27 @@ export default class Steps extends Component {
 
     return (
       <div style={this.style()} className={this.className('el-steps')}>
-        {
-          React.Children.map(children, (child, index) => {
-            const computedSpace = space ? `${space}px` : `${100 / children.length}%`;
-            const style = direction === 'horizontal' ?
-            { width: computedSpace } : { height: index === children.length - 1 ? 'auto' : computedSpace };
-            const status = this.calStatus(index);
-            const lineStyle = this.calcProgress(status, index);
-            return React.cloneElement(child, {
-              style,
-              lineStyle,
-              direction,
-              status,
-              stepNumber: index + 1,
-            })
-          })
-        }
+        {React.Children.map(children, (child, index) => {
+          const computedSpace = space
+            ? `${space}px`
+            : `${100 / children.length}%`;
+          const style = direction === 'horizontal'
+            ? { width: computedSpace }
+            : {
+                height: index === children.length - 1 ? 'auto' : computedSpace
+              };
+          const status = this.calStatus(index);
+          const lineStyle = this.calcProgress(status, index);
+          return React.cloneElement(child, {
+            style,
+            lineStyle,
+            direction,
+            status,
+            stepNumber: index + 1
+          });
+        })}
       </div>
-    )
+    );
   }
 }
 
@@ -82,5 +84,5 @@ Steps.propTypes = {
   active: PropTypes.number,
   direction: PropTypes.oneOf(['vertical', 'horizontal']),
   finishStatus: PropTypes.oneOf(statusMap),
-  processStatus: PropTypes.oneOf(statusMap),
-}
+  processStatus: PropTypes.oneOf(statusMap)
+};

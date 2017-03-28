@@ -12,34 +12,34 @@ export type ColorType = {
   get: (props: string) => mixed,
   toRgb: () => { r: number, g: number, b: number },
   fromString: (value: string) => void,
-  doOnChange: () => void,
-}
+  doOnChange: () => void
+};
 
 export type ColorPickerState = {
   value: string,
   color: ColorType,
   showPicker: false,
-  showPanelColor: false,
-}
+  showPanelColor: false
+};
 
 export type AlphaSliderState = {
   thumbLeft: number,
   thumbTop: number,
-  background: ?string,
-}
+  background: ?string
+};
 
 export type HueSliderState = {
   thumbLeft: number,
-  thumbTop: number,
-}
+  thumbTop: number
+};
 
 export type SvPanelState = {
   cursorTop: number,
   cursorLeft: number,
-  background: string,
-}
+  background: string
+};
 
 export type DragOptions = {
   drag: (event: SyntheticMouseEvent) => void,
-  end: (event: SyntheticMouseEvent) => void,
-}
+  end: (event: SyntheticMouseEvent) => void
+};

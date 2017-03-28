@@ -9,25 +9,25 @@ export type _File = {
   uid: number,
   raw?: RawFile,
   url?: string,
-  response?: Object,
-}
+  response?: Object
+};
 
 export type UploadState = {
   fileList: Array<_File>,
-  tempIndex: number,
-}
+  tempIndex: number
+};
 
 export type IframeUploadState = {
   dragOver: boolean,
   file: ?File,
   disabled: false,
-  frameName: string,
-}
+  frameName: string
+};
 
 export class RawFile extends File {
-  uid: number
+  uid: number;
 }
 
 export class _ProgressEvent extends ProgressEvent {
-  percent: number
+  percent: number;
 }

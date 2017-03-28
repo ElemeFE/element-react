@@ -5,9 +5,9 @@ const getError = (action, option, xhr) => {
   err.method = 'post';
   err.url = action;
   return err;
-}
+};
 
-const getBody = (xhr) => {
+const getBody = xhr => {
   const text = xhr.responseText || xhr.response;
   if (!text) {
     return text;
@@ -18,9 +18,9 @@ const getBody = (xhr) => {
   } catch (e) {
     return text;
   }
-}
+};
 
-const upload = (option) => {
+const upload = option => {
   if (typeof XMLHttpRequest === 'undefined') {
     return;
   }
@@ -77,6 +77,6 @@ const upload = (option) => {
     }
   }
   xhr.send(formData);
-}
+};
 
 export default upload;

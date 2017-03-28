@@ -4,7 +4,7 @@ ColorPicker is a color selector supporting multiple color formats.
 
 ### Basic usage
 
-:::demo ColorPicker requires a string typed variable to be bound to v-model.
+:::demo ColorPicker requires a string typed variable to be bound to `value`.
 ```js
 render() {
   const color1 = '#20a0ff';
@@ -27,7 +27,7 @@ render() {
 
 ### Alpha
 
-:::demo ColorPicker supports alpha channel selecting. To activate alpha selecting, just add the `show-alpha` attribute.
+:::demo ColorPicker supports alpha channel selecting. To activate alpha selecting, just add the `showAlpha` attribute.
 ```js
 render() {
   const color3 = 'rgba(19, 206, 102, 0.8)';
