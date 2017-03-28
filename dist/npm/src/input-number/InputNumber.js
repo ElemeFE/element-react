@@ -51,15 +51,15 @@ var InputNumber = function (_Component) {
   }, {
     key: 'onKeyDown',
     value: function onKeyDown(e) {
-      e.preventDefault();
-
       switch (e.keyCode) {
         case 38:
           // KeyUp
+          e.preventDefault();
           this.increase();
           break;
         case 40:
           // KeyDown
+          e.preventDefault();
           this.decrease();
           break;
         default:
@@ -71,16 +71,18 @@ var InputNumber = function (_Component) {
     value: function onBlur() {
       var value = Number(this.state.value);
 
-      if (isNaN(value) || value > this.props.max || value < this.props.min) {
-        value = this.state.value;
+      if (value > this.props.max) {
+        value = this.props.max;
+      } else if (value < this.props.min) {
+        value = this.props.min;
       }
 
-      this.setState({ value: value });
+      this.setState({ value: value }, this.onChange);
     }
   }, {
     key: 'onInput',
-    value: function onInput(value) {
-      this.setState({ value: value }, this.onChange);
+    value: function onInput(e) {
+      this.setState({ value: e.target.value });
     }
   }, {
     key: 'onChange',
@@ -203,6 +205,7 @@ var InputNumber = function (_Component) {
           value: this.state.value,
           disabled: this.props.disabled,
           size: this.props.size,
+          onChange: this.onInput.bind(this),
           onKeyDown: this.onKeyDown.bind(this),
           onBlur: this.onBlur.bind(this) })
       );
