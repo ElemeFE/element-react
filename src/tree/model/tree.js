@@ -1,10 +1,19 @@
+/* @flow */
+
 import Node from './node';
 
 export default class Tree {
-  constructor(options) {
+  root: Node;
+  data: ?Object;
+  lazy: boolean;
+  props: any;
+  load: Function;
+
+  constructor(options: Object) {
     for (let option in options) {
       if (options.hasOwnProperty(option)) {
-        this[option] = options[option];
+        const self: Object = this;
+        self[option] = options[option];
       }
     }
 
@@ -17,19 +26,22 @@ export default class Tree {
 
     if (this.lazy && this.load) {
       const loadFn = this.load;
-      loadFn(this.root, (data) => {
+      loadFn(this.root, data => {
         this.root.doCreateChildren(data);
       });
     }
   }
 
-  getCheckedNodes(leafOnly) {
+  getCheckedNodes(leafOnly: boolean): Array<any> {
     const checkedNodes = [];
-    const walk = function(node) {
+    const walk = function(node: any) {
       const childNodes = node.root ? node.root.childNodes : node.childNodes;
 
       childNodes.forEach(function(child) {
-        if ((!leafOnly && child.checked) || (leafOnly && child.isLeaf && child.checked)) {
+        if (
+          (!leafOnly && child.checked) ||
+          (leafOnly && child.isLeaf && child.checked)
+        ) {
           checkedNodes.push(child.data);
         }
 
