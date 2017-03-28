@@ -15,8 +15,8 @@ constructor(props) {
   }
 }
 
-onChange(event) {
-  console.log(event.target.value);
+onChange(value) {
+  console.log(value);
 }
 
 render() {
@@ -40,8 +40,8 @@ constructor(props) {
   }
 }
 
-onChange(event) {
-  console.log(event.target.value);
+onChange(value) {
+  console.log(value);
 }
 
 render() {
@@ -67,8 +67,8 @@ constructor(props) {
   }
 }
 
-onChange(event) {
-  console.log(event.target.value);
+onChange(value) {
+  console.log(value);
 }
 
 render() {
