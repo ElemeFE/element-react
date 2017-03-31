@@ -21,7 +21,7 @@ handle todos:
 */
 export default class DatePanel extends Component {
   state: any
-  
+
   constructor(props: DatePanelProps) {
     super(props)
 
@@ -105,7 +105,7 @@ export default class DatePanel extends Component {
     })
   }
 
-  updateState(cb: (any)=>void) {
+  updateState(cb: (any) => void) {
     cb(this.state)
     this.setState({})
   }
