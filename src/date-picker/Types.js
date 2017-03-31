@@ -128,7 +128,7 @@ export interface BasePickerProps {
   onFocus: ?()=>void,
   onBlur: ?()=>void,
   onChange: ?(ValidDateType)=>void,
-  value: Date| Date[]
+  value: Date | Date[]
 }
 
 export type DatePickerProps =  BasePickerProps & {
