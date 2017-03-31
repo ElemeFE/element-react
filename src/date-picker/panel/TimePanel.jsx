@@ -1,3 +1,4 @@
+//@flow
 import React from 'react';
 
 import { PropTypes, Component } from '../../../libs';
@@ -5,9 +6,10 @@ import { limitRange } from '../utils'
 import TimeSpinner from '../basic/TimeSpinner'
 import { PopperReactMixin } from '../../../libs/utils'
 import Locale from '../../locale'
+import type {TimePanelProps, TimeTypes} from '../Types';
 
 const mapPropsToState = (props) => {
-  const state = {
+  const state: any = {
     format: props.format || 'HH:mm:ss',
     currentDate: props.currentDate || Date()
   };
@@ -27,7 +29,7 @@ export default class TimePanel extends Component {
         currentDate: PropTypes.instanceOf(Date),
         /*
         onPicked: (value, isKeepPannelOpen)=>()
-      
+
         @param value: Date|null
         @param isKeepPannelOpen:boolean, should parent close the pannel
         */
@@ -47,7 +49,7 @@ export default class TimePanel extends Component {
     }
   }
 
-  constructor(props) {
+  constructor(props: TimePanelProps) {
     super(props)
 
     this.state = mapPropsToState(props)
@@ -59,13 +61,13 @@ export default class TimePanel extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: any) {
     this.setState(mapPropsToState(nextProps))
   }
 
   // type: string,  one of [hours, minutes, seconds]
   // date: {type: number}
-  handleChange(date) {
+  handleChange(date: {TimeTypes: number}) {
     const {currentDate} = this.state
 
     if (date.hours !== undefined) {
@@ -84,7 +86,7 @@ export default class TimePanel extends Component {
   }
 
 
-  handleConfirm(isKeepPannelOpen = false) {
+  handleConfirm(isKeepPannelOpen: boolean = false) {
     const {currentDate} = this.state
     const {onPicked, selectableRange} = this.props
 

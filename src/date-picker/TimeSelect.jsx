@@ -1,42 +1,47 @@
+//@flow
 import React from 'react';
 
 import { PropTypes } from '../../libs';
 import BasePicker from './BasePicker'
 
 import TimeSelectPanel from './panel/TimeSelectPanel'
+import type { TimeSelectProps, ValidDateType } from './Types';
 
 export default class TimeSelect extends BasePicker {
   static get propTypes() {
-    return Object.assign({
+    let result: any = Object.assign({}, {
       start: PropTypes.string,
       end: PropTypes.string,
       step: PropTypes.string,
       minTime: PropTypes.instanceOf(Date),
     },
       BasePicker.propTypes)
+
+    return result;
   }
 
   static get defaultProps() {
-    return Object.assign({}, BasePicker.defaultProps)
+    let result: any = Object.assign({}, BasePicker.defaultProps)
+    return result;
   }
 
 
-  constructor(props) {
+  constructor(props: TimeSelectProps) {
     // props, type, state
     super(props, 'timeselect', {});
   }
 
-  isDateValid(value) {
+  isDateValid(value: ValidDateType) {
     return super.isDateValid(value) && TimeSelectPanel.isValid(this.dateToStr(value), this.panelProps())
   }
 
-  panelProps(props){
+  panelProps(props: ?TimeSelectProps){
     const ps = props || this.props
     const minTime = this.dateToStr(this.props.minTime)
     return {...ps, minTime}
   }
 
-  pickerPanel(state, props) {
+  pickerPanel(state: any, props: TimeSelectProps) {
     const value = this.dateToStr(state.value)
     return (
       <TimeSelectPanel
