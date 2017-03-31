@@ -30,13 +30,13 @@ export default class InputNumber extends Component {
   }
 
   onKeyDown(e: SyntheticKeyboardEvent): void {
-    e.preventDefault();
-
     switch (e.keyCode) {
       case 38: // KeyUp
+        e.preventDefault();
         this.increase();
         break;
       case 40: // KeyDown
+        e.preventDefault();
         this.decrease();
         break;
       default:
@@ -47,15 +47,17 @@ export default class InputNumber extends Component {
   onBlur(): void {
     let value = Number(this.state.value);
 
-    if (isNaN(value) || value > this.props.max || value < this.props.min) {
-      value = this.state.value;
+    if (value > this.props.max) {
+      value = this.props.max;
+    } else if (value < this.props.min) {
+      value = this.props.min;
     }
 
-    this.setState({ value });
+    this.setState({ value }, this.onChange);
   }
 
-  onInput(value: number): void {
-    this.setState({ value }, this.onChange);
+  onInput(e: SyntheticInputEvent): void {
+    this.setState({ value: e.target.value });
   }
 
   onChange(): void {
@@ -158,6 +160,7 @@ export default class InputNumber extends Component {
           value={this.state.value}
           disabled={this.props.disabled}
           size={this.props.size}
+          onChange={this.onInput.bind(this)}
           onKeyDown={this.onKeyDown.bind(this)}
           onBlur={this.onBlur.bind(this)} />
       </div>

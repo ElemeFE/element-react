@@ -186,7 +186,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         // make sure to apply the popper position before any computation
         this.state.position = this._getPosition(this._popper, this._reference);
-        setStyle(this._popper, { position: this.state.position });
+        setStyle(this._popper, { position: this.state.position, top: 0 });
 
         // fire the first update to position the popper in the right place
         this.update();
