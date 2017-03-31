@@ -1,3 +1,4 @@
+//@flow
 import React from 'react'
 
 import { PropTypes, Component } from '../../../libs';
@@ -14,6 +15,8 @@ import {
   getOffsetToWeekOrigin
 } from '../utils'
 import Locale from '../../locale'
+
+import type {DateTableProps} from '../Types';
 
 /*
   todo:
@@ -32,7 +35,9 @@ const clearHours = function (time) {
 const WEEKS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
 export default class DateTable extends Component {
-  constructor(props) {
+  state: any
+
+  constructor(props: DateTableProps) {
     super(props)
 
     this.state = {
@@ -76,7 +81,7 @@ export default class DateTable extends Component {
 
     const startDate = this.getStartDate();
     const now = clearHours(new Date());
-    
+
 
     for (var i = 0; i < 6; i++) {
       const row = rows[i];
@@ -85,7 +90,7 @@ export default class DateTable extends Component {
         type: string, one of 'week' | 'normal'
         text: String,
         row: number,  row index,
-        column: number, column index; 
+        column: number, column index;
         inRange: boolean,
         start: boolean,
         end: boolean,
@@ -99,9 +104,10 @@ export default class DateTable extends Component {
       }
 
       for (var j = 0; j < 7; j++) {
-        let cell = row[showWeekNumber ? j + 1 : j];
+        let cell: any = row[showWeekNumber ? j + 1 : j];
         if (!cell) {
-          row[showWeekNumber ? j + 1 : j] = cell = { row: i, column: j, type: 'normal', inRange: false, start: false, end: false };
+          row[showWeekNumber ? j + 1 : j]  = { row: i, column: j, type: 'normal', inRange: false, start: false, end: false };
+          cell = row[showWeekNumber ? j + 1 : j]
         }
 
         cell.type = 'normal';
@@ -161,7 +167,7 @@ export default class DateTable extends Component {
   }
 
   // calc classnames for cell
-  getCellClasses(cell) {
+  getCellClasses(cell: any) {
     const {selectionMode, value, date} = this.props
 
     let classes = [];
@@ -202,7 +208,7 @@ export default class DateTable extends Component {
     return classes.join(' ');
   }
 
-  getMarkedRangeRows() {
+  getMarkedRangeRows(): any[] {
     const {showWeekNumber, minDate, selectionMode, rangeState} = this.props
     const rows = this.getRows();
     if (!(selectionMode === SELECTION_MODES.RANGE && rangeState.selecting && rangeState.endDate instanceof Date)) return rows;
@@ -226,7 +232,7 @@ export default class DateTable extends Component {
     return rows;
   }
 
-  isWeekActive(cell) {
+  isWeekActive(cell: any): boolean {
     if (this.props.selectionMode !== SELECTION_MODES.WEEK) return false;
     if (!this.props.value) return false;
 
@@ -249,7 +255,7 @@ export default class DateTable extends Component {
   }
 
 
-  handleMouseMove(event) {
+  handleMouseMove(event: SyntheticMouseEvent) {
     const {showWeekNumber, onChangeRange, rangeState, selectionMode} = this.props
 
     const getDateOfCell = (row, column, showWeekNumber) => {
@@ -259,7 +265,7 @@ export default class DateTable extends Component {
 
     if (!(selectionMode === SELECTION_MODES.RANGE && rangeState.selecting)) return;
 
-    const target = event.target;
+    const target: any = event.target;
     if (target.tagName !== 'TD') return;
 
     const column = target.cellIndex;
@@ -269,8 +275,8 @@ export default class DateTable extends Component {
     onChangeRange(rangeState)
   }
 
-  handleClick(event) {
-    let target = event.target;
+  handleClick(event: SyntheticEvent) {
+    let target: any = event.target;
 
     if (target.tagName !== 'TD') return;
     if (hasClass(target, 'disabled') || hasClass(target, 'week')) return;
@@ -320,7 +326,7 @@ export default class DateTable extends Component {
       } else {
         if (minDate && maxDate || !minDate) {
           // be careful about the rangeState & onPick order
-          // since rangeState is a object, mutate it will make child DateTable see the 
+          // since rangeState is a object, mutate it will make child DateTable see the
           // changes, but wont trigger a DateTable re-render. but onPick would trigger it.
           // so a reversed order may cause a bug.
           rangeState.selecting = true;
@@ -345,7 +351,7 @@ export default class DateTable extends Component {
         onMouseMove={this.handleMouseMove.bind(this)}
         className={this.classNames('el-date-table', { 'is-week-mode': selectionMode === 'week' })}>
         <tbody>
-        
+
           <tr>
             {showWeekNumber && <th>{$t('el.datepicker.week')}</th>}
             {
@@ -378,7 +384,6 @@ export default class DateTable extends Component {
   }
 }
 
-//todo: add requirements
 DateTable.propTypes = {
   disabledDate: PropTypes.func,
   showWeekNumber: PropTypes.bool,
@@ -393,9 +398,9 @@ DateTable.propTypes = {
   /*
   (data, closePannel: boolean)=>()
 
-    data: 
+    data:
       if selectionMode = range: // notify when ranges is change
-        minDate: Date|null, 
+        minDate: Date|null,
         maxDate: Date|null
 
       if selectionMode = date
@@ -404,18 +409,17 @@ DateTable.propTypes = {
       if selectionMode = week:
         year: number
         week: number,
-        value: string, 
+        value: string,
         date: Date
   */
   onPick: PropTypes.func.isRequired,
 
   /*
   ({
-    endDate: Date, 
+    endDate: Date,
     selecting: boolean,
   })=>()
   */
-  //todo: merge onChangeRange with onPick
   onChangeRange: PropTypes.func,
   rangeState: PropTypes.shape({
     endDate: PropTypes.date,

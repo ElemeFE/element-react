@@ -1,3 +1,4 @@
+//@flow
 import React from 'react'
 
 import { PropTypes, Component } from '../../../libs';
@@ -6,6 +7,7 @@ import Locale from '../../locale'
 import { SELECTION_MODES, deconstructDate } from '../utils'
 import { DateTable, MonthTable, YearTable } from '../basic'
 import { PopperReactMixin } from '../../../libs/utils'
+import type {DatePanelProps} from '../Types';
 
 const PICKER_VIEWS = {
   YEAR: 'year',
@@ -18,7 +20,9 @@ handle todos:
   handle timepicker inside this picker
 */
 export default class DatePanel extends Component {
-  constructor(props) {
+  state: any
+  
+  constructor(props: DatePanelProps) {
     super(props)
 
     let currentView = PICKER_VIEWS.DATE
@@ -44,25 +48,9 @@ export default class DatePanel extends Component {
     }, props.popperMixinOption));
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: any) {
     this.setState({ date: nextProps.value })
   }
-
-  /*
-  selectionMode(newVal) {
-    if (newVal === 'month') {
-      if (this.currentView !== 'year' || this.currentView !== 'month') {
-        this.currentView = 'month';
-      }
-    }
-  },
-  */
-  // start: ------ public methods
-
-  // handleClear() {
-  //   this.setState({ date: new Date() })
-  //   this.props.onPick(null)//todo: Panel onPick doesnt accept null
-  // }
 
   resetDate() {
     this.date = new Date(this.date);
@@ -117,7 +105,7 @@ export default class DatePanel extends Component {
     })
   }
 
-  updateState(cb) {
+  updateState(cb: (any)=>void) {
     cb(this.state)
     this.setState({})
   }
@@ -135,12 +123,12 @@ export default class DatePanel extends Component {
     })
   }
 
-  handleShortcutClick(shortcut) {
+  handleShortcutClick(shortcut: any) {
     shortcut.onClick();
   }
 
   //todo:
-  handleTimePick(picker, visible, first) {
+  // handleTimePick(picker, visible, first) {
     // if (picker) {
     //   let oldDate = new Date(this.date.getTime());
     //   let hour = picker.getHours();
@@ -155,9 +143,9 @@ export default class DatePanel extends Component {
     // if (!first) {
     //   this.timePickerVisible = visible;
     // }
-  }
+  // }
 
-  handleMonthPick(month) {
+  handleMonthPick(month: number) {
     this.updateState(state => {
       const {date} = state
       const {selectionMode} = this.props
@@ -175,7 +163,7 @@ export default class DatePanel extends Component {
   }
 
 
-  handleDatePick(value) {
+  handleDatePick(value: any) {
     this.updateState(state => {
       const {date} = state
       const {selectionMode, showTime, onPick} = this.props
@@ -192,7 +180,7 @@ export default class DatePanel extends Component {
   }
 
 
-  handleYearPick(year, close = true) {
+  handleYearPick(year: any, close: boolean = true) {
     this.updateState(state => {
       const {onPick, selectionMode} = this.props
       const {date} = state

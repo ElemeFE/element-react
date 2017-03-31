@@ -1,3 +1,4 @@
+//@flow
 import React from 'react';
 
 import { pick } from '../../libs/utils'
@@ -5,6 +6,7 @@ import { SELECTION_MODES } from './utils'
 
 import BasePicker from './BasePicker'
 import DatePanel from './panel/DatePanel'
+import type { DatePickerProps } from './Types';
 
 
 export default class DatePicker extends BasePicker {
@@ -18,10 +20,11 @@ export default class DatePicker extends BasePicker {
   }
 
   static get defaultProps() {
-    return Object.assign({}, BasePicker.defaultProps)
+    let result: any = Object.assign({}, BasePicker.defaultProps)
+    return result;
   }
 
-  constructor(props) {
+  constructor(props: DatePickerProps) {
     let type = 'date'
     switch (props.selectionMode) {
       case SELECTION_MODES.YEAR:
@@ -34,7 +37,7 @@ export default class DatePicker extends BasePicker {
     super(props, type, {})
   }
 
-  pickerPanel(state, props) {
+  pickerPanel(state: any, props: DatePickerProps) {
     return (
       <DatePanel
         {...props}
