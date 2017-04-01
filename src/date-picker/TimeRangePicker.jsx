@@ -1,30 +1,34 @@
+//@flow
 import React from 'react';
 import debounce from 'throttle-debounce/debounce';
 
 import BasePicker from './BasePicker'
 import TimeRangePanel from './panel/TimeRangePanel'
+import type { TimeRangePickerProps } from './Types';
 
 
 export default class TimeRangePicker extends BasePicker {
   static get propTypes() {
-    return Object.assign({ }, BasePicker.propTypes)
+    let result: any = Object.assign({ }, BasePicker.propTypes)
+    return result;
   }
 
   static get defaultProps() {
-    return Object.assign({}, BasePicker.defaultProps)
+    let result: any = Object.assign({}, BasePicker.defaultProps)
+    return result;
   }
 
-  constructor(props) {
+  constructor(props: TimeRangePickerProps) {
     super(props, 'timerange', {})
     this._onSelectionChange = debounce(200, this.onSelectionChange.bind(this))
   }
 
-  onSelectionChange(start, end) {
+  onSelectionChange(start: number, end: number) {
     this.refs.inputRoot.refs.input.setSelectionRange(start, end);
     this.refs.inputRoot.refs.input.focus();
   }
 
-  pickerPanel(state, props) {
+  pickerPanel(state: any, props: TimeRangePickerProps) {
     return (
       <TimeRangePanel
         {...props}
