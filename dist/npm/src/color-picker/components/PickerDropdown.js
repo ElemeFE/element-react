@@ -67,12 +67,21 @@ var PickerDropdown = function (_Component) {
           _react2.default.createElement(
             'div',
             { className: 'el-color-dropdown__main-wrapper' },
-            _react2.default.createElement(_HueSlider2.default, { ref: 'hue', color: color, vertical: true, onChange: function onChange(color) {
+            _react2.default.createElement(_HueSlider2.default, {
+              ref: 'hue',
+              color: color,
+              vertical: true,
+              onChange: function onChange(color) {
                 return _this2.props.onChange(color);
-              } }),
-            _react2.default.createElement(_SvPanel2.default, { ref: 'sl', color: color, onChange: function onChange(color) {
+              }
+            }),
+            _react2.default.createElement(_SvPanel2.default, {
+              ref: 'sl',
+              color: color,
+              onChange: function onChange(color) {
                 return _this2.props.onChange(color);
-              } })
+              }
+            })
           ),
           showAlpha && _react2.default.createElement(_AlphaSlider2.default, { ref: 'alpha', color: color }),
           _react2.default.createElement(
@@ -85,16 +94,23 @@ var PickerDropdown = function (_Component) {
             ),
             _react2.default.createElement(
               'a',
-              { href: 'JavaScript:', className: 'el-color-dropdown__link-btn', onClick: function onClick() {
+              {
+                href: 'JavaScript:',
+                className: 'el-color-dropdown__link-btn',
+                onClick: function onClick() {
                   return onClear();
-                } },
+                }
+              },
               _locale2.default.t('el.colorpicker.clear')
             ),
             _react2.default.createElement(
               'button',
-              { className: 'el-color-dropdown__btn', onClick: function onClick() {
+              {
+                className: 'el-color-dropdown__btn',
+                onClick: function onClick() {
                   return onPick();
-                } },
+                }
+              },
               _locale2.default.t('el.colorpicker.confirm')
             )
           )

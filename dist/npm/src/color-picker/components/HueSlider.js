@@ -143,9 +143,16 @@ var HueSlider = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { ref: function ref(el) {
+        {
+          ref: function ref(el) {
             return _this3.$el = el;
-          }, className: this.classNames({ 'el-color-hue-slider': true, 'is-vertical': vertical }), style: { float: 'right' } },
+          },
+          className: this.classNames({
+            'el-color-hue-slider': true,
+            'is-vertical': vertical
+          }),
+          style: { float: 'right' }
+        },
         _react2.default.createElement('div', {
           className: 'el-color-hue-slider__bar',
           onClick: function onClick(e) {

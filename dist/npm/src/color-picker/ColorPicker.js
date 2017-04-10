@@ -163,12 +163,20 @@ var ColorPicker = function (_Component) {
         { className: 'el-color-picker' },
         _react2.default.createElement(
           'div',
-          { className: 'el-color-picker__trigger', onClick: function onClick() {
+          {
+            className: 'el-color-picker__trigger',
+            onClick: function onClick() {
               return _this4.setState({ showPicker: !showPicker });
-            } },
+            }
+          },
           _react2.default.createElement(
             'span',
-            { className: this.classNames({ 'el-color-picker__color': true, 'is-alpha': showAlpha }) },
+            {
+              className: this.classNames({
+                'el-color-picker__color': true,
+                'is-alpha': showAlpha
+              })
+            },
             _react2.default.createElement('span', {
               className: 'el-color-picker__color-inner',
               style: { backgroundColor: displayedColor }

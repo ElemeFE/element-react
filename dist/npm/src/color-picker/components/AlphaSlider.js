@@ -160,9 +160,15 @@ var AlphaSlider = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { ref: function ref(el) {
+        {
+          ref: function ref(el) {
             return _this3.$el = el;
-          }, className: this.classNames({ 'el-color-alpha-slider': true, 'is-vertical': vertical }) },
+          },
+          className: this.classNames({
+            'el-color-alpha-slider': true,
+            'is-vertical': vertical
+          })
+        },
         _react2.default.createElement('div', {
           className: 'el-color-alpha-slider__bar',
           onClick: function onClick(e) {

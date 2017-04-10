@@ -84,7 +84,9 @@ var Steps = function (_Component) {
         { style: this.style(), className: this.className('el-steps') },
         _react2.default.Children.map(children, function (child, index) {
           var computedSpace = space ? space + 'px' : 100 / children.length + '%';
-          var style = direction === 'horizontal' ? { width: computedSpace } : { height: index === children.length - 1 ? 'auto' : computedSpace };
+          var style = direction === 'horizontal' ? { width: computedSpace } : {
+            height: index === children.length - 1 ? 'auto' : computedSpace
+          };
           var status = _this2.calStatus(index);
           var lineStyle = _this2.calcProgress(status, index);
           return _react2.default.cloneElement(child, {

@@ -84,7 +84,7 @@ var Suggestions = function (_Component) {
           dropdownWidth: inputWidth,
           showPopper: visible
         });
-      }, 0);
+      }, 7);
     }
   }, {
     key: 'parent',
@@ -92,8 +92,8 @@ var Suggestions = function (_Component) {
       return this.context.component;
     }
   }, {
-    key: 'select',
-    value: function select(item) {
+    key: 'onSelect',
+    value: function onSelect(item) {
       this.parent().select(item);
     }
   }, {
@@ -146,7 +146,7 @@ var Suggestions = function (_Component) {
                   {
                     key: index,
                     className: _this3.classNames({ 'highlighted': highlightedIndex === index }),
-                    onClick: _this3.select.bind(_this3, item) },
+                    onClick: _this3.onSelect.bind(_this3, item) },
                   !customItem ? item.value : _react2.default.createElement(customItem, {
                     index: index,
                     item: item
