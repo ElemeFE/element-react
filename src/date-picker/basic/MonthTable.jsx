@@ -1,23 +1,29 @@
+//@flow
 import React from 'react'
 
 import { PropTypes, Component } from '../../../libs';
 import { hasClass, deconstructDate } from '../utils'
 import Locale from '../../locale'
 
+import type {MonthTableProps} from '../Types';
 
 export default class MonthTable extends Component {
-  getCellStyle(month) {
+  constructor(props: MonthTableProps){
+    super(props)
+  }
+
+  getCellStyle(month: number) {
     const {date, disabledDate, value} = this.props
-    const style = {};
+    const style: any = {};
     const ndate = new Date(date)
     ndate.setMonth(month);
-    style.disabled = typeof disabledDatne === 'function' && disabledDate(ndate);
+    style.disabled = typeof disabledDate === 'function' && disabledDate(ndate);
     style.current = deconstructDate(value).month === month;
     return style;
   }
 
-  handleMonthTableClick(event) {
-    const target = event.target;
+  handleMonthTableClick(event: SyntheticMouseEvent) {
+    const target: any = event.target;
     if (target.tagName !== 'A') return;
     if (hasClass(target.parentNode, 'disabled')) return;
     const column = target.parentNode.cellIndex;

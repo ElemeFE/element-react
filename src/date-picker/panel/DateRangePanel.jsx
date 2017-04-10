@@ -1,3 +1,4 @@
+//@flow
 import React from 'react'
 
 import { PropTypes, Component } from '../../../libs';
@@ -6,6 +7,7 @@ import Locale from '../../locale'
 import { SELECTION_MODES, toDate, prevMonth, nextMonth } from '../utils'
 import { DateTable } from '../basic'
 import { PopperReactMixin } from '../../../libs/utils'
+import type {DateRangePanelProps, Shortcut} from '../Types';
 
 const prevYear = (date) => {
   var d = toDate(date)
@@ -21,7 +23,7 @@ const nextYear = (date) => {
 
 const mapPropsToState = (props) => {
   const {value} = props
-  let state = {
+  let state: any = {
     rangeState: {
       endDate: null,
       selecting: false,
@@ -49,7 +51,7 @@ const mapPropsToState = (props) => {
 }
 
 export default class DateRangePanel extends Component {
-  constructor(props) {
+  constructor(props: DateRangePanelProps) {
     super(props)
 
     this.state = {}
@@ -60,11 +62,11 @@ export default class DateRangePanel extends Component {
     }, props.popperMixinOption));
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: any) {
     this.setState(mapPropsToState(nextProps))
   }
 
-  handleRangePick({minDate, maxDate}, isClose) {
+  handleRangePick({minDate, maxDate}: {minDate: Date, maxDate: Date}, isClose: boolean) {
     const {showTime, onPick} = this.props
     this.setState({ minDate, maxDate })
     if (!isClose) return;
@@ -99,7 +101,7 @@ export default class DateRangePanel extends Component {
     })
   }
 
-  get rightDate() {
+  get rightDate(): Date {
     const newDate = new Date(this.state.date);
     const month = newDate.getMonth();
     newDate.setDate(1);
@@ -114,7 +116,7 @@ export default class DateRangePanel extends Component {
   }
 
   //todo: wired way to do sth like this? try to come up with a better option
-  handleChangeRange({endDate}) {
+  handleChangeRange({endDate}: {endDate: ?Date}) {
     const {rangeState, minDate} = this.state
     if (endDate <= minDate) endDate = null
 
@@ -124,7 +126,7 @@ export default class DateRangePanel extends Component {
     })
   }
 
-  handleShortcutClick(shortcut) {
+  handleShortcutClick(shortcut: Shortcut) {
     shortcut.onClick();
   }
 

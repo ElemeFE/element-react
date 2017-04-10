@@ -1,3 +1,4 @@
+//@flow
 import React from 'react';
 
 import { PropTypes, Component } from '../../../libs';
@@ -5,6 +6,7 @@ import { limitRange, parseDate } from '../utils';
 import TimeSpinner from '../basic/TimeSpinner';
 import { PopperReactMixin } from '../../../libs/utils';
 import Locale from '../../locale';
+import type {TimeRangePanelProps, TimeTypes} from '../Types';
 
 const MIN_TIME = parseDate('00:00:00', 'HH:mm:ss');
 const MAX_TIME = parseDate('23:59:59', 'HH:mm:ss');
@@ -35,7 +37,7 @@ const mapPropsToState = props => {
   const { currentDates, format } = props;
   const { minTime, maxTime } = calcTime(currentDates);
 
-  const state = {
+  const state: any = {
     format: format || 'HH:mm:ss',
     minTime,
     maxTime,
@@ -49,6 +51,8 @@ const mapPropsToState = props => {
 };
 
 export default class TimeRangePanel extends Component {
+  state: any;
+
   static get propTypes() {
     return Object.assign(
       {},
@@ -80,7 +84,7 @@ export default class TimeRangePanel extends Component {
     };
   }
 
-  constructor(props) {
+  constructor(props: TimeRangePanelProps) {
     super(props);
 
     this.state = Object.assign(
@@ -105,13 +109,13 @@ export default class TimeRangePanel extends Component {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: any) {
     this.setState(mapPropsToState(nextProps));
   }
 
   // type: string,  one of [hours, minutes, seconds]
   // date: {type: number}
-  handleChange(date, field) {
+  handleChange(date: {TimeTypes: ?number}, field: string) {
     const ndate = this.state[field];
 
     if (date.hours !== undefined) {
@@ -126,7 +130,7 @@ export default class TimeRangePanel extends Component {
       ndate.setSeconds(date.seconds);
     }
 
-    const state = {
+    const state: any = {
       [field]: ndate
     };
 
@@ -145,7 +149,7 @@ export default class TimeRangePanel extends Component {
     }
   }
 
-  handleConfirm(isKeepPannelOpen = false) {
+  handleConfirm(isKeepPannelOpen: boolean = false) {
     const { minTime, maxTime } = this.state;
     const { onPicked } = this.props;
 

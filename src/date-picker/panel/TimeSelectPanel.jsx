@@ -1,11 +1,13 @@
+//@flow
 import React from 'react';
 
 import { PropTypes, Component } from '../../../libs';
 import { PopperReactMixin } from '../../../libs/utils'
 import {Scrollbar} from '../../scrollbar'
+import type {TimeSelectPanelProps, TimeTypes} from '../Types';
 
 export default class TimeSelectPanel extends Component {
-  constructor(props) {
+  constructor(props: TimeSelectPanelProps) {
     super(props);
     PopperReactMixin.call(this, () => this.refs.root, this.props.getPopperRefElement, Object.assign({
       boundariesPadding: 0,
@@ -13,7 +15,7 @@ export default class TimeSelectPanel extends Component {
     }, props.popperMixinOption));
   }
 
-  handleClick(item) {
+  handleClick(item: any) {
     const {onPicked, dateParser} = this.props
     if (!item.disabled) {
       onPicked(dateParser(item.value));
@@ -23,7 +25,7 @@ export default class TimeSelectPanel extends Component {
   items() {
     return TimeSelectPanel.items(this.props)
   }
-  
+
   render() {
     const {value} = this.props
 
@@ -113,8 +115,8 @@ const parseTime = function (time) {
 };
 
 const compareTime = function (time1, time2) {
-  const value1 = parseTime(time1);
-  const value2 = parseTime(time2);
+  const value1: any = parseTime(time1);
+  const value2: any = parseTime(time2);
 
   const minutes1 = value1.minutes + value1.hours * 60;
   const minutes2 = value2.minutes + value2.hours * 60;
@@ -132,10 +134,10 @@ const formatTime = function (time) {
 };
 
 const nextTime = function (time, step) {
-  const timeValue = parseTime(time);
-  const stepValue = parseTime(step);
+  const timeValue: any = parseTime(time);
+  const stepValue: any = parseTime(step);
 
-  const next = {
+  const next: any = {
     hours: timeValue.hours,
     minutes: timeValue.minutes
   };
@@ -148,5 +150,3 @@ const nextTime = function (time, step) {
 
   return formatTime(next);
 };
-
-
