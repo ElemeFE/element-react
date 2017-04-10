@@ -87,7 +87,7 @@ var TimeRangePanel = function (_Component) {
         currentDates: _libs.PropTypes.arrayOf(_libs.PropTypes.instanceOf(Date)),
         /*
         onPicked: (value, isKeepPannelOpen)=>()
-               @param value: Date| Date[] |null
+         @param value: Date| Date[] |null
         @param isKeepPannelOpen:boolean, should parent close the pannel
         */
         onPicked: _libs.PropTypes.func.isRequired,
@@ -126,7 +126,6 @@ var TimeRangePanel = function (_Component) {
       boundariesPadding: 0,
       gpuAcceleration: false
     }, props.popperMixinOption));
-
     return _this;
   }
 
@@ -202,6 +201,7 @@ var TimeRangePanel = function (_Component) {
       var _onSelectRangeChange = this.props.onSelectRangeChange;
 
       var $t = _locale2.default.t;
+
       var maxHours = maxTime.getHours();
       var maxMinutes = maxTime.getMinutes();
       var maxSeconds = maxTime.getSeconds();
@@ -212,7 +212,9 @@ var TimeRangePanel = function (_Component) {
         'div',
         {
           ref: 'root',
-          className: 'el-time-range-picker el-picker-panel', style: { minWidth: '330px' } },
+          className: 'el-time-range-picker el-picker-panel',
+          style: { minWidth: '330px' }
+        },
         _react2.default.createElement(
           'div',
           { className: 'el-time-range-picker__content' },
@@ -226,7 +228,9 @@ var TimeRangePanel = function (_Component) {
             ),
             _react2.default.createElement(
               'div',
-              { className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds }) },
+              {
+                className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds })
+              },
               _react2.default.createElement(_TimeSpinner2.default, {
                 ref: 'minSpinner',
                 onChange: function onChange(date) {
@@ -251,7 +255,9 @@ var TimeRangePanel = function (_Component) {
             ),
             _react2.default.createElement(
               'div',
-              { className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds }) },
+              {
+                className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds })
+              },
               _react2.default.createElement(_TimeSpinner2.default, {
                 ref: 'maxSpinner',
                 onChange: function onChange(date) {
@@ -279,7 +285,8 @@ var TimeRangePanel = function (_Component) {
               className: 'el-time-panel__btn cancel',
               onClick: function onClick() {
                 return _this2.props.onCancel();
-              } },
+              }
+            },
             $t('el.datepicker.cancel')
           ),
           _react2.default.createElement(
@@ -290,7 +297,8 @@ var TimeRangePanel = function (_Component) {
               onClick: function onClick() {
                 return _this2.handleConfirm();
               },
-              disabled: btnDisabled },
+              disabled: btnDisabled
+            },
             $t('el.datepicker.confirm')
           )
         )

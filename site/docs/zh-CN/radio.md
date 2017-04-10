@@ -17,17 +17,15 @@ constructor(props) {
   }
 }
 
-onChange(value, event) {
-  this.setState({
-    value: event.target.checked && value
-  });
+onChange(value) {
+  this.setState({ value });
 }
 
 render() {
   return (
     <div>
-      <Radio value="1" checked={this.state.value === 1} onChange={this.onChange.bind(this, 1)}>备选项</Radio>
-      <Radio value="2" checked={this.state.value === 2} onChange={this.onChange.bind(this, 2)}>备选项</Radio>
+      <Radio value="1" checked={this.state.value === 1} onChange={this.onChange.bind(this)}>备选项</Radio>
+      <Radio value="2" checked={this.state.value === 2} onChange={this.onChange.bind(this)}>备选项</Radio>
     </div>
   )
 }
@@ -67,10 +65,8 @@ constructor(props) {
   }
 }
 
-onChange(event) {
-  this.setState({
-    value: event.target.value
-  });
+onChange(value) {
+  this.setState({ value });
 }
 
 render() {
@@ -102,9 +98,9 @@ constructor(props) {
   }
 }
 
-onChange(key, event) {
+onChange(key, value) {
   this.setState({
-    [key]: event.target.value
+    [key]: value
   });
 }
 

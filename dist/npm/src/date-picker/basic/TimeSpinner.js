@@ -213,7 +213,11 @@ var TimeSpinner = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: this.classNames('el-time-spinner', { 'has-seconds': isShowSeconds }) },
+        {
+          className: this.classNames('el-time-spinner', {
+            'has-seconds': isShowSeconds
+          })
+        },
         _react2.default.createElement(
           _scrollbar.Scrollbar,
           {
@@ -230,7 +234,6 @@ var TimeSpinner = function (_Component) {
             viewComponent: 'ul'
           },
           hoursList.map(function (disabled, idx) {
-
             return _react2.default.createElement(
               'li',
               {
@@ -239,8 +242,8 @@ var TimeSpinner = function (_Component) {
                   return _this4.handleChange('hours', idx, disabled);
                 },
                 className: _this4.classNames('el-time-spinner__item', {
-                  'active': idx === hours,
-                  'disabled': disabled
+                  active: idx === hours,
+                  disabled: disabled
                 })
               },
               idx
@@ -271,7 +274,7 @@ var TimeSpinner = function (_Component) {
                   return _this4.handleChange('minutes', idx);
                 },
                 className: _this4.classNames('el-time-spinner__item', {
-                  'active': idx === minutes
+                  active: idx === minutes
                 })
               },
               idx
@@ -302,7 +305,7 @@ var TimeSpinner = function (_Component) {
                   return _this4.handleChange('seconds', idx);
                 },
                 className: _this4.classNames('el-time-spinner__item', {
-                  'active': idx === seconds
+                  active: idx === seconds
                 })
               },
               idx

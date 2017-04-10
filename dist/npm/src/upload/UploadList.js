@@ -50,7 +50,9 @@ var UploadList = function (_Component) {
       };
       return _react2.default.createElement(
         _libs.Transition,
-        { component: 'ul', className: this.classNames(_defineProperty({
+        {
+          component: 'ul',
+          className: this.classNames(_defineProperty({
             'el-upload-list': true
           }, 'el-upload-list--' + listType, true)),
           name: 'list'
@@ -64,29 +66,45 @@ var UploadList = function (_Component) {
               }, 'is-' + file.status, true)),
               key: file.uid
             },
-            ['picture-card', 'picture'].includes(listType) && isFinished(file.status) && _react2.default.createElement('img', { className: 'el-upload-list__item-thumbnail', src: file.url, alt: '' }),
+            ['picture-card', 'picture'].includes(listType) && isFinished(file.status) && _react2.default.createElement('img', {
+              className: 'el-upload-list__item-thumbnail',
+              src: file.url,
+              alt: ''
+            }),
             _react2.default.createElement(
               'a',
-              { className: 'el-upload-list__item-name', onClick: function onClick() {
+              {
+                className: 'el-upload-list__item-name',
+                onClick: function onClick() {
                   return onPreview(file);
-                } },
+                }
+              },
               _react2.default.createElement('i', { className: 'el-icon-document' }),
               file.name
             ),
             _react2.default.createElement(
               _libs.View,
-              { className: 'el-upload-list__item-status-label', show: isFinished(file.status), component: 'label' },
-              _react2.default.createElement('i', { className: _this2.classNames({
+              {
+                className: 'el-upload-list__item-status-label',
+                show: isFinished(file.status),
+                component: 'label'
+              },
+              _react2.default.createElement('i', {
+                className: _this2.classNames({
                   'el-icon-circle-check': listType === 'text',
                   'el-icon-check': ['picture-card', 'picture'].includes(listType)
-                }) }),
+                })
+              }),
               _react2.default.createElement('i', { className: 'el-icon-close', onClick: function onClick() {
                   return onRemove(file);
                 } })
             ),
             _react2.default.createElement(
               _libs.View,
-              { className: 'el-upload-list__item-actions', show: listType === 'picture-card' && isFinished(file.status) },
+              {
+                className: 'el-upload-list__item-actions',
+                show: listType === 'picture-card' && isFinished(file.status)
+              },
               _react2.default.createElement(
                 'span',
                 {

@@ -16,17 +16,15 @@ constructor(props) {
   }
 }
 
-onChange(value, event) {
-  this.setState({
-    value: event.target.checked && value
-  });
+onChange(value) {
+  this.setState({ value });
 }
 
 render() {
   return (
     <div>
-      <Radio value="1" checked={this.state.value === 1} onChange={this.onChange.bind(this, 1)}>Option A</Radio>
-      <Radio value="2" checked={this.state.value === 2} onChange={this.onChange.bind(this, 2)}>Option B</Radio>
+      <Radio value="1" checked={this.state.value === 1} onChange={this.onChange.bind(this)}>Option A</Radio>
+      <Radio value="2" checked={this.state.value === 2} onChange={this.onChange.bind(this)}>Option B</Radio>
     </div>
   )
 }
@@ -65,10 +63,8 @@ constructor(props) {
   }
 }
 
-onChange(event) {
-  this.setState({
-    value: event.target.value
-  });
+onChange(value) {
+  this.setState({ value });
 }
 
 render() {
@@ -99,9 +95,9 @@ constructor(props) {
   }
 }
 
-onChange(key, event) {
+onChange(key, value) {
   this.setState({
-    [key]: event.target.value
+    [key]: value
   });
 }
 

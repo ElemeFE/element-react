@@ -54,25 +54,30 @@ var Step = function (_Component) {
         'div',
         {
           style: this.style(style),
-          className: this.className('el-step', directionClass) },
+          className: this.className('el-step', directionClass)
+        },
         _react2.default.createElement(
           'div',
           {
             className: this.classNames('el-step__head', statusClass, {
               'is-text': !icon
-            }) },
+            })
+          },
           _react2.default.createElement(
             'div',
             {
               className: this.classNames('el-step__line', directionClass, {
                 'is-icon': icon
-              }) },
+              })
+            },
             _react2.default.createElement('i', { className: 'el-step__line-inner', style: lineStyle })
           ),
           _react2.default.createElement(
             'span',
             { className: 'el-step__icon' },
-            status !== 'success' && status !== 'error' ? iconNode : _react2.default.createElement('i', { className: 'el-icon-' + (status === 'success' ? 'check' : 'close') })
+            status !== 'success' && status !== 'error' ? iconNode : _react2.default.createElement('i', {
+              className: 'el-icon-' + (status === 'success' ? 'check' : 'close')
+            })
           )
         ),
         _react2.default.createElement(
@@ -82,13 +87,13 @@ var Step = function (_Component) {
             'div',
             {
               ref: 'title',
-              className: this.classNames('el-step__title', statusClass) },
+              className: this.classNames('el-step__title', statusClass)
+            },
             title
           ),
           _react2.default.createElement(
             'div',
-            {
-              className: this.classNames('el-step__description', statusClass) },
+            { className: this.classNames('el-step__description', statusClass) },
             description
           )
         )
