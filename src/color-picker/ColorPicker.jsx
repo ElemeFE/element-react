@@ -10,6 +10,10 @@ import type { ColorType, ColorPickerState } from './Types';
 class ColorPicker extends Component {
   state: ColorPickerState;
 
+  static defaultProps = {
+    onChange() {}
+  };
+
   constructor(props: Object) {
     super(props);
 

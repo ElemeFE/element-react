@@ -1,42 +1,47 @@
-import React from 'react'
+/* @flow */
 
+import React, { Component } from 'react';
 
-const ANIMATION_DURATION = 300
+const ANIMATION_DURATION = 300;
 
-export default class CollapseTransition extends React.Component {
-  static get propTypes(){
-    return {
-      isShow: React.PropTypes.bool
+type Props = {
+  isShow: boolean,
+  children?: React.Element<any>
+};
+
+export default class CollapseTransition extends Component {
+  props: Props;
+
+  selfRef: any;
+  leaveTimer: any;
+  enterTimer: any;
+
+  componentDidMount(): void {
+    this.beforeEnter();
+    if (this.props.isShow) {
+      this.enter();
     }
   }
 
-  componentDidMount(){
-    this.beforeEnter()
-    if (this.props.isShow){
-      this.enter()
+  componentWillUnmount(): void {
+    this.beforeLeave();
+    this.leave();
+  }
+
+  triggerChange(): void {
+    clearTimeout(this.enterTimer);
+    clearTimeout(this.leaveTimer);
+    if (this.props.isShow) {
+      this.beforeEnter();
+      this.enter();
+    } else {
+      this.beforeLeave();
+      this.leave();
     }
   }
 
-  componentWillUnmount(){
-    this.beforeLeave()
-    this.leave()
-  }
-
-
-  triggerChange(){
-    clearTimeout(this.enterTimer)
-    clearTimeout(this.leaveTimer)
-    if (this.props.isShow){
-      this.beforeEnter()
-      this.enter()
-    }else{
-      this.beforeLeave()
-      this.leave() 
-    }
-  }
-
-  beforeEnter(){
-    const el = this.selfRef
+  beforeEnter(): void {
+    const el = this.selfRef;
     //prepare
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
@@ -46,10 +51,9 @@ export default class CollapseTransition extends React.Component {
     el.style.paddingBottom = 0;
   }
 
-  
-  enter(){
-    const el = this.selfRef
-      //start
+  enter(): void {
+    const el = this.selfRef;
+    //start
     el.style.display = 'block';
     if (el.scrollHeight !== 0) {
       el.style.height = el.scrollHeight + 'px';
@@ -63,18 +67,18 @@ export default class CollapseTransition extends React.Component {
 
     el.style.overflow = 'hidden';
 
-    this.enterTimer = setTimeout(()=>this.afterEnter(), ANIMATION_DURATION) 
+    this.enterTimer = setTimeout(() => this.afterEnter(), ANIMATION_DURATION);
   }
 
-  afterEnter() {
-    const el = this.selfRef
+  afterEnter(): void {
+    const el = this.selfRef;
     el.style.display = 'block';
     el.style.height = '';
     el.style.overflow = el.dataset.oldOverflow;
   }
 
-  beforeLeave() {
-    const el = this.selfRef
+  beforeLeave(): void {
+    const el = this.selfRef;
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
     el.dataset.oldOverflow = el.style.overflow;
@@ -86,18 +90,18 @@ export default class CollapseTransition extends React.Component {
     el.style.overflow = 'hidden';
   }
 
-  leave() {
-    const el = this.selfRef
+  leave(): void {
+    const el = this.selfRef;
     if (el.scrollHeight !== 0) {
       el.style.height = 0;
       el.style.paddingTop = 0;
       el.style.paddingBottom = 0;
     }
-    this.leaveTimer = setTimeout(()=>this.afterLeave(), ANIMATION_DURATION)
+    this.leaveTimer = setTimeout(() => this.afterLeave(), ANIMATION_DURATION);
   }
 
-  afterLeave() {
-    const el = this.selfRef
+  afterLeave(): void {
+    const el = this.selfRef;
 
     el.style.display = 'none';
     el.style.height = '';
@@ -106,14 +110,14 @@ export default class CollapseTransition extends React.Component {
     el.style.paddingBottom = el.dataset.oldPaddingBottom;
   }
 
-  render(){
+  render(): React.Element<any> {
     return (
       <div
         className="el-tree-node__children collapse-transition"
-        ref={e=>this.selfRef = e}
-        >
+        ref={e => this.selfRef = e}
+      >
         {this.props.children}
       </div>
-    )
+    );
   }
 }

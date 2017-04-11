@@ -1,62 +1,66 @@
+/* @flow */
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Pager from './Pager';
 import Select from '../select';
 import locale from '../locale';
 
-const Pre = (props) => {
+const Pre = props => {
   const disabled = props.internalCurrentPage <= 1 ? 'disabled' : '';
   return (
-    <button className={`btn-prev ${disabled}`}
-      onClick={ props.prev }>
-      <i className="el-icon el-icon-arrow-left"></i>
+    <button className={`btn-prev ${disabled}`} onClick={props.prev}>
+      <i className="el-icon el-icon-arrow-left" />
     </button>
   );
-}
+};
 
-const Next = (props) => {
-  const disabled = props.internalCurrentPage === props.internalPageCount || props.internalPageCount === 0 ? 'disabled' : '';
+const Next = props => {
+  const disabled = props.internalCurrentPage === props.internalPageCount ||
+    props.internalPageCount === 0
+    ? 'disabled'
+    : '';
 
   return (
-    <button className={ `btn-next ${disabled}`}
-      onClick={ props.next }>
-      <i className="el-icon el-icon-arrow-right"></i>
+    <button className={`btn-next ${disabled}`} onClick={props.next}>
+      <i className="el-icon el-icon-arrow-right" />
     </button>
   );
-}
+};
 
-class Sizes extends Component{
-
-  render(){
+class Sizes extends Component {
+  render() {
     const { onSizeChange, internalPageSize } = this.props;
 
     return (
       <span className="el-pagination__sizes">
         <Select
           size="small"
-          value={ internalPageSize }
-          onChange={ onSizeChange }
-          width={110}>
-          {
-            this.props.pageSizes.map((item, idx )=>{
-              return <Select.Option
-                  key={idx}
-                  value={ item }
-                  label={ item + ' ' + locale.t('el.pagination.pagesize') }>
-                </Select.Option>
-            })
-          }
+          value={internalPageSize}
+          onChange={onSizeChange}
+          width={110}
+        >
+          {this.props.pageSizes.map((item, idx) => {
+            return (
+              <Select.Option
+                key={idx}
+                value={item}
+                label={item + ' ' + locale.t('el.pagination.pagesize')}
+              />
+            );
+          })}
         </Select>
-      </span>)
+      </span>
+    );
   }
-};
+}
 
-const Total = (props) => {
-  return (
-    typeof props.total === 'number'
-      ? <span className="el-pagination__total">{ locale.t('el.pagination.total', { total: props.total }) }</span>
-      : ''
-  );
+const Total = props => {
+  return typeof props.total === 'number'
+    ? <span className="el-pagination__total">
+        {locale.t('el.pagination.total', { total: props.total })}
+      </span>
+    : <span />;
 };
 
 class Jumper extends Component {
@@ -65,113 +69,151 @@ class Jumper extends Component {
     jumper(target.value);
   }
 
-  handleFocus(){
+  handleFocus() {}
 
-  }
-
-  render(){
+  render() {
     return (
       <span className="el-pagination__jump">
-        { locale.t('el.pagination.goto') }
+        {locale.t('el.pagination.goto')}
         <input
           className="el-pagination__editor"
           type="number"
-          min={ 1 }
-          max={ this.props.internalPageCount }
-          defaultValue={ this.props.internalCurrentPage }
-          onBlur={ this.handleChange.bind(this) }
-          onKeyUp={ e => {if(e.keyCode == 13){this.handleChange(e)}}}
-          onFocus={ this.handleFocus.bind(this) }
-          style={{ width: '30px' }}/>
-        { locale.t('el.pagination.pageClassifier') }
+          min={1}
+          max={this.props.internalPageCount}
+          defaultValue={this.props.internalCurrentPage}
+          onBlur={this.handleChange.bind(this)}
+          onKeyUp={e => {
+            if (e.keyCode == 13) {
+              this.handleChange(e);
+            }
+          }}
+          onFocus={this.handleFocus.bind(this)}
+          style={{ width: '30px' }}
+        />
+        {locale.t('el.pagination.pageClassifier')}
       </span>
     );
   }
 }
 
-export default class Pagination extends Component{
-  constructor(props, context){
+type State = {
+  internalPageSize: number,
+  total: number,
+  pageCount: number,
+  internalCurrentPage: number
+}
+
+export default class Pagination extends Component {
+  state: State;
+  
+  constructor(props: Object, context: Object) {
     super(props, context);
 
-    const { currentPage, pageSizes,  pageSize, total, pageCount, layout } = this.props;
+    const {
+      currentPage,
+      pageSizes,
+      pageSize,
+      total,
+      pageCount,
+      layout
+    } = this.props;
     let internalPageSize = 0;
     if (layout.split(',').indexOf('sizes') > -1 && Array.isArray(pageSizes)) {
-      internalPageSize = pageSizes.indexOf(pageSize) > -1 ? pageSize : pageSizes[0];
+      internalPageSize = pageSizes.indexOf(pageSize) > -1
+        ? pageSize
+        : pageSizes[0];
     } else {
-      internalPageSize = pageSize
+      internalPageSize = pageSize;
     }
 
     this.state = {
-      internalPageSize: internalPageSize,
+      internalPageSize,
       total,
-      pageCount
-    }
-    this.state.internalCurrentPage =  currentPage ? this.getValidCurrentPage(currentPage) : 1
+      pageCount,
+      internalCurrentPage: currentPage
+        ? this.getValidCurrentPage(currentPage)
+        : 1
+    };
   }
 
-  componentWillReceiveProps(nextProps){
-    const { currentPage, pageSizes,  pageSize, total, pageCount } = this.props;
+  componentWillReceiveProps(nextProps: Object): void {
+    const { currentPage, pageSizes, pageSize, total, pageCount } = this.props;
 
-    if(nextProps.currentPage != currentPage ||
+    if (
+      nextProps.currentPage != currentPage ||
       nextProps.pageSizes != pageSizes ||
       nextProps.pageSize != pageSize ||
       nextProps.total != total ||
-      nextProps.pageCount != pageCount){
-
+      nextProps.pageCount != pageCount
+    ) {
       let internalPageSize = this.state.internalPageSize;
-      if (nextProps.layout.split(',').indexOf('sizes') > -1 && Array.isArray(nextProps.pageSizes)) {
-        internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1 ?nextProps.pageSize : nextProps.pageSizes[0];
+      if (
+        nextProps.layout.split(',').indexOf('sizes') > -1 &&
+        Array.isArray(nextProps.pageSizes)
+      ) {
+        internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1
+          ? nextProps.pageSize
+          : nextProps.pageSizes[0];
       }
 
-      this.setState({
-        internalPageSize: internalPageSize,
-        total: nextProps.total,
-        pageCount: nextProps.pageCount
-      }, ()=>{
-        this.setState({
-          internalCurrentPage: nextProps.currentPage ? this.getValidCurrentPage(nextProps.currentPage) : 1
-        });
-      });
+      this.setState(
+        {
+          internalPageSize: internalPageSize,
+          total: nextProps.total,
+          pageCount: nextProps.pageCount
+        },
+        () => {
+          this.setState({
+            internalCurrentPage: nextProps.currentPage
+              ? this.getValidCurrentPage(nextProps.currentPage)
+              : 1
+          });
+        }
+      );
     }
   }
 
-  pre(){
+  pre(): void {
     const oldPage = this.state.internalCurrentPage;
     const newVal = this.state.internalCurrentPage - 1;
 
-    this.setState({
-      internalCurrentPage: this.getValidCurrentPage(newVal)
-    }, ()=>{
-      if (this.state.internalCurrentPage !== oldPage) {
-        const onCurrentChange = this.props.onCurrentChange;
-        onCurrentChange && onCurrentChange(this.state.internalCurrentPage);
+    this.setState(
+      {
+        internalCurrentPage: this.getValidCurrentPage(newVal)
+      },
+      () => {
+        if (this.state.internalCurrentPage !== oldPage) {
+          const onCurrentChange = this.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(this.state.internalCurrentPage);
+        }
       }
-    });
+    );
   }
 
-  next(){
+  next(): void {
     const oldPage = this.state.internalCurrentPage;
     const newVal = this.state.internalCurrentPage + 1;
 
-    this.setState({
-      internalCurrentPage: this.getValidCurrentPage(newVal)
-    }, ()=>{
-      if (this.state.internalCurrentPage !== oldPage) {
-        const onCurrentChange = this.props.onCurrentChange;
-        onCurrentChange && onCurrentChange(this.state.internalCurrentPage);
+    this.setState(
+      {
+        internalCurrentPage: this.getValidCurrentPage(newVal)
+      },
+      () => {
+        if (this.state.internalCurrentPage !== oldPage) {
+          const onCurrentChange = this.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(this.state.internalCurrentPage);
+        }
       }
-    });
+    );
   }
 
-  getValidCurrentPage(value){
+  getValidCurrentPage(value: string | number): number {
     value = parseInt(value, 10);
 
     let internalPageCount = this.internalPageCount();
 
-    const havePageCount = typeof internalPageCount === 'number';
-
     let resetValue;
-    if (!havePageCount) {
+    if (!internalPageCount) {
       if (isNaN(value) || value < 1) resetValue = 1;
     } else {
       if (value < 1) {
@@ -190,7 +232,7 @@ export default class Pagination extends Component{
     return resetValue === undefined ? value : resetValue;
   }
 
-  internalPageCount(){
+  internalPageCount(): ?number {
     if (typeof this.state.total === 'number') {
       return Math.ceil(this.state.total / this.state.internalPageSize);
     } else if (typeof this.state.pageCount === 'number') {
@@ -199,49 +241,60 @@ export default class Pagination extends Component{
     return null;
   }
 
-  jumperToPage(page){
+  jumperToPage(page: number): void {
     const oldPage = this.state.internalCurrentPage;
-    this.setState({
-      internalCurrentPage: this.getValidCurrentPage(page)
-    }, ()=>{
-      if (oldPage !== this.state.internalCurrentPage) {
-        const onCurrentChange = this.props.onCurrentChange;
+    this.setState(
+      {
+        internalCurrentPage: this.getValidCurrentPage(page)
+      },
+      () => {
+        if (oldPage !== this.state.internalCurrentPage) {
+          const onCurrentChange = this.props.onCurrentChange;
           onCurrentChange && onCurrentChange(this.state.internalCurrentPage);
+        }
       }
-    });
+    );
 
     //this.oldValue = null;
   }
 
-  handleCurrentChange(val){
+  handleCurrentChange(val: number): void {
     const oldPage = this.state.internalCurrentPage;
-    this.setState({
-      internalCurrentPage: this.getValidCurrentPage(val)
-    }, ()=>{
-      if (oldPage !== this.state.internalCurrentPage) {
-        const onCurrentChange = this.props.onCurrentChange;
+    this.setState(
+      {
+        internalCurrentPage: this.getValidCurrentPage(val)
+      },
+      () => {
+        if (oldPage !== this.state.internalCurrentPage) {
+          const onCurrentChange = this.props.onCurrentChange;
           onCurrentChange && onCurrentChange(this.state.internalCurrentPage);
+        }
       }
-    });
+    );
   }
 
-  onSizeChange(val){
+  onSizeChange(val: number) {
     if (val !== this.state.internalPageSize) {
       val = parseInt(val, 10);
 
-      this.setState({
-        internalPageSize: val
-      }, ()=>{
-        this.setState({
-          internalCurrentPage: this.getValidCurrentPage(this.state.internalCurrentPage)
-        });
-        const { onSizeChange } = this.props;
-        onSizeChange && onSizeChange(val);
-      });
+      this.setState(
+        {
+          internalPageSize: val
+        },
+        () => {
+          this.setState({
+            internalCurrentPage: this.getValidCurrentPage(
+              this.state.internalCurrentPage
+            )
+          });
+          const { onSizeChange } = this.props;
+          onSizeChange && onSizeChange(val);
+        }
+      );
     }
   }
 
-  render(){
+  render(): ?React.Element<any> {
     const { internalCurrentPage, internalPageSize } = this.state;
 
     const className = this.classNames({
@@ -255,31 +308,49 @@ export default class Pagination extends Component{
 
     if (!layout) return null;
 
-    const components = layout.split(',').map((item) => item.trim());
+    const components = layout.split(',').map(item => item.trim());
     const TEMPLATE_MAP = {
-      prev:   <Pre key='pre' internalCurrentPage={ internalCurrentPage } prev={ this.pre.bind(this) }/>,
-      jumper: <Jumper
-                key='jumper'
-                jumper={ this.jumperToPage.bind(this) }
-                internalPageCount={ this.internalPageCount() }
-                internalCurrentPage={ internalCurrentPage }/>,
-      pager:  <Pager
-                key='pager'
-                currentPage={ internalCurrentPage }
-                pageCount={ this.internalPageCount() }
-                onChange={ this.handleCurrentChange.bind(this) }/>,
-      next:  <Next
-               key='next'
-               internalCurrentPage={ internalCurrentPage }
-               internalPageCount={ this.internalPageCount() }
-               next={ this.next.bind(this) }/>,
-      sizes: <Sizes
-              key='sizes'
-              internalPageSize={ internalPageSize }
-              pageSizes={ this.props.pageSizes }
-              onSizeChange={ this.onSizeChange.bind(this) }/>,
-      total: <Total key='total' total={ this.state.total }/>
-    }
+      prev: (
+        <Pre
+          key="pre"
+          internalCurrentPage={internalCurrentPage}
+          prev={this.pre.bind(this)}
+        />
+      ),
+      jumper: (
+        <Jumper
+          key="jumper"
+          jumper={this.jumperToPage.bind(this)}
+          internalPageCount={this.internalPageCount()}
+          internalCurrentPage={internalCurrentPage}
+        />
+      ),
+      pager: (
+        <Pager
+          key="pager"
+          currentPage={internalCurrentPage}
+          pageCount={this.internalPageCount()}
+          onChange={this.handleCurrentChange.bind(this)}
+        />
+      ),
+      next: (
+        <Next
+          key="next"
+          internalCurrentPage={internalCurrentPage}
+          internalPageCount={this.internalPageCount()}
+          next={this.next.bind(this)}
+        />
+      ),
+      sizes: (
+        <Sizes
+          key="sizes"
+          internalPageSize={internalPageSize}
+          pageSizes={this.props.pageSizes}
+          onSizeChange={this.onSizeChange.bind(this)}
+        />
+      ),
+      total: <Total key="total" total={this.state.total} />
+    };
 
     components.forEach(compo => {
       if (compo !== '->') {
