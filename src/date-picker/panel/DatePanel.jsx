@@ -105,7 +105,7 @@ export default class DatePanel extends Component {
     })
   }
 
-  updateState(cb: (any) => void) {
+  updateState(cb: (data: any) => void) {
     cb(this.state)
     this.setState({})
   }

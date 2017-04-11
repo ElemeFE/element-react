@@ -159,16 +159,18 @@ var IframeUpload = function (_Component) {
             return _this2.handleDragleave(e);
           }
         },
-        _react2.default.createElement('iframe', {
-          onLoad: function onLoad() {
+        _react2.default.createElement('iframe', { onLoad: function onLoad() {
             return _this2.onload();
-          },
-          ref: 'iframe',
-          name: frameName
-        }),
+          }, ref: 'iframe', name: frameName }),
         _react2.default.createElement(
           'form',
-          { ref: 'form', action: action, target: frameName, encType: 'multipart/form-data', method: 'POST' },
+          {
+            ref: 'form',
+            action: action,
+            target: frameName,
+            encType: 'multipart/form-data',
+            method: 'POST'
+          },
           _react2.default.createElement('input', {
             className: 'el-upload__input',
             type: 'file',
@@ -177,7 +179,8 @@ var IframeUpload = function (_Component) {
             onChange: function onChange(e) {
               return _this2.handleChange(e);
             },
-            accept: accept }),
+            accept: accept
+          }),
           _react2.default.createElement('input', { type: 'hidden', name: 'documentDomain', value: document.domain }),
           _react2.default.createElement('span', { ref: 'data' })
         ),

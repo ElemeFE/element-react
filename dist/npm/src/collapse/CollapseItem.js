@@ -48,7 +48,12 @@ var CollapseItem = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: this.classNames({ 'el-collapse-item': true, 'is-active': isActive }) },
+        {
+          className: this.classNames({
+            'el-collapse-item': true,
+            'is-active': isActive
+          })
+        },
         _react2.default.createElement(
           'div',
           { className: 'el-collapse-item__header', onClick: function onClick() {

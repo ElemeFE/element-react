@@ -118,10 +118,16 @@ var Progress = function (_Component) {
           { className: 'el-progress-bar' },
           _react2.default.createElement(
             'div',
-            { className: 'el-progress-bar__outer', style: { height: strokeWidth + 'px' } },
+            {
+              className: 'el-progress-bar__outer',
+              style: { height: strokeWidth + 'px' }
+            },
             _react2.default.createElement(
               'div',
-              { className: 'el-progress-bar__inner', style: { width: percentage + '%' } },
+              {
+                className: 'el-progress-bar__inner',
+                style: { width: percentage + '%' }
+              },
               showText && textInside && _react2.default.createElement(
                 'div',
                 { className: 'el-progress-bar__innerText' },
@@ -133,12 +139,29 @@ var Progress = function (_Component) {
       } else {
         progress = _react2.default.createElement(
           'div',
-          { className: 'el-progress-circle', style: { height: width + 'px', width: width + 'px' } },
+          {
+            className: 'el-progress-circle',
+            style: { height: width + 'px', width: width + 'px' }
+          },
           _react2.default.createElement(
             'svg',
             { viewBox: '0 0 100 100' },
-            _react2.default.createElement('path', { className: 'el-progress-circle__track', d: this.trackPath(), stroke: '#e5e9f2', strokeWidth: this.relativeStrokeWidth(), fill: 'none' }),
-            _react2.default.createElement('path', { className: 'el-progress-circle__path', d: this.trackPath(), strokeLinecap: 'round', stroke: this.stroke(), strokeWidth: this.relativeStrokeWidth(), fill: 'none', style: this.circlePathStyle() })
+            _react2.default.createElement('path', {
+              className: 'el-progress-circle__track',
+              d: this.trackPath(),
+              stroke: '#e5e9f2',
+              strokeWidth: this.relativeStrokeWidth(),
+              fill: 'none'
+            }),
+            _react2.default.createElement('path', {
+              className: 'el-progress-circle__path',
+              d: this.trackPath(),
+              strokeLinecap: 'round',
+              stroke: this.stroke(),
+              strokeWidth: this.relativeStrokeWidth(),
+              fill: 'none',
+              style: this.circlePathStyle()
+            })
           )
         );
       }

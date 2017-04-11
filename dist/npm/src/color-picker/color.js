@@ -138,7 +138,11 @@ var rgb2hsv = function rgb2hsv(r, g, b) {
     h /= 6;
   }
 
-  return { h: Math.round(h * 360), s: Math.round(s * 100), v: Math.round(v * 100) };
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    v: Math.round(v * 100)
+  };
 };
 
 // `hsvToRgb`

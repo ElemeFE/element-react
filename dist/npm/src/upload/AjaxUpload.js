@@ -166,9 +166,16 @@ var AjaxUpload = function (_Component) {
             } },
           this.props.children
         ) : this.props.children,
-        _react2.default.createElement('input', { className: 'el-upload__input', type: 'file', ref: 'input', onChange: function onChange(e) {
+        _react2.default.createElement('input', {
+          className: 'el-upload__input',
+          type: 'file',
+          ref: 'input',
+          onChange: function onChange(e) {
             return _this4.handleChange(e);
-          }, multiple: multiple, accept: accept })
+          },
+          multiple: multiple,
+          accept: accept
+        })
       );
     }
   }]);

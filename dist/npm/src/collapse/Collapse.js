@@ -37,8 +37,12 @@ var Collapse = function (_Component) {
   _createClass(Collapse, [{
     key: 'setActiveNames',
     value: function setActiveNames(activeNames) {
+      var _this2 = this;
+
       activeNames = [].concat(activeNames);
-      this.setState({ activeNames: activeNames });
+      this.setState({ activeNames: activeNames }, function () {
+        return _this2.props.onChange(activeNames);
+      });
     }
   }, {
     key: 'handleItemClick',
@@ -61,16 +65,16 @@ var Collapse = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var content = _react2.default.Children.map(this.props.children, function (child, idx) {
         var name = child.props.name || idx.toString();
         return _react2.default.cloneElement(child, {
-          isActive: _this2.state.activeNames.includes(name),
+          isActive: _this3.state.activeNames.includes(name),
           key: idx,
           name: name,
           onClick: function onClick(item) {
-            return _this2.handleItemClick(item);
+            return _this3.handleItemClick(item);
           }
         });
       });
@@ -86,7 +90,8 @@ var Collapse = function (_Component) {
 }(_libs.Component);
 
 Collapse.defaultProps = {
-  value: []
+  value: [],
+  onChange: function onChange() {}
 };
 var _default = Collapse;
 exports.default = _default;
@@ -94,7 +99,8 @@ exports.default = _default;
 
 Collapse.propTypes = {
   accordion: _libs.PropTypes.bool,
-  value: _libs.PropTypes.oneOfType([_libs.PropTypes.array, _libs.PropTypes.string])
+  value: _libs.PropTypes.oneOfType([_libs.PropTypes.array, _libs.PropTypes.string]),
+  onChange: _libs.PropTypes.func
 };
 ;
 
