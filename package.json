@@ -1,6 +1,6 @@
 {
   "name": "element-react",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Element UI for React",
   "private": false,
   "main": "dist/npm/index.js",
@@ -70,6 +70,7 @@
     "react": "^15.5.4",
     "react-click-outside": "^2.3.0",
     "react-dom": "^15.5.4",
+    "react-transition-group": "^1.1.1",
     "throttle-debounce": "^1.0.1"
   },
   "jest": {
