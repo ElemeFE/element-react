@@ -298,7 +298,7 @@ class Cascader extends Component {
             readOnly={!filterable}
             placeholder={currentLabels.length ? undefined : placeholder}
             value={inputValue}
-            onChange={e => { this.setState({inputValue: e.target.value}) }}
+            onChange={value => { this.setState({inputValue: value}) }}
             onKeyUp={this.debouncedInputChange.bind(this)}
             size={size}
             disabled={disabled}

@@ -860,7 +860,7 @@ class Select extends Component {
           disabled={disabled}
           readOnly={!filterable || multiple}
           icon={this.iconClass()}
-          onChange={e => this.setState({ selectedLabel: e.target.value })}
+          onChange={value => this.setState({ selectedLabel: value })}
           onClick={this.toggleMenu.bind(this)}
           onIconClick={this.toggleMenu.bind(this)}
           onMouseEnter={this.onMouseEnter.bind(this)}

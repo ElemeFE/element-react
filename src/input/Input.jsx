@@ -54,7 +54,7 @@ export default class Input extends Component {
     const { onChange } = this.props;
 
     if (onChange) {
-      onChange(e);
+      onChange(e.target.value);
     }
 
     this.resizeTextarea();
@@ -70,9 +70,10 @@ export default class Input extends Component {
     if (onBlur) onBlur(e)
   }
 
-  handleIconClick(e: SyntheticEvent): void {
-    const { onIconClick } = this.props;
-    if (onIconClick) onIconClick(e)
+  handleIconClick(): void {
+    if (this.props.onIconClick) {
+      this.props.onIconClick()
+    }
   }
 
   resizeTextarea(): void {

@@ -300,8 +300,8 @@ export default class BasePicker extends Component {
           onFocus={this.handleFocus.bind(this)}
           onBlur={this.handleBlur.bind(this)}
           onKeyDown={this.handleKeydown.bind(this)}
-          onChange={(evt) => {
-            const iptxt = evt.target.value
+          onChange={value => {
+            const iptxt = value
             const nstate = { text: iptxt }
             if (iptxt.trim() === '') {
               nstate.value = null

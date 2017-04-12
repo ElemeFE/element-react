@@ -16,7 +16,7 @@ constructor(props) {
 }
 
 onChange(value) {
-  console.log(value);
+
 }
 
 render() {
@@ -41,7 +41,7 @@ constructor(props) {
 }
 
 onChange(value) {
-  console.log(value);
+
 }
 
 render() {
@@ -68,7 +68,7 @@ constructor(props) {
 }
 
 onChange(value) {
-  console.log(value);
+
 }
 
 render() {

@@ -35,8 +35,8 @@ export default class MessageBox extends Component {
     })
   }
 
-  onChange(event: SyntheticInputEvent): void {
-    this.validate(event.target.value);
+  onChange(value: mixed): void {
+    this.validate(value);
   }
 
   typeClass(): string {

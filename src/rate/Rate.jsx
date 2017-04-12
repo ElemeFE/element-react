@@ -153,7 +153,7 @@ export default class Rate extends Component {
   }
 
   selectValue(value) {
-    const { disabled, allowHalf } = this.props;
+    const { disabled, allowHalf, onChange } = this.props;
     const { pointerAtLeftHalf } = this.state;
     if (disabled) {
       return;
@@ -164,7 +164,9 @@ export default class Rate extends Component {
       this.setState({
         currentValue: value,
         value,
-      }, () => this.props.change(value + 1))
+      }, () => {
+        onChange && onChange(value + 1);
+      })
     }
   }
 
@@ -260,7 +262,7 @@ Rate.propTypes = {
   'textColor': PropTypes.string,
   'disabled': PropTypes.bool,
   'value': PropTypes.number,
-  'change': PropTypes.func,
+  'onChange': PropTypes.func,
   'textTemplate': PropTypes.string,
   'lowThreshold': PropTypes.number,
   'highThreshold': PropTypes.number,
@@ -289,6 +291,5 @@ Rate.defaultProps = {
   'voidIconClass': 'el-icon-star-off',
   'disabledVoidIconClass': 'el-icon-star-on',
   'allowHalf': false,
-  'textTemplate': '{value}',
-  'change': () => {  }
+  'textTemplate': '{value}'
 }

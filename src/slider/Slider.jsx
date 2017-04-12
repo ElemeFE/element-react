@@ -287,9 +287,10 @@ export default class Slider extends Component {
         {
           showInput && !range && (
             <InputNumber
-              value={inputValue}
-              className="el-slider__input"
               ref="input"
+              className="el-slider__input"
+              defaultValue={inputValue}
+              value={inputValue}
               step={step}
               disabled={disabled}
               controls={showInputControls}
