@@ -35,7 +35,7 @@ export default class MessageBox extends Component {
     })
   }
 
-  onChange(value: mixed): void {
+  onChange(value: string): void {
     this.validate(value);
   }
 

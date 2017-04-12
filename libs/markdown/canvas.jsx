@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import marked from 'marked';
 import { transform } from 'babel-standalone';
 
@@ -109,7 +110,7 @@ export default class Canvas extends React.Component {
 }
 
 Canvas.propTypes = {
-  locale: React.PropTypes.object
+  locale: PropTypes.object
 };
 
 Canvas.defaultProps = {

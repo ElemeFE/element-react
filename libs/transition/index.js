@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
 export default class Transition extends Component {
   render() {

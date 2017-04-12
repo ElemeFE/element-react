@@ -14,6 +14,10 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _marked = require('marked');
 
 var _marked2 = _interopRequireDefault(_marked);
@@ -162,7 +166,7 @@ exports.default = _default;
 
 
 Canvas.propTypes = {
-  locale: _react2.default.PropTypes.object
+  locale: _propTypes2.default.object
 };
 
 Canvas.defaultProps = {

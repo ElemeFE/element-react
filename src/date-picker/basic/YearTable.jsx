@@ -1,11 +1,17 @@
+//@flow
 import React from 'react'
 
 import { PropTypes, Component } from '../../../libs';
 import { hasClass, deconstructDate } from '../utils'
 
+import type {YearTableProps} from '../Types';
 
 export default class YearTable extends Component {
-  getCellStyle(year) {
+  constructor(props: YearTableProps){
+    super(props)
+  }
+
+  getCellStyle(year: number) {
     const {disabledDate, value, date} = this.props
     const style = {};
     const ndate = new Date(date);
@@ -17,8 +23,8 @@ export default class YearTable extends Component {
     return style;
   }
 
-  handleYearTableClick(event) {
-    const target = event.target;
+  handleYearTableClick(event: SyntheticMouseEvent) {
+    const target: any = event.target;
     if (target.tagName === 'A') {
       if (hasClass(target.parentNode, 'disabled')) return;
       const year = target.textContent || target.innerText;

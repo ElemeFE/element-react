@@ -88,7 +88,7 @@ class AutoComplete extends Component {
     });
   }
 
-  handleChange(value: mixed): void {
+  handleChange(value: string): void {
     this.setState({ inputValue: value });
 
     if (!this.props.triggerOnFocus && !value) {

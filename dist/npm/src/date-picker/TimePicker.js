@@ -59,16 +59,19 @@ var TimePicker = function (_BasePicker) {
 
     // why this is used, goto: http://exploringjs.com/es6/ch_classes.html
     get: function get() {
-      return Object.assign({
+      var result = Object.assign({}, {
         // '18:30:00 - 20:30:00'
         // or ['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']
         selectableRange: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.arrayOf(_libs.PropTypes.string)])
       }, _BasePicker3.default.propTypes);
+
+      return result;
     }
   }, {
     key: 'defaultProps',
     get: function get() {
-      return Object.assign({}, _BasePicker3.default.defaultProps);
+      var result = Object.assign({}, _BasePicker3.default.defaultProps);
+      return result;
     }
   }]);
 

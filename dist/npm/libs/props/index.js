@@ -4,12 +4,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require('react');
+var _propTypes = require('prop-types');
 
-_react.PropTypes.range = require('./range');
-_react.PropTypes.regex = require('./regex');
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _default = _react.PropTypes;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_propTypes2.default.range = require('./range');
+_propTypes2.default.regex = require('./regex');
+
+var _default = _propTypes2.default;
 exports.default = _default;
 ;
 

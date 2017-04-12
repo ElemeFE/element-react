@@ -38,12 +38,14 @@ var TimeRangePicker = function (_BasePicker) {
   _createClass(TimeRangePicker, null, [{
     key: 'propTypes',
     get: function get() {
-      return Object.assign({}, _BasePicker3.default.propTypes);
+      var result = Object.assign({}, _BasePicker3.default.propTypes);
+      return result;
     }
   }, {
     key: 'defaultProps',
     get: function get() {
-      return Object.assign({}, _BasePicker3.default.defaultProps);
+      var result = Object.assign({}, _BasePicker3.default.defaultProps);
+      return result;
     }
   }]);
 

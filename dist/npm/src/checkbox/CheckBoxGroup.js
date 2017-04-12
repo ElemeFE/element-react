@@ -50,26 +50,21 @@ var CheckboxGroup = function (_Component) {
     }
   }, {
     key: 'onChange',
-    value: function onChange(e, label, value) {
-      var options = this.state.options;
+    value: function onChange(value, checked) {
+      var index = this.state.options.indexOf(value);
 
-      var newOptions = void 0;
-      if (e.target instanceof HTMLInputElement) {
-        if (e.target.checked) {
-          newOptions = options.concat(value || label);
-        } else {
-          newOptions = options.filter(function (v) {
-            return v !== value && v !== label;
-          });
+      if (checked) {
+        if (index === -1) {
+          this.state.options.push(value);
         }
+      } else {
+        this.state.options.splice(index, 1);
+      }
 
-        this.setState({
-          options: newOptions
-        });
+      this.forceUpdate();
 
-        if (this.props.onChange) {
-          this.props.onChange(newOptions);
-        }
+      if (this.props.onChange) {
+        this.props.onChange(this.state.options);
       }
     }
   }, {
@@ -83,7 +78,7 @@ var CheckboxGroup = function (_Component) {
         return _react2.default.cloneElement(child, Object.assign({}, child.props, {
           key: index,
           checked: child.props.checked || options.indexOf(child.props.value) >= 0 || options.indexOf(child.props.label) >= 0,
-          onChange: _this2.onChange.bind(_this2)
+          onChange: _this2.onChange.bind(_this2, child.props.value || child.props.label)
         }));
       });
 

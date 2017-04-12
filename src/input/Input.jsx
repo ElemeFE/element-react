@@ -50,7 +50,7 @@ export default class Input extends Component {
     return value;
   }
 
-  handleChange(e: SyntheticEvent): void {
+  handleChange(e: SyntheticInputEvent): void {
     const { onChange } = this.props;
 
     if (onChange) {

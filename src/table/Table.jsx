@@ -74,7 +74,7 @@ export default class Table extends Component{
         this.initLayout();
       });
     }
-    
+
     if(nextProps.height != this.props.height){
       this.initLayout();
     }
@@ -216,9 +216,9 @@ export default class Table extends Component{
     data = filterList || sortList || data;
 
     return (
-      <div 
+      <div
         ref="root"
-        style={this.style()} 
+        style={this.style()}
         className={this.className(rootClassName)}>
         <div
           ref="headerWrapper"
@@ -317,7 +317,7 @@ export default class Table extends Component{
 }
 
 Table.childContextTypes = {
-  $owerTable: React.PropTypes.object
+  $owerTable: PropTypes.object
 };
 
 Table.defaultProps = {

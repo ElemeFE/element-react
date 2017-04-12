@@ -1,10 +1,11 @@
+//@flow
 import React from 'react';
 
 import { pick } from '../../libs/utils'
 
 import BasePicker from './BasePicker'
 import DateRangePanel from './panel/DateRangePanel'
-
+import type { DateRangePickerProps } from './Types';
 
 export default class DateRangePicker extends BasePicker {
   static get propTypes() {
@@ -16,17 +17,18 @@ export default class DateRangePicker extends BasePicker {
   }
 
   static get defaultProps() {
-    return Object.assign({}, BasePicker.defaultProps)
+    let result: any = Object.assign({}, BasePicker.defaultProps)
+    return result;
   }
 
-  constructor(props) {
+  constructor(props: DateRangePickerProps) {
     super(props, 'daterange', {})
   }
 
-  pickerPanel(state, props) {
+  pickerPanel(state: any, props: DateRangePickerProps) {
     let value = state.value
     if (value instanceof Date){
-      value = [value, null] 
+      value = [value, null]
     }
     return (
       <DateRangePanel

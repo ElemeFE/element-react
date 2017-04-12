@@ -389,8 +389,8 @@ var Cascader = function (_Component) {
             readOnly: !filterable,
             placeholder: currentLabels.length ? undefined : placeholder,
             value: inputValue,
-            onChange: function onChange(e) {
-              _this6.setState({ inputValue: e.target.value });
+            onChange: function onChange(value) {
+              _this6.setState({ inputValue: value });
             },
             onKeyUp: this.debouncedInputChange.bind(this),
             size: size,

@@ -1,3 +1,5 @@
+//@flow
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -7,11 +9,9 @@ import { EventRegister } from '../../libs/internal'
 import Input from '../input'
 import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
 import { Errors, require_condition, IDGenerator } from '../../libs/utils';
+import type { BasePickerProps, ValidDateType } from './Types';
 
-/*
-todo:
-  handle animation popup
-*/
+type NullableDate = Date | null
 
 const idGen = new IDGenerator()
 const haveTriggerType = (type) => {
@@ -25,6 +25,8 @@ const isValidValue = (value) => {
 }
 
 export default class BasePicker extends Component {
+  state: any;
+
   static get propTypes() {
     return {
       align: PropTypes.oneOf(['left', 'center', 'right']),
@@ -54,11 +56,11 @@ export default class BasePicker extends Component {
     }
   }
 
-  constructor(props, type, state = {}) {
-    require_condition(typeof type === 'string')
+  constructor(props: BasePickerProps, _type: string, state: any = {}) {
+    require_condition(typeof _type === 'string')
     super(props);
 
-    this.type = type// type need to be set first
+    this.type = _type// type need to be set first
     this.state = Object.assign({}, state, {
       pickerVisible: false,
     }, this.propsToState(props))
@@ -66,7 +68,7 @@ export default class BasePicker extends Component {
     this.clickOutsideId = 'clickOutsideId_' + idGen.next()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: any) {
     this.setState(this.propsToState(nextProps))
   }
 
@@ -77,7 +79,7 @@ export default class BasePicker extends Component {
    * @param value: Date|Date[]|null
    * @param isKeepPannel: boolean = false
    */
-  onPicked(value, isKeepPannel = false) {//only change input value on picked triggered
+  onPicked(value: ValidDateType, isKeepPannel: boolean = false) {//only change input value on picked triggered
     require_condition(isValidValue(value))
     this.setState({
       pickerVisible: isKeepPannel,
@@ -87,8 +89,7 @@ export default class BasePicker extends Component {
     this.props.onChange(value)
   }
 
-  // (date: Date|null)=>string
-  dateToStr(date) {
+  dateToStr(date: ValidDateType) {
     if (!date) return ''
     require_condition(isValidValue(date))
 
@@ -103,7 +104,7 @@ export default class BasePicker extends Component {
   }
 
   // (string) => Date | null
-  parseDate(dateStr) {
+  parseDate(dateStr: string) : NullableDate{
     if (!dateStr) return null
     const type = this.type;
     const parser = (
@@ -113,11 +114,11 @@ export default class BasePicker extends Component {
     return parser(dateStr, this.getFormat());
   }
 
-  getFormat() {
+  getFormat(): string {
     return this.props.format || DEFAULT_FORMATS[this.type]
   }
 
-  propsToState(props) {
+  propsToState(props: BasePickerProps) {
     const state = {}
     if (this.isDateValid(props.value)) {
       state.text = this.dateToStr(props.value)
@@ -134,7 +135,7 @@ export default class BasePicker extends Component {
     return state
   }
 
-  triggerClass() {
+  triggerClass(): string {
     return this.type.includes('time') ? 'el-icon-time' : 'el-icon-date';
   }
 
@@ -161,7 +162,7 @@ export default class BasePicker extends Component {
     this.props.onBlur(this);
   }
 
-  handleKeydown(evt) {
+  handleKeydown(evt: SyntheticKeyboardEvent) {
     const keyCode = evt.keyCode;
     // tab
     if (keyCode === 9) {
@@ -176,19 +177,18 @@ export default class BasePicker extends Component {
   }
 
   // (state, props)=>ReactElement
-  pickerPanel() {
+  pickerPanel(state: any, props: $Subtype<BasePickerProps>) {
     throw new Errors.MethodImplementationRequiredError()
   }
 
-  // (Date|null)=>bool
-  isDateValid(date) {
+  isDateValid(date: ValidDateType) {
     return date == null || isValidValue(date)
   }
 
   // return true on condition
   //  * input is parsable to date
   //  * also meet your other condition
-  isInputValid(value) {
+  isInputValid(value: string): boolean {
     const parseable = this.parseDate(value)
     if (!parseable) {
       return false
@@ -302,7 +302,8 @@ export default class BasePicker extends Component {
           onKeyDown={this.handleKeydown.bind(this)}
           onChange={value => {
             const iptxt = value
-            const nstate = { text: iptxt }
+            const nstate: Object = { text: iptxt }
+
             if (iptxt.trim() === '') {
               nstate.value = null
             } else if (this.isInputValid(iptxt)) {//only set value on a valid date input

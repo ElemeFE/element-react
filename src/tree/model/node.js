@@ -1,7 +1,8 @@
+/* @flow */
+
 let nodeIdSeed = 0;
 
 const reInitChecked = function(node) {
-  
   const siblings = node.childNodes;
 
   let all = true;
@@ -26,7 +27,7 @@ const reInitChecked = function(node) {
   }
 };
 
-const getPropertyFromData = function(node, prop) {
+const getPropertyFromData = function(node, prop: string) {
   const props = node.props;
   const data = node.data || {};
   const config = props[prop];
@@ -40,8 +41,39 @@ const getPropertyFromData = function(node, prop) {
   }
 };
 
+type NodeProps = {
+  id?: number,
+  text?: any,
+  checked?: boolean,
+  indeterminate?: boolean,
+  data?: ?Object,
+  expanded?: boolean,
+  props?: any,
+  parent?: any,
+  lazy?: boolean,
+  level?: number,
+  loaded?: boolean,
+  childNodes?: Array<any>,
+  loading?: boolean
+};
+
 export default class Node {
-  constructor(options) {
+  id: number;
+  text: any;
+  checked: boolean;
+  indeterminate: boolean;
+  data: ?Object;
+  expanded: boolean;
+  props: any;
+  parent: any;
+  lazy: boolean;
+  level: number;
+  loaded: boolean;
+  childNodes: Array<any>;
+  loading: boolean;
+  load: Function;
+
+  constructor(options: NodeProps) {
     this.id = nodeIdSeed++;
     this.text = null;
     this.checked = false;
@@ -54,7 +86,8 @@ export default class Node {
 
     for (let name in options) {
       if (options.hasOwnProperty(name)) {
-        this[name] = options[name];
+        const self: Object = this;
+        self[name] = options[name];
       }
     }
 
@@ -73,7 +106,7 @@ export default class Node {
     }
   }
 
-  setData(data) {
+  setData(data: Object): void {
     if (!Array.isArray(data) && !data.$treeNodeId) {
       Object.defineProperty(data, '$treeNodeId', {
         value: this.id,
@@ -98,15 +131,15 @@ export default class Node {
     }
   }
 
-  get label() {
+  get label(): any {
     return getPropertyFromData(this, 'label');
   }
 
-  get icon() {
+  get icon(): any {
     return getPropertyFromData(this, 'icon');
   }
 
-  insertChild(child, index) {
+  insertChild(child: Object, index?: number): void {
     if (!child) throw new Error('insertChild error: child is required.');
 
     if (!(child instanceof Node)) {
@@ -128,7 +161,7 @@ export default class Node {
     }
   }
 
-  removeChild(child) {
+  removeChild(child: Object) {
     const index = this.childNodes.indexOf(child);
 
     if (index > -1) {
@@ -137,7 +170,7 @@ export default class Node {
     }
   }
 
-  removeChildByData(data) {
+  removeChildByData(data: Object): void {
     let targetNode = null;
     this.childNodes.forEach(node => {
       if (node.data === data) {
@@ -150,9 +183,9 @@ export default class Node {
     }
   }
 
-  expand(callback) {
+  expand(callback: Function): void {
     if (this.shouldLoadData()) {
-      this.loadData((data) => {
+      this.loadData(data => {
         if (data instanceof Array) {
           callback();
         }
@@ -165,25 +198,25 @@ export default class Node {
     }
   }
 
-  doCreateChildren(array, defaultProps = {}) {
-    array.forEach((item) => {
+  doCreateChildren(array: Array<Object>, defaultProps: Object = {}): void {
+    array.forEach(item => {
       this.insertChild(Object.assign({ data: item }, defaultProps));
     });
   }
 
-  collapse() {
+  collapse(): void {
     this.expanded = false;
   }
 
-  shouldLoadData() {
+  shouldLoadData(): boolean {
     return this.lazy === true && this.load && !this.loaded;
   }
 
-  get isLeaf() {
+  get isLeaf(): boolean {
     return !this.hasChild();
   }
 
-  hasChild() {
+  hasChild(): boolean {
     const childNodes = this.childNodes;
     if (!this.lazy || (this.lazy === true && this.loaded === true)) {
       return childNodes && childNodes.length > 0;
@@ -191,7 +224,7 @@ export default class Node {
     return true;
   }
 
-  setChecked(value, deep) {
+  setChecked(value: string | boolean, deep: boolean): void {
     this.indeterminate = value === 'half';
     this.checked = value === true;
 
@@ -207,11 +240,14 @@ export default class Node {
 
     if (this.shouldLoadData()) {
       // Only work on lazy load data.
-      this.loadData(() => {
-        handleDeep();
-      }, {
-        checked: value !== false
-      });
+      this.loadData(
+        () => {
+          handleDeep();
+        },
+        {
+          checked: value !== false
+        }
+      );
     } else {
       handleDeep();
     }
@@ -222,7 +258,8 @@ export default class Node {
     reInitChecked(parent);
   }
 
-  getChildren() { // this is data
+  getChildren(): any {
+    // this is data
     const data = this.data;
     if (!data) return null;
 
@@ -239,9 +276,9 @@ export default class Node {
     return data[children];
   }
 
-  updateChildren() {
+  updateChildren(): void {
     const newData = this.getChildren() || [];
-    const oldData = this.childNodes.map((node) => node.data);
+    const oldData = this.childNodes.map(node => node.data);
 
     const newDataMap = {};
     const newNodes = [];
@@ -254,15 +291,17 @@ export default class Node {
       }
     });
 
-    oldData.forEach((item) => { if (!newDataMap[item.$treeNodeId]) this.removeChildByData(item); });
+    oldData.forEach(item => {
+      if (!newDataMap[item.$treeNodeId]) this.removeChildByData(item);
+    });
     newNodes.forEach(({ index, data }) => this.insertChild({ data }, index));
   }
 
-  loadData(callback, defaultProps = {}) {
+  loadData(callback: Function, defaultProps: Object = {}) {
     if (this.lazy === true && this.load && !this.loaded) {
       this.loading = true;
 
-      const resolve = (children) => {
+      const resolve = children => {
         this.loaded = true;
         this.loading = false;
         this.childNodes = [];

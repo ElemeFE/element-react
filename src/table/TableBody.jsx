@@ -48,7 +48,7 @@ class BodyItem extends Component{
     const { onSelected, itemData } = this.props;
     const checked = e.target.checked;
     onSelected && onSelected(checked, itemData);
-  } 
+  }
 
   render(){
     const { itemData, columns, rowIndex, rowClassName, isHiglight, selected } = this.props;
@@ -78,7 +78,7 @@ class BodyItem extends Component{
             }else{
               content = itemData[column.property];
             }
-            const className = this.classNames({ 
+            const className = this.classNames({
               'is-hidden': !this.props.fixed && column.fixed,
               'is-center': column.align == 'center',
               'is-right' : column.align == 'right'
@@ -106,7 +106,7 @@ class BodyItem extends Component{
 
 
 BodyItem.contextTypes = {
-  $owerTable: React.PropTypes.object
+  $owerTable: PropTypes.object
 };
 
 export default class TableBody extends  Component{
@@ -171,9 +171,9 @@ export default class TableBody extends  Component{
   }
 
   render() {
-    const { 
-      columns, 
-      data, 
+    const {
+      columns,
+      data,
       rowClassName,
       fixed,
       highlightCurrentRow
@@ -195,7 +195,7 @@ export default class TableBody extends  Component{
               const refId = rowPrefix + dataIdx;
               const isHiglight = (highlightRows[0] == dataItem);
               return (
-                <BodyItem 
+                <BodyItem
                   fixed={fixed}
                   onSelected={(c, d)=>{this.onSelected(c, d)}}
                   selected={selected.indexOf(dataItem) > -1}
@@ -216,5 +216,5 @@ export default class TableBody extends  Component{
 }
 
 TableBody.contextTypes = {
-  $owerTable: React.PropTypes.object
+  $owerTable: PropTypes.object
 };
