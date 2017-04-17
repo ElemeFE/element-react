@@ -4,14 +4,10 @@ import defaultLang from './lang/zh-CN';
 let _lang = defaultLang
 
 function use(lang) {
-  console.log('use', lang);
-
   _lang = lang;
 }
 
 function t(path, options) {
-  console.log('t', _lang);
-
   const array = path.split('.');
     let current = _lang;
 
