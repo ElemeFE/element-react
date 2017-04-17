@@ -77,7 +77,7 @@ constructor(props) {
 
 render() {
   return (
-    <Select value={this.state.value} placeholder="请选择">
+    <Select value={this.state.value}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} disabled={el.disabled} />
@@ -121,7 +121,7 @@ constructor(props) {
 
 render() {
   return (
-    <Select value={this.state.value} placeholder="请选择" disabled={true}>
+    <Select value={this.state.value} disabled={true}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -165,7 +165,7 @@ constructor(props) {
 
 render() {
   return (
-    <Select value={this.state.value} placeholder="请选择" clearable={true}>
+    <Select value={this.state.value} clearable={true}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -209,7 +209,7 @@ constructor(props) {
 
 render() {
   return (
-    <Select value={this.state.value} placeholder="请选择" multiple={true}>
+    <Select value={this.state.value} multiple={true}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -256,7 +256,7 @@ constructor(props) {
 
 render() {
   return (
-    <Select value={this.state.value} placeholder="请选择">
+    <Select value={this.state.value}>
       {
         this.state.cities.map(el => {
           return (
@@ -314,7 +314,7 @@ constructor(props) {
 
 render() {
   return (
-    <Select value={this.state.value} placeholder="请选择">
+    <Select value={this.state.value}>
       {
         this.state.options.map(group => {
           return (
@@ -371,7 +371,7 @@ constructor(props) {
 
 render() {
   return (
-    <Select value={this.state.value} placeholder="请选择" filterable={true}>
+    <Select value={this.state.value} filterable={true}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -424,7 +424,7 @@ onSearch(query) {
 
 render() {
   return (
-    <Select value={this.state.value} placeholder="请选择" multiple={true} filterable={true} remote={true} remoteMethod={this.onSearch.bind(this)} loading={this.state.loading}>
+    <Select value={this.state.value} multiple={true} filterable={true} remote={true} remoteMethod={this.onSearch.bind(this)} loading={this.state.loading}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />

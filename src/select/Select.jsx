@@ -65,8 +65,8 @@ class Select extends Component {
       optionsCount: 0,
       hoverIndex: -1,
       bottomOverflowBeforeHidden: 0,
-      cachedPlaceHolder: props.placeholder,
-      currentPlaceholder: props.placeholder,
+      cachedPlaceHolder: props.placeholder || i18n.t('el.select.placeholder'),
+      currentPlaceholder: props.placeholder || i18n.t('el.select.placeholder'),
       selectedLabel: '',
       selectedInit: false,
       visible: false,
@@ -926,10 +926,6 @@ Select.propTypes = {
   multiple: PropTypes.bool,
   placeholder: PropTypes.string,
   onChange: PropTypes.func
-}
-
-Select.defaultProps = {
-  placeholder: i18n.t('el.select.placeholder')
 }
 
 export default ClickOutside(Select);

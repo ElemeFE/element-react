@@ -99,6 +99,10 @@ class Cascader extends Component {
     }
   }
 
+  placeholder(): string {
+    return this.props.placeholder || i18n.t('el.cascader.placeholder');
+  }
+
   updatePopper() {
     if (this.popperJS) {
       this.popperJS.update();
@@ -279,7 +283,7 @@ class Cascader extends Component {
   }
 
   render() {
-    const { size, disabled, placeholder, filterable, clearable, showAllLevels } = this.props;
+    const { size, disabled, filterable, clearable, showAllLevels } = this.props;
     const { menuVisible, inputHover, inputValue } = this.state;
     const currentLabels = this.currentLabels();
 
@@ -296,7 +300,7 @@ class Cascader extends Component {
           <Input
             ref="input"
             readOnly={!filterable}
-            placeholder={currentLabels.length ? undefined : placeholder}
+            placeholder={currentLabels.length ? undefined : this.placeholder()}
             value={inputValue}
             onChange={value => { this.setState({inputValue: value}) }}
             onKeyUp={this.debouncedInputChange.bind(this)}
@@ -362,7 +366,6 @@ Cascader.propTypes = {
 
 Cascader.defaultProps = {
   value: [],
-  placeholder: i18n.t('el.cascader.placeholder'),
   clearable: false,
   expandTrigger: 'click',
   showAllLevels: true,

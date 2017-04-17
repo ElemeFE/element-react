@@ -131,6 +131,11 @@ var Cascader = function (_Component) {
       }
     }
   }, {
+    key: 'placeholder',
+    value: function placeholder() {
+      return this.props.placeholder || _locale2.default.t('el.cascader.placeholder');
+    }
+  }, {
     key: 'updatePopper',
     value: function updatePopper() {
       if (this.popperJS) {
@@ -356,7 +361,6 @@ var Cascader = function (_Component) {
       var _props = this.props,
           size = _props.size,
           disabled = _props.disabled,
-          placeholder = _props.placeholder,
           filterable = _props.filterable,
           clearable = _props.clearable,
           showAllLevels = _props.showAllLevels;
@@ -387,7 +391,7 @@ var Cascader = function (_Component) {
           _react2.default.createElement(_input2.default, {
             ref: 'input',
             readOnly: !filterable,
-            placeholder: currentLabels.length ? undefined : placeholder,
+            placeholder: currentLabels.length ? undefined : this.placeholder(),
             value: inputValue,
             onChange: function onChange(value) {
               _this6.setState({ inputValue: value });
@@ -457,7 +461,6 @@ Cascader.propTypes = {
 
 Cascader.defaultProps = {
   value: [],
-  placeholder: _locale2.default.t('el.cascader.placeholder'),
   clearable: false,
   expandTrigger: 'click',
   showAllLevels: true,
