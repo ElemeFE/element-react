@@ -44,9 +44,9 @@ class BodyItem extends Component{
     tableProps.highlightCurrentRow && tableProps.onCurrentChange && tableProps.onCurrentChange(dataItem);
   }
 
-  onChange(e){
+  onChange(checked){
     const { onSelected, itemData } = this.props;
-    const checked = e.target.checked;
+
     onSelected && onSelected(checked, itemData);
   }
 

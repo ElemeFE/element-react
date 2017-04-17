@@ -165,11 +165,8 @@ export default class Node extends Component {
     }
   }
 
-  handleCheckChange(e: SyntheticEvent): void {
-    const nodeModel = this.props.nodeModel;
-    if (e.target instanceof HTMLInputElement) {
-      nodeModel.setChecked(e.target.checked, true);
-    }
+  handleCheckChange(checked: boolean): void {
+    this.props.nodeModel.setChecked(checked, true);
   }
 
   render(): React.Element<any> {

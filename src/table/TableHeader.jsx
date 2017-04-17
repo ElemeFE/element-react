@@ -253,7 +253,7 @@ export default class TableHeader extends  Component{
                         <div className="cell">
                           <Checkbox
                             checked={this.state.allChecked}
-                            onChange={e=>this.onAllChecked(e.target.checked)}/>
+                            onChange={checked => this.onAllChecked(checked)}/>
                         </div>)
                     }
 
