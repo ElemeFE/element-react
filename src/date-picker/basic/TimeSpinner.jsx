@@ -50,7 +50,7 @@ export default class TimeSpinner extends Component {
       isShowSeconds: PropTypes.bool,
       //[[datefrom, dateend]...]
       selectableRange: PropTypes.arrayOf(
-        PropTypes.arrayOf(React.PropTypes.instanceOf(Date))
+        PropTypes.arrayOf(PropTypes.instanceOf(Date))
       ).isRequired,
       /*
       type: one of [hours, minutes, seconds]

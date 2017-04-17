@@ -38,17 +38,20 @@ var TimeSelect = function (_BasePicker) {
   _createClass(TimeSelect, null, [{
     key: 'propTypes',
     get: function get() {
-      return Object.assign({
+      var result = Object.assign({}, {
         start: _libs.PropTypes.string,
         end: _libs.PropTypes.string,
         step: _libs.PropTypes.string,
         minTime: _libs.PropTypes.instanceOf(Date)
       }, _BasePicker3.default.propTypes);
+
+      return result;
     }
   }, {
     key: 'defaultProps',
     get: function get() {
-      return Object.assign({}, _BasePicker3.default.defaultProps);
+      var result = Object.assign({}, _BasePicker3.default.defaultProps);
+      return result;
     }
   }]);
 

@@ -30,8 +30,8 @@ Add an icon to indicate input type.
 ::: demo You can add an icon at the end of Input by setting the `icon` attribute and use `on-icon-click` hook to complete some work after clicking the icon.
 
 ```js
-handleIconClick(ev) {
-  console.log(ev);
+handleIconClick() {
+
 }
 
 render() {
@@ -39,7 +39,7 @@ render() {
     <Input
       icon="time"
       placeholder="Pick a date"
-      onIconClick={e => this.handleIconClick(e)}
+      onIconClick={this.handleIconClick.bind(this)}
     />
   )
 }
@@ -172,7 +172,7 @@ createFilter(queryString) {
 }
 
 handleSelect(item) {
-  console.log(item);
+
 }
 
 render() {
@@ -181,19 +181,19 @@ render() {
       <Layout.Col span="12" className="tac">
         <div className="text">list suggestions when activated</div>
         <AutoComplete
+          placeholder="Please input"
           value={this.state.value1}
           fetchSuggestions={this.querySearch.bind(this)}
-          placeholder="Please input"
-          select={this.handleSelect.bind(this)}
+          onSelect={this.handleSelect.bind(this)}
         ></AutoComplete>
       </Layout.Col>
       <Layout.Col span="12" className="tac">
         <div className="text">list suggestions on input</div>
         <AutoComplete
+          placeholder="Please input"
           value={this.state.value2}
           fetchSuggestions={this.querySearch.bind(this)}
-          placeholder="Please input"
-          select={this.handleSelect.bind(this)}
+          onSelect={this.handleSelect.bind(this)}
           triggerOnFocus={false}
         ></AutoComplete>
       </Layout.Col>
@@ -240,18 +240,18 @@ createFilter(queryString) {
 }
 
 handleSelect(item) {
-  console.log(item);
+
 }
 
 render() {
   return (
     <AutoComplete
       className="my-autocomplete"
+      icon="edit"
+      placeholder="Please input"
       value={this.state.value}
       fetchSuggestions={this.querySearch.bind(this)}
       customItem={this.props.customItem}
-      placeholder="Please input"
-      icon="edit"
       onSelect={this.handleSelect.bind(this)}
     ></AutoComplete>
   )
@@ -300,15 +300,15 @@ createFilter(queryString) {
 }
 
 handleSelect(item) {
-  console.log(item);
+
 }
 
 render() {
   return (
     <AutoComplete
+      placeholder="Please input"
       value={this.state.value}
       fetchSuggestions={this.querySearchAsync.bind(this)}
-      placeholder="Please input"
       onSelect={this.handleSelect.bind(this)}
     ></AutoComplete>
   )

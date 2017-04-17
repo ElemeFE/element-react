@@ -81,4 +81,4 @@ render() {
 ### Events
 | Event Name | Description | Parameters |
 |---------- |-------- |---------- |
-| change | Triggers when rate value is changed | value after changing |
+| onChange | Triggers when rate value is changed | value after changing |

@@ -56,8 +56,8 @@ export default class InputNumber extends Component {
     this.setState({ value }, this.onChange);
   }
 
-  onInput(e: SyntheticInputEvent): void {
-    this.setState({ value: e.target.value });
+  onInput(value: mixed): void {
+    this.setState({ value });
   }
 
   onChange(): void {

@@ -35,8 +35,16 @@ export default class MessageBox extends Component {
     })
   }
 
-  onChange(event: SyntheticInputEvent): void {
-    this.validate(event.target.value);
+  confirmButtonText(): string {
+    return this.props.confirmButtonText || i18n.t('el.messagebox.confirm');
+  }
+
+  cancelButtonText(): string {
+    return this.props.confirmButtonText || i18n.t('el.messagebox.cancel');
+  }
+
+  onChange(value: string): void {
+    this.validate(value);
   }
 
   typeClass(): string {
@@ -154,10 +162,10 @@ export default class MessageBox extends Component {
                   }
                   <div className="el-message-box__btns">
                     <View show={this.props.showCancelButton}>
-                      <Button className={this.props.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.props.cancelButtonText}</Button>
+                      <Button className={this.props.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.cancelButtonText()}</Button>
                     </View>
                     <View show={this.props.showConfirmButton}>
-                      <Button className={this.classNames('el-button--primary', this.props.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.props.confirmButtonText}</Button>
+                      <Button className={this.classNames('el-button--primary', this.props.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.confirmButtonText()}</Button>
                     </View>
                   </div>
                 </div>
@@ -199,7 +207,5 @@ MessageBox.propTypes = {
 MessageBox.defaultProps = {
   title: '提示',
   showClose: true,
-  showConfirmButton: true,
-  confirmButtonText: i18n.t('el.messagebox.confirm'),
-  cancelButtonText: i18n.t('el.messagebox.cancel')
+  showConfirmButton: true
 }

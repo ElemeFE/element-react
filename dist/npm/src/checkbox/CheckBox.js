@@ -60,6 +60,8 @@ var Checkbox = function (_Component) {
   }, {
     key: 'onChange',
     value: function onChange(e) {
+      var _this2 = this;
+
       var label = this.state.label;
       var _props = this.props,
           trueLabel = _props.trueLabel,
@@ -74,17 +76,13 @@ var Checkbox = function (_Component) {
           newLabel = _checked ? trueLabel : falseLabel;
         }
 
-        if (this.props.onChange) {
-          if (this.context.isWrap) {
-            this.props.onChange(e, label, value);
-          } else {
-            this.props.onChange(e, label, value);
-          }
-        }
-
         this.setState({
           checked: _checked,
           label: newLabel
+        }, function () {
+          if (_this2.props.onChange) {
+            _this2.props.onChange(_checked);
+          }
         });
       }
     }

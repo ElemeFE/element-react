@@ -45,7 +45,8 @@ var DatePicker = function (_BasePicker) {
   }, {
     key: 'defaultProps',
     get: function get() {
-      return Object.assign({}, _BasePicker3.default.defaultProps);
+      var result = Object.assign({}, _BasePicker3.default.defaultProps);
+      return result;
     }
   }]);
 

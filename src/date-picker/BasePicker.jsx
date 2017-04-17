@@ -300,9 +300,10 @@ export default class BasePicker extends Component {
           onFocus={this.handleFocus.bind(this)}
           onBlur={this.handleBlur.bind(this)}
           onKeyDown={this.handleKeydown.bind(this)}
-          onChange={(evt) => {
-            const iptxt = evt.target.value
-            const nstate: any = { text: iptxt }
+          onChange={value => {
+            const iptxt = value
+            const nstate: Object = { text: iptxt }
+
             if (iptxt.trim() === '') {
               nstate.value = null
             } else if (this.isInputValid(iptxt)) {//only set value on a valid date input

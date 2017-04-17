@@ -1,4 +1,5 @@
-import { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import { Component } from 'react';
 import { require_condition } from '../utils';
 
 const registerMap = window.__registerMap = window.__registerMap || {
@@ -58,4 +59,3 @@ EventRegister.propTypes = {
   func: PropTypes.func.isRequired,
   isUseCapture: PropTypes.bool
 };
-

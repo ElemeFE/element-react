@@ -95,18 +95,14 @@ var AutoComplete = function (_Component) {
     }
   }, {
     key: 'handleChange',
-    value: function handleChange(e) {
-      if (e.target instanceof HTMLInputElement) {
-        var _value = e.target.value;
+    value: function handleChange(value) {
+      this.setState({ inputValue: value });
 
-        this.setState({ inputValue: _value });
-
-        if (!this.props.triggerOnFocus && !_value) {
-          this.setState({ suggestions: [] });return;
-        }
-
-        this.getData(_value);
+      if (!this.props.triggerOnFocus && !value) {
+        this.setState({ suggestions: [] });return;
       }
+
+      this.getData(value);
     }
   }, {
     key: 'handleFocus',

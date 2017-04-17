@@ -33,8 +33,8 @@ export default class TableHeader extends  Component{
       target = target.parentNode;
     }
 
-    if (!column || 
-      !this.$ower.props.border || 
+    if (!column ||
+      !this.$ower.props.border ||
       column.type == 'selection' ||
       column.type == 'index' ||
       (typeof column.resizable != 'undefined' && column.resizable)) {
@@ -165,7 +165,7 @@ export default class TableHeader extends  Component{
 
     while(column.tagName.toLowerCase() != 'th'){
       column = column.parentNode;
-    } 
+    }
 
     pos = this.getPosByEle(column);
 
@@ -192,8 +192,8 @@ export default class TableHeader extends  Component{
         visible={visible}
         onClose={onClose}
         filters={filters}
-        position={pos} 
-        ower={ower}/>, 
+        position={pos}
+        ower={ower}/>,
       ower.filterContainer
     );
   }
@@ -236,7 +236,7 @@ export default class TableHeader extends  Component{
                 const className = this.classNames({
                   'is-center': column.align == 'center',
                   'is-right' : column.align == 'right',
-                  'is-hidden': !this.props.fixed && column.fixed, 
+                  'is-hidden': !this.props.fixed && column.fixed,
                   'ascending': (sortPropertyName == column.property && sortStatus == 1),
                   'descending': (sortPropertyName == column.property && sortStatus == 2)
                 });
@@ -251,9 +251,9 @@ export default class TableHeader extends  Component{
                     {
                       column.type == 'selection' && (
                         <div className="cell">
-                          <Checkbox 
+                          <Checkbox
                             checked={this.state.allChecked}
-                            onChange={e=>this.onAllChecked(e.target.checked)}/>
+                            onChange={checked => this.onAllChecked(checked)}/>
                         </div>)
                     }
 
@@ -261,9 +261,9 @@ export default class TableHeader extends  Component{
                       column.type == 'index' && <div className="cell">#</div>
                     }
 
-                    { 
-                      column.type != 'selection' && 
-                      column.type != 'index' && 
+                    {
+                      column.type != 'selection' &&
+                      column.type != 'index' &&
                       <div className="cell">
                         {column.label}
 
@@ -277,8 +277,8 @@ export default class TableHeader extends  Component{
 
                         {
                           column.filterable ? (
-                            <span 
-                              className="el-table__column-filter-trigger" 
+                            <span
+                              className="el-table__column-filter-trigger"
                               onClick={(e)=>this.onFilter(e, column.filters, column)}>
                               <i className="el-icon-arrow-down"></i>
                             </span>
@@ -301,5 +301,5 @@ export default class TableHeader extends  Component{
 }
 
 TableHeader.contextTypes = {
-  $owerTable: React.PropTypes.object
+  $owerTable: PropTypes.object
 };

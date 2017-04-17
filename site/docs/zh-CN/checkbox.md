@@ -76,16 +76,18 @@ constructor(props) {
   }
 }
 
-handleCheckAllChange(e) {
-  const checkedCities = e.target.checked ? ['上海', '北京', '广州', '深圳'] : [];
+handleCheckAllChange(checked) {
+  const checkedCities = checked ? ['上海', '北京', '广州', '深圳'] : [];
   this.setState({
     isIndeterminate: false,
-    checkAll: e.target.checked,
+    checkAll: checked,
     checkedCities: checkedCities,
   });
 }
 
 handleCheckedCitiesChange(value) {
+  console.log(value);
+  
   const checkedCount = value.length;
   const citiesLength = this.state.cities.length;
   this.setState({
@@ -102,11 +104,15 @@ render() {
 
   return (
     <div>
-      <Checkbox checked={this.state.checkAll} indeterminate={this.state.isIndeterminate} onChange={(e) => this.handleCheckAllChange(e)}>全选</Checkbox>
+      <Checkbox
+        checked={this.state.checkAll}
+        indeterminate={this.state.isIndeterminate}
+        onChange={this.handleCheckAllChange.bind(this)}
+      >全选</Checkbox>
       <div style={{margin: '15px 0'}}></div>
       <Checkbox.Group
         options={this.state.checkedCities}
-        onChange={(value) => this.handleCheckedCitiesChange(value)}>
+        onChange={this.handleCheckedCitiesChange.bind(this)}>
         {cbItem}
       </Checkbox.Group>
     </div>
@@ -128,7 +134,7 @@ render() {
 ### Checkbox Events
 | 事件名称 | 说明 | 回调参数 |
 |---------- |-------- |---------- |
-| onChange  | 当绑定值变化时触发的事件 |  event 事件对象  |
+| onChange  | 当绑定值变化时触发的事件 |  value  |
 
 ### Checkbox.Group Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |

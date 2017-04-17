@@ -51,17 +51,13 @@ export default class Checkbox extends Component {
         newLabel = checked ? trueLabel : falseLabel;
       }
 
-      if (this.props.onChange) {
-        if (this.context.isWrap) {
-          this.props.onChange(e, label, value);
-        } else {
-          this.props.onChange(e, label, value);
-        }
-      }
-
       this.setState({
         checked: checked,
         label: newLabel,
+      }, () => {
+        if (this.props.onChange) {
+          this.props.onChange(checked);
+        }
       });
     }
   }

@@ -24,6 +24,7 @@ type State = {
   isSelect: boolean,
   inputLength: number,
   inputWidth: number,
+  inputHovering: boolean,
   filteredOptionsCount: number,
   optionsCount: number,
   hoverIndex: number,
@@ -59,12 +60,13 @@ class Select extends Component {
       isSelect: true,
       inputLength: 20,
       inputWidth: 0,
+      inputHovering: false,
       filteredOptionsCount: 0,
       optionsCount: 0,
       hoverIndex: -1,
       bottomOverflowBeforeHidden: 0,
-      cachedPlaceHolder: props.placeholder,
-      currentPlaceholder: props.placeholder,
+      cachedPlaceHolder: props.placeholder || i18n.t('el.select.placeholder'),
+      currentPlaceholder: props.placeholder || i18n.t('el.select.placeholder'),
       selectedLabel: '',
       selectedInit: false,
       visible: false,
@@ -860,7 +862,7 @@ class Select extends Component {
           disabled={disabled}
           readOnly={!filterable || multiple}
           icon={this.iconClass()}
-          onChange={e => this.setState({ selectedLabel: e.target.value })}
+          onChange={value => this.setState({ selectedLabel: value })}
           onClick={this.toggleMenu.bind(this)}
           onIconClick={this.toggleMenu.bind(this)}
           onMouseEnter={this.onMouseEnter.bind(this)}
@@ -924,10 +926,6 @@ Select.propTypes = {
   multiple: PropTypes.bool,
   placeholder: PropTypes.string,
   onChange: PropTypes.func
-}
-
-Select.defaultProps = {
-  placeholder: i18n.t('el.select.placeholder')
 }
 
 export default ClickOutside(Select);

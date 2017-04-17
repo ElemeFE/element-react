@@ -1,7 +1,12 @@
 .demo-tooltip {
+    .el-tooltip {
+      display: inline-block;
+    }
+
     .el-tooltip + .el-tooltip {
       margin-left: 15px;
     }
+
     .box {
       width: 400px;
 

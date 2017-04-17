@@ -31,9 +31,9 @@ onSubmit(e) {
   console.log('submit!');
 }
 
-onChange(key, e) {
+onChange(key, value) {
   this.setState({
-    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+    form: Object.assign(this.state.form, { [key]: value })
   });
 }
 
@@ -124,9 +124,9 @@ onSubmit(e) {
   console.log('submit!');
 }
 
-onChange(key, e) {
+onChange(key, value) {
   this.setState({
-    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+    form: Object.assign(this.state.form, { [key]: value })
   });
 }
 
@@ -170,15 +170,13 @@ constructor(props) {
   };
 }
 
-onPositionChange(e) {
-  this.setState({
-    labelPosition: e
-  });
+onPositionChange(value) {
+  this.setState({ labelPosition: value });
 }
 
-onChange(key, e) {
+onChange(key, value) {
   this.setState({
-    form: Object.assign(this.state.form, { [key]: e.target ? e.target.value : e })
+    form: Object.assign(this.state.form, { [key]: value })
   });
 }
 
@@ -273,9 +271,9 @@ handleReset(e) {
   this.refs.form.resetFields();
 }
 
-onChange(key, e) {
+onChange(key, value) {
   this.setState({
-    form: Object.assign({}, this.state.form, { [key]: e.target ? e.target.value : e })
+    form: Object.assign({}, this.state.form, { [key]: value })
   });
 }
 
@@ -423,9 +421,9 @@ handleReset(e) {
   this.refs.form.resetFields();
 }
 
-onChange(key, e) {
+onChange(key, value) {
   this.setState({
-    form: Object.assign({}, this.state.form, { [key]: e.target ? e.target.value : e })
+    form: Object.assign({}, this.state.form, { [key]: value })
   });
 }
 
@@ -510,14 +508,14 @@ addDomain(e) {
   this.forceUpdate();
 }
 
-onEmailChange(e) {
+onEmailChange(value) {
   this.setState({
-    form: Object.assign({}, this.state.form, { email: e.target.value })
+    form: Object.assign({}, this.state.form, { email: value})
   });
 }
 
-onDomainChange(index, e) {
-  this.state.form.domains[index].value = e.target.value;
+onDomainChange(index, value) {
+  this.state.form.domains[index].value = value;
   this.forceUpdate();
 }
 

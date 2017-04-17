@@ -88,18 +88,14 @@ class AutoComplete extends Component {
     });
   }
 
-  handleChange(e: SyntheticInputEvent): void {
-    if (e.target instanceof HTMLInputElement) {
-      const value = e.target.value;
+  handleChange(value: string): void {
+    this.setState({ inputValue: value });
 
-      this.setState({ inputValue: value });
-
-      if (!this.props.triggerOnFocus && !value) {
-        this.setState({ suggestions: [] }); return;
-      }
-
-      this.getData(value);
+    if (!this.props.triggerOnFocus && !value) {
+      this.setState({ suggestions: [] }); return;
     }
+
+    this.getData(value);
   }
 
   handleFocus(): void {

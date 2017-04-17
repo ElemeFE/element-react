@@ -77,11 +77,11 @@ constructor(props) {
   }
 }
 
-handleCheckAllChange(e) {
-  const checkedCities = e.target.checked ? ['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen'] : [];
+handleCheckAllChange(checked) {
+  const checkedCities = checked ? ['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen'] : [];
   this.setState({
     isIndeterminate: false,
-    checkAll: e.target.checked,
+    checkAll: checked,
     checkedCities: checkedCities,
   });
 }
@@ -103,11 +103,15 @@ render() {
 
   return (
     <div>
-      <Checkbox checked={this.state.checkAll} indeterminate={this.state.isIndeterminate} onChange={(e) => this.handleCheckAllChange(e)}>Check all</Checkbox>
+      <Checkbox
+        checked={this.state.checkAll}
+        indeterminate={this.state.isIndeterminate}
+        onChange={this.handleCheckAllChange.bind(this)}
+      >Check all</Checkbox>
       <div style={{margin: '15px 0'}}></div>
       <Checkbox.Group
         options={this.state.checkedCities}
-        onChange={(value) => this.handleCheckedCitiesChange(value)}>
+        onChange={this.handleCheckedCitiesChange.bind(this)}>
         {cbItem}
       </Checkbox.Group>
     </div>
@@ -130,4 +134,4 @@ render() {
 ### Checkbox.Group Events
 | Event Name | Description | Parameters |
 |---------- |-------- |---------- |
-| onChange  | triggers when the binding value changes | Event object |
+| onChange  | triggers when the binding value changes | value |

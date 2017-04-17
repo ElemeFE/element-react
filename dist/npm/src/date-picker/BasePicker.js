@@ -34,11 +34,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/*
-todo:
-  handle animation popup
-*/
-
 var idGen = new _utils.IDGenerator();
 var haveTriggerType = function haveTriggerType(type) {
   return _constants.HAVE_TRIGGER_TYPES.indexOf(type) !== -1;
@@ -83,16 +78,16 @@ var BasePicker = function (_Component) {
     }
   }]);
 
-  function BasePicker(props, type) {
+  function BasePicker(props, _type) {
     var state = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
     _classCallCheck(this, BasePicker);
 
-    (0, _utils.require_condition)(typeof type === 'string');
+    (0, _utils.require_condition)(typeof _type === 'string');
 
     var _this = _possibleConstructorReturn(this, (BasePicker.__proto__ || Object.getPrototypeOf(BasePicker)).call(this, props));
 
-    _this.type = type; // type need to be set first
+    _this.type = _type; // type need to be set first
     _this.state = Object.assign({}, state, {
       pickerVisible: false
     }, _this.propsToState(props));
@@ -128,9 +123,6 @@ var BasePicker = function (_Component) {
       });
       this.props.onChange(value);
     }
-
-    // (date: Date|null)=>string
-
   }, {
     key: 'dateToStr',
     value: function dateToStr(date) {
@@ -230,12 +222,9 @@ var BasePicker = function (_Component) {
 
   }, {
     key: 'pickerPanel',
-    value: function pickerPanel() {
+    value: function pickerPanel(state, props) {
       throw new _utils.Errors.MethodImplementationRequiredError();
     }
-
-    // (Date|null)=>bool
-
   }, {
     key: 'isDateValid',
     value: function isDateValid(date) {
@@ -375,9 +364,10 @@ var BasePicker = function (_Component) {
           onFocus: this.handleFocus.bind(this),
           onBlur: this.handleBlur.bind(this),
           onKeyDown: this.handleKeydown.bind(this),
-          onChange: function onChange(evt) {
-            var iptxt = evt.target.value;
+          onChange: function onChange(value) {
+            var iptxt = value;
             var nstate = { text: iptxt };
+
             if (iptxt.trim() === '') {
               nstate.value = null;
             } else if (_this3.isInputValid(iptxt)) {

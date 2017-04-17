@@ -29,23 +29,21 @@ export default class CheckboxGroup extends Component {
     return { isWrap: true };
   }
 
-  onChange(e: SyntheticEvent, label: string, value: string): void {
-    const { options } = this.state;
-    let newOptions;
-    if (e.target instanceof HTMLInputElement) {
-      if (e.target.checked) {
-        newOptions = options.concat(value || label);
-      } else {
-        newOptions = options.filter(v =>v !== value && v !== label);
-      }
+  onChange(value: string, checked: boolean): void {
+    const index = this.state.options.indexOf(value);
 
-      this.setState({
-        options: newOptions
-      });
-
-      if (this.props.onChange) {
-        this.props.onChange(newOptions);
+    if (checked) {
+      if (index === -1) {
+        this.state.options.push(value);
       }
+    } else {
+      this.state.options.splice(index, 1);
+    }
+
+    this.forceUpdate();
+
+    if (this.props.onChange) {
+      this.props.onChange(this.state.options);
     }
   }
 
@@ -57,7 +55,7 @@ export default class CheckboxGroup extends Component {
         Object.assign({}, child.props, {
           key: index,
           checked: child.props.checked || options.indexOf(child.props.value) >= 0 || options.indexOf(child.props.label) >= 0 ,
-          onChange: this.onChange.bind(this),
+          onChange: this.onChange.bind(this, child.props.value || child.props.label),
         }),
       );
     });

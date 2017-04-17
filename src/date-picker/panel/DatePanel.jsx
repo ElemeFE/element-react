@@ -421,7 +421,7 @@ DatePanel.propTypes = {
   format: PropTypes.string,
   // Array[{text: String, onClick: (picker)=>()}]
   shortcuts: PropTypes.arrayOf(
-    React.PropTypes.shape({
+    PropTypes.shape({
       text: PropTypes.string.isRequired,
       // ()=>()
       onClick: PropTypes.func.isRequired

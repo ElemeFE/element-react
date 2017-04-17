@@ -10,9 +10,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactAddonsCssTransitionGroup = require('react-addons-css-transition-group');
+var _propTypes = require('prop-types');
 
-var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
+
+var _CSSTransitionGroup2 = _interopRequireDefault(_CSSTransitionGroup);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34,7 +38,7 @@ var Transition = function (_Component) {
   _createClass(Transition, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_reactAddonsCssTransitionGroup2.default, {
+      return _react2.default.createElement(_CSSTransitionGroup2.default, {
         transitionName: this.props.name,
         transitionEnterTimeout: Number(this.props.duration),
         transitionLeaveTimeout: Number(this.props.duration),
@@ -53,11 +57,11 @@ exports.default = _default;
 
 
 Transition.propTypes = {
-  name: _react.PropTypes.string.isRequired,
-  duration: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]),
-  component: _react.PropTypes.string,
-  className: _react.PropTypes.string,
-  style: _react.PropTypes.object
+  name: _propTypes2.default.string.isRequired,
+  duration: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+  component: _propTypes2.default.string,
+  className: _propTypes2.default.string,
+  style: _propTypes2.default.object
 };
 
 Transition.defaultProps = {

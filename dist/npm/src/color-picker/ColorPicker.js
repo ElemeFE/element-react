@@ -204,6 +204,11 @@ var ColorPicker = function (_Component) {
   return ColorPicker;
 }(_libs.Component);
 
+ColorPicker.defaultProps = {
+  onChange: function onChange() {}
+};
+
+
 ColorPicker.childContextTypes = {
   onChange: _libs.PropTypes.func
 };

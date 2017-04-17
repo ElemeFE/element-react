@@ -93,8 +93,8 @@ onKeyUp(e) {
   }
 }
 
-onChange(e) {
-  this.setState({ inputValue: e.target.value });
+onChange(value) {
+  this.setState({ inputValue: value });
 }
 
 handleClose(tag) {
