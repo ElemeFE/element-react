@@ -279,11 +279,14 @@ var Pagination = function (_Component3) {
   }, {
     key: 'internalPageCount',
     value: function internalPageCount() {
-      if (typeof this.state.total === 'number') {
-        return Math.ceil(this.state.total / this.state.internalPageSize);
-      } else if (typeof this.state.pageCount === 'number') {
-        return this.state.pageCount;
+      if (this.state) {
+        if (typeof this.state.total === 'number') {
+          return Math.ceil(this.state.total / this.state.internalPageSize);
+        } else if (typeof this.state.pageCount === 'number') {
+          return this.state.pageCount;
+        }
       }
+
       return null;
     }
   }, {
