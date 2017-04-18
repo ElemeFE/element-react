@@ -169,9 +169,7 @@ class Select extends Component {
   }
 
   componentWillUnmount() {
-    if (this.resetInputWidth()){
-      removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
-    }
+    removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
 
     if (this.popperJS) {
       this.popperJS.destroy();
