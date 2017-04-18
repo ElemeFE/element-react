@@ -105,7 +105,7 @@ type State = {
 
 export default class Pagination extends Component {
   state: State;
-  
+
   constructor(props: Object, context: Object) {
     super(props, context);
 
@@ -233,11 +233,14 @@ export default class Pagination extends Component {
   }
 
   internalPageCount(): ?number {
-    if (typeof this.state.total === 'number') {
-      return Math.ceil(this.state.total / this.state.internalPageSize);
-    } else if (typeof this.state.pageCount === 'number') {
-      return this.state.pageCount;
+    if (this.state) {
+      if (typeof this.state.total === 'number') {
+        return Math.ceil(this.state.total / this.state.internalPageSize);
+      } else if (typeof this.state.pageCount === 'number') {
+        return this.state.pageCount;
+      }
     }
+
     return null;
   }
 
