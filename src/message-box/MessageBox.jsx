@@ -40,7 +40,7 @@ export default class MessageBox extends Component {
   }
 
   cancelButtonText(): string {
-    return this.props.confirmButtonText || i18n.t('el.messagebox.cancel');
+    return this.props.cancelButtonText || i18n.t('el.messagebox.cancel');
   }
 
   onChange(value: string): void {
