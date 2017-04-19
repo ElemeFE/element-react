@@ -29,8 +29,7 @@ var Form = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
 
     _this.state = {
-      fields: {},
-      fieldLength: 0
+      fields: []
     };
     return _this;
   }
@@ -45,53 +44,52 @@ var Form = function (_Component) {
   }, {
     key: 'addField',
     value: function addField(field) {
-      this.state.fields[field.props.prop] = field;
-      this.state.fieldLength++;
+      this.state.fields.push(field);
     }
   }, {
     key: 'removeField',
     value: function removeField(field) {
-      delete this.state.fields[field.props.prop];
-      this.state.fieldLength--;
+      if (field.props.prop) {
+        this.state.fields.splice(this.state.fields.indexOf(field), 1);
+      }
     }
   }, {
     key: 'resetFields',
     value: function resetFields() {
-      var fields = this.state.fields;
-
-
-      for (var key in fields) {
-        fields[key].resetField();
-      }
+      this.state.fields.forEach(function (field) {
+        field.resetField();
+      });
     }
   }, {
     key: 'validate',
     value: function validate(callback) {
-      var _state = this.state,
-          fields = _state.fields,
-          fieldLength = _state.fieldLength;
+      var _this2 = this;
 
-      var count = 0,
-          valid = true;
+      var valid = true;
+      var count = 0;
 
-      for (var key in fields) {
-        fields[key].validate('', function (errors) {
+      // 如果需要验证的fields为空，调用验证时立刻返回callback
+      if (this.state.fields.length === 0 && callback) {
+        callback(true);
+      }
+
+      this.state.fields.forEach(function (field, index) {
+        field.validate('', function (errors) {
           if (errors) {
             valid = false;
           }
-
-          if (++count === fieldLength) {
+          if (typeof callback === 'function' && ++count === _this2.state.fields.length) {
             callback(valid);
           }
         });
-      }
+      });
     }
   }, {
     key: 'validateField',
     value: function validateField(prop, cb) {
-      var fields = this.state.fields;
-
-      var field = fields[prop];
+      var field = this.state.fields.filter(function (field) {
+        return field.props.prop === prop;
+      })[0];
 
       if (!field) {
         throw new Error('must call validateField with valid prop string!');

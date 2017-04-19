@@ -70,12 +70,6 @@ var FormItem = function (_Component) {
               return false;
             }
           });
-
-          var parent = _reactDom2.default.findDOMNode(this.parent());
-          if (parent) {
-            parent.addEventListener('blur', this.onFieldBlur.bind(this));
-            parent.addEventListener('change', this.onFieldChange.bind(this));
-          }
         }
       }
     }
@@ -246,7 +240,7 @@ var FormItem = function (_Component) {
             'is-error': error !== '',
             'is-validating': validating,
             'is-required': isRequired || required
-          }) },
+          }), onBlur: this.onFieldBlur.bind(this), onChange: this.onFieldChange.bind(this) },
         label && _react2.default.createElement(
           'label',
           { className: 'el-form-item__label', style: this.labelStyle() },
