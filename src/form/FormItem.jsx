@@ -44,12 +44,6 @@ export default class FormItem extends Component {
             return false;
           }
         });
-
-        const parent= ReactDOM.findDOMNode(this.parent());
-        if (parent) {
-          parent.addEventListener('blur', this.onFieldBlur.bind(this))
-          parent.addEventListener('change', this.onFieldChange.bind(this))
-        }
       }
     }
   }
@@ -191,7 +185,7 @@ export default class FormItem extends Component {
         'is-error': error !== '',
         'is-validating': validating,
         'is-required': isRequired || required
-      })}>
+      })} onBlur={this.onFieldBlur.bind(this)} onChange={this.onFieldChange.bind(this)}>
         {
           label && (
             <label className="el-form-item__label" style={this.labelStyle()}>

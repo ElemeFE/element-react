@@ -86,8 +86,6 @@ handleCheckAllChange(checked) {
 }
 
 handleCheckedCitiesChange(value) {
-  console.log(value);
-  
   const checkedCount = value.length;
   const citiesLength = this.state.cities.length;
   this.setState({

@@ -4,8 +4,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 type State = {
-  fields: Object,
-  fieldLength: number
+  fields: Array<Component>,
 };
 
 export default class Form extends Component {
@@ -15,8 +14,7 @@ export default class Form extends Component {
     super(props);
 
     this.state = {
-      fields: {},
-      fieldLength: 0
+      fields: []
     }
   }
 
@@ -27,47 +25,46 @@ export default class Form extends Component {
   }
 
   addField(field: Component): void {
-    this.state.fields[field.props.prop] = field;
-    this.state.fieldLength++;
+    this.state.fields.push(field);
   }
 
   removeField(field: Component): void {
-    delete this.state.fields[field.props.prop];
-    this.state.fieldLength--;
+    if (field.props.prop) {
+      this.state.fields.splice(this.state.fields.indexOf(field), 1);
+    }
   }
 
   resetFields(): void {
-    const { fields } = this.state;
-
-    for (const key in fields) {
-      fields[key].resetField();
-    }
+    this.state.fields.forEach(field => {
+      field.resetField();
+    });
   }
 
   validate(callback: Function): void {
-    const { fields, fieldLength } = this.state;
-    let count = 0, valid = true;
+    let valid = true;
+    let count = 0;
 
-    for (const key in fields) {
-      fields[key].validate('', errors => {
+    // 如果需要验证的fields为空，调用验证时立刻返回callback
+    if (this.state.fields.length === 0 && callback) {
+      callback(true);
+    }
+
+    this.state.fields.forEach((field, index) => {
+      field.validate('', errors => {
         if (errors) {
           valid = false;
         }
-
-        if (++count === fieldLength) {
+        if (typeof callback === 'function' && ++count === this.state.fields.length) {
           callback(valid);
         }
       });
-    }
+    });
   }
 
   validateField(prop: string, cb: Function): void {
-    const { fields } = this.state;
-    const field = fields[prop];
+    const field = this.state.fields.filter(field => field.props.prop === prop)[0];
 
-    if (!field) {
-      throw new Error('must call validateField with valid prop string!');
-    }
+    if (!field) { throw new Error('must call validateField with valid prop string!'); }
 
     field.validate('', cb);
   }
