@@ -68,7 +68,7 @@ var MessageBox = function (_Component) {
   }, {
     key: 'cancelButtonText',
     value: function cancelButtonText() {
-      return this.props.confirmButtonText || _locale2.default.t('el.messagebox.cancel');
+      return this.props.cancelButtonText || _locale2.default.t('el.messagebox.cancel');
     }
   }, {
     key: 'onChange',
