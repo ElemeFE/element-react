@@ -21,6 +21,10 @@ type State = {
   children: Array<any>,
   currentName: string,
   barStyle: Object,
+  navStyle: Object,
+  scrollable: boolean,
+  scrollNext: boolean,
+  scrollPrev: boolean,
 }
 
 export default class Tabs extends Component {
@@ -38,11 +42,24 @@ export default class Tabs extends Component {
       children: children,
       currentName: value || activeName || children[0].props.name,
       barStyle: {},
+      navStyle: {
+        transform: '',
+      },
+      scrollable: false,
+      scrollNext: false,
+      scrollPrev: false,
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.calcBarStyle(true);
+    this.update();
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State): void {
+    if (prevState.scrollable !== this.state.scrollable) {
+      this.scrollToActiveTab();
+    }
   }
 
   componentWillReceiveProps(nextProps: Props): void {
@@ -61,7 +78,7 @@ export default class Tabs extends Component {
     if (nextProps.children !== this.props.children) {
       this.setState({
         children: React.Children.toArray(nextProps.children),
-      });
+      }, () => this.update());
     }
   }
 
@@ -108,6 +125,7 @@ export default class Tabs extends Component {
       const { onTabClick } = this.props;
 
       this.calcBarStyle();
+      this.scrollToActiveTab();
       onTabClick && onTabClick(tab, e);
     });
   }
@@ -144,8 +162,98 @@ export default class Tabs extends Component {
     });
   }
 
+  scrollPrev(): void {
+    const containerWidth = this.refs.navScroll.offsetWidth;
+    const currentOffset = this.getCurrentScrollOffset();
+    if (!currentOffset) return;
+    let newOffset = currentOffset > containerWidth
+      ? currentOffset - containerWidth
+      : 0;
+    this.setOffset(newOffset);
+  }
+
+  scrollNext(): void {
+    const navWidth = this.refs.nav.offsetWidth;
+    const containerWidth = this.refs.navScroll.offsetWidth;
+    const currentOffset = this.getCurrentScrollOffset();
+    if (navWidth - currentOffset <= containerWidth) return;
+    let newOffset = navWidth - currentOffset > containerWidth * 2
+      ? currentOffset + containerWidth
+      : (navWidth - containerWidth);
+    this.setOffset(newOffset);
+  }
+
+  scrollToActiveTab(): void {
+    if (!this.state.scrollable) return;
+
+    const nav = this.refs.nav;
+    const activeTab = nav.querySelector('.is-active');
+    const navScroll = this.refs.navScroll;
+    const activeTabBounding = activeTab.getBoundingClientRect();
+    const navScrollBounding = navScroll.getBoundingClientRect();
+    const navBounding = nav.getBoundingClientRect();
+    const currentOffset = this.getCurrentScrollOffset();
+    let newOffset = currentOffset;
+
+    if (activeTabBounding.left < navScrollBounding.left) {
+      newOffset = currentOffset - (navScrollBounding.left - activeTabBounding.left);
+    }
+
+    if (activeTabBounding.right > navScrollBounding.right) {
+      newOffset = currentOffset + activeTabBounding.right - navScrollBounding.right;
+    }
+
+    if (navBounding.right < navScrollBounding.right) {
+      newOffset = nav.offsetWidth - navScrollBounding.width;
+    }
+
+    this.setOffset(Math.max(newOffset, 0));
+  }
+
+  getCurrentScrollOffset(): void {
+    const { navStyle } = this.state;
+    return navStyle.transform
+      ? Number(navStyle.transform.match(/translateX\(-(\d+(\.\d+)*)px\)/)[1])
+      : 0;
+  }
+
+  setOffset(value: number): void {
+    this.setState({
+      navStyle: {
+        transform: `translateX(-${value}px)`,
+      }
+    });
+  }
+
+  update(): void {
+    const navWidth = this.refs.nav.offsetWidth;
+    const containerWidth = this.refs.navScroll.offsetWidth;
+    const currentOffset = this.getCurrentScrollOffset();
+
+    if (containerWidth < navWidth) {
+      const currentOffset = this.getCurrentScrollOffset();
+      this.setState({
+        scrollable: true,
+        scrollablePrev: currentOffset,
+        scrollableNext: currentOffset + containerWidth < navWidth,
+      });
+
+      if (navWidth - currentOffset < containerWidth) {
+        this.setOffset(navWidth - containerWidth);
+      }
+    } else {
+      this.setState({
+        scrollable: false,
+      })
+
+      if (currentOffset > 0) {
+        this.setOffset(0);
+      }
+    }
+  }
+
   render(): React.Element<any> {
-    const { children, currentName, barStyle } = this.state;
+    const { children, currentName, barStyle, navStyle, scrollable, scrollNext, scrollPrev } = this.state;
     const { type, addable, closable, editable } = this.props;
     const tabsCls = this.classNames({
       'el-tabs': true,
@@ -162,15 +270,32 @@ export default class Tabs extends Component {
         </span>
       )
       : null;
+    const scrollBtn = scrollable
+      ? [
+        (<span key="el-tabs__nav-prev"
+          className={scrollable.prev ? 'el-tabs__nav-prev' : 'el-tabs__nav-prev is-disabled'}
+          onClick={() => this.scrollPrev()}
+        >
+          <i className="el-icon-arrow-left"></i>
+        </span>),
+        (<span key="el-tabs__nav-next"
+          className={scrollable.next ? 'el-tabs__nav-next' : 'el-tabs__nav-next is-disabled'}
+          onClick={() => this.scrollNext()}
+        >
+          <i className="el-icon-arrow-right"></i>
+        </span>)
+      ]
+      : null;
     this.tabs = [];
 
     return (
       <div style={this.style()} className={this.className(tabsCls)}>
         <div className="el-tabs__header">
           {addButton}
-          <div className="el-tabs__nav-wrap">
-            <div className="el-tabs__nav-scroll">
-              <div className="el-tabs__nav">
+          <div className={scrollable ? 'el-tabs__nav-wrap is-scrollable' : 'el-tabs__nav-wrap'}>
+            {scrollBtn}
+            <div className="el-tabs__nav-scroll" ref="navScroll">
+              <div className="el-tabs__nav" ref="nav" style={navStyle}>
                 {
                   React.Children.map(children, (item, index) => {
                     const { name, label, disabled } = item.props;
