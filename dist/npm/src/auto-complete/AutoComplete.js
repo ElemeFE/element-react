@@ -88,8 +88,6 @@ var AutoComplete = function (_Component) {
 
         if (Array.isArray(suggestions)) {
           _this2.setState({ suggestions: suggestions });
-        } else {
-          console.error('autocomplete suggestions must be an array');
         }
       });
     }

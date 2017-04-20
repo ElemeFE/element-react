@@ -49,7 +49,7 @@ export default class Form extends Component {
       callback(true);
     }
 
-    this.state.fields.forEach((field, index) => {
+    this.state.fields.forEach(field => {
       field.validate('', errors => {
         if (errors) {
           valid = false;

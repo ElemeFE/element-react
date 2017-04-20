@@ -1,7 +1,6 @@
 /* @flow */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import AsyncValidator from 'async-validator';
 import { Component, PropTypes, Transition } from '../../libs';
 
@@ -67,7 +66,9 @@ export default class FormItem extends Component {
       return;
     }
 
-    this.validate('change');
+    setTimeout(() => {
+      this.validate('change');
+    });
   }
 
   validate(trigger: string, cb?: Function): boolean | void {
