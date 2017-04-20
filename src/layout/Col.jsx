@@ -38,8 +38,10 @@ export default class Col extends Component {
             : `el-col-${size}-${props[prop]}`
           );
         });
-      } else if(typeof this.props[size] === 'number') {
-        classList.push(`el-col-${size}-${Number(this.props[size])}`);
+      } else {
+        if (this.props[size]) {
+          classList.push(`el-col-${size}-${Number(this.props[size])}`);
+        }
       }
     });
 
