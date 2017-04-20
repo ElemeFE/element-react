@@ -82,8 +82,6 @@ class AutoComplete extends Component {
 
       if (Array.isArray(suggestions)) {
         this.setState({ suggestions });
-      } else {
-        console.error('autocomplete suggestions must be an array');
       }
     });
   }

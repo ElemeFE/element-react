@@ -73,7 +73,7 @@ var Form = function (_Component) {
         callback(true);
       }
 
-      this.state.fields.forEach(function (field, index) {
+      this.state.fields.forEach(function (field) {
         field.validate('', function (errors) {
           if (errors) {
             valid = false;

@@ -10,10 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 var _asyncValidator = require('async-validator');
 
 var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
@@ -91,13 +87,17 @@ var FormItem = function (_Component) {
   }, {
     key: 'onFieldChange',
     value: function onFieldChange() {
+      var _this3 = this;
+
       if (this.validateDisabled) {
         this.validateDisabled = false;
 
         return;
       }
 
-      this.validate('change');
+      setTimeout(function () {
+        _this3.validate('change');
+      });
     }
   }, {
     key: 'validate',
