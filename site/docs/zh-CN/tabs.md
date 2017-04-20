@@ -130,7 +130,7 @@ editTab(action, tab) {
       title: 'new Tab',
       name: 'Tab ' + index,
       content: 'new Tab content',
-    })
+    });
     this.setState({
       tabs,
       tabIndex: index,
@@ -138,7 +138,13 @@ editTab(action, tab) {
   }
 
   if (action === 'remove') {
+    const { tabs } = this.state;
+
     console.log(action, tab);
+    tabs.splice(tab.key.replace(/^\.\$/, ''), 1);
+    this.setState({
+      tabs,
+    });
   }
 }
 
@@ -185,10 +191,19 @@ addTab() {
     title: 'new Tab',
     name: 'Tab ' + index,
     content: 'new Tab content',
-  })
+  });
   this.setState({
     tabs,
     tabIndex: index,
+  });
+}
+
+removeTab(tab) {
+  const { tabs, tabIndex } = this.state;
+
+  tabs.splice(tab.key.replace(/^\.\$/, ''), 1);
+  this.setState({
+    tabs,
   });
 }
 
@@ -198,7 +213,7 @@ render() {
       <div style={{marginBottom: '20px'}}>
         <Button size="small" onClick={() => this.addTab()}>add tab</Button>
       </div>
-      <Tabs type="card" value="Tab 2">
+      <Tabs type="card" value="Tab 2" onTabRemove={(tab) => this.removeTab(tab)}>
         {
           this.state.tabs.map((item, index) => {
             return <Tabs.Pane key={index} closable label={item.title} name={item.name}>{item.content}</Tabs.Pane>
