@@ -62,7 +62,7 @@ export default class Suggestions extends Component {
         dropdownWidth: inputWidth,
         showPopper: visible
       })
-    }, 7);
+    }, 30);
   }
 
   parent(): Component {

@@ -84,7 +84,7 @@ var Suggestions = function (_Component) {
           dropdownWidth: inputWidth,
           showPopper: visible
         });
-      }, 7);
+      }, 30);
     }
   }, {
     key: 'parent',
