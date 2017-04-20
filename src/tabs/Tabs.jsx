@@ -210,7 +210,7 @@ export default class Tabs extends Component {
     this.setOffset(Math.max(newOffset, 0));
   }
 
-  getCurrentScrollOffset(): void {
+  getCurrentScrollOffset(): number {
     const { navStyle } = this.state;
     return navStyle.transform
       ? Number(navStyle.transform.match(/translateX\(-(\d+(\.\d+)*)px\)/)[1])
