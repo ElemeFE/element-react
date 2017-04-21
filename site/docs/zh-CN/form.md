@@ -27,14 +27,11 @@ constructor(props) {
 
 onSubmit(e) {
   e.preventDefault();
-
-  console.log('submit!');
 }
 
 onChange(key, value) {
-  this.setState({
-    form: Object.assign(this.state.form, { [key]: value })
-  });
+  this.state.form[key] = value;
+  this.forceUpdate();
 }
 
 render() {
@@ -72,7 +69,12 @@ render() {
         </Layout.Col>
       </Form.Item>
       <Form.Item label="即时配送">
-        <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
+        <Switch
+          onText=""
+          offText=""
+          value={this.state.form.delivery}
+          onChange={this.onChange.bind(this, 'delivery')}
+        />
       </Form.Item>
       <Form.Item label="活动性质">
         <Checkbox.Group value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}>

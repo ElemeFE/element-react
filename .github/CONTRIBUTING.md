@@ -14,7 +14,7 @@ We are very graceful that you are interested in contributing to `element-react`.
 
 - Fork this repository to your own account. Do not create branches here.
 
-- Make sure PRs are created to `dev` branch instead of `master` branch.
+- Make sure pull request will be merged into `master`.
 
 - Commit info should be formatted as `[Component Name]: Info about commit.` (e.g. `Button: Fix xxx bug`)
 

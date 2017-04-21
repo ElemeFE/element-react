@@ -31,9 +31,8 @@ onSubmit(e) {
 }
 
 onChange(key, value) {
-  this.setState({
-    form: Object.assign(this.state.form, { [key]: value })
-  });
+  this.state.form[key] = value;
+  this.forceUpdate();
 }
 
 render() {
@@ -71,7 +70,12 @@ render() {
         </Layout.Col>
       </Form.Item>
       <Form.Item label="Instant delivery">
-        <Switch onText="" offText="" value={this.state.form.delivery}></Switch>
+        <Switch
+          onText=""
+          offText=""
+          value={this.state.form.delivery}
+          onChange={this.onChange.bind(this, 'delivery')}
+        />
       </Form.Item>
       <Form.Item label="Activity type">
         <Checkbox.Group value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}>

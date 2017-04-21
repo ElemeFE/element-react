@@ -63,7 +63,9 @@ var Col = function (_Component) {
             classList.push(prop !== 'span' ? 'el-col-' + size + '-' + prop + '-' + props[prop] : 'el-col-' + size + '-' + props[prop]);
           });
         } else {
-          classList.push('el-col-' + size + '-' + Number(_this2.props[size]));
+          if (_this2.props[size]) {
+            classList.push('el-col-' + size + '-' + Number(_this2.props[size]));
+          }
         }
       });
 
