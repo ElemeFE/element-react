@@ -26,15 +26,18 @@ export default class Notification extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      visible: true
-    })
-
+    this.setState({ visible: true });
     this.startTimer();
   }
 
   componentWillUnmount() {
     this.stopTimer();
+  }
+
+  onClick() {
+    if (this.props.onClick) {
+      this.props.onClick();
+    }
   }
 
   onClose() {
@@ -70,7 +73,7 @@ export default class Notification extends Component {
           <div className="el-notification" style={{
               top: this.props.top,
               zIndex: 9999
-          }} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
+          }} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)} onClick={this.onClick.bind(this)}>
             {
               this.props.type && <i className={this.classNames('el-notification__icon', this.typeClass(), this.props.iconClass)} />
             }
@@ -94,6 +97,7 @@ Notification.propTypes = {
   message: PropTypes.string,
   duration: PropTypes.number,
   iconClass: PropTypes.string,
+  onClick: PropTypes.func,
   top: PropTypes.number
 }
 

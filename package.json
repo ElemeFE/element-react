@@ -39,10 +39,10 @@
     "babel-standalone": "^6.24.0",
     "core-js": "^2.4.1",
     "css-loader": "^0.28.0",
-    "element-theme-default": "^1.2.8",
+    "element-theme-default": "^1.2.9",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-flowtype": "^2.30.4",
+    "eslint-plugin-flowtype": "^2.32.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
@@ -70,7 +70,7 @@
     "react": "^15.5.4",
     "react-click-outside": "^2.3.0",
     "react-dom": "^15.5.4",
-    "react-transition-group": "^1.1.1",
+    "react-transition-group": "^1.1.2",
     "throttle-debounce": "^1.0.1"
   },
   "jest": {

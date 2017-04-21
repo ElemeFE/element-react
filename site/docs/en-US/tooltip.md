@@ -108,11 +108,7 @@ render() {
 
 ### Advanced usage
 
-In addition to basic usages, there are some attributes that allow you to customize your own:
-
-`transition` attribute allows you to customize the animation in which the tooltip shows or hides, and the default value is `fade-in-linear`.
-
-`disabled` attribute allows you to disable `tooltip`. You just need set it to `true`.
+In addition to basic usages, there are some attributes that allow you to customize your own: `transition` attribute allows you to customize the animation in which the tooltip shows or hides, and the default value is `fade-in-linear`. `disabled` attribute allows you to disable `tooltip`. You just need set it to `true`.
 
 :::demo By the state to control whether to display
 ```js
@@ -138,7 +134,7 @@ render() {
 | Attribute               | Description                                | Type             | Accepted Values      | Default |
 |--------------------|----------------------------------------------------------|-------------------|-------------|--------|
 |  effect        |  Tooltip theme  | String            | `dark`, `light`  | dark  |
-|  content        |  display content  | String/DOM element            | — | — |
+|  content        |  display content  | String/Node            | — | — |
 |  placement        |  position of Tooltip  | String           |  `top`, `top-start`, `top-end`, `bottom`, `bottom-start`, `bottom-end`, `left`, `left-start`, `left-end`, `right`, `right-start`, `right-end` |  bottom |
 |  visible        |  visibility of Tooltip  | Boolean           | — |  false |
 |  disabled       |  whether Tooltip is disabled  | Boolean           | — |  false |

@@ -44,16 +44,20 @@ var Notification = function (_Component) {
   _createClass(Notification, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.setState({
-        visible: true
-      });
-
+      this.setState({ visible: true });
       this.startTimer();
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       this.stopTimer();
+    }
+  }, {
+    key: 'onClick',
+    value: function onClick() {
+      if (this.props.onClick) {
+        this.props.onClick();
+      }
     }
   }, {
     key: 'onClose',
@@ -103,7 +107,7 @@ var Notification = function (_Component) {
             { className: 'el-notification', style: {
                 top: this.props.top,
                 zIndex: 9999
-              }, onMouseEnter: this.stopTimer.bind(this), onMouseLeave: this.startTimer.bind(this) },
+              }, onMouseEnter: this.stopTimer.bind(this), onMouseLeave: this.startTimer.bind(this), onClick: this.onClick.bind(this) },
             this.props.type && _react2.default.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass(), this.props.iconClass) }),
             _react2.default.createElement(
               'div',
@@ -141,6 +145,7 @@ Notification.propTypes = {
   message: _libs.PropTypes.string,
   duration: _libs.PropTypes.number,
   iconClass: _libs.PropTypes.string,
+  onClick: _libs.PropTypes.func,
   top: _libs.PropTypes.number
 };
 

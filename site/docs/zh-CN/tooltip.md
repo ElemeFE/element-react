@@ -108,15 +108,7 @@ render() {
 
 ### 高级扩展
 
-除了这些基本设置外，还有一些属性可以让使用者更好的定制自己的效果：
-
-`transition`属性可以定制显隐的动画效果，默认为`fade-in-linear`。
-
-如果需要关闭`tooltip`功能，`disabled`属性可以满足这个需求，它接受一个`Boolean`，设置为`true`即可。
-
-事实上，这是基于 [Vue-popper](https://github.com/element-component/vue-popper) 的扩展，你可以自定义任意 Vue-popper 中允许定义的字段。
-
-当然，Tooltip 组件实际上十分强大，文末的API文档会做一一说明。
+除了这些基本设置外，还有一些属性可以让使用者更好的定制自己的效果：`transition`属性可以定制显隐的动画效果，默认为`fade-in-linear`。如果需要关闭`tooltip`功能，`disabled`属性可以满足这个需求，它接受一个`Boolean`，设置为`true`即可。
 
 :::demo 通过 state 中的 disabled 控制是否触发 tooltip
 ```js
@@ -142,7 +134,7 @@ render() {
 | 参数               | 说明                                                     | 类型              | 可选值      | 默认值 |
 |--------------------|----------------------------------------------------------|-------------------|-------------|--------|
 |  effect        |  默认提供的主题  | String            | `dark`, `light`  | dark  |
-|  content        |  显示的内容，也可以通过 `slot#content` 传入 DOM  | String            | — | — |
+|  content        |  显示的内容  | String/Node            | — | — |
 |  placement        |  Tooltip 的出现位置  | String           |  `top`, `top-start`, `top-end`, `bottom`, `bottom-start`, `bottom-end`, `left`, `left-start`, `left-end`, `right`, `right-start`, `right-end` |  bottom |
 |  visible        |  状态是否可见  | Boolean           | — |  false |
 |  disabled       |  Tooltip 是否可用  | Boolean           | — |  false |

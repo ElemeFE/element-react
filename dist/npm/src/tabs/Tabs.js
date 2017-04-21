@@ -38,7 +38,13 @@ var Tabs = function (_Component) {
     _this.state = {
       children: children,
       currentName: value || activeName || children[0].props.name,
-      barStyle: {}
+      barStyle: {},
+      navStyle: {
+        transform: ''
+      },
+      scrollable: false,
+      scrollNext: false,
+      scrollPrev: false
     };
     return _this;
   }
@@ -47,6 +53,14 @@ var Tabs = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.calcBarStyle(true);
+      this.update();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevState.scrollable !== this.state.scrollable) {
+        this.scrollToActiveTab();
+      }
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -72,6 +86,8 @@ var Tabs = function (_Component) {
       if (nextProps.children !== this.props.children) {
         this.setState({
           children: _react2.default.Children.toArray(nextProps.children)
+        }, function () {
+          return _this2.update();
         });
       }
     }
@@ -133,6 +149,7 @@ var Tabs = function (_Component) {
 
 
         _this3.calcBarStyle();
+        _this3.scrollToActiveTab();
         onTabClick && onTabClick(tab, e);
       });
     }
@@ -172,6 +189,97 @@ var Tabs = function (_Component) {
       });
     }
   }, {
+    key: 'scrollPrev',
+    value: function scrollPrev() {
+      var containerWidth = this.refs.navScroll.offsetWidth;
+      var currentOffset = this.getCurrentScrollOffset();
+      if (!currentOffset) return;
+      var newOffset = currentOffset > containerWidth ? currentOffset - containerWidth : 0;
+      this.setOffset(newOffset);
+    }
+  }, {
+    key: 'scrollNext',
+    value: function scrollNext() {
+      var navWidth = this.refs.nav.offsetWidth;
+      var containerWidth = this.refs.navScroll.offsetWidth;
+      var currentOffset = this.getCurrentScrollOffset();
+      if (navWidth - currentOffset <= containerWidth) return;
+      var newOffset = navWidth - currentOffset > containerWidth * 2 ? currentOffset + containerWidth : navWidth - containerWidth;
+      this.setOffset(newOffset);
+    }
+  }, {
+    key: 'scrollToActiveTab',
+    value: function scrollToActiveTab() {
+      if (!this.state.scrollable) return;
+
+      var nav = this.refs.nav;
+      var activeTab = nav.querySelector('.is-active');
+      var navScroll = this.refs.navScroll;
+      var activeTabBounding = activeTab.getBoundingClientRect();
+      var navScrollBounding = navScroll.getBoundingClientRect();
+      var navBounding = nav.getBoundingClientRect();
+      var currentOffset = this.getCurrentScrollOffset();
+      var newOffset = currentOffset;
+
+      if (activeTabBounding.left < navScrollBounding.left) {
+        newOffset = currentOffset - (navScrollBounding.left - activeTabBounding.left);
+      }
+
+      if (activeTabBounding.right > navScrollBounding.right) {
+        newOffset = currentOffset + activeTabBounding.right - navScrollBounding.right;
+      }
+
+      if (navBounding.right < navScrollBounding.right) {
+        newOffset = nav.offsetWidth - navScrollBounding.width;
+      }
+
+      this.setOffset(Math.max(newOffset, 0));
+    }
+  }, {
+    key: 'getCurrentScrollOffset',
+    value: function getCurrentScrollOffset() {
+      var navStyle = this.state.navStyle;
+
+      return navStyle.transform ? Number(navStyle.transform.match(/translateX\(-(\d+(\.\d+)*)px\)/)[1]) : 0;
+    }
+  }, {
+    key: 'setOffset',
+    value: function setOffset(value) {
+      this.setState({
+        navStyle: {
+          transform: 'translateX(-' + value + 'px)'
+        }
+      });
+    }
+  }, {
+    key: 'update',
+    value: function update() {
+      var navWidth = this.refs.nav.offsetWidth;
+      var containerWidth = this.refs.navScroll.offsetWidth;
+      var currentOffset = this.getCurrentScrollOffset();
+
+      if (containerWidth < navWidth) {
+        var _currentOffset = this.getCurrentScrollOffset();
+        this.setState({
+          scrollable: true,
+          scrollablePrev: _currentOffset,
+          scrollableNext: _currentOffset + containerWidth < navWidth
+        });
+
+        if (navWidth - _currentOffset < containerWidth) {
+          this.setOffset(navWidth - containerWidth);
+        }
+      } else {
+        this.setState({
+          scrollable: false
+        });
+
+        if (currentOffset > 0) {
+          this.setOffset(0);
+        }
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this5 = this;
@@ -179,7 +287,11 @@ var Tabs = function (_Component) {
       var _state2 = this.state,
           children = _state2.children,
           currentName = _state2.currentName,
-          barStyle = _state2.barStyle;
+          barStyle = _state2.barStyle,
+          navStyle = _state2.navStyle,
+          scrollable = _state2.scrollable,
+          scrollNext = _state2.scrollNext,
+          scrollPrev = _state2.scrollPrev;
       var _props3 = this.props,
           type = _props3.type,
           addable = _props3.addable,
@@ -201,6 +313,25 @@ var Tabs = function (_Component) {
         },
         _react2.default.createElement('i', { className: 'el-icon-plus' })
       ) : null;
+      var scrollBtn = scrollable ? [_react2.default.createElement(
+        'span',
+        { key: 'el-tabs__nav-prev',
+          className: scrollable.prev ? 'el-tabs__nav-prev' : 'el-tabs__nav-prev is-disabled',
+          onClick: function onClick() {
+            return _this5.scrollPrev();
+          }
+        },
+        _react2.default.createElement('i', { className: 'el-icon-arrow-left' })
+      ), _react2.default.createElement(
+        'span',
+        { key: 'el-tabs__nav-next',
+          className: scrollable.next ? 'el-tabs__nav-next' : 'el-tabs__nav-next is-disabled',
+          onClick: function onClick() {
+            return _this5.scrollNext();
+          }
+        },
+        _react2.default.createElement('i', { className: 'el-icon-arrow-right' })
+      )] : null;
       this.tabs = [];
 
       return _react2.default.createElement(
@@ -212,13 +343,14 @@ var Tabs = function (_Component) {
           addButton,
           _react2.default.createElement(
             'div',
-            { className: 'el-tabs__nav-wrap' },
+            { className: scrollable ? 'el-tabs__nav-wrap is-scrollable' : 'el-tabs__nav-wrap' },
+            scrollBtn,
             _react2.default.createElement(
               'div',
-              { className: 'el-tabs__nav-scroll' },
+              { className: 'el-tabs__nav-scroll', ref: 'navScroll' },
               _react2.default.createElement(
                 'div',
-                { className: 'el-tabs__nav' },
+                { className: 'el-tabs__nav', ref: 'nav', style: navStyle },
                 _react2.default.Children.map(children, function (item, index) {
                   var _item$props = item.props,
                       name = _item$props.name,
