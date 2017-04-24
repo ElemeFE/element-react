@@ -34,6 +34,8 @@ var _libs = require('../../libs');
 
 var _resizeEvent = require('../../libs/utils/resize-event');
 
+var _scrollbar = require('../scrollbar');
+
 var _tag = require('../tag');
 
 var _tag2 = _interopRequireDefault(_tag);
@@ -1084,8 +1086,12 @@ var Select = function (_Component) {
                 _libs.View,
                 { show: options.length > 0 && filteredOptionsCount > 0 && !loading },
                 _react2.default.createElement(
-                  'ul',
-                  { className: 'el-select-dropdown__list' },
+                  _scrollbar.Scrollbar,
+                  {
+                    viewComponent: 'ul',
+                    wrapClass: 'el-select-dropdown__wrap',
+                    viewClass: 'el-select-dropdown__list'
+                  },
                   this.props.children
                 )
               ),
