@@ -9,6 +9,8 @@ import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
+import { Scrollbar } from '../scrollbar';
+
 import Tag from '../tag';
 import Input from '../input';
 import i18n from '../locale';
@@ -894,9 +896,13 @@ class Select extends Component {
               minWidth: inputWidth,
             }}>
               <View show={options.length > 0 && filteredOptionsCount > 0 && !loading}>
-                <ul className="el-select-dropdown__list">
+                <Scrollbar
+                  viewComponent="ul"
+                  wrapClass="el-select-dropdown__wrap"
+                  viewClass="el-select-dropdown__list"
+                >
                   {this.props.children}
-                </ul>
+                </Scrollbar>
               </View>
               { this.emptyText() && <p className="el-select-dropdown__empty">{this.emptyText()}</p> }
             </div>
