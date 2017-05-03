@@ -83,6 +83,10 @@ export default class Tooltip extends Component {
     this.setState({ showPopper: false});
   }
 
+  updatePopper() {
+    this.popperJS.update();
+  }
+
   render(): React.Element<any> {
     const { effect, content, disabled, transition, visibleArrow } = this.props;
 

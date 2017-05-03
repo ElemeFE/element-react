@@ -14,8 +14,14 @@ constructor(props) {
   this.state = {
     value1: 0,
     value2: 50,
-    value3: 42
+    value3: 36,
+    value4: 48,
+    value5: 42
   }
+}
+
+formatTooltip(val) {
+  return val / 100;
 }
 
 render() {
@@ -28,6 +34,14 @@ render() {
       <div className="block">
         <span className="demonstration">自定义初始值</span>
         <Slider value={this.state.value2} />
+      </div>
+      <div className="block">
+        <span className="demonstration">隐藏 Tooltip</span>
+        <Slider value={this.state.value3} showTooltip={false} />
+      </div>
+      <div className="block">
+        <span className="demonstration">格式化 Tooltip</span>
+        <Slider value={this.state.value4} formatTooltip={this.formatTooltip.bind(this)} />
       </div>
       <div className="block">
         <span className="demonstration">禁用</span>
@@ -43,7 +57,7 @@ render() {
 
 选项可以是离散的
 
-:::demo 改变`step`的值可以改变步长，通过设置`show-step`属性可以显示间断点
+:::demo 改变`step`的值可以改变步长，通过设置`showStep`属性可以显示间断点
 ```js
 constructor(props) {
   super(props);
@@ -75,7 +89,7 @@ render() {
 
 通过输入框设置精确数值
 
-:::demo 设置`show-input`属性会在右侧显示一个输入框
+:::demo 设置`showInput`属性会在右侧显示一个输入框
 ```js
 constructor(props) {
   super(props);
@@ -113,6 +127,28 @@ render() {
   return (
     <div className="block">
       <Slider value={this.state.value} max={10} range={true} showStops={true} />
+    </div>
+  )
+}
+```
+:::
+
+### 竖向模式
+
+:::demo 设置`vertical`可使 Slider 变成竖向模式，此时必须设置高度`height`属性
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: 0
+  }
+}
+
+render() {
+  return (
+    <div className="block">
+      <Slider value={this.state.value} vertical={true} height="200px" />
     </div>
   )
 }

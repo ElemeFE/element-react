@@ -87,7 +87,7 @@ render() {
 
 Use a red dot to mark content that needs to be noticed.
 
-:::demo Use the attribute `is-dot`. It is a `Boolean`.
+:::demo Use the attribute `isDot`. It is a `Boolean`.
 
 ```js
 render() {

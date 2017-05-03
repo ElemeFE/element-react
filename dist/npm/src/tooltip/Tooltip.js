@@ -105,6 +105,11 @@ var Tooltip = function (_Component) {
       this.setState({ showPopper: false });
     }
   }, {
+    key: 'updatePopper',
+    value: function updatePopper() {
+      this.popperJS.update();
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props = this.props,

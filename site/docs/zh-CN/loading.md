@@ -6,7 +6,7 @@
 
 在表格等容器中加载数据时显示。
 
-:::demo 在 Loading 组件中，Element 准备了自定义命令`loading`，只需要绑定`Boolean`即可。默认状况下，Loading 遮罩会插入到绑定元素的子节点，通过添加`body`修饰符，可以使遮罩插入至 DOM 中的 body 上。
+:::demo
 
 ```js
 constructor(props) {
@@ -69,7 +69,7 @@ render() {
 
 可自定义加载文案。
 
-:::demo 在绑定了`v-loading`指令的元素上添加`element-loading-text`属性，其值会被渲染为加载文案，并显示在加载图标的下方。
+:::demo 添加`text`属性，其值会被渲染为加载文案，并显示在加载图标的下方。
 
 ```js
 constructor(props) {
@@ -132,7 +132,7 @@ render() {
 
 页面数据加载时显示。
 
-:::demo 当需要全屏遮罩时，可使用`fullscreen`修饰符（此时遮罩会插入至 body 上）。此时若需要锁定屏幕的滚动，可以使用`lock`修饰符。
+:::demo 当需要全屏遮罩时，可使用`fullscreen`修饰符（此时遮罩会插入至 body 上）。
 
 ```js
 constructor(props) {
