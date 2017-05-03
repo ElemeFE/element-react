@@ -26,6 +26,42 @@ render() {
 ```
 :::
 
+### 扩展的 value 类型
+
+:::demo 设置`onValue`和`offValue`属性，接受`Boolean`, `String`或`Number`类型的值。
+
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: 100,
+  }
+}
+
+render() {
+  return (
+    <Tooltip
+      placement="top"
+      content={
+        <div>Switch value: {this.state.value}</div>
+      }
+    >
+      <Switch
+        value={this.state.value}
+        onColor="#13ce66"
+        offColor="#ff4949"
+        onValue={100}
+        offValue={0}
+        onChange={(value)=>{this.setState({value: value})}}
+       >
+      </Switch>
+    </Tooltip>
+  )
+}
+```
+:::
+
 ### 禁用状态
 
 :::demo 设置`disabled`属性，接受一个`Boolean`，设置`true`即可禁用。
@@ -60,6 +96,8 @@ render() {
 | offIconClass  | switch 关闭时所显示图标的类名，<br>设置此项会忽略 `offText`    | string   | — | — |
 | onText  | switch 打开时的文字    | string   | — | ON |
 | offText  | switch 关闭时的文字    | string   | — | OFF |
+| onValue  | switch 打开时的值    | boolean / string / number | — | true |
+| offValue  | switch 关闭时的值    | boolean / string / number | — | false |
 | onColor  | switch 打开时的背景色    | string   | — | #20A0FF |
 | offColor  | switch 关闭时的背景色    | string   | — | #C0CCDA |
 | name  | switch 对应的 name 属性    | string   | — | — |

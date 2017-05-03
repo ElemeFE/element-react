@@ -26,6 +26,42 @@ render() {
 ```
 :::
 
+### Extended value types
+
+:::demo You can set `onValue` and `offValue` attributes. They both receive a `Boolean`, `String` or `Number` typed value.
+
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: 100,
+  }
+}
+
+render() {
+  return (
+    <Tooltip
+      placement="top"
+      content={
+        <div>Switch value: {this.state.value}</div>
+      }
+    >
+      <Switch
+        value={this.state.value}
+        onColor="#13ce66"
+        offColor="#ff4949"
+        onValue={100}
+        offValue={0}
+        onChange={(value)=>{this.setState({value: value})}}
+       >
+      </Switch>
+    </Tooltip>
+  )
+}
+```
+:::
+
 ### Disabled
 
 :::demo Adding the `disabled` attribute disables Switch.
@@ -60,6 +96,8 @@ render() {
 | offIconClass  | class name of the icon displayed when in `off` state, overrides `offText` | string   | — | — |
 | onText  | text displayed when in `on` state  | string   | — | ON |
 | offText  | text displayed when in `off` state    | string   | — | OFF |
+| onValue  | switch value when in `on` state    | boolean / string / number | — | true |
+| offValue  | switch value when in `off` state    | boolean / string / number | — | false |
 | onColor  | background color when in `on` state   | string   | — | #20A0FF |
 | offColor  |background color when in `off` state  | string   | — | #C0CCDA |
 | name  | input name of Switch   | string   | — | — |
