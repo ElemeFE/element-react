@@ -242,9 +242,13 @@ var Slider = function (_Component) {
     value: function onSliderClick(event) {
       if (this.props.disabled || this.state.dragging) return;
 
-      var sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
-
-      this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderWidth() * 100);
+      if (this.props.vertical) {
+        var sliderOffsetBottom = this.refs.slider.getBoundingClientRect().bottom;
+        this.setPosition((sliderOffsetBottom - event.clientY) / this.sliderSize() * 100);
+      } else {
+        var sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
+        this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderSize() * 100);
+      }
     }
 
     /* Watched Methods */
@@ -289,9 +293,9 @@ var Slider = function (_Component) {
     /* Computed Methods */
 
   }, {
-    key: 'sliderWidth',
-    value: function sliderWidth() {
-      return parseInt(this.refs.slider.offsetWidth, 10);
+    key: 'sliderSize',
+    value: function sliderSize() {
+      return parseInt(this.props.vertical ? this.refs.slider.offsetHeight : this.refs.slider.offsetWidth, 10);
     }
   }, {
     key: 'stops',
@@ -335,19 +339,36 @@ var Slider = function (_Component) {
       return Math.max(this.state.firstValue, this.state.secondValue);
     }
   }, {
-    key: 'barWidth',
-    value: function barWidth() {
+    key: 'runwayStyle',
+    value: function runwayStyle() {
+      return this.props.vertical ? { height: this.props.height } : {};
+    }
+  }, {
+    key: 'barStyle',
+    value: function barStyle() {
+      return this.props.vertical ? {
+        height: this.barSize(),
+        bottom: this.barStart()
+      } : {
+        width: this.barSize(),
+        left: this.barStart()
+      };
+    }
+  }, {
+    key: 'barSize',
+    value: function barSize() {
       return this.props.range ? 100 * (this.maxValue() - this.minValue()) / (this.props.max - this.props.min) + '%' : 100 * (this.state.firstValue - this.props.min) / (this.props.max - this.props.min) + '%';
     }
   }, {
-    key: 'barLeft',
-    value: function barLeft() {
+    key: 'barStart',
+    value: function barStart() {
       return this.props.range ? 100 * (this.minValue() - this.props.min) / (this.props.max - this.props.min) + '%' : '0%';
     }
   }, {
     key: 'render',
     value: function render() {
       var _props6 = this.props,
+          vertical = _props6.vertical,
           showInput = _props6.showInput,
           showStops = _props6.showStops,
           showInputControls = _props6.showInputControls,
@@ -364,12 +385,15 @@ var Slider = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: 'el-slider' },
+        { className: this.className('el-slider', {
+            'is-vertical': vertical,
+            'el-slider--with-input': showInput
+          }) },
         showInput && !range && _react2.default.createElement(_inputNumber2.default, {
           ref: 'input',
           className: 'el-slider__input',
           defaultValue: inputValue,
-          value: inputValue,
+          value: firstValue,
           step: step,
           disabled: disabled,
           controls: showInputControls,
@@ -380,20 +404,17 @@ var Slider = function (_Component) {
         }),
         _react2.default.createElement(
           'div',
-          { ref: 'slider', className: this.classNames('el-slider__runway', {
+          { ref: 'slider', style: this.runwayStyle(), className: this.classNames('el-slider__runway', {
               'show-input': showInput,
               'disabled': disabled
             }), onClick: this.onSliderClick.bind(this) },
           _react2.default.createElement('div', {
             className: 'el-slider__bar',
-            style: {
-              width: this.barWidth(),
-              left: this.barLeft()
-            } }),
-          _react2.default.createElement(_Button2.default, { ref: 'button1', value: firstValue, onChange: this.onFirstValueChange.bind(this) }),
-          range && _react2.default.createElement(_Button2.default, { ref: 'button2', value: secondValue, onChange: this.onSecondValueChange.bind(this) }),
+            style: this.barStyle() }),
+          _react2.default.createElement(_Button2.default, { ref: 'button1', vertical: vertical, value: firstValue, onChange: this.onFirstValueChange.bind(this) }),
+          range && _react2.default.createElement(_Button2.default, { ref: 'button2', vertical: vertical, value: secondValue, onChange: this.onSecondValueChange.bind(this) }),
           showStops && this.stops().map(function (item, index) {
-            return _react2.default.createElement('div', { key: index, className: 'el-slider__stop', style: { 'left': item + '%' } });
+            return _react2.default.createElement('div', { key: index, className: 'el-slider__stop', style: vertical ? { 'bottom': item + '%' } : { 'left': item + '%' } });
           })
         )
       );
@@ -403,13 +424,6 @@ var Slider = function (_Component) {
   return Slider;
 }(_libs.Component);
 
-Slider.defaultProps = {
-  showInputControls: true,
-  min: 0,
-  max: 100,
-  step: 1,
-  value: 0
-};
 var _default = Slider;
 exports.default = _default;
 
@@ -425,10 +439,23 @@ Slider.propTypes = {
   value: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.arrayOf(_libs.PropTypes.number)]),
   showInput: _libs.PropTypes.bool,
   showInputControls: _libs.PropTypes.bool,
+  showTooltip: _libs.PropTypes.bool,
   showStops: _libs.PropTypes.bool,
   disabled: _libs.PropTypes.bool,
   range: _libs.PropTypes.bool,
+  vertical: _libs.PropTypes.bool,
+  height: _libs.PropTypes.string,
+  formatTooltip: _libs.PropTypes.func,
   onChange: _libs.PropTypes.func
+};
+
+Slider.defaultProps = {
+  showTooltip: true,
+  showInputControls: true,
+  min: 0,
+  max: 100,
+  step: 1,
+  value: 0
 };
 ;
 

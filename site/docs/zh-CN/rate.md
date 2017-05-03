@@ -62,7 +62,7 @@ render() {
 | highThreshold | 高分和中等分数的界限值，值本身<br>被划分在高分中 | number | — | 4 |
 | colors | icon 的颜色数组，共有 3 个元素，<br>为 3 个分段所对应的颜色 | array | — | ['#F7BA2A', '#F7BA2A', '#F7BA2A'] |
 | voidColor | 未选中 icon 的颜色 | string | — | #C6D1DE |
-| disabled-void-color | 只读时未选中 icon 的颜色 | string | — | #EFF2F7 |
+| disabledVoidColor | 只读时未选中 icon 的颜色 | string | — | #EFF2F7 |
 | iconClasses | icon 的类名数组，共有 3 个元素，<br>为 3 个分段所对应的类名 | array | — | ['el-icon-star-on', 'el-icon-star-on',<br>'el-icon-star-on'] |
 | voidIconClass | 未选中 icon 的类名 | string | — | el-icon-star-off |
 | disabledVoidIconClass | 只读时未选中 icon 的类名 | string | — | el-icon-star-on |

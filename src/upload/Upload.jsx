@@ -216,8 +216,8 @@ export default class Upload extends Component {
     };
     const trigger = this.props.trigger || this.props.children;
     const uploadComponent = typeof FormData !== 'undefined'
-      ? <AjaxUpload {...restProps}>{trigger}</AjaxUpload>
-      : <iFrameUpload {...restProps}>{trigger}</iFrameUpload>;
+      ? <AjaxUpload key="AjaxUpload" {...restProps}>{trigger}</AjaxUpload>
+      : <iFrameUpload key="iFrameUpload" {...restProps}>{trigger}</iFrameUpload>;
     return (
       <div className={className}>
         {listType === 'picture-card' ? uploadList : ''}

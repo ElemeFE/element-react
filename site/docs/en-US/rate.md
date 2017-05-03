@@ -69,7 +69,7 @@ render() {
 | high-threshold | threshold value between medium and high level. The value itself will be included in high level | number | — | 4 |
 | colors | color array for icons. It should have 3 elements, each of which corresponds with a score level  | array | — | ['#F7BA2A', '#F7BA2A', '#F7BA2A'] |
 | void-color | color of unselected icons | string | — | #C6D1DE |
-| disabled-void-color | color of unselected read-only icons | string | — | #EFF2F7 |
+| disabledVoidColor | color of unselected read-only icons | string | — | #EFF2F7 |
 | icon-classes |  array of class names of icons. It should have 3 elements, each of which corresponds with a score level | array | — | ['el-icon-star-on', 'el-icon-star-on','el-icon-star-on'] |
 | void-icon-class | class name of unselected icons | string | — | el-icon-star-off |
 | disabled-void-icon-class | class name of unselected read-only icons | string | — | el-icon-star-on |

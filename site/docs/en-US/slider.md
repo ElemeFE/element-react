@@ -15,8 +15,14 @@ constructor(props) {
   this.state = {
     value1: 0,
     value2: 50,
-    value3: 42
+    value3: 36,
+    value4: 48,
+    value5: 42
   }
+}
+
+formatTooltip(val) {
+  return val / 100;
 }
 
 render() {
@@ -29,6 +35,14 @@ render() {
       <div className="block">
         <span className="demonstration">Customized initial value</span>
         <Slider value={this.state.value2} />
+      </div>
+      <div className="block">
+        <span className="demonstration">Hide Tooltip</span>
+        <Slider value={this.state.value3} showTooltip={false} />
+      </div>
+      <div className="block">
+        <span className="demonstration">Format Tooltip</span>
+        <Slider value={this.state.value4} formatTooltip={this.formatTooltip.bind(this)} />
       </div>
       <div className="block">
         <span className="demonstration">Disabled</span>
@@ -44,7 +58,7 @@ render() {
 
 The options can be discrete.
 
-:::demo Set step size with the `step` attribute. You can display breakpoints by setting the `show-stops` attribute.
+:::demo Set step size with the `step` attribute. You can display breakpoints by setting the `showStops` attribute.
 
 ```js
 constructor(props) {
@@ -77,7 +91,7 @@ render() {
 
 Set value via a input box.
 
-:::demo Set the `show-input` attribute to display an input box on the right.
+:::demo Set the `showInput` attribute to display an input box on the right.
 
 ```js
 constructor(props) {
@@ -116,6 +130,28 @@ render() {
   return (
     <div className="block">
       <Slider value={this.state.value} max={10} range={true} showStops={true} />
+    </div>
+  )
+}
+```
+:::
+
+### Vertical mode
+
+:::demo Setting the `vertical` attribute to `true` enables vertical mode. In vertical mode, the `height` attribute is required.
+```js
+constructor(props) {
+  super(props);
+
+  this.state = {
+    value: 0
+  }
+}
+
+render() {
+  return (
+    <div className="block">
+      <Slider value={this.state.value} vertical={true} height="200px" />
     </div>
   )
 }

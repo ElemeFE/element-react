@@ -36,7 +36,9 @@ var SliderButton = function (_Component) {
       hovering: false,
       dragging: false,
       startX: 0,
+      startY: 0,
       currentX: 0,
+      currentY: 0,
       startPosition: 0,
       newPosition: 0,
       oldValue: props.value
@@ -50,19 +52,8 @@ var SliderButton = function (_Component) {
       return this.context.component;
     }
   }, {
-    key: 'showTooltip',
-    value: function showTooltip() {
-      // this.$refs.tooltip && (this.$refs.tooltip.showPopper = true);
-    }
-  }, {
-    key: 'hideTooltip',
-    value: function hideTooltip() {
-      // this.$refs.tooltip && (this.$refs.tooltip.showPopper = false);
-    }
-  }, {
     key: 'handleMouseEnter',
     value: function handleMouseEnter() {
-      this.showTooltip();
       this.setState({
         hovering: true
       });
@@ -70,7 +61,6 @@ var SliderButton = function (_Component) {
   }, {
     key: 'handleMouseLeave',
     value: function handleMouseLeave() {
-      this.hideTooltip();
       this.setState({
         hovering: false
       });
@@ -94,6 +84,7 @@ var SliderButton = function (_Component) {
       this.setState({
         dragging: true,
         startX: event.clientX,
+        startY: event.clientY,
         startPosition: parseInt(this.currentPosition(), 10)
       }, function () {
         _this2.parent().onDraggingChanged(_this2.state.dragging);
@@ -103,11 +94,16 @@ var SliderButton = function (_Component) {
     key: 'onDragging',
     value: function onDragging(event) {
       if (this.state.dragging) {
-        this.showTooltip();
-
         this.state.currentX = event.clientX;
+        this.state.currentY = event.clientY;
 
-        var diff = (this.state.currentX - this.state.startX) / this.parent().sliderWidth() * 100;
+        var diff = void 0;
+
+        if (this.props.vertical) {
+          diff = (this.state.startY - this.state.currentY) / this.parent().sliderSize() * 100;
+        } else {
+          diff = (this.state.currentX - this.state.startX) / this.parent().sliderSize() * 100;
+        }
 
         this.state.newPosition = this.state.startPosition + diff;
 
@@ -129,7 +125,6 @@ var SliderButton = function (_Component) {
           _this3.setState({
             dragging: false
           }, function () {
-            _this3.hideTooltip();
             _this3.setPosition(_this3.state.newPosition);
             _this3.parent().onDraggingChanged(_this3.state.dragging);
           });
@@ -168,6 +163,18 @@ var SliderButton = function (_Component) {
     /* Computed Methods */
 
   }, {
+    key: 'formatValue',
+    value: function formatValue() {
+      var formatTooltip = this.parent().props.formatTooltip;
+
+
+      if (formatTooltip instanceof Function) {
+        return formatTooltip(this.props.value);
+      }
+
+      return this.props.value;
+    }
+  }, {
     key: 'disabled',
     value: function disabled() {
       return this.parent().props.disabled;
@@ -198,6 +205,11 @@ var SliderButton = function (_Component) {
       return (this.props.value - this.min()) / (this.max() - this.min()) * 100 + '%';
     }
   }, {
+    key: 'wrapperStyle',
+    value: function wrapperStyle() {
+      return this.props.vertical ? { bottom: this.currentPosition() } : { left: this.currentPosition() };
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _state = this.state,
@@ -213,7 +225,7 @@ var SliderButton = function (_Component) {
             'hover': hovering,
             'dragging': dragging
           }),
-          style: { left: this.currentPosition() },
+          style: this.wrapperStyle(),
           onMouseEnter: this.handleMouseEnter.bind(this),
           onMouseLeave: this.handleMouseLeave.bind(this),
           onMouseDown: this.onButtonDown.bind(this) },
@@ -222,8 +234,8 @@ var SliderButton = function (_Component) {
           { ref: 'tooltip', placement: 'top', content: _react2.default.createElement(
               'span',
               null,
-              this.props.value
-            ) },
+              this.formatValue()
+            ), disabled: !this.parent().props.showTooltip },
           _react2.default.createElement('div', { className: this.classNames('el-slider__button', {
               'hover': this.state.hovering,
               'dragging': this.state.dragging
@@ -249,7 +261,8 @@ SliderButton.contextTypes = {
 
 SliderButton.propTypes = {
   onChange: _libs.PropTypes.func.isRequired,
-  value: _libs.PropTypes.number
+  value: _libs.PropTypes.number,
+  vertical: _libs.PropTypes.bool
 };
 ;
 

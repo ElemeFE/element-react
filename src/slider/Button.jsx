@@ -9,7 +9,9 @@ type State = {
   hovering: boolean,
   dragging: boolean,
   startX: number,
+  startY: number,
   currentX: number,
+  currentY: number,
   startPosition: number,
   newPosition: number,
   oldValue: number
@@ -29,7 +31,9 @@ export default class SliderButton extends Component {
       hovering: false,
       dragging: false,
       startX: 0,
+      startY: 0,
       currentX: 0,
+      currentY: 0,
       startPosition: 0,
       newPosition: 0,
       oldValue: props.value
@@ -40,23 +44,13 @@ export default class SliderButton extends Component {
     return this.context.component;
   }
 
-  showTooltip() {
-    // this.$refs.tooltip && (this.$refs.tooltip.showPopper = true);
-  }
-
-  hideTooltip() {
-    // this.$refs.tooltip && (this.$refs.tooltip.showPopper = false);
-  }
-
   handleMouseEnter(): void {
-    this.showTooltip();
     this.setState({
       hovering: true
     });
   }
 
   handleMouseLeave(): void {
-    this.hideTooltip();
     this.setState({
       hovering: false
     });
@@ -76,6 +70,7 @@ export default class SliderButton extends Component {
     this.setState({
       dragging: true,
       startX: event.clientX,
+      startY: event.clientY,
       startPosition: parseInt(this.currentPosition(), 10)
     }, () => {
       this.parent().onDraggingChanged(this.state.dragging);
@@ -84,11 +79,16 @@ export default class SliderButton extends Component {
 
   onDragging(event: SyntheticMouseEvent) {
     if (this.state.dragging) {
-      this.showTooltip();
-
       this.state.currentX = event.clientX;
+      this.state.currentY = event.clientY;
 
-      const diff = (this.state.currentX - this.state.startX) / this.parent().sliderWidth() * 100;
+      let diff;
+
+      if (this.props.vertical) {
+        diff = (this.state.startY - this.state.currentY) / this.parent().sliderSize() * 100;
+      } else {
+        diff = (this.state.currentX - this.state.startX) / this.parent().sliderSize() * 100;
+      }
 
       this.state.newPosition = this.state.startPosition + diff;
 
@@ -107,7 +107,6 @@ export default class SliderButton extends Component {
         this.setState({
           dragging: false
         }, () => {
-          this.hideTooltip();
           this.setPosition(this.state.newPosition);
           this.parent().onDraggingChanged(this.state.dragging);
         });
@@ -144,6 +143,16 @@ export default class SliderButton extends Component {
 
   /* Computed Methods */
 
+  formatValue() {
+    const { formatTooltip } = this.parent().props;
+
+    if (formatTooltip instanceof Function) {
+      return formatTooltip(this.props.value);
+    }
+
+    return this.props.value;
+  }
+
   disabled(): boolean {
     return this.parent().props.disabled;
   }
@@ -168,6 +177,10 @@ export default class SliderButton extends Component {
     return `${ (this.props.value - this.min()) / (this.max() - this.min()) * 100 }%`;
   }
 
+  wrapperStyle(): Object {
+    return this.props.vertical ? { bottom: this.currentPosition() } : { left: this.currentPosition() };
+  }
+
   render(): React.Element<any> {
     const { hovering, dragging } = this.state;
 
@@ -178,11 +191,11 @@ export default class SliderButton extends Component {
           'hover': hovering,
           'dragging': dragging
         })}
-        style={{ left: this.currentPosition() }}
+        style={this.wrapperStyle()}
         onMouseEnter={this.handleMouseEnter.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
         onMouseDown={this.onButtonDown.bind(this)}>
-        <Tooltip ref="tooltip" placement="top" content={<span>{this.props.value}</span>}>
+        <Tooltip ref="tooltip" placement="top" content={<span>{this.formatValue()}</span>} disabled={!this.parent().props.showTooltip}>
           <div className={this.classNames('el-slider__button', {
             'hover': this.state.hovering,
             'dragging': this.state.dragging
@@ -199,5 +212,6 @@ SliderButton.contextTypes = {
 
 SliderButton.propTypes = {
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.number
+  value: PropTypes.number,
+  vertical: PropTypes.bool
 };

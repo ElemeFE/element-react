@@ -18,14 +18,6 @@ type State = {
 export default class Slider extends Component {
   state: State;
 
-  static defaultProps = {
-    showInputControls: true,
-    min: 0,
-    max: 100,
-    step: 1,
-    value: 0
-  }
-
   constructor(props: Object) {
     super(props);
 
@@ -193,9 +185,13 @@ export default class Slider extends Component {
   onSliderClick(event: SyntheticMouseEvent): void {
     if (this.props.disabled || this.state.dragging) return;
 
-    const sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
-
-    this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderWidth() * 100);
+    if (this.props.vertical) {
+      const sliderOffsetBottom = this.refs.slider.getBoundingClientRect().bottom;
+      this.setPosition((sliderOffsetBottom - event.clientY) / this.sliderSize() * 100);
+    } else {
+      const sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
+      this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderSize() * 100);
+    }
   }
 
   /* Watched Methods */
@@ -232,8 +228,8 @@ export default class Slider extends Component {
 
   /* Computed Methods */
 
-  sliderWidth(): number {
-    return parseInt(this.refs.slider.offsetWidth, 10);
+  sliderSize(): number {
+    return parseInt(this.props.vertical ? this.refs.slider.offsetHeight : this.refs.slider.offsetWidth, 10);
   }
 
   stops(): Array<number> {
@@ -262,35 +258,52 @@ export default class Slider extends Component {
     return Math.min(this.state.firstValue, this.state.secondValue);
   }
 
-  maxValue() {
+  maxValue(): number {
     return Math.max(this.state.firstValue, this.state.secondValue);
   }
 
-  barWidth(): string {
+  runwayStyle(): Object {
+    return this.props.vertical ? { height: this.props.height } : {};
+  }
+
+  barStyle(): Object {
+    return this.props.vertical ? {
+        height: this.barSize(),
+        bottom: this.barStart()
+      } : {
+        width: this.barSize(),
+        left: this.barStart()
+      };
+  }
+
+  barSize(): string {
     return this.props.range
       ? `${ 100 * (this.maxValue() - this.minValue()) / (this.props.max - this.props.min) }%`
       : `${ 100 * (this.state.firstValue - this.props.min) / (this.props.max - this.props.min) }%`;
   }
 
-  barLeft(): string {
+  barStart(): string {
     return this.props.range
       ? `${ 100 * (this.minValue() - this.props.min) / (this.props.max - this.props.min) }%`
       : '0%';
   }
 
   render(): React.Element<any> {
-    const { showInput, showStops, showInputControls, range, step, disabled, min, max } = this.props;
+    const { vertical, showInput, showStops, showInputControls, range, step, disabled, min, max } = this.props;
     const { inputValue, firstValue, secondValue } = this.state;
 
     return (
-      <div className="el-slider">
+      <div className={this.className('el-slider', {
+        'is-vertical': vertical,
+        'el-slider--with-input': showInput
+      })}>
         {
           showInput && !range && (
             <InputNumber
               ref="input"
               className="el-slider__input"
               defaultValue={inputValue}
-              value={inputValue}
+              value={firstValue}
               step={step}
               disabled={disabled}
               controls={showInputControls}
@@ -301,25 +314,22 @@ export default class Slider extends Component {
             />
           )
         }
-        <div ref="slider" className={this.classNames('el-slider__runway', {
+        <div ref="slider" style={this.runwayStyle()} className={this.classNames('el-slider__runway', {
           'show-input': showInput,
           'disabled': disabled
         })} onClick={this.onSliderClick.bind(this)}>
           <div
             className="el-slider__bar"
-            style={{
-              width: this.barWidth(),
-              left: this.barLeft()
-            }}>
+            style={this.barStyle()}>
           </div>
-          <SliderButton ref="button1" value={firstValue} onChange={this.onFirstValueChange.bind(this)} />
+          <SliderButton ref="button1" vertical={vertical} value={firstValue} onChange={this.onFirstValueChange.bind(this)} />
           {
-            range && <SliderButton ref="button2" value={secondValue} onChange={this.onSecondValueChange.bind(this)} />
+            range && <SliderButton ref="button2" vertical={vertical} value={secondValue} onChange={this.onSecondValueChange.bind(this)} />
           }
           {
             showStops && this.stops().map((item, index) => {
               return (
-                <div key={index} className="el-slider__stop" style={{ 'left': item + '%' }}></div>
+                <div key={index} className="el-slider__stop" style={vertical ? { 'bottom': item + '%' } : { 'left': item + '%' }}></div>
               )
             })
           }
@@ -340,8 +350,21 @@ Slider.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
   showInput: PropTypes.bool,
   showInputControls: PropTypes.bool,
+  showTooltip: PropTypes.bool,
   showStops: PropTypes.bool,
   disabled: PropTypes.bool,
   range: PropTypes.bool,
+  vertical: PropTypes.bool,
+  height: PropTypes.string,
+  formatTooltip: PropTypes.func,
   onChange: PropTypes.func
+}
+
+Slider.defaultProps = {
+  showTooltip: true,
+  showInputControls: true,
+  min: 0,
+  max: 100,
+  step: 1,
+  value: 0
 }

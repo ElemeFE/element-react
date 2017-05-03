@@ -25,7 +25,7 @@ render() {
 
 Customize the close button as texts or other symbols.
 
-::: demo Alert allows you to configure if it's closable. The close button text and closing callbacks are also customizable. `closable` attribute decides if the component can be closed or not. It accepts `boolean`, and the default is `true`. You can set `close-text` attribute to replace the default cross symbol as the close button. Be careful that `close-text` must be a string. `close` event fires when the component is closed.
+::: demo Alert allows you to configure if it's closable. The close button text and closing callbacks are also customizable. `closable` attribute decides if the component can be closed or not. It accepts `boolean`, and the default is `true`. You can set `closeText` attribute to replace the default cross symbol as the close button. Be careful that `closeText` must be a string. `close` event fires when the component is closed.
 
 ```js
 render() {
@@ -44,7 +44,7 @@ render() {
 
 Displaying an icon improves readability.
 
-::: demo Setting the `show-icon` attribute displays an icon that corresponds with the current Alert type.
+::: demo Setting the `showIcon` attribute displays an icon that corresponds with the current Alert type.
 
 ```js
 render() {
@@ -97,13 +97,12 @@ render() {
 | **title** | title **REQUIRED** | string | — | — |
 | type | component type | string | success/warning/info/error | info |
 | description | supportive text | string | — | — |
-| render-content | render function for content area, overrides `description` | function(h) | — | — |
 | closable | if closable or not | boolean | — | true |
-| close-text | customized close button text | string | — | — |
-| show-icon | if a type icon is displayed | boolean | — | false |
+| closeText | customized close button text | string | — | — |
+| showIcon | if a type icon is displayed | boolean | — | false |
 
 
 ### Events
 | Event Name | Description | Parameters |
 |---------- |-------- |---------- |
-| close | fires when alert is closed | — |
+| onClose | fires when alert is closed | — |
