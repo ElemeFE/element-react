@@ -29,7 +29,7 @@ var CheckboxGroup = function (_Component) {
     var _this = _possibleConstructorReturn(this, (CheckboxGroup.__proto__ || Object.getPrototypeOf(CheckboxGroup)).call(this, props));
 
     _this.state = {
-      options: _this.props.options || []
+      options: _this.props.value || []
     };
     return _this;
   }
@@ -37,16 +37,18 @@ var CheckboxGroup = function (_Component) {
   _createClass(CheckboxGroup, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      if (nextProps.options !== this.props.options) {
+      if (nextProps.value !== this.props.value) {
         this.setState({
-          options: nextProps.options
+          options: nextProps.value
         });
       }
     }
   }, {
     key: 'getChildContext',
     value: function getChildContext() {
-      return { isWrap: true };
+      return {
+        ElCheckboxGroup: this
+      };
     }
   }, {
     key: 'onChange',
@@ -74,6 +76,7 @@ var CheckboxGroup = function (_Component) {
 
       var options = this.state.options;
 
+
       var children = _react.Children.map(this.props.children, function (child, index) {
         return _react2.default.cloneElement(child, Object.assign({}, child.props, {
           key: index,
@@ -97,13 +100,18 @@ var _default = CheckboxGroup;
 exports.default = _default;
 
 
-CheckboxGroup.propTypes = {
-  options: _libs.PropTypes.array,
-  onChange: _libs.PropTypes.func
+CheckboxGroup.childContextTypes = {
+  ElCheckboxGroup: _libs.PropTypes.any
 };
 
-CheckboxGroup.childContextTypes = {
-  isWrap: _libs.PropTypes.bool
+CheckboxGroup.propTypes = {
+  min: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
+  max: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
+  size: _libs.PropTypes.string,
+  fill: _libs.PropTypes.string,
+  textColor: _libs.PropTypes.string,
+  value: _libs.PropTypes.any,
+  onChange: _libs.PropTypes.func
 };
 ;
 

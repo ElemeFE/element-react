@@ -129,9 +129,7 @@ Radio.propTypes = {
   value: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]).isRequired,
   onChange: _libs.PropTypes.func,
   disabled: _libs.PropTypes.bool,
-  /* eslint-disable */
   checked: _libs.PropTypes.bool
-  /* eslint-enable */
 };
 ;
 

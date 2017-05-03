@@ -6,7 +6,7 @@
 
 适用广泛的基础单选
 
-:::demo `v-model`的值为当前被选中的`el-option`的 value 属性值
+:::demo `value`的值为当前被选中的`Option`的 value 属性值
 ```js
 constructor(props) {
   super(props);

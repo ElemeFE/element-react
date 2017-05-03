@@ -62,15 +62,29 @@ var Checkbox = function (_Component) {
     value: function onChange(e) {
       var _this2 = this;
 
-      var label = this.state.label;
-      var _props = this.props,
-          trueLabel = _props.trueLabel,
-          falseLabel = _props.falseLabel,
-          value = _props.value;
-
       if (e.target instanceof HTMLInputElement) {
+        var _label = this.state.label;
+        var _props = this.props,
+            trueLabel = _props.trueLabel,
+            falseLabel = _props.falseLabel;
+
+
         var _checked = e.target.checked;
-        var newLabel = label;
+        var group = this.context.ElCheckboxGroup;
+
+        if (group) {
+          var length = group.state.options.length + (_checked ? 1 : -1);
+
+          if (group.props.min !== undefined && length < group.props.min) {
+            return;
+          }
+
+          if (group.props.max !== undefined && length > group.props.max) {
+            return;
+          }
+        }
+
+        var newLabel = _label;
 
         if (this.props.trueLabel || this.props.falseLabel) {
           newLabel = _checked ? trueLabel : falseLabel;
@@ -136,26 +150,24 @@ var _default = Checkbox;
 exports.default = _default;
 
 
-Checkbox.defaultProps = {
-  checked: false,
-  focus: false,
-  trueLabel: '',
-  falseLabel: ''
+Checkbox.contextTypes = {
+  ElCheckboxGroup: _libs.PropTypes.any
 };
 
 Checkbox.propTypes = {
   label: _libs.PropTypes.string,
+  trueLabel: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
+  falseLabel: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
   disabled: _libs.PropTypes.bool,
   checked: _libs.PropTypes.bool,
   indeterminate: _libs.PropTypes.bool,
   focus: _libs.PropTypes.bool,
-  trueLabel: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
-  falseLabel: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
   onChange: _libs.PropTypes.func
 };
 
-Checkbox.contextTypes = {
-  isWrap: _libs.PropTypes.bool
+Checkbox.defaultProps = {
+  checked: false,
+  focus: false
 };
 ;
 

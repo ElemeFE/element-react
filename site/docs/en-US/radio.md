@@ -6,7 +6,7 @@ Single selection among multiple options.
 
 Radio should not have too many options. Otherwise, use the Select component instead.
 
-:::demo Creating a radio component is easy, you just need to bind a variable to Radio's `v-model`. It equals to the value of `label` of the chosen radio. The type of `label` is `String` or `Number`.
+:::demo Creating a radio component is easy, you just need to bind a variable to Radio's `value`. Also you can change the state of Radio by setting the attribute `checked`.
 ```js
 constructor(props) {
   super(props);
@@ -52,7 +52,7 @@ render() {
 
 Suitable for choosing from some mutually exclusive options.
 
-:::demo Combine `<el-radio-group>` with `<el-radio>` to display a radio group. Bind a variable with `v-model` of `<el-radio-group>` element and set label value in `<el-radio>`. It also provides `change` event with the current value as its parameter.
+:::demo Combine `Radio.Group` with `Radio` to display a radio group. Bind a variable with `value` of `Radio.Group` element and set label value in `Radio`. It also provides `onChange` event with the current value as its parameter.
 
 ```js
 constructor(props) {
@@ -83,7 +83,7 @@ render() {
 
 Radio with button styles.
 
-:::demo You just need to change `<el-radio>` element into `<el-radio-button>` element. We also provide `size` attribute for these buttons: `large` and `small`.
+:::demo You just need to change `Radio` element into `Radio.Button` element. We also provide `size` attribute for these buttons: `large` and `small`.
 ```js
 constructor(props) {
   super(props);
@@ -132,6 +132,7 @@ render() {
 
  Attribute      | Description          | Type      | Accepted Values       | Default
 ---- | ---- | ---- | ---- | ----
+checked | checked state of radio | boolean | — | false
 label | the value of radio | string/number/boolean | — | —
 disabled | whether radio is disabled | boolean | — | false
 name | native 'name' attribute | string    |      —         |     —

@@ -77,7 +77,7 @@ var Switch = function (_Component) {
   }, {
     key: 'setBackgroundColor',
     value: function setBackgroundColor() {
-      var newColor = this.state.value ? this.props.onColor : this.props.offColor;
+      var newColor = this.state.value === this.props.onValue ? this.props.onColor : this.props.offColor;
 
       this.refs.core.style.borderColor = newColor;
       this.refs.core.style.backgroundColor = newColor;
@@ -88,7 +88,7 @@ var Switch = function (_Component) {
       var _this3 = this;
 
       this.setState({
-        value: e.target.checked
+        value: e.target.checked ? this.props.onValue : this.props.offValue
       }, function () {
         _this3.updateSwitch();
 
@@ -105,8 +105,7 @@ var Switch = function (_Component) {
           coreWidth = _state.coreWidth,
           buttonStyle = _state.buttonStyle;
 
-
-      buttonStyle.transform = value ? 'translate(' + (coreWidth - 20) + 'px, 2px)' : 'translate(2px, 2px)';
+      buttonStyle.transform = value === this.props.onValue ? 'translate(' + (coreWidth - 20) + 'px, 2px)' : 'translate(2px, 2px)';
 
       this.setState({ buttonStyle: buttonStyle });
     }
@@ -118,6 +117,7 @@ var Switch = function (_Component) {
           disabled = _props.disabled,
           onText = _props.onText,
           offText = _props.offText,
+          onValue = _props.onValue,
           onIconClass = _props.onIconClass,
           offIconClass = _props.offIconClass;
       var _state2 = this.state,
@@ -142,7 +142,7 @@ var Switch = function (_Component) {
         _react2.default.createElement('input', {
           className: 'el-switch__input',
           type: 'checkbox',
-          checked: value,
+          checked: value === onValue,
           name: name,
           disabled: disabled,
           onChange: this.handleChange.bind(this)
@@ -157,7 +157,7 @@ var Switch = function (_Component) {
           { name: 'label-fade' },
           _react2.default.createElement(
             _libs.View,
-            { show: value },
+            { show: value === onValue },
             _react2.default.createElement(
               'div',
               {
@@ -178,7 +178,7 @@ var Switch = function (_Component) {
           { name: 'label-fade' },
           _react2.default.createElement(
             _libs.View,
-            { show: !value },
+            { show: value !== onValue },
             _react2.default.createElement(
               'div',
               {
@@ -206,7 +206,7 @@ exports.default = _default;
 
 
 Switch.propTypes = {
-  value: _libs.PropTypes.bool,
+  value: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string, _libs.PropTypes.bool]),
   disabled: _libs.PropTypes.bool,
   width: _libs.PropTypes.number,
   onIconClass: _libs.PropTypes.string,
@@ -215,6 +215,8 @@ Switch.propTypes = {
   offText: _libs.PropTypes.string,
   onColor: _libs.PropTypes.string,
   offColor: _libs.PropTypes.string,
+  onValue: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string, _libs.PropTypes.bool]),
+  offValue: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string, _libs.PropTypes.bool]),
   name: _libs.PropTypes.string,
   onChange: _libs.PropTypes.func
 };
@@ -227,6 +229,8 @@ Switch.defaultProps = {
   offIconClass: '',
   onText: 'ON',
   offText: 'OFF',
+  onValue: true,
+  offValue: false,
   onColor: '',
   offColor: '',
   name: ''
