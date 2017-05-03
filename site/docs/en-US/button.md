@@ -96,7 +96,7 @@ render() {
 
 Displayed as a button group, can be used to group a series of similar operations.
 
-:::demo Use tag `<el-button-group>` to group your buttons.
+:::demo Use tag `Button.Group` to group your buttons.
 
 ```js
 render() {

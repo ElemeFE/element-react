@@ -98,7 +98,7 @@ render() {
 
 以按钮组的方式出现，常用于多项类似操作。
 
-:::demo 使用`<el-button-group>`标签来嵌套你的按钮。
+:::demo 使用`Button.Group`标签来嵌套你的按钮。
 
 ```js
 render() {

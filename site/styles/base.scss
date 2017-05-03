@@ -65,6 +65,11 @@ body {
       cursor: pointer;
       margin-left: 20px;
 
+      &:last-child {
+        cursor: default;
+        margin-left: 34px;
+      }
+
       .nav-lang {
         cursor: pointer;
         display: inline-block;

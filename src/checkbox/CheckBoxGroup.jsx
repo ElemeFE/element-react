@@ -12,21 +12,24 @@ export default class CheckboxGroup extends Component {
 
   constructor(props: Object) {
     super(props);
+
     this.state = {
-      options: this.props.options || []
+      options: this.props.value || []
     };
   }
 
   componentWillReceiveProps(nextProps: Object): void {
-    if (nextProps.options !== this.props.options) {
+    if (nextProps.value !== this.props.value) {
       this.setState({
-        options: nextProps.options
+        options: nextProps.value
       });
     }
   }
 
-  getChildContext (): { isWrap: boolean } {
-    return { isWrap: true };
+  getChildContext(): { ElCheckboxGroup: CheckboxGroup } {
+    return {
+      ElCheckboxGroup: this
+    };
   }
 
   onChange(value: string, checked: boolean): void {
@@ -49,6 +52,7 @@ export default class CheckboxGroup extends Component {
 
   render(): React.Element<any> {
     const { options } = this.state;
+
     const children = Children.map(this.props.children, (child, index) => {
       return React.cloneElement(
         child,
@@ -68,11 +72,16 @@ export default class CheckboxGroup extends Component {
   }
 }
 
+CheckboxGroup.childContextTypes = {
+  ElCheckboxGroup: PropTypes.any
+};
+
 CheckboxGroup.propTypes = {
-  options: PropTypes.array,
+  min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  max: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  size: PropTypes.string,
+  fill: PropTypes.string,
+  textColor: PropTypes.string,
+  value: PropTypes.any,
   onChange: PropTypes.func,
 }
-
-CheckboxGroup.childContextTypes = {
-  isWrap: PropTypes.bool
-};

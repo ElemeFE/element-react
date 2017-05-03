@@ -13,7 +13,7 @@ if [ $? = 0 ]; then
   babel build/npm/index.js --out-file dist/npm/index.js
 
   # keep es6 for next.js
-  cp build/npm/next.js next.js
+  cp build/npm/index.js next.js
 else
   echo 'Code cant be verify, plz check ~'
 fi
