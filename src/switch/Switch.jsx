@@ -4,7 +4,7 @@ import React from 'react'
 import {Component, PropTypes, View, Transition} from '../../libs'
 
 type State = {
-  value: boolean,
+  value: boolean | number | string,
   coreWidth: number,
   buttonStyle: Object
 };
@@ -55,7 +55,7 @@ export default class Switch extends Component {
   }
 
   setBackgroundColor() {
-    let newColor = this.state.value ? this.props.onColor : this.props.offColor;
+    let newColor = this.state.value === this.props.onValue ? this.props.onColor : this.props.offColor;
 
     this.refs.core.style.borderColor = newColor;
     this.refs.core.style.backgroundColor = newColor;
@@ -63,7 +63,7 @@ export default class Switch extends Component {
 
   handleChange(e: Object) {
     this.setState({
-      value: e.target.checked
+      value: e.target.checked ? this.props.onValue : this.props.offValue
     }, () => {
       this.updateSwitch();
 
@@ -75,14 +75,13 @@ export default class Switch extends Component {
 
   handleButtonTransform() {
     const { value, coreWidth, buttonStyle } = this.state;
-
-    buttonStyle.transform = value ? `translate(${ coreWidth - 20 }px, 2px)` : 'translate(2px, 2px)';
+    buttonStyle.transform = value === this.props.onValue ? `translate(${ coreWidth - 20 }px, 2px)` : 'translate(2px, 2px)';
 
     this.setState({ buttonStyle });
   }
 
   render() {
-    const { name, disabled, onText, offText, onIconClass, offIconClass } = this.props;
+    const { name, disabled, onText, offText, onValue, onIconClass, offIconClass } = this.props;
     const { value, coreWidth, buttonStyle } = this.state;
 
     return (
@@ -100,7 +99,7 @@ export default class Switch extends Component {
         <input
           className="el-switch__input"
           type="checkbox"
-          checked={value}
+          checked={value === onValue}
           name={name}
           disabled={disabled}
           onChange={this.handleChange.bind(this)}
@@ -111,7 +110,7 @@ export default class Switch extends Component {
         </span>
 
         <Transition name="label-fade">
-          <View show={value}>
+          <View show={value === onValue}>
             <div
               className="el-switch__label el-switch__label--left"
               style={{ 'width': coreWidth + 'px' }}
@@ -123,7 +122,7 @@ export default class Switch extends Component {
         </Transition>
 
         <Transition name="label-fade">
-          <View show={!value}>
+          <View show={value !== onValue}>
             <div
               className="el-switch__label el-switch__label--right"
               style={{ 'width': coreWidth + 'px' }}
@@ -139,7 +138,7 @@ export default class Switch extends Component {
 }
 
 Switch.propTypes = {
-  value: PropTypes.bool,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]),
   disabled: PropTypes.bool,
   width: PropTypes.number,
   onIconClass: PropTypes.string,
@@ -148,6 +147,8 @@ Switch.propTypes = {
   offText: PropTypes.string,
   onColor: PropTypes.string,
   offColor: PropTypes.string,
+  onValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]),
+  offValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]),
   name: PropTypes.string,
   onChange: PropTypes.func
 };
@@ -160,6 +161,8 @@ Switch.defaultProps = {
   offIconClass: '',
   onText: 'ON',
   offText: 'OFF',
+  onValue: true,
+  offValue: false,
   onColor: '',
   offColor: '',
   name: ''
