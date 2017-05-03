@@ -75,7 +75,7 @@ export default class App extends React.Component {
       return routes[2];
     }
 
-    return 'installation';
+    return 'quick-start';
   }
 
   setPage(fn) {
