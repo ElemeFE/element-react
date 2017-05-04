@@ -21,6 +21,7 @@ module.exports = {
     'upload': 'Upload 上传',
     'rate': 'Rate 评分',
     'color-picker': 'ColorPicker 颜色选择器',
+    'transfer': 'Transfer 穿梭框',
     'form': 'Form 表单',
     'table': 'Table 表格组件',
     'tag': 'Tag 标签',

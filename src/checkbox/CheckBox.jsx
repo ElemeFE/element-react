@@ -106,7 +106,7 @@ export default class Checkbox extends Component {
           />
         </span>
         <span className="el-checkbox__label">
-          {this.state.label || this.props.children}
+          {this.props.children || this.state.label}
         </span>
       </label>
     )
