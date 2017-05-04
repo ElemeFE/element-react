@@ -321,15 +321,15 @@ class Cascader extends Component {
               )
             }
           />
-          <View show={inputValue === ''}>
+          <View show={currentLabels.length}>
             <span className="el-cascader__label">
               {
                 showAllLevels ? currentLabels.map((label, index) => {
                   return (
-                    <span key={index}>
+                    <label key={index}>
                       {label}
                       {index < currentLabels.length - 1 && <span> / </span>}
-                    </span>
+                    </label>
                   )
                 }) : currentLabels[currentLabels.length - 1]
               }

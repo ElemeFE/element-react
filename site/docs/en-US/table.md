@@ -719,7 +719,8 @@ constructor(props) {
       {
         label: "Name",
         prop: "name",
-        width: 180
+        width: 180,
+        sortable: true
       },
       {
         label: "Address",

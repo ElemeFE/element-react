@@ -73,7 +73,7 @@ render() {
 
 ### Edit Dynamically
 
-You can use the `close` event to add and remove tag dynamically.
+You can use the `onClose` event to add and remove tag dynamically.
 
 :::demo
 ```js

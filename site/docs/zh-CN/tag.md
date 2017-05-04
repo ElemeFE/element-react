@@ -24,7 +24,7 @@ render() {
 
 ### 可移除标签
 
-:::demo 设置`closable`属性来定义一个可移除的标签，接受一个`Boolean`，设置为`true`即可。默认的标签移除时会附带渐变动画，如果不想使用，可以设置`close-transition`属性，它接受一个`Boolean`，true 为关闭。设置`close`事件可以处理关闭后的回调函数。
+:::demo 设置`closable`属性来定义一个可移除的标签，接受一个`Boolean`，设置为`true`即可。默认的标签移除时会附带渐变动画，如果不想使用，可以设置`closeTransition`属性，它接受一个`Boolean`，true 为关闭。设置`close`事件可以处理关闭后的回调函数。
 
 ```js
 constructor(props) {
@@ -73,7 +73,7 @@ render() {
 
 ### 动态编辑标签
 
-动态编辑标签可以通过点击标签关闭按钮后触发的 `close` 事件来实现
+动态编辑标签可以通过点击标签关闭按钮后触发的 `onClose` 事件来实现
 
 :::demo
 ```js

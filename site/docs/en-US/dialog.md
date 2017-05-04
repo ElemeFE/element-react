@@ -6,7 +6,7 @@ Informs users while preserving the current page state.
 
 Dialog pops up a dialog box, and it's quite customizable.
 
-:::demo Set the `v-model` attribute with a `Boolean`, and Dialog shows when it is `true`. The Dialog has two parts: `body` and `footer`, and the latter requires a `slot` named `footer`. The optional `title` attribute (empty by default) is for defining a title. This example explicitly changes the value of `v-model` to toggle Dialog. In addition, we also provide `open` and `close` method, which you can call to open/close the Dialog.
+:::demo Set the `visible` attribute with a `Boolean`, and Dialog shows when it is `true`. The Dialog has two parts: `Dialog.Body` and `Dialog.Footer`. The optional `title` attribute (empty by default) is for defining a title.
 
 ```js
 constructor(props) {
@@ -163,24 +163,8 @@ render() {
 | closeOnPressEscape | whether the Dialog can be closed by pressing ESC | boolean    | — | true |
 | showClose | whether to show a close button | boolean    | — | true |
 
-### Slot
-
-| Name | Description |
-|------|--------|
-| — | content of Dialog |
-| title | content of the Dialog title |
-| footer | content of the Dialog footer |
-
-### Methods
-Each `el-dialog` instance has the following methods that can be used to open/close the instance without explicitly changing the value of `v-model`:
-
-| Method | Description |
-|------|--------|
-| open | open the current instance |
-| close | close the current instance |
-
 ### Events
 | Event Name | Description | Parameters |
 |---------- |-------- |---------- |
-| open | triggers when the Dialog opens | — |
-| close | triggers when the Dialog closes | — |
+| onOpen | triggers when the Dialog opens | — |
+| onClose | triggers when the Dialog closes | — |

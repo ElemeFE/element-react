@@ -756,7 +756,8 @@ constructor(props) {
       {
         label: "姓名",
         prop: "name",
-        width: 180
+        width: 180,
+        sortable: true
       },
       {
         label: "地址",
