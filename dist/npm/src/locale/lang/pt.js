@@ -76,6 +76,7 @@ var _default = {
       pageClassifier: ''
     },
     messagebox: {
+      title: 'Mensagem',
       confirm: 'Confirmar',
       cancel: 'Cancelar',
       error: 'Erro!'
@@ -89,10 +90,19 @@ var _default = {
       emptyText: 'Sem dados',
       confirmFilter: 'Confirmar',
       resetFilter: 'Limpar',
-      clearFilter: 'Todos'
+      clearFilter: 'Todos',
+      sumText: 'Sum' // to be translated
     },
     tree: {
       emptyText: 'Sem dados'
+    },
+    transfer: {
+      noMatch: 'Sem correspondência',
+      noData: 'Sem dados',
+      titles: ['List 1', 'List 2'], // to be translated
+      filterPlaceholder: 'Enter keyword', // to be translated
+      noCheckedFormat: '{total} items', // to be translated
+      hasCheckedFormat: '{checked}/{total} checked' // to be translated
     }
   }
 };
