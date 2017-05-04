@@ -4,7 +4,7 @@ When there are plenty of options, use a drop-down menu to display and select des
 
 ### Basic usage
 
-:::demo `v-model` is the value of `el-option` that is currently selected.
+:::demo `value` is the value of `Option` that is currently selected.
 
 ```js
 constructor(props) {
@@ -47,7 +47,7 @@ render() {
 
 ### Disabled option
 
-:::demo Set the value of `disabled` in `el-option` to `true` to disable this option.
+:::demo Set the value of `disabled` in `Option` to `true` to disable this option.
 
 ```js
 constructor(props) {
@@ -93,7 +93,7 @@ render() {
 
 Disable the whole component.
 
-:::demo Set `disabled` of `el-select` to make it disabled.
+:::demo Set `disabled` of `Select` to make it disabled.
 ```js
 constructor(props) {
   super(props);
@@ -137,7 +137,7 @@ render() {
 
 You can clear Select using a clear icon.
 
-:::demo Set `clearable` attribute for `el-select` and a clear icon will appear. Note that `clearable` is only for single select.
+:::demo Set `clearable` attribute for `Select` and a clear icon will appear. Note that `clearable` is only for single select.
 ```js
 constructor(props) {
   super(props);
@@ -181,7 +181,7 @@ render() {
 
 Multiple select uses tags to display selected options.
 
-:::demo Set `multiple` attribute for `el-select` to enable multiple mode. In this case, the value of `v-model` will be an array of selected options.
+:::demo Set `multiple` attribute for `Select` to enable multiple mode. In this case, the value of `value` will be an array of selected options.
 ```js
 constructor(props) {
   super(props);
@@ -225,7 +225,7 @@ render() {
 
 You can customize HTML templates for options.
 
-:::demo Insert customized HTML templates into the slot of `el-option`.
+:::demo Insert customized HTML templates into `Option`.
 
 ```js
 constructor(props) {
@@ -278,7 +278,7 @@ render() {
 
 Display options in groups.
 
-:::demo Use `el-option-group` to group the options, and its `label` attribute stands for the name of the group.
+:::demo Use `OptionGroup` to group the options, and its `label` attribute stands for the name of the group.
 
 ```js
 constructor(props) {
@@ -345,7 +345,7 @@ render() {
 
 You can filter options for your desired ones.
 
-:::demo Adding `filterable` to `el-select` enables filtering. By default, Select will find all the options whose `label` attribute contains the input value. If you prefer other filtering strategies, you can pass the `filter-method`. `filter-method` is a `Function` that gets called when the input value changes, and its parameter is the current input value.
+:::demo Adding `filterable` to `Select` enables filtering. By default, Select will find all the options whose `label` attribute contains the input value. If you prefer other filtering strategies, you can pass the `filterMethod`. `filterMethod` is a `Function` that gets called when the input value changes, and its parameter is the current input value.
 ```js
 constructor(props) {
   super(props);
@@ -389,7 +389,7 @@ render() {
 
 Enter keywords and search data from server.
 
-:::demo Set the value of `filterable` and `remote` with `true` to enable remote search, and you should pass the `remote-method`. `remote-method` is a `Function` that gets called when the input value changes, and its parameter is the current input value. Note that if `el-option` is rendered with the `v-for` directive, you should add the `key` attribute for `el-option`. Its value needs to be unique, such as `item.value` in the following example.
+:::demo Set the value of `filterable` and `remote` with `true` to enable remote search, and you should pass the `remoteMethod`. `remoteMethod` is a `Function` that gets called when the input value changes, and its parameter is the current input value.
 
 ```js
 constructor(props) {

@@ -48,7 +48,7 @@ render() {
 
 ### 有禁用选项
 
-:::demo 在`el-option`中，设定`disabled`值为 true，即可禁用该选项
+:::demo 在`Option`中，设定`disabled`值为 true，即可禁用该选项
 ```js
 constructor(props) {
   super(props);
@@ -93,7 +93,7 @@ render() {
 
 选择器不可用状态
 
-:::demo 为`el-select`设置`disabled`属性，则整个选择器不可用
+:::demo 为`Select`设置`disabled`属性，则整个选择器不可用
 ```js
 constructor(props) {
   super(props);
@@ -137,7 +137,7 @@ render() {
 
 包含清空按钮，可将选择器清空为初始状态
 
-:::demo 为`el-select`设置`clearable`属性，则可将选择器清空。需要注意的是，`clearable`属性仅适用于单选。
+:::demo 为`Select`设置`clearable`属性，则可将选择器清空。需要注意的是，`clearable`属性仅适用于单选。
 ```js
 constructor(props) {
   super(props);
@@ -181,7 +181,7 @@ render() {
 
 适用性较广的基础多选，用 Tag 展示已选项
 
-:::demo 为`el-select`设置`multiple`属性即可启用多选，此时`v-model`的值为当前选中值所组成的数组
+:::demo 为`Select`设置`multiple`属性即可启用多选，此时`value`的值为当前选中值所组成的数组
 ```js
 constructor(props) {
   super(props);
@@ -225,7 +225,7 @@ render() {
 
 可以自定义备选项
 
-:::demo 将自定义的 HTML 模板插入`el-option`的 slot 中即可。
+:::demo 将自定义的 HTML 模板插入`Option`中即可。
 ```js
 constructor(props) {
   super(props);
@@ -277,7 +277,7 @@ render() {
 
 备选项进行分组展示
 
-:::demo 使用`el-option-group`对备选项进行分组，它的`label`属性为分组名
+:::demo 使用`OptionGroup`对备选项进行分组，它的`label`属性为分组名
 ```js
 constructor(props) {
   super(props);
@@ -343,7 +343,7 @@ render() {
 
 可以利用搜索功能快速查找选项
 
-:::demo 为`el-select`添加`filterable`属性即可启用搜索功能。默认情况下，Select 会找出所有`label`属性包含输入值的选项。如果希望使用其他的搜索逻辑，可以通过传入一个`filter-method`来实现。`filter-method`为一个`Function`，它会在输入值发生变化时调用，参数为当前输入值。
+:::demo 为`Select`添加`filterable`属性即可启用搜索功能。默认情况下，Select 会找出所有`label`属性包含输入值的选项。如果希望使用其他的搜索逻辑，可以通过传入一个`filterMethod`来实现。`filterMethod`为一个`Function`，它会在输入值发生变化时调用，参数为当前输入值。
 ```js
 constructor(props) {
   super(props);
@@ -387,7 +387,7 @@ render() {
 
 从服务器搜索数据，输入关键字进行查找
 
-:::demo 为了启用远程搜索，需要将`filterable`和`remote`设置为`true`，同时传入一个`remote-method`。`remote-method`为一个`Function`，它会在输入值发生变化时调用，参数为当前输入值。需要注意的是，如果`el-option`是通过`v-for`指令渲染出来的，此时需要为`el-option`添加`key`属性，且其值需具有唯一性，比如此例中的`item.value`。
+:::demo 为了启用远程搜索，需要将`filterable`和`remote`设置为`true`，同时传入一个`remoteMethod`。`remoteMethod`为一个`Function`，它会在输入值发生变化时调用，参数为当前输入值。
 ```js
 constructor(props) {
   super(props);

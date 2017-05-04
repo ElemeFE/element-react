@@ -410,13 +410,13 @@ var Cascader = function (_Component) {
           }),
           _react2.default.createElement(
             _libs.View,
-            { show: inputValue === '' },
+            { show: currentLabels.length },
             _react2.default.createElement(
               'span',
               { className: 'el-cascader__label' },
               showAllLevels ? currentLabels.map(function (label, index) {
                 return _react2.default.createElement(
-                  'span',
+                  'label',
                   { key: index },
                   label,
                   index < currentLabels.length - 1 && _react2.default.createElement(

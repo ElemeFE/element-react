@@ -210,6 +210,8 @@ body {
     td, th {
       border-bottom: 1px solid #eaeefb;
       padding: 10px;
+      max-width: 250px;
+      word-break: break-word;
     }
 
     th:first-child, td:first-child {

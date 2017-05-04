@@ -121,6 +121,8 @@ var Dropdown = function (_Component) {
   }, {
     key: 'handleMenuItemClick',
     value: function handleMenuItemClick(command, instance) {
+      var _this4 = this;
+
       if (this.props.hideOnClick) {
         this.setState({
           visible: false
@@ -128,7 +130,9 @@ var Dropdown = function (_Component) {
       }
 
       if (this.props.onCommand) {
-        this.props.onCommand(command, instance);
+        setTimeout(function () {
+          _this4.props.onCommand(command, instance);
+        });
       }
     }
   }, {

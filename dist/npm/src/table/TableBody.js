@@ -102,7 +102,7 @@ var BodyItem = function (_Component) {
 
       if (rowClassName) {
         var clasName = rowClassName(itemData, rowIndex);
-        classSet[rowClassName] = true;
+        classSet[clasName] = true;
       }
 
       var rootClassName = this.classNames(classSet);

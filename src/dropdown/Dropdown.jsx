@@ -83,7 +83,9 @@ class Dropdown extends Component {
     }
 
     if (this.props.onCommand) {
-      this.props.onCommand(command, instance);
+      setTimeout(() => {
+        this.props.onCommand(command, instance);
+      });
     }
   }
 
