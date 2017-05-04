@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 var _default = {
   el: {
     colorpicker: {
-      confirm: 'YA',
+      confirm: 'Pilih',
       clear: 'Kosongkan'
     },
     datepicker: {
@@ -14,7 +14,7 @@ var _default = {
       today: 'Hari ini',
       cancel: 'Batal',
       clear: 'Kosongkan',
-      confirm: 'YA',
+      confirm: 'Ya',
       selectDate: 'Pilih tanggal',
       selectTime: 'Pilih waktu',
       startDate: 'Tanggal Mulai',
@@ -61,23 +61,23 @@ var _default = {
     },
     select: {
       loading: 'Memuat',
-      noMatch: 'Tidak ada data yang cocok',
+      noMatch: 'Tidak ada data yg cocok',
       noData: 'Tidak ada data',
       placeholder: 'Pilih'
     },
     cascader: {
-      noMatch: 'Tidak ada data yang cocok',
+      noMatch: 'Tidak ada data yg cocok',
       placeholder: 'Pilih'
     },
     pagination: {
       goto: 'Pergi ke',
-      pagesize: '/page',
+      pagesize: '/laman',
       total: 'Total {total}',
       pageClassifier: ''
     },
     messagebox: {
       title: 'Pesan',
-      confirm: 'YA',
+      confirm: 'Ya',
       cancel: 'Batal',
       error: 'Masukan ilegal'
     },
@@ -87,13 +87,22 @@ var _default = {
       continue: 'Lanjutkan'
     },
     table: {
-      emptyText: 'Tidak Ada Data',
+      emptyText: 'Tidak ada data',
       confirmFilter: 'Konfirmasi',
-      resetFilter: 'Atur Ulang',
-      clearFilter: 'Semua'
+      resetFilter: 'Atur ulang',
+      clearFilter: 'Semua',
+      sumText: 'Jml'
     },
     tree: {
-      emptyText: 'Tidak Ada Data'
+      emptyText: 'Tidak ada data'
+    },
+    transfer: {
+      noMatch: 'Tidak ada data yg cocok',
+      noData: 'Tidak ada data',
+      titles: ['Senarai 1', 'Senarai 2'],
+      filterPlaceholder: 'Masukan kata kunci',
+      noCheckedFormat: '{total} butir',
+      hasCheckedFormat: '{checked}/{total} terpilih'
     }
   }
 };

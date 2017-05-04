@@ -137,7 +137,7 @@ var Checkbox = function (_Component) {
         _react2.default.createElement(
           'span',
           { className: 'el-checkbox__label' },
-          this.state.label || this.props.children
+          this.props.children || this.state.label
         )
       );
     }
