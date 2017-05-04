@@ -89,7 +89,7 @@ render() {
 
 Display multiple lines of text and set their format.
 
-:::demo `content` can also be `DOM element`。
+:::demo `content` can also be `ReactElement`。
 ```js
 render() {
   return (

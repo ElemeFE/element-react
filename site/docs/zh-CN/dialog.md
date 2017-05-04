@@ -5,7 +5,7 @@
 
 Dialog 弹出一个对话框，适合需要定制性更大的场景。
 
-:::demo 需要设置`v-model`属性，它接收`Boolean`，当为`true`时显示 Dialog。Dialog 分为两个部分：`body`和`footer`，`footer`需要具名为`footer`的`slot`。`title`属性用于定义标题，它是可选的，默认值为空。本例通过显式改变`v-model`的值来打开 Dialog，此外我们还为 Dialog 实例提供了`open`和`close`方法，可以通过调用它们来打开/关闭 Dialog。
+:::demo 需要设置`visible`属性，它接收`Boolean`，当为`true`时显示 Dialog。Dialog 分为两个部分：`Dialog.Body`和`Dialog.Footer`。`title`属性用于定义标题，它是可选的，默认值为空。
 
 ```js
 constructor(props) {
@@ -153,26 +153,13 @@ render() {
 | size      | Dialog 的大小 | string    | tiny/small/large/full | small |
 | top       | Dialog CSS 中的 top 值（仅在 size 不为 full 时有效） | string    | —                       | 15%     |
 | modal     | 是否需要遮罩层   | boolean   | — | true |
-| lock-scroll | 是否在 Dialog 出现时将 body 滚动锁定 | boolean | — | true |
-| custom-class      | Dialog 的自定义类名 | string    | — | — |
-| close-on-click-modal | 是否可以通过点击 modal 关闭 Dialog | boolean    | — | true |
-| close-on-press-escape | 是否可以通过按下 ESC 关闭 Dialog | boolean    | — | true |
-
-### Slot
-| name | 说明 |
-|------|--------|
-| — | Dialog 的内容 |
-| footer | Dialog 按钮操作区的内容 |
-
-### 方法
-每个 `el-dialog` 实例都暴露了如下方法，用于在不显式改变 `v-model` 值的情况下打开 / 关闭实例：
-| 方法名 | 说明 |
-|------|--------|
-| open | 打开当前实例 |
-| close | 关闭当前实例 |
+| lockScroll | 是否在 Dialog 出现时将 body 滚动锁定 | boolean | — | true |
+| customClass      | Dialog 的自定义类名 | string    | — | — |
+| closeOnClickModal | 是否可以通过点击 modal 关闭 Dialog | boolean    | — | true |
+| closeOnPressEscape | 是否可以通过按下 ESC 关闭 Dialog | boolean    | — | true |
 
 ### Events
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
-| close  | Dialog 关闭的回调 | — |
-| open  | Dialog 打开的回调 | — |
+| onClose  | Dialog 关闭的回调 | — |
+| onOpen  | Dialog 打开的回调 | — |

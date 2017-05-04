@@ -2,9 +2,9 @@
 
 ### Basic usage
 
-Similar to Tooltip, Popover is also built with `Vue-popper`. So for some duplicated attributes, please refer to the documentation of Tooltip.
+Similar to Tooltip, Popover is also built with `Popper.js`. So for some duplicated attributes, please refer to the documentation of Tooltip.
 
-:::demo Add `ref` in your popover, then in your button, use `v-popover` directive to link the button and the popover. The attribute `trigger` is used to define how popover is triggered: `hover`, `click` or `focus`. Alternatively, you can specify reference using a named `slot`.
+:::demo The attribute `trigger` is used to define how popover is triggered: `hover`, `click` or `focus`.
 
 ```js
 render() {
@@ -137,12 +137,6 @@ render() {
 |  value(v-model)        |  whether popover is visible  | Boolean           | — |  false |
 |  offset        |  popover offset  | number           | — |  0 |
 |  transition     |  popover transition animation      | string             | — | fade-in-linear |
-|  visibleArrow   |  whether a tooltip arrow is displayed or not. For more info, please refer to [Vue-popper](https://github.com/element-component/vue-popper) | boolean | — | true |
+|  visibleArrow   |  whether a tooltip arrow is displayed or not. | boolean | — | true |
 |  options        | parameters for [popper.js](https://popper.js.org/documentation.html) | object            | please refer to [popper.js](https://popper.js.org/documentation.html) | `{ boundariesElement: 'body', gpuAcceleration: false }` |
 |  popperClass        |  custom class name for popover | string | — | — |
-
-### Events
-| Event Name | Description | 回调参数 |
-|---------|--------|---------|
-| onShow | triggers when popover shows | — |
-| onHide | triggers when popover hides | — |

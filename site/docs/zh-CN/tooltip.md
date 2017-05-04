@@ -89,7 +89,7 @@ render() {
 
 展示多行文本或者是设置文本内容的格式
 
-:::demo 用具名 slot 分发`content`，替代`tooltip`中的`content`属性。
+:::demo `content`属性也可以是`ReactElement`。
 ```js
 render() {
   return (

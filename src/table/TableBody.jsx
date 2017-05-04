@@ -59,7 +59,7 @@ class BodyItem extends Component{
 
     if(rowClassName){
       const clasName = rowClassName(itemData, rowIndex);
-      classSet[rowClassName] = true;
+      classSet[clasName] = true;
     }
 
     const rootClassName = this.classNames(classSet);
