@@ -22,11 +22,11 @@ var _marked = require('marked');
 
 var _marked2 = _interopRequireDefault(_marked);
 
+var _prismjs = require('prismjs');
+
+var _prismjs2 = _interopRequireDefault(_prismjs);
+
 var _babelStandalone = require('babel-standalone');
-
-var _highlight2 = require('./highlight');
-
-var _highlight3 = _interopRequireDefault(_highlight2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51,15 +51,6 @@ var Canvas = function (_React$Component) {
   }
 
   _createClass(Canvas, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      _marked2.default.setOptions({
-        highlight: function highlight(code) {
-          return _highlight3.default.highlightAuto(code).value;
-        }
-      });
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.renderSource();
@@ -77,14 +68,20 @@ var Canvas = function (_React$Component) {
   }, {
     key: 'blockControl',
     value: function blockControl() {
+      var _this2 = this;
+
       this.setState({
         showBlock: !this.state.showBlock
+      }, function () {
+        if (_this2.state.showBlock) {
+          _prismjs2.default.highlightAll();
+        }
       });
     }
   }, {
     key: 'renderSource',
     value: function renderSource() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.shouldUpdate) {
         var div = this.refs.source;
@@ -92,14 +89,14 @@ var Canvas = function (_React$Component) {
         if (div instanceof HTMLElement) {
           require(['../../src'], function (Element) {
             var args = ['context', 'React'],
-                argv = [_this2, _react2.default];
+                argv = [_this3, _react2.default];
 
             for (var key in Element) {
               args.push(key);
               argv.push(Element[key]);
             }
 
-            args.push(_this2.component);
+            args.push(_this3.component);
 
             _reactDom2.default.unmountComponentAtNode(div);
             _reactDom2.default.render(new (Function.prototype.bind.apply(Function, [null].concat(args)))().apply(null, argv), div);

@@ -4,12 +4,10 @@ import { AppContainer } from 'react-hot-loader';
 
 import 'core-js';
 
-/* eslint-disable */
 import 'element-theme-default';
-/* eslint-enable */
 
-import './styles/highlight.css';
 import './styles/base.scss';
+import './styles/prism.css';
 
 import App from './page';
 
