@@ -164,10 +164,6 @@ var Select = function (_Component) {
         if (state.selected.length != this.state.selected.length) {
           this.onSelectedChange(state.selected);
         }
-      } else {
-        if (state.selected != this.state.selected) {
-          this.onSelectedChange(state.selected);
-        }
       }
     }
   }, {
@@ -225,8 +221,7 @@ var Select = function (_Component) {
           multiple = _props.multiple;
       var _state = this.state,
           value = _state.value,
-          options = _state.options,
-          selected = _state.selected;
+          options = _state.options;
 
 
       if (remote && multiple && Array.isArray(value)) {
@@ -245,10 +240,6 @@ var Select = function (_Component) {
         if (_selected) {
           this.state.selectedLabel = _selected.props.label;
         }
-      }
-
-      if (selected) {
-        this.onSelectedChange(selected);
       }
     }
   }, {
@@ -422,12 +413,6 @@ var Select = function (_Component) {
         this.setState({ currentPlaceholder: currentPlaceholder }, function () {
           _this5.resetInputHeight();
         });
-
-        if (selectedInit) {
-          return this.setState({
-            selectedInit: false
-          });
-        }
 
         valueChangeBySelected = true;
 
@@ -902,6 +887,8 @@ var Select = function (_Component) {
       } else {
         var optionIndex = -1;
 
+        selected = selected.slice(0);
+
         selected.forEach(function (item, index) {
           if (item === option || item.currentLabel() === option.currentLabel()) {
             optionIndex = index;
@@ -916,7 +903,10 @@ var Select = function (_Component) {
       }
 
       this.setState({ selected: selected, selectedLabel: selectedLabel }, function () {
-        _this9.onSelectedChange(_this9.state.selected);
+        if (!multiple) {
+          _this9.onSelectedChange(_this9.state.selected);
+        }
+
         _this9.setState({ visible: visible });
       });
     }
