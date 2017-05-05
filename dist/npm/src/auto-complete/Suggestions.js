@@ -77,14 +77,10 @@ var Suggestions = function (_Component) {
   }, {
     key: 'onVisibleChange',
     value: function onVisibleChange(visible, inputWidth) {
-      var _this2 = this;
-
-      setTimeout(function () {
-        _this2.setState({
-          dropdownWidth: inputWidth,
-          showPopper: visible
-        });
-      }, 30);
+      this.setState({
+        dropdownWidth: inputWidth,
+        showPopper: visible
+      });
     }
   }, {
     key: 'parent',
@@ -99,7 +95,7 @@ var Suggestions = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       var customItem = this.parent().props.customItem;
       var _parent$state = this.parent().state,
@@ -145,8 +141,8 @@ var Suggestions = function (_Component) {
                   'li',
                   {
                     key: index,
-                    className: _this3.classNames({ 'highlighted': highlightedIndex === index }),
-                    onClick: _this3.onSelect.bind(_this3, item) },
+                    className: _this2.classNames({ 'highlighted': highlightedIndex === index }),
+                    onClick: _this2.onSelect.bind(_this2, item) },
                   !customItem ? item.value : _react2.default.createElement(customItem, {
                     index: index,
                     item: item

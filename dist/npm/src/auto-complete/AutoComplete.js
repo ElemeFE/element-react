@@ -69,25 +69,29 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
+      var _this2 = this;
+
       var visible = this.suggestionVisible();
       var reference = _reactDom2.default.findDOMNode(this.inputNode);
 
       if (reference instanceof HTMLElement) {
-        this.suggestionsNode.onVisibleChange(visible, reference.offsetWidth);
+        setTimeout(function () {
+          _this2.suggestionsNode.onVisibleChange(visible, reference.offsetWidth);
+        });
       }
     }
   }, {
     key: 'getData',
     value: function getData(queryString) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.setState({ loading: true });
 
       this.props.fetchSuggestions(queryString, function (suggestions) {
-        _this2.setState({ loading: false });
+        _this3.setState({ loading: false });
 
         if (Array.isArray(suggestions)) {
-          _this2.setState({ suggestions: suggestions });
+          _this3.setState({ suggestions: suggestions });
         }
       });
     }
@@ -114,11 +118,11 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'handleBlur',
     value: function handleBlur() {
-      var _this3 = this;
+      var _this4 = this;
 
       // 因为 blur 事件处理优先于 select 事件执行
       setTimeout(function () {
-        _this3.setState({ isFocus: false });
+        _this4.setState({ isFocus: false });
       }, 100);
     }
   }, {
@@ -138,10 +142,10 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'select',
     value: function select(item) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.setState({ inputValue: item.value }, function () {
-        _this4.setState({ suggestions: [] });
+        _this5.setState({ suggestions: [] });
       });
 
       if (this.props.onSelect) {
@@ -211,7 +215,7 @@ var AutoComplete = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       var _props = this.props,
           disabled = _props.disabled,
@@ -233,7 +237,7 @@ var AutoComplete = function (_Component) {
         { style: this.style(), className: this.className('el-autocomplete') },
         _react2.default.createElement(_input2.default, {
           ref: function ref(node) {
-            return _this5.inputNode = node;
+            return _this6.inputNode = node;
           },
           value: inputValue,
           disabled: disabled,
@@ -251,7 +255,7 @@ var AutoComplete = function (_Component) {
         }),
         _react2.default.createElement(_Suggestions2.default, {
           ref: function ref(node) {
-            return _this5.suggestionsNode = node;
+            return _this6.suggestionsNode = node;
           },
           className: this.classNames(popperClass),
           suggestions: suggestions
