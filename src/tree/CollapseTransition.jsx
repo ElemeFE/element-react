@@ -28,10 +28,14 @@ export default class CollapseTransition extends Component {
     this.leave();
   }
 
-  triggerChange(): void {
+  componentWillReceiveProps(nextProps: any){
+    if (this.props.isShow !== nextProps.isShow) this.triggerChange(nextProps.isShow);
+  }
+
+  triggerChange(isShow: boolean): void {
     clearTimeout(this.enterTimer);
     clearTimeout(this.leaveTimer);
-    if (this.props.isShow) {
+    if (isShow) {
       this.beforeEnter();
       this.enter();
     } else {
@@ -102,6 +106,7 @@ export default class CollapseTransition extends Component {
 
   afterLeave(): void {
     const el = this.selfRef;
+    if (!el) return ; 
 
     el.style.display = 'none';
     el.style.height = '';
