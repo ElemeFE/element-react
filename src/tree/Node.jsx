@@ -8,30 +8,23 @@ import { watchPropertyChange, IDGenerator } from '../../libs/utils';
 import CollapseTransition from './CollapseTransition';
 import Checkbox from '../checkbox';
 
-type Props = {
-  nodeModel: Object,
-  renderContent?: Function,
-  context: Object
-};
 
-function NodeContent(props: Props) {
-  const { nodeModel, renderContent, context } = props;
+function NodeContent({context, renderContent}) {
+  const {nodeModel, treeNode} = context.props;
 
   if (typeof renderContent === 'function') {
-    return renderContent(Object.freeze(context));
+    return renderContent(nodeModel, nodeModel.data, treeNode.store);
   } else {
     return <span className="el-tree-node__label">{nodeModel.label}</span>;
   }
 }
 
 NodeContent.propTypes = {
-  nodeModel: PropTypes.object.isRequired,
   renderContent: PropTypes.func,
   context: PropTypes.object.isRequired
 };
 
 type State = {
-  expanded: boolean,
   childNodeRendered: boolean,
   isShowCheckbox: boolean
 };
@@ -43,7 +36,6 @@ export default class Node extends Component {
     super(props);
 
     this.state = {
-      expanded: false,
       childNodeRendered: false,
       isShowCheckbox: false
     };
@@ -128,40 +120,64 @@ export default class Node extends Component {
     this.oldIndeterminate = indeterminate;
   }
 
-  handleClick(): void {
-    this.props.treeNode.setCurrentNode(this);
+  getNodeKey(node: any, otherwise: number) {
+    const nodeKey = this.props.nodeKey;
+    if (nodeKey && node) {
+      return node.data[nodeKey];
+    }
+    return otherwise;
   }
 
-  handleExpandIconClick(event: SyntheticEvent): void {
-    let target = event.target;
-    const { nodeModel, onNodeClicked } = this.props;
-    if (target instanceof HTMLElement) {
-      if (
-        (target.tagName.toUpperCase() !== 'DIV' &&
-          target.parentNode &&
-          target.parentNode.nodeName.toUpperCase() !== 'DIV') ||
-        target.nodeName.toUpperCase() === 'LABEL'
-      )
-        return;
-      if (this.state.expanded) {
-        nodeModel.collapse();
-        this.setState({ expanded: false }, () =>
-          this.refs.collapse.triggerChange());
-      } else {
-        nodeModel.expand(() => {
-          this.setState({ expanded: true, childNodeRendered: true }, () =>
-            this.refs.collapse.triggerChange());
-        });
-      }
 
-      onNodeClicked(nodeModel.data, nodeModel, this);
+  handleClick(evt: ?SyntheticEvent): void {
+    if (evt) evt.stopPropagation();
+    const { nodeModel, treeNode } = this.props;
+
+    treeNode.setCurrentNode(this);
+    if (treeNode.props.expandOnClickNode){
+      this.handleExpandIconClick()
     }
   }
 
+  handleExpandIconClick(evt: ?SyntheticEvent): void {
+    if (evt) evt.stopPropagation();
+
+    const { nodeModel, parent } = this.props;
+    const {onNodeCollapse, onNodeExpand} = this.props.treeNode.props;
+
+    if (nodeModel.isLeaf) return;
+
+    if (nodeModel.expanded) {
+      nodeModel.collapse()
+      this.refresh()
+      onNodeCollapse(nodeModel.data, nodeModel, this)
+    } else {
+      nodeModel.expand(() => {
+        this.setState({childNodeRendered: true }, () => {
+          onNodeExpand(nodeModel.data, nodeModel, this)
+        });
+        parent.closeSiblings(nodeModel)
+      });
+    }
+  }
+
+  closeSiblings(exclude: any){
+    const {treeNode, nodeModel} = this.props;
+    if (!treeNode.props.accordion) return;
+    if (nodeModel.isLeaf || !nodeModel.childNodes || !nodeModel.childNodes.length) return;
+
+    nodeModel.childNodes.filter(e=> e !== exclude).forEach(e=>e.collapse());
+    this.refresh();
+  }
+
+  refresh(){
+    this.setState({})
+  }
+
   handleUserClick(): void {
-    const nodeModel = this.props.nodeModel;
+    let {nodeModel, checkStrictly} = this.props.treeNode;
     if (nodeModel.indeterminate) {
-      nodeModel.setChecked(nodeModel.checked, true);
+      nodeModel.setChecked(nodeModel.checked, !checkStrictly);
     }
   }
 
@@ -170,47 +186,52 @@ export default class Node extends Component {
   }
 
   render(): React.Element<any> {
-    const { childNodeRendered, expanded } = this.state;
+    const { childNodeRendered } = this.state;
     const { treeNode, nodeModel, renderContent, isShowCheckbox } = this.props;
+
+    let expanded = nodeModel.expanded;
 
     return (
       <div
         onClick={this.handleClick.bind(this)}
         className={this.classNames('el-tree-node', {
           expanded: childNodeRendered && expanded,
-          'is-current': treeNode.getCurrentNode() === this
+          'is-current': treeNode.getCurrentNode() === this,
+          'is-hidden': !nodeModel.visible
         })}
+        style={{display: nodeModel.visible ? '': 'none'}}
       >
         <div
           className="el-tree-node__content"
-          style={{ paddingLeft: `${nodeModel.level * 16}px` }}
-          onClick={this.handleExpandIconClick.bind(this)}
+          style={{ paddingLeft: `${(nodeModel.level - 1) * treeNode.props.indent}px` }}
         >
           <span
             className={this.classNames('el-tree-node__expand-icon', {
               'is-leaf': nodeModel.isLeaf,
               expanded: !nodeModel.isLeaf && expanded
             })}
+            onClick={this.handleExpandIconClick.bind(this)}
           />
           {isShowCheckbox &&
             <Checkbox
               checked={nodeModel.checked}
               onChange={this.handleCheckChange.bind(this)}
               indeterminate={nodeModel.indeterminate}
+              onClick={this.handleUserClick.bind(this)}
             />}
           {nodeModel.loading &&
-            <span className="el-tree-node__icon el-icon-loading"> </span>}
+            <span className="el-tree-node__loading-icon el-icon-loading"> </span>}
           <NodeContent
             nodeModel={nodeModel}
-            renderContent={renderContent}
+            renderContent={treeNode.props.renderContent}
             context={this}
           />
         </div>
         <CollapseTransition isShow={expanded} ref="collapse">
           <div className="el-tree-node__children">
             {nodeModel.childNodes.map((e, idx) => {
-              let props = Object.assign({}, this.props, { nodeModel: e });
-              return <Node {...props} key={idx} />;
+              let props = Object.assign({}, this.props, { nodeModel: e, parent: this });
+              return <Node {...props} key={this.getNodeKey(e, idx)} />;
             })}
           </div>
         </CollapseTransition>
@@ -222,16 +243,13 @@ export default class Node extends Component {
 Node.propTypes = {
   nodeModel: PropTypes.object,
   options: PropTypes.object,
-  renderContent: PropTypes.func,
   treeNode: PropTypes.object.isRequired,
   isShowCheckbox: PropTypes.bool,
   onCheckChange: PropTypes.func,
-  onNodeClicked: PropTypes.func
 };
 
 Node.defaultProps = {
   nodeModel: {},
   options: {},
   onCheckChange() {},
-  onNodeClicked() {}
 };
