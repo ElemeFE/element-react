@@ -57,12 +57,10 @@ export default class Suggestions extends Component {
   }
 
   onVisibleChange(visible: boolean, inputWidth: string): void {
-    setTimeout(() => {
-      this.setState({
-        dropdownWidth: inputWidth,
-        showPopper: visible
-      })
-    }, 30);
+    this.setState({
+      dropdownWidth: inputWidth,
+      showPopper: visible
+    });
   }
 
   parent(): Component {

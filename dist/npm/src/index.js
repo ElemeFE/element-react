@@ -388,6 +388,15 @@ Object.defineProperty(exports, 'Cascader', {
   }
 });
 
+var _transfer = require('./transfer');
+
+Object.defineProperty(exports, 'Transfer', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_transfer).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 ;

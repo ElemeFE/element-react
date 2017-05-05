@@ -65,6 +65,10 @@ var _default = {
       noData: 'Ei tietoja',
       placeholder: 'Valitse'
     },
+    cascader: {
+      noMatch: 'Ei vastaavia tietoja',
+      placeholder: 'Valitse'
+    },
     pagination: {
       goto: 'Mene',
       pagesize: '/sivu',
@@ -86,10 +90,19 @@ var _default = {
       emptyText: 'Ei tietoja',
       confirmFilter: 'Vahvista',
       resetFilter: 'Tyhjennä',
-      clearFilter: 'Kaikki'
+      clearFilter: 'Kaikki',
+      sumText: 'Sum' // to be translated
     },
     tree: {
       emptyText: 'Ei tietoja'
+    },
+    transfer: {
+      noMatch: 'Ei vastaavia tietoja',
+      noData: 'Ei tietoja',
+      titles: ['List 1', 'List 2'], // to be translated
+      filterPlaceholder: 'Enter keyword', // to be translated
+      noCheckedFormat: '{total} items', // to be translated
+      hasCheckedFormat: '{checked}/{total} checked' // to be translated
     }
   }
 };

@@ -26,6 +26,7 @@ export default {
       'upload': require('./upload'),
       'rate': require('./rate'),
       'color-picker': require('./color-picker'),
+      'transfer': require('./transfer'),
       'form': require('./form')
     },
     'Data': {

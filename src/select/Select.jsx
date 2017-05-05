@@ -141,10 +141,6 @@ class Select extends Component {
       if (state.selected.length != this.state.selected.length) {
         this.onSelectedChange(state.selected);
       }
-    } else {
-      if (state.selected != this.state.selected) {
-        this.onSelectedChange(state.selected);
-      }
     }
   }
 
@@ -190,7 +186,7 @@ class Select extends Component {
 
   handleValueChange() {
     const { remote, multiple } = this.props;
-    const { value, options, selected } = this.state;
+    const { value, options } = this.state;
 
     if (remote && multiple && Array.isArray(value)) {
       this.setState({
@@ -208,10 +204,6 @@ class Select extends Component {
        if (selected) {
          this.state.selectedLabel = selected.props.label;
        }
-    }
-
-    if (selected) {
-      this.onSelectedChange(selected);
     }
   }
 
@@ -345,12 +337,6 @@ class Select extends Component {
       this.setState({ currentPlaceholder }, () => {
         this.resetInputHeight();
       });
-
-      if (selectedInit) {
-        return this.setState({
-          selectedInit: false
-        });
-      }
 
       valueChangeBySelected = true;
 
@@ -739,6 +725,8 @@ class Select extends Component {
     } else {
       let optionIndex = -1;
 
+      selected = selected.slice(0);
+
       selected.forEach((item, index) => {
         if (item === option || item.currentLabel() === option.currentLabel()) {
           optionIndex = index;
@@ -753,7 +741,10 @@ class Select extends Component {
     }
 
     this.setState({ selected, selectedLabel }, () => {
-      this.onSelectedChange(this.state.selected);
+      if (!multiple) {
+        this.onSelectedChange(this.state.selected);
+      }
+
       this.setState({ visible });
     });
   }
