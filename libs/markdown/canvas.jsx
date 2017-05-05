@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import marked from 'marked';
+import prism from 'prismjs';
 import { transform } from 'babel-standalone';
-
-import highlight from './highlight';
 
 export default class Canvas extends React.Component {
   constructor(props) {
@@ -13,14 +12,6 @@ export default class Canvas extends React.Component {
     this.state = {
       showBlock: false
     };
-  }
-
-  componentWillMount() {
-    marked.setOptions({
-      highlight: code => {
-        return highlight.highlightAuto(code).value;
-      }
-    });
   }
 
   componentDidMount() {
@@ -38,6 +29,10 @@ export default class Canvas extends React.Component {
   blockControl() {
     this.setState({
       showBlock: !this.state.showBlock
+    }, () => {
+      if (this.state.showBlock) {
+        prism.highlightAll();
+      }
     });
   }
 
