@@ -44,11 +44,16 @@ var CollapseTransition = function (_Component) {
       this.leave();
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.isShow !== nextProps.isShow) this.triggerChange(nextProps.isShow);
+    }
+  }, {
     key: 'triggerChange',
-    value: function triggerChange() {
+    value: function triggerChange(isShow) {
       clearTimeout(this.enterTimer);
       clearTimeout(this.leaveTimer);
-      if (this.props.isShow) {
+      if (isShow) {
         this.beforeEnter();
         this.enter();
       } else {
@@ -133,6 +138,7 @@ var CollapseTransition = function (_Component) {
     key: 'afterLeave',
     value: function afterLeave() {
       var el = this.selfRef;
+      if (!el) return;
 
       el.style.display = 'none';
       el.style.height = '';
