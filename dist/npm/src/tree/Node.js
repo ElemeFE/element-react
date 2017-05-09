@@ -38,14 +38,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function NodeContent(props) {
-  var nodeModel = props.nodeModel,
-      renderContent = props.renderContent,
-      context = props.context;
+function NodeContent(_ref) {
+  var context = _ref.context,
+      renderContent = _ref.renderContent;
+  var _context$props = context.props,
+      nodeModel = _context$props.nodeModel,
+      treeNode = _context$props.treeNode;
 
 
   if (typeof renderContent === 'function') {
-    return renderContent(Object.freeze(context));
+    return renderContent(nodeModel, nodeModel.data, treeNode.store);
   } else {
     return _react2.default.createElement(
       'span',
@@ -56,7 +58,6 @@ function NodeContent(props) {
 }
 
 NodeContent.propTypes = {
-  nodeModel: _libs.PropTypes.object.isRequired,
   renderContent: _libs.PropTypes.func,
   context: _libs.PropTypes.object.isRequired
 };
@@ -70,7 +71,6 @@ var Node = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Node.__proto__ || Object.getPrototypeOf(Node)).call(this, props));
 
     _this.state = {
-      expanded: false,
       childNodeRendered: false,
       isShowCheckbox: false
     };
@@ -165,44 +165,89 @@ var Node = function (_Component) {
       this.oldIndeterminate = indeterminate;
     }
   }, {
+    key: 'getNodeKey',
+    value: function getNodeKey(node, otherwise) {
+      var nodeKey = this.props.nodeKey;
+      if (nodeKey && node) {
+        return node.data[nodeKey];
+      }
+      return otherwise;
+    }
+  }, {
     key: 'handleClick',
-    value: function handleClick() {
-      this.props.treeNode.setCurrentNode(this);
+    value: function handleClick(evt) {
+      if (evt) evt.stopPropagation();
+      var _props2 = this.props,
+          nodeModel = _props2.nodeModel,
+          treeNode = _props2.treeNode;
+
+
+      treeNode.setCurrentNode(this);
+      if (treeNode.props.expandOnClickNode) {
+        this.handleExpandIconClick();
+      }
     }
   }, {
     key: 'handleExpandIconClick',
-    value: function handleExpandIconClick(event) {
+    value: function handleExpandIconClick(evt) {
       var _this4 = this;
 
-      var target = event.target;
-      var _props2 = this.props,
-          nodeModel = _props2.nodeModel,
-          onNodeClicked = _props2.onNodeClicked;
+      if (evt) evt.stopPropagation();
 
-      if (target instanceof HTMLElement) {
-        if (target.tagName.toUpperCase() !== 'DIV' && target.parentNode && target.parentNode.nodeName.toUpperCase() !== 'DIV' || target.nodeName.toUpperCase() === 'LABEL') return;
-        if (this.state.expanded) {
-          nodeModel.collapse();
-          this.setState({ expanded: false }, function () {
-            return _this4.refs.collapse.triggerChange();
-          });
-        } else {
-          nodeModel.expand(function () {
-            _this4.setState({ expanded: true, childNodeRendered: true }, function () {
-              return _this4.refs.collapse.triggerChange();
-            });
-          });
-        }
+      var _props3 = this.props,
+          nodeModel = _props3.nodeModel,
+          parent = _props3.parent;
+      var _props$treeNode$props = this.props.treeNode.props,
+          onNodeCollapse = _props$treeNode$props.onNodeCollapse,
+          onNodeExpand = _props$treeNode$props.onNodeExpand;
 
-        onNodeClicked(nodeModel.data, nodeModel, this);
+
+      if (nodeModel.isLeaf) return;
+
+      if (nodeModel.expanded) {
+        nodeModel.collapse();
+        this.refresh();
+        onNodeCollapse(nodeModel.data, nodeModel, this);
+      } else {
+        nodeModel.expand(function () {
+          _this4.setState({ childNodeRendered: true }, function () {
+            onNodeExpand(nodeModel.data, nodeModel, _this4);
+          });
+          parent.closeSiblings(nodeModel);
+        });
       }
+    }
+  }, {
+    key: 'closeSiblings',
+    value: function closeSiblings(exclude) {
+      var _props4 = this.props,
+          treeNode = _props4.treeNode,
+          nodeModel = _props4.nodeModel;
+
+      if (!treeNode.props.accordion) return;
+      if (nodeModel.isLeaf || !nodeModel.childNodes || !nodeModel.childNodes.length) return;
+
+      nodeModel.childNodes.filter(function (e) {
+        return e !== exclude;
+      }).forEach(function (e) {
+        return e.collapse();
+      });
+      this.refresh();
+    }
+  }, {
+    key: 'refresh',
+    value: function refresh() {
+      this.setState({});
     }
   }, {
     key: 'handleUserClick',
     value: function handleUserClick() {
-      var nodeModel = this.props.nodeModel;
+      var _props$treeNode = this.props.treeNode,
+          nodeModel = _props$treeNode.nodeModel,
+          checkStrictly = _props$treeNode.checkStrictly;
+
       if (nodeModel.indeterminate) {
-        nodeModel.setChecked(nodeModel.checked, true);
+        nodeModel.setChecked(nodeModel.checked, !checkStrictly);
       }
     }
   }, {
@@ -215,15 +260,15 @@ var Node = function (_Component) {
     value: function render() {
       var _this5 = this;
 
-      var _state = this.state,
-          childNodeRendered = _state.childNodeRendered,
-          expanded = _state.expanded;
-      var _props3 = this.props,
-          treeNode = _props3.treeNode,
-          nodeModel = _props3.nodeModel,
-          renderContent = _props3.renderContent,
-          isShowCheckbox = _props3.isShowCheckbox;
+      var childNodeRendered = this.state.childNodeRendered;
+      var _props5 = this.props,
+          treeNode = _props5.treeNode,
+          nodeModel = _props5.nodeModel,
+          renderContent = _props5.renderContent,
+          isShowCheckbox = _props5.isShowCheckbox;
 
+
+      var expanded = nodeModel.expanded;
 
       return _react2.default.createElement(
         'div',
@@ -231,35 +276,38 @@ var Node = function (_Component) {
           onClick: this.handleClick.bind(this),
           className: this.classNames('el-tree-node', {
             expanded: childNodeRendered && expanded,
-            'is-current': treeNode.getCurrentNode() === this
-          })
+            'is-current': treeNode.getCurrentNode() === this,
+            'is-hidden': !nodeModel.visible
+          }),
+          style: { display: nodeModel.visible ? '' : 'none' }
         },
         _react2.default.createElement(
           'div',
           {
             className: 'el-tree-node__content',
-            style: { paddingLeft: nodeModel.level * 16 + 'px' },
-            onClick: this.handleExpandIconClick.bind(this)
+            style: { paddingLeft: (nodeModel.level - 1) * treeNode.props.indent + 'px' }
           },
           _react2.default.createElement('span', {
             className: this.classNames('el-tree-node__expand-icon', {
               'is-leaf': nodeModel.isLeaf,
               expanded: !nodeModel.isLeaf && expanded
-            })
+            }),
+            onClick: this.handleExpandIconClick.bind(this)
           }),
           isShowCheckbox && _react2.default.createElement(_checkbox2.default, {
             checked: nodeModel.checked,
             onChange: this.handleCheckChange.bind(this),
-            indeterminate: nodeModel.indeterminate
+            indeterminate: nodeModel.indeterminate,
+            onClick: this.handleUserClick.bind(this)
           }),
           nodeModel.loading && _react2.default.createElement(
             'span',
-            { className: 'el-tree-node__icon el-icon-loading' },
+            { className: 'el-tree-node__loading-icon el-icon-loading' },
             ' '
           ),
           _react2.default.createElement(NodeContent, {
             nodeModel: nodeModel,
-            renderContent: renderContent,
+            renderContent: treeNode.props.renderContent,
             context: this
           })
         ),
@@ -270,8 +318,8 @@ var Node = function (_Component) {
             'div',
             { className: 'el-tree-node__children' },
             nodeModel.childNodes.map(function (e, idx) {
-              var props = Object.assign({}, _this5.props, { nodeModel: e });
-              return _react2.default.createElement(Node, _extends({}, props, { key: idx }));
+              var props = Object.assign({}, _this5.props, { nodeModel: e, parent: _this5 });
+              return _react2.default.createElement(Node, _extends({}, props, { key: _this5.getNodeKey(e, idx) }));
             })
           )
         )
@@ -289,18 +337,15 @@ exports.default = _default;
 Node.propTypes = {
   nodeModel: _libs.PropTypes.object,
   options: _libs.PropTypes.object,
-  renderContent: _libs.PropTypes.func,
   treeNode: _libs.PropTypes.object.isRequired,
   isShowCheckbox: _libs.PropTypes.bool,
-  onCheckChange: _libs.PropTypes.func,
-  onNodeClicked: _libs.PropTypes.func
+  onCheckChange: _libs.PropTypes.func
 };
 
 Node.defaultProps = {
   nodeModel: {},
   options: {},
-  onCheckChange: function onCheckChange() {},
-  onNodeClicked: function onNodeClicked() {}
+  onCheckChange: function onCheckChange() {}
 };
 ;
 
