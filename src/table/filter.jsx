@@ -18,20 +18,34 @@ class Filter extends Component{
 
     this.state = {
       visible: this.props.visible,
-      defaultStyle: {position: 'absolute', transformOrigin: 'center top 0px', zIndex: 2000},
+      defaultStyle: {
+        position: 'absolute', 
+        transformOrigin: 'center top 0px', 
+        zIndex: 2000
+      },
       checked: props.defaultCondi ? props.defaultCondi: []
     };
   }
 
   componentDidMount(){
-    const rootEl = this.refs.root;
+    const root = this.refs.root;
     const { position } = this.props;
-    const { style } = rootEl;
+    const { style } = root;
 
-    style.left = (position.x - this.refs.root.offsetWidth) + 'px';
+    style.left = (position.x - root.offsetWidth) + 'px';
     style.top = position.y + 'px';
-    rootEl.className = this.classNames(rootEl.className, 'md-fade-center-enter');
-    setTimeout(()=>{rootEl.className = this.classNames(rootEl.className, 'md-fade-bottom-enter-active')}, 0);
+    var originClassName = root.className;
+
+    root.className = this.classNames(
+      originClassName, 
+      'el-zoom-in-top-enter'
+    );
+
+    root.clientHeight;//触发重新计算， 否则动画不会产生
+    root.className = this.classNames(
+      originClassName, 
+      'el-zoom-in-top-enter-active'
+    );
   }
 
   componentWillReceiveProps(nextProps){
@@ -41,14 +55,15 @@ class Filter extends Component{
   }
 
   handleClickOutside(e){
-    if(e.target.className.indexOf('el-icon-arrow-down') > -1)return;
+    const className = e.target.className;
+    if(className.indexOf('el-icon-arrow-down') > -1)return;
     this.close();
   }
 
   close(){
     const { ower, onClose } = this.props;
     const rootEl = this.refs.root;
-    rootEl.className = this.classNames('el-table-filter', 'md-fade-bottom-leave-active');
+    rootEl.className = this.classNames('el-table-filter', 'el-zoom-in-top-leave el-zoom-in-top-leave-active');
     setTimeout(()=>{ ReactDOM.unmountComponentAtNode(ower.filterContainer); }, 300);
 
     onClose && onClose();
