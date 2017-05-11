@@ -38,7 +38,7 @@ import { Button } from 'element-react/next';
 
 ## Contributing
 
-Please make sure to read the [Contributing Guide](https://github.com/eleme/element-react/blob/master/.github/CONTRIBUTING.md) before making a pull request.
+Please make sure to read the [Contributing Guide](https://github.com/eleme/element-react/blob/master/CONTRIBUTING.md) before making a pull request.
 
 ## Credits
 

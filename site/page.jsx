@@ -109,13 +109,13 @@ export default class App extends React.Component {
             </h1>
             <ul className="nav">
               <li className="nav-item">
-                <a href={`http://element.eleme.io/#/${this.state.locale}/guide/design`}>{this.getLocale('misc.guide')}</a>
+                <a href={`http://element.eleme.io/#/${this.state.locale}/guide/design`} target="_blank" rel="noopener noreferrer">{this.getLocale('misc.guide')}</a>
               </li>
               <li className="nav-item">
                 <a className="active">{this.getLocale('misc.component')}</a>
               </li>
               <li className="nav-item">
-                <a href={`http://element.eleme.io/#/${this.state.locale}/resource`}>{this.getLocale('misc.resource')}</a>
+                <a href={`http://element.eleme.io/#/${this.state.locale}/resource`} target="_blank" rel="noopener noreferrer">{this.getLocale('misc.resource')}</a>
               </li>
               <li className="nav-item">
                 <span className={classnames('nav-lang', { active: this.state.locale === 'zh-CN'})} onClick={this.setLocale.bind(this, 'zh-CN')}>中文</span>
@@ -182,6 +182,7 @@ export default class App extends React.Component {
               <p className="footer-main-title">Element-React</p>
               <a href="https://github.com/eleme/element-react/issues" target="_blank" rel="noopener noreferrer" className="footer-main-link">{this.getLocale('misc.feedback')}</a>
               <a href="https://github.com/eleme/element-react/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" className="footer-main-link">{this.getLocale('misc.contribution')}</a>
+              <a href={`http://element.eleme.io/#/${this.state.locale}/component/${this.state.page}`} target="_blank" rel="noopener noreferrer" className="footer-main-link">Element</a>
             </div>
             <div className="footer-social">
               <a href="//github.com/eleme/element-react" target="_blank" rel="noopener noreferrer">
