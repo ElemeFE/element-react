@@ -56,7 +56,8 @@ new WebpackDevServer(webpack({
 }), {
   publicPath: '/',
   hot: true,
-  historyApiFallback: true
+  historyApiFallback: true,
+  stats: { colors: true }
 }).listen(3000, 'localhost', error => {
   if (error) {
     throw error;
