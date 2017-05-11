@@ -32,10 +32,21 @@ body {
     position: relative;
 
     h1 {
+      position: relative;
       margin: 0;
       float: left;
       font-size: 32px;
       font-weight: 400;
+
+      &:after {
+        position: absolute;
+        top: -7px;
+        right: -50px;
+        content: 'React';
+        font-size: 13px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
 
       a {
         color: #fff;
@@ -45,6 +56,7 @@ body {
 
       img {
         vertical-align: sub;
+        pointer-events: none;
       }
     }
 

@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.4",
   "description": "Element UI for React",
   "private": false,
-  "main": "dist/npm/index.js",
+  "main": "dist/npm/es5/index.js",
   "jsnext:main": "next.js",
   "scripts": {
     "start": "cd site && node run.js",
@@ -49,6 +49,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "flow-bin": "^0.45.0",
+    "flow-remove-types": "^1.2.1",
     "html-webpack-plugin": "^2.28.0",
     "jest": "^20.0.0",
     "marked": "^0.3.6",
