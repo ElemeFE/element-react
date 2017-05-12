@@ -38,10 +38,6 @@ export default class Upload extends Component {
     this.init(this.props);
   }
 
-  componentWillReceiveProps(nextProps: Object): void {
-    this.init(nextProps);
-  }
-
   init(props: Object): void {
     let { tempIndex } = this.state;
     const { fileList } = props;
