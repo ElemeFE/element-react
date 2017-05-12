@@ -32,11 +32,11 @@ export default class UploadList extends Component {
           >
             {['picture-card', 'picture'].includes(listType) &&
               isFinished(file.status) &&
-              <img
-                className="el-upload-list__item-thumbnail"
-                src={file.url}
-                alt=""
-              />}
+                <img
+                  className="el-upload-list__item-thumbnail"
+                  src={file.url}
+                  alt=""
+                />}
 
             <a
               className="el-upload-list__item-name"
@@ -44,21 +44,21 @@ export default class UploadList extends Component {
             >
               <i className="el-icon-document" />{file.name}
             </a>
-            <View
+            <label
               className="el-upload-list__item-status-label"
-              show={isFinished(file.status)}
-              component="label"
             >
               <i
                 className={this.classNames({
+                  'el-icon-upload-success': true,
                   'el-icon-circle-check': listType === 'text',
                   'el-icon-check': ['picture-card', 'picture'].includes(
                     listType
                   )
                 })}
               />
-              <i className="el-icon-close" onClick={() => onRemove(file)} />
-            </View>
+
+            </label>
+            <i className="el-icon-close" onClick={() => onRemove(file)} />
             <View
               className="el-upload-list__item-actions"
               show={listType === 'picture-card' && isFinished(file.status)}
