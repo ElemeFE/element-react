@@ -6,7 +6,7 @@ yarn.lock
 npm-debug.log
 node_modules
 
-/dist/site
+/dist
 /next.js
 
 .vscode
