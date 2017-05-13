@@ -137,6 +137,7 @@ export default class Input extends Component {
           { typeof icon != 'string' ? icon : <i className={`el-input__icon el-icon-${icon}`} onClick={this.handleIconClick.bind(this)}>{prepend}</i> }
           <input { ...otherProps }
             ref="input"
+            type={type}
             className="el-input__inner"
             autoComplete={autoComplete}
             onChange={this.handleChange.bind(this)}
