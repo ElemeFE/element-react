@@ -76,7 +76,8 @@ export default class Loading extends Component {
               'is-full-screen': fullscreen
             })} style={{
               position: 'absolute',
-              display: 'inline-block'
+              display: 'inline-block',
+              left: 0
             }}>
               <svg className="circular" viewBox="25 25 50 50">
                 <circle className="path" cx="50" cy="50" r="20" fill="none" />
