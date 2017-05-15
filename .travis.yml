@@ -6,6 +6,7 @@ env:
   - TRAVIS_CI=1
 
 cache:
+  yarn: true
   directories:
     - node_modules
 
