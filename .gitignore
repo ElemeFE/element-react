@@ -1,6 +1,5 @@
 .DS_Store
 Thumbs.db
-yarn.lock
 .idea
 
 npm-debug.log

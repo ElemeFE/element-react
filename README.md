@@ -86,6 +86,10 @@ module.exports = {
 
 Please make sure to read the [Contributing Guide](https://github.com/eleme/element-react/blob/master/CONTRIBUTING.md) before making a pull request.
 
+## Acknowledgments
+
+* [@doxiaodong](https://github.com/doxiaodong) for adding typescript ambient declarations.
+
 ## Credits
 
 * [Element](https://github.com/ElemeFE/element) Desktop UI elements for Vue.js 2.0.
@@ -93,6 +97,3 @@ Please make sure to read the [Contributing Guide](https://github.com/eleme/eleme
 ## License
 
 MIT
-
-## Acknowlegments:
-* [@doxiaodong](https://github.com/doxiaodong) for adding typescript ambient declarations.
