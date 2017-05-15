@@ -5,10 +5,10 @@
   "private": false,
   "main": "dist/npm/es5/index.js",
   "jsnext:main": "next.js",
-  "typings": "index.d.ts",
+  "typings": "typings/index.d.ts",
   "scripts": {
     "start": "cd site && node run.js",
-    "typescript-test": "node_modules/typescript/bin/tsc --project typing-tests",
+    "typescript-test": "tsc --project typings/typing-tests",
     "test": "flow check && BABEL_ENV=development jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
