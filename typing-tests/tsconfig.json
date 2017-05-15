@@ -1,0 +1,12 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "module": "es2015",
+    "noEmit": true,
+    "jsx": "react"
+  },
+  "include": [
+    "../index.d.ts",
+    "."
+  ]
+}

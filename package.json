@@ -5,8 +5,10 @@
   "private": false,
   "main": "dist/npm/es5/index.js",
   "jsnext:main": "next.js",
+  "typings": "index.d.ts",
   "scripts": {
     "start": "cd site && node run.js",
+    "typescript-test": "node_modules/typescript/bin/tsc --project typing-tests",
     "test": "flow check && jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
@@ -29,6 +31,7 @@
   },
   "homepage": "https://github.com/eleme/element-react#readme",
   "devDependencies": {
+    "@types/react": "^15.0.24",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.0",
@@ -61,6 +64,7 @@
     "react-test-renderer": "^15.5.4",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.17.0",
+    "typescript": "^2.3.2",
     "url-loader": "^0.5.8",
     "webpack": "^2.5.1",
     "webpack-dev-server": "^2.4.5"
