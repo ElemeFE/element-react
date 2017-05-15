@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # testing before publish
-npm run lint && npm run build && npm run test
+npm run lint && npm run build && npm run test && npm run typescript-test
 
 if [ $? = 0 ]; then
   # purge dist
