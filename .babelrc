@@ -1,4 +1,11 @@
 {
-  "presets" : ["es2015", "stage-1", "react"],
-  "plugins" : ["react-hot-loader/babel"]
+  "env": {
+    "development": {
+      "presets" : ["es2015", "stage-1", "react"],
+      "plugins" : ["react-hot-loader/babel"]
+    },
+    "production": {
+      "presets" : [["es2015", { "modules": false }], "stage-1", "react"]
+    }
+  }
 }
