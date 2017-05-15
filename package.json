@@ -11,7 +11,8 @@
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
     "prepubl¡sh": "./build/scripts/prepare.sh",
-    "postpublish": "./build/scripts/release.sh"
+    "postpublish": "./build/scripts/release.sh",
+    "prepush": "npm-run-all lint test build"
   },
   "repository": {
     "type": "git",
@@ -51,9 +52,11 @@
     "flow-bin": "^0.45.0",
     "flow-remove-types": "^1.2.1",
     "html-webpack-plugin": "^2.28.0",
+    "husky": "^0.13.3",
     "jest": "^20.0.0",
     "marked": "^0.3.6",
     "node-sass": "^4.5.2",
+    "npm-run-all": "^4.0.2",
     "prismjs": "^1.6.0",
     "raw-loader": "^0.5.1",
     "react-hot-loader": "^3.0.0-beta.6",
