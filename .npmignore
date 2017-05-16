@@ -1,4 +1,5 @@
 build
 tests
 site
+typings/typing-tests
 .*
