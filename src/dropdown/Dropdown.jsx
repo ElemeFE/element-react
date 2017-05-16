@@ -35,6 +35,10 @@ class Dropdown extends Component {
   componentWillUpdate(props: Object, state: State): void {
     if (state.visible != this.state.visible) {
       this.refs.dropdown.onVisibleChange(state.visible);
+
+      if (this.props.onVisibleChange) {
+        this.props.onVisibleChange(state.visible);
+      }
     }
   }
 
@@ -129,7 +133,8 @@ Dropdown.propTypes = {
   splitButton: PropTypes.bool,
   hideOnClick: PropTypes.bool,
   onClick: PropTypes.func,
-  onCommand: PropTypes.func
+  onCommand: PropTypes.func,
+  onVisibleChange: PropTypes.func
 }
 
 Dropdown.defaultProps = {

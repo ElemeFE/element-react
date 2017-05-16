@@ -191,6 +191,7 @@ render() {
 |---------- |-------- |---------- |
 | onClick | if `split-button` is `true`, triggers when left button is clicked | — |
 | onCommand | triggers when a dropdown item is clicked | the command dispatched from the dropdown item |
+| onVisibleChange | triggers when the dropdown appears/disappears | true when it appears, and false otherwise |
 
 ### Dropdown Menu Item Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
