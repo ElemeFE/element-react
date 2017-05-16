@@ -160,9 +160,9 @@ render() {
 | isShowTrigger | 是否显示图标 | bool | - | - |
 | isReadOnly | 只读 | boolean | — | false |
 | isDisabled | 是否禁用 | boolean | — | false |
-| onFocus | onFocus | func:(TimeSelectReactComponent)=>{} | — | - |
-| onBlur | onBlur | func:(TimeSelectReactComponent)=>{} | — | - |
-| onChange | onChange | func:(value)=>{} | — | - |
+| onFocus | onFocus | func:(TimeSelectReactComponent)=>() | — | - |
+| onBlur | onBlur | func:(TimeSelectReactComponent)=>() | — | - |
+| onChange | onChange | func:(value)=>() | — | - |
 
 ### TimeSelect
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
