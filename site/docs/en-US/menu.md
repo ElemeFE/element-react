@@ -117,7 +117,6 @@ onClose() {
 | defaultOpeneds | array that contains keys of currently active sub-menus  | Array    | — | — |
 | uniqueOpened  |  whether only one sub-menu can be active  | boolean   | — | false   |
 | menuTrigger | how sub-menus are triggered, only works when `mode` is 'horizontal' | string    | — | hover |
-| router  | whether `vue-router` mode is activated. If true, index will be used as 'path' to activate the route action | boolean   | — | false   |
 
 
 ### Menu Events
