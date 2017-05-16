@@ -201,31 +201,28 @@ body {
     font-size: 12px;
   }
 
-  >div>table {
+  table {
     border-collapse: collapse;
     width: 100%;
     background-color: #fff;
     color: #5e6d82;
     font-size: 14px;
     margin-bottom: 45px;
-
+    line-height: 1.5em;
     strong {
       font-weight: normal;
     }
-
     th {
       text-align: left;
       border-top: 1px solid #eaeefb;
       background-color: #EFF2F7;
+      white-space: nowrap;
     }
-
     td, th {
       border-bottom: 1px solid #eaeefb;
       padding: 10px;
       max-width: 250px;
-      word-break: break-word;
     }
-
     th:first-child, td:first-child {
       padding-left: 10px;
     }
