@@ -22,19 +22,15 @@ export default class Row extends Component {
   }
 
   render(): React.Element<any> {
-    return (
-      <div
-        className={this.className('el-row',
-          this.props.justify !== 'start' && `is-justify-${this.props.justify}`,
-          this.props.align !== 'top' && `is-align-${this.props.align}`, {
-            'el-row--flex': this.props.type === 'flex'
-          }
-        )}
-        style={this.style(this.getStyle())}
-      >
-        { this.props.children }
-      </div>
-    )
+    return React.createElement(this.props.tag, {
+      className: this.className('el-row',
+        this.props.justify !== 'start' && `is-justify-${this.props.justify}`,
+        this.props.align !== 'top' && `is-align-${this.props.align}`, {
+          'el-row--flex': this.props.type === 'flex'
+        }
+      ),
+      style: this.style(this.getStyle())
+    }, this.props.children);
   }
 }
 
@@ -46,10 +42,12 @@ Row.propTypes = {
   gutter: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   type: PropTypes.string,
   justify: PropTypes.string,
-  align: PropTypes.string
+  align: PropTypes.string,
+  tag: PropTypes.string
 }
 
 Row.defaultProps = {
   justify: 'start',
-  align: 'top'
+  align: 'top',
+  tag: 'div'
 };

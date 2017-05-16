@@ -190,6 +190,7 @@ render() {
 |---------- |-------- |---------- |
 | onClick  | `splitButton` 为 true 时，点击左侧按钮的回调 | — |
 | onCommand  | 点击菜单项触发的事件回调 | dropdown-item 的指令 |
+| onVisibleChange | 下拉框出现/隐藏时触发 | 出现则为 true，隐藏则为 false |
 
 ### Dropdown Menu Item Attributes
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
