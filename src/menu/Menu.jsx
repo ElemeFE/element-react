@@ -169,7 +169,7 @@ Menu.childContextTypes = {
 Menu.propTypes = {
   mode: PropTypes.string,
   defaultActive: PropTypes.string,
-  defaultOpeneds: PropTypes.array,
+  defaultOpeneds: PropTypes.arrayOf(PropTypes.any),
   theme: PropTypes.string,
   uniqueOpened: PropTypes.bool,
   menuTrigger: PropTypes.string,
