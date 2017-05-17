@@ -131,7 +131,7 @@ render() {
 | interval | interval of the auto loop, in milliseconds | number | — | 3000 |
 | indicatorPosition | position of the indicators | string | outside/none | — |
 | arrow | when arrows are shown | string | always/hover/never | hover |
-| type | type of the Carousel | string | card | — |
+| type | type of the Carousel | string | card/flatcard | — |
 
 ### Carousel Events
 | Event Name | Description | Parameters |
