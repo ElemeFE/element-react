@@ -42,7 +42,25 @@ class Cascader extends Component {
     }
 
     this.debouncedInputChange = debounce(props.debounce, () => {
-      this.handleInputChange(this.state.inputValue);
+      const value = this.state.inputValue;
+      const before = this.beforeFilter(value);
+
+      if (before && before.then) {
+        this.state.menu.setState({
+          options: [{
+            __IS__FLAT__OPTIONS: true,
+            label: i18n.t('el.cascader.loading'),
+            value: '',
+            disabled: true
+          }]
+        });
+
+        before.then(() => {
+            this.handleInputChange(value);
+          });
+      } else {
+        this.handleInputChange(value);
+      }
     });
   }
 
@@ -361,6 +379,7 @@ Cascader.propTypes = {
   showAllLevels: PropTypes.bool,
   debounce: PropTypes.number,
   activeItemChange: PropTypes.func,
+  beforeFilter: PropTypes.func,
   onChange: PropTypes.func
 }
 
