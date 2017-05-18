@@ -1,0 +1,412 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Basic usage 1`] = `
+<div>
+  <button
+    className="el-button el-button--default"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Default Button
+    </span>
+  </button>
+  <button
+    className="el-button el-button--primary"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Primary Button
+    </span>
+  </button>
+  <button
+    className="el-button el-button--text"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Text Button
+    </span>
+  </button>
+</div>
+`;
+
+exports[`Button Group 1`] = `
+<div>
+  <div
+    className="el-button-group"
+    style={Object {}}
+  >
+    <button
+      className="el-button el-button--primary"
+      disabled={false}
+      onClick={[Function]}
+      style={Object {}}
+      type="button"
+    >
+      <i
+        className="el-icon-arrow-left"
+      />
+      <span>
+        Previous Page
+      </span>
+    </button>
+    <button
+      className="el-button el-button--primary"
+      disabled={false}
+      onClick={[Function]}
+      style={Object {}}
+      type="button"
+    >
+      <span>
+        Next Page
+        <i
+          className="el-icon-arrow-right el-icon-right"
+        />
+      </span>
+    </button>
+  </div>
+  <div
+    className="el-button-group"
+    style={Object {}}
+  >
+    <button
+      className="el-button el-button--primary"
+      disabled={false}
+      onClick={[Function]}
+      style={Object {}}
+      type="button"
+    >
+      <i
+        className="el-icon-edit"
+      />
+      <span />
+    </button>
+    <button
+      className="el-button el-button--primary"
+      disabled={false}
+      onClick={[Function]}
+      style={Object {}}
+      type="button"
+    >
+      <i
+        className="el-icon-share"
+      />
+      <span />
+    </button>
+    <button
+      className="el-button el-button--primary"
+      disabled={false}
+      onClick={[Function]}
+      style={Object {}}
+      type="button"
+    >
+      <i
+        className="el-icon-delete"
+      />
+      <span />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Color Indication 1`] = `
+<div
+  className="intro-block"
+>
+  <div
+    className="block"
+  >
+    <span
+      className="demonstration"
+    >
+      Default
+    </span>
+    <span
+      className="wrapper"
+    >
+      <button
+        className="el-button el-button--success"
+        disabled={false}
+        onClick={[Function]}
+        style={Object {}}
+        type="button"
+      >
+        <span>
+          Success
+        </span>
+      </button>
+      <button
+        className="el-button el-button--warning"
+        disabled={false}
+        onClick={[Function]}
+        style={Object {}}
+        type="button"
+      >
+        <span>
+          Warning
+        </span>
+      </button>
+      <button
+        className="el-button el-button--danger"
+        disabled={false}
+        onClick={[Function]}
+        style={Object {}}
+        type="button"
+      >
+        <span>
+          Danger
+        </span>
+      </button>
+      <button
+        className="el-button el-button--info"
+        disabled={false}
+        onClick={[Function]}
+        style={Object {}}
+        type="button"
+      >
+        <span>
+          Info
+        </span>
+      </button>
+    </span>
+  </div>
+  <div
+    className="block"
+  >
+    <span
+      className="demonstration"
+    >
+      Hover to display color
+    </span>
+    <span
+      className="wrapper"
+    >
+      <button
+        className="el-button el-button--success is-plain"
+        disabled={false}
+        onClick={[Function]}
+        style={Object {}}
+        type="button"
+      >
+        <span>
+          Success
+        </span>
+      </button>
+      <button
+        className="el-button el-button--warning is-plain"
+        disabled={false}
+        onClick={[Function]}
+        style={Object {}}
+        type="button"
+      >
+        <span>
+          Warning
+        </span>
+      </button>
+      <button
+        className="el-button el-button--danger is-plain"
+        disabled={false}
+        onClick={[Function]}
+        style={Object {}}
+        type="button"
+      >
+        <span>
+          Danger
+        </span>
+      </button>
+      <button
+        className="el-button el-button--info is-plain"
+        disabled={false}
+        onClick={[Function]}
+        style={Object {}}
+        type="button"
+      >
+        <span>
+          Info
+        </span>
+      </button>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Disabled Button 1`] = `
+<div>
+  <button
+    className="el-button el-button--default is-disabled is-plain"
+    disabled={true}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Default Button
+    </span>
+  </button>
+  <button
+    className="el-button el-button--primary is-disabled"
+    disabled={true}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Primary Button
+    </span>
+  </button>
+  <button
+    className="el-button el-button--text is-disabled"
+    disabled={true}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Text Button
+    </span>
+  </button>
+</div>
+`;
+
+exports[`Icon Button 1`] = `
+<div>
+  <button
+    className="el-button el-button--primary"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <i
+      className="el-icon-edit"
+    />
+    <span />
+  </button>
+  <button
+    className="el-button el-button--primary"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <i
+      className="el-icon-share"
+    />
+    <span />
+  </button>
+  <button
+    className="el-button el-button--primary"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <i
+      className="el-icon-delete"
+    />
+    <span />
+  </button>
+  <button
+    className="el-button el-button--primary"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <i
+      className="el-icon-search"
+    />
+    <span>
+      Search
+    </span>
+  </button>
+  <button
+    className="el-button el-button--primary"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Upload
+      <i
+        className="el-icon-upload el-icon-right"
+      />
+    </span>
+  </button>
+</div>
+`;
+
+exports[`Loading Button 1`] = `
+<button
+  className="el-button el-button--primary is-loading"
+  disabled={false}
+  onClick={[Function]}
+  style={Object {}}
+  type="button"
+>
+  <i
+    className="el-icon-loading"
+  />
+  <span>
+    Loading
+  </span>
+</button>
+`;
+
+exports[`Sizes 1`] = `
+<div>
+  <button
+    className="el-button el-button--primary el-button--large"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Large Button
+    </span>
+  </button>
+  <button
+    className="el-button el-button--primary"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Default Button
+    </span>
+  </button>
+  <button
+    className="el-button el-button--primary el-button--small"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Small Button
+    </span>
+  </button>
+  <button
+    className="el-button el-button--primary el-button--mini"
+    disabled={false}
+    onClick={[Function]}
+    style={Object {}}
+    type="button"
+  >
+    <span>
+      Mini Button
+    </span>
+  </button>
+</div>
+`;
