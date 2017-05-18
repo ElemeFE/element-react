@@ -48,9 +48,11 @@ export default class Toast extends Component {
   }
 
   startTimer() {
-    this.timeout = setTimeout(() => {
-      this.onClose();
-    }, this.props.duration)
+		if (this.props.duration > 0) {
+			this.timeout = setTimeout(() => {
+				this.onClose();
+			}, this.props.duration)
+		}
   }
 
   stopTimer() {
