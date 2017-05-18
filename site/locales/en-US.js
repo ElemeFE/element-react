@@ -21,6 +21,7 @@ module.exports = {
     'upload': 'Upload',
     'rate': 'Rate',
     'color-picker': 'ColorPicker',
+    'transfer': 'Transfer',
     'form': 'Form',
     'table': 'Table',
     'tag': 'Tag',
