@@ -131,7 +131,7 @@ render() {
 | interval | 自动切换的时间间隔，单位为毫秒 | number | — | 3000 |
 | indicatorPosition | 指示器的位置 | string | outside/none | — |
 | arrow | 切换箭头的显示时机 | string | always/hover/never | hover |
-| type | 走马灯的类型 | string | card | — |
+| type | 走马灯的类型 | string | card/flatcard | — |
 
 ### Carousel Events
 | 事件名称 | 说明 | 回调参数 |

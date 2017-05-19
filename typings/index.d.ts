@@ -278,7 +278,6 @@ declare namespace ElementReact {
   }
 
   // Dialog
-  // What about onOpen and opClose on https://eleme.github.io/element-react/#/zh-CN/dialog
   interface DialogProps extends ElementReactLibs.ComponentProps<{}> {
     visible: boolean
     title?: string
@@ -290,6 +289,8 @@ declare namespace ElementReact {
     closeOnClickModal?: boolean
     closeOnPressEscape?: boolean
     onCancel?(): void
+    onOpen?(...args): any
+    opClose?(...args): any
   }
   interface DialogBodyProps extends ElementReactLibs.ComponentProps<{}> { }
   interface DialogFooterProps extends ElementReactLibs.ComponentProps<{}> { }
@@ -399,22 +400,17 @@ declare namespace ElementReact {
     onNodeCollapse?(data?, nodeModel?, node?): void
   }
   export class Tree extends ElementReactLibs.Component<TreeProps, {}> {
-    // Add method on https://eleme.github.io/element-react/#/zh-CN/tree
-    getCheckedNodes(leafOnly?: boolean): boolean
-    filter(value: any): void
-    setCheckedNodes(nodes: any, leafOnly?: boolean): void
-    getCheckedKeys(leafOnly?: boolean): void
-    setCheckedKeys(keys: any, leafOnly?: boolean): void
+    filter(...args): void
+    getCheckedNodes(leafOnly?: boolean): any[]
+    setCheckedNodes(nodes: any[], leafOnly?: boolean): void
+    getCheckedKeys(leafOnly?: boolean): any[]
+    setCheckedKeys(keys: any[], leafOnly?: boolean): void
     setChecked(data: any, checked: boolean, deep?: boolean): void
   }
 
-  // Input
-  // Input 这里建议重新设计下，像 autofocus 这样的尽量合原生的保持一致, 只选用原生 html 没有的props
-  // 不然的话 会和 React.HTMLAttributes 冲突
   interface InputProps extends ElementReactLibs.ComponentProps<{}>
-  // , React.HTMLAttributes<{}> // 这里类型和原生类型冲突
   {
-    type?: string // 文档里只有 text, textarea 两种
+    type?: string // valid value are 'text' & 'textarea'
     icon?: string | React.ReactElement<any>
     disabled?: boolean
     name?: string
@@ -451,7 +447,6 @@ declare namespace ElementReact {
     form?: string
     validating?: boolean
 
-    // 以下的在代码里没有体现
     max?: string | number
     min?: string | number
     step?: string | number
@@ -474,7 +469,6 @@ declare namespace ElementReact {
     theme?: 'light' | 'dark'
     uniqueOpened?: boolean
     menuTrigger?: string
-    // router?: boolean // 文档里有 router，代码里没有
     onSelect?(index?: menuIndex, indexPath?: menuIndex[]): void
     onOpen?(index?: menuIndex, indexPath?: menuIndex[]): void
     onClose?(index?: menuIndex, indexPath?: menuIndex[]): void
@@ -970,9 +964,7 @@ declare namespace ElementReactLibs {
     className?: string
     style?: React.CSSProperties
   }
-  // TODO: complete class Component type
   class Component<P, S> extends React.Component<P, S> {
-    // TODO: is there necessary to add
     classNames?(...args): any
     className?(...args): any
     style?(agrs?): any
