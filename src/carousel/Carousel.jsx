@@ -203,14 +203,21 @@ export default class Carousel extends Component {
     }
   }
 
-  render(): React.Element<any> {
-    const { type, height, arrow, indicatorPosition } = this.props;
-    const { hover, activeIndex, items } = this.state;
+  get iscard(): boolean {
+    const { type } = this.props;
+    if (type) {
+      return type === 'card' || type === 'flatcard';
+    }
+    return false;
+  }
 
+  render(): React.Element<any> {
+    const { height, arrow, indicatorPosition } = this.props;
+    const { hover, activeIndex, items } = this.state;
     return (
       <div
         ref="root"
-        className={this.className('el-carousel', { 'el-carousel--card': type === 'card' })}
+        className={this.className('el-carousel', { 'el-carousel--card': this.iscard })}
         onMouseEnter={this.handleMouseEnter.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
       >
@@ -255,7 +262,7 @@ export default class Carousel extends Component {
           indicatorPosition !== 'none' && (
             <ul
               className={this.classNames('el-carousel__indicators', {
-                'el-carousel__indicators--outside': indicatorPosition === 'outside' || type === 'card'
+                'el-carousel__indicators--outside': indicatorPosition === 'outside' || this.iscard
               })}
             >
               {
@@ -293,7 +300,7 @@ Carousel.propTypes = {
   indicatorPosition: PropTypes.string,
   indicator: PropTypes.bool,
   arrow: PropTypes.string,
-  type: PropTypes.string,
+  type: PropTypes.oneOf(['card', 'flatcard']),
   onChange: PropTypes.func
 };
 
