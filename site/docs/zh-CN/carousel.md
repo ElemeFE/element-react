@@ -121,6 +121,31 @@ render() {
 ```
 :::
 
+### 扁平卡片化
+统一卡片大小
+
+::: demo 将`type`属性设置为`flatcard`即可启用扁平卡片模式。从交互上来说，卡片模式和一般模式的最大区别在于，可以通过直接点击两侧的幻灯片进行切换。
+```js
+render() {
+  return (
+    <div className="demo-4 medium">
+      <Carousel interval="4000" type="flatcard" height="200px">
+        {
+          [1,2,3,4,5,6].map((item, index) => {
+            return (
+              <Carousel.Item key={index}>
+                <h3>{item}</h3>
+              </Carousel.Item>
+            )
+          })
+        }
+      </Carousel>
+    </div>
+  )
+}
+```
+:::
+
 ### Carousel Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
