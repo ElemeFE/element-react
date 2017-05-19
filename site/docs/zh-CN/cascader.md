@@ -1429,6 +1429,7 @@ render() {
 | label    | 指定选项标签为选项对象的某个属性值 | string | — | — |
 | children | 指定选项的子选项为选项对象的某个属性值 | string | — | — |
 | disabled | 指定选项的禁用为选项对象的某个属性值 | string | — | — |
+| beforeFilter | 可选参数, 筛选之前的钩子，参数为输入的值，若返回 false 或者返回 Promise 且被 reject，则停止筛选。 | function(value) | — | — |
 
 ### Events
 | 事件名称      | 说明    | 回调参数      |

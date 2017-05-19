@@ -154,7 +154,7 @@ render() {
 :::
 
 
-### 公共参数
+### Attributes
 | Attribute      | Description          | Type      | Accepted Values                           | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | align | alignment | string | left, center, right | left |
