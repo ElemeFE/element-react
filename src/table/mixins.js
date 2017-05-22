@@ -5,32 +5,50 @@ const MIN_COLUMN_WIDTH = 48;
 
 export const defaultColumn = {
   default: {
-    order: ''
+    order: null
   },
 
   selection: {
     width: 48,
     minWidth: 48,
     realWidth: 48,
-    order: ''
+    order: null
   },
 
   index: {
     width: 48,
     minWidth: 48,
     realWidth: 48,
-    order: ''
+    order: null
+  },
+
+  expand: {
+    width: 48,
+    minWidth: 48,
+    realWidth: 48
   }
 };
 
-//计算列实际占用宽度, 必须用realWidth
+/*
+ *@param: columns<Array>
+ *计算表格最低宽度
+ *计算列实际占用宽度, 必须用realWidth
+ */
 const calcuateColumnsTotalWidth = (columns: Array<Object>=[])=>{
   return columns.reduce((preWidth, next)=>{
-    var nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
-    if(next.minWidth && nextWidth < next.minWidth){
-      nextWidth = next.minWidth;
+    const subColumns = next.subColumns;
+    let nextWidth;
+
+    if(subColumns instanceof Array){
+      nextWidth = preWidth + calcuateColumnsTotalWidth(subColumns);
+    }else{
+      nextWidth = next.realWidth || next.width || MIN_COLUMN_WIDTH;
+      if(next.minWidth && nextWidth < next.minWidth){
+        nextWidth = next.minWidth;
+      }
+      nextWidth = preWidth + nextWidth;
     }
-    return preWidth + nextWidth;
+    return nextWidth;
   }, 0);
 }
 
@@ -57,6 +75,47 @@ export const getDefaultColumn = (type: string, options: Object)=>{
   return column;
 };
 
+export const execColRowSpan = (enhancedColumns: Array<Object>=[])=>{
+  let maxLevel = 0;
+
+  const getColByObject = (item)=>{
+    let colSpan = 0;
+    if(item.subColumns instanceof Array){
+      for(let i=0; i < item.subColumns.length; i++){
+        colSpan += getColByObject(item.subColumns[i]);
+      }
+    }else{
+      colSpan = 1;
+    }
+    return colSpan;
+  }
+
+  const recursiveCol = (ehlist:Array<Object>=[], level:number)=>{
+    ehlist.forEach((item:any)=>{
+      item.level = level;
+
+      if(item.subColumns instanceof Array){
+        item.colSpan = getColByObject(item);
+        recursiveCol(item.subColumns, ++level);
+        console.log(enhancedColumns);
+      }else{
+        maxLevel = level > maxLevel ? level : maxLevel;
+      }
+    });
+    return ehlist;
+  };
+
+  const recursiveRow = (ehlist:Array<Object>=[])=>{
+    ehlist.forEach((item:any)=>{
+      if(!item.subColumns){
+        item.rowSpan = maxLevel - item.level + 1;
+      }
+    });
+  }
+
+  recursiveRow(recursiveCol(enhancedColumns, 0));
+};
+
 export const enhanceColumns = (columns: Array<Object>=[], tableId: number)=>{
   let columnIdSeed = 1;
 
@@ -72,7 +131,7 @@ export const enhanceColumns = (columns: Array<Object>=[], tableId: number)=>{
 
     const columnId = tableId + 'column_' + columnIdSeed++
 
-    return getDefaultColumn(col.type, {
+    var ehObj = getDefaultColumn(col.type, {
       id: columnId,
       label: col.label,
       property: col.prop || col.property,
@@ -95,11 +154,26 @@ export const enhanceColumns = (columns: Array<Object>=[], tableId: number)=>{
       filterMultiple: col.filterMultiple,
       filterOpened: false,
       filteredValue: [],
-      render: col.render
+      render: col.render,
+      expandPannel: col.expandPannel
     });
+
+    if(col.subColumns instanceof Array){
+      ehObj.subColumns = enhanceColumns(col.subColumns, tableId).columns;
+    }
+
+    return ehObj;
   });
 
-  const fixedLeftColumns = _columns.filter((col)=>{ return (typeof col.fixed == 'boolean' &&  !!col.fixed) || col.fixed == 'left';});
+  execColRowSpan(_columns);
+
+  const filterFixedLeftColumns = (list=[])=>{
+    return list.filter((col)=>{ 
+      return (typeof col.fixed == 'boolean' &&  !!col.fixed) || col.fixed == 'left';
+    });
+  };
+
+  const fixedLeftColumns = filterFixedLeftColumns(_columns);
   const fixedRightColumns = _columns.filter((col)=>{return col.fixed == 'right'});
   const flattenColumns = _columns.filter((col)=>{return !col.fixed});
   const newColumns = fixedLeftColumns.concat(flattenColumns).concat(fixedRightColumns);
@@ -110,6 +184,8 @@ export const enhanceColumns = (columns: Array<Object>=[], tableId: number)=>{
     columns: newColumns
   };
 };
+
+
 
 
 export const calculateFixedWidth = (fxiedColumns: Array<Object>)=>{
@@ -126,7 +202,12 @@ export const calculateBodyWidth = (columns: Array<Object>, owerTableWidth: numbe
   return (bodyMinWidth < owerTableWidth ? owerTableWidth : bodyMinWidth)
 }
 
-export const scheduleLayout = (columns: Array<Object> = [], owerTableWidth: '' | number, scrollY: number, fit: boolean)=>{
+export const scheduleLayout = (
+  columns: Array<Object> = [], 
+  owerTableWidth: '' | number, 
+  scrollY: number, 
+  fit: boolean) => {
+
   const layout = {};
   const columnsWithNoWidth = columns.filter((col)=>typeof col.width == 'undefined');
   const columnsWithWidth = columns.filter((col)=>typeof col.width != 'undefined');
