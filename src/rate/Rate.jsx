@@ -199,7 +199,6 @@ export default class Rate extends Component {
       this.setState({
         value: currentValue,
       }, () => {
-        console.log(currentValue)
         onChange && onChange(currentValue + 1);
       })
     } else {
