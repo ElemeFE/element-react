@@ -63,9 +63,12 @@ class Filter extends Component{
   close(){
     const { ower, onClose } = this.props;
     const rootEl = this.refs.root;
-    rootEl.className = this.classNames('el-table-filter', 'el-zoom-in-top-leave el-zoom-in-top-leave-active');
-    setTimeout(()=>{ ReactDOM.unmountComponentAtNode(ower.filterContainer); }, 300);
+    rootEl.className = this.classNames(
+      'el-table-filter', 
+      'el-zoom-in-top-leave el-zoom-in-top-leave-active'
+    );
 
+    setTimeout(()=>{ ReactDOM.unmountComponentAtNode(ower.filterContainer); }, 300);
     onClose && onClose();
   }
 
