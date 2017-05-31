@@ -74,7 +74,7 @@ export default class Rate extends Component {
     }
   }
 
-  hasClass(target, classname) {
+  hasClass(target: Object, classname: string) {
     return target.classList.contains(classname)
   }
 
@@ -256,11 +256,11 @@ export default class Rate extends Component {
   }
 
   render(): React.Element<any> {
-    const { showText, textColor, disabled } = this.props;
+    const { showText, textColor, disabled, max } = this.props;
     const { hoverIndex } = this.state;
     return (
       <div style={this.style()} className={this.className('el-rate')}>
-        {[...Array(5)].map((v, k) => (
+        {[...Array(max)].map((v, k) => (
           <span
             className="el-rate__item"
             style={{ cursor: disabled ? 'auto' : 'pointer' }}

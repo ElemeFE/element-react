@@ -34,7 +34,7 @@ render() {
 ::: demo 为组件设置 `allowHalf` 属性点击图标左侧可选择半星。
 ```js
 render() {
-  return <Rate allowHalf={true} />
+  return <Rate allowHalf={true} onChange={(val) => console.log(val)} />
 }
 ```
 :::
