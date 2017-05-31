@@ -12,7 +12,7 @@
     "test": "flow check && BABEL_ENV=development jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
-    "prepubl¡sh": "./build/scripts/prepare.sh",
+    "prepublish": "./build/scripts/prepare.sh",
     "postpublish": "./build/scripts/release.sh"
   },
   "repository": {
