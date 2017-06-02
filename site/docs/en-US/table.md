@@ -367,14 +367,9 @@ constructor(props) {
         width: 400
       },
       {
-        label: "Zip",
-        prop: "zip",
-        width: 120
-      },
-      {
         label: "Operations",
         fixed: 'right',
-        width: 100,
+        width: 150,
         render: ()=>{
           return <span><Button type="text" size="small">Detail</Button><Button type="text" size="small">Edit</Button></span>
         }
@@ -386,49 +381,42 @@ constructor(props) {
       state: 'California',
       city: 'Los Angeles',
       address: 'No. 189, Grove St, Los Angeles',
-      zip: 'CA 90036'
     }, {
       date: '2016-05-02',
       name: 'Tom',
       state: 'California',
       city: 'Los Angeles',
       address: 'No. 189, Grove St, Los Angeles',
-      zip: 'CA 90036'
     }, {
       date: '2016-05-04',
       name: 'Tom',
       state: 'California',
       city: 'Los Angeles',
       address: 'No. 189, Grove St, Los Angeles',
-      zip: 'CA 90036'
     }, {
       date: '2016-05-01',
       name: 'Tom',
       state: 'California',
       city: 'Los Angeles',
       address: 'No. 189, Grove St, Los Angeles',
-      zip: 'CA 90036'
     }, {
       date: '2016-05-08',
       name: 'Tom',
       state: 'California',
       city: 'Los Angeles',
       address: 'No. 189, Grove St, Los Angeles',
-      zip: 'CA 90036'
     }, {
       date: '2016-05-06',
       name: 'Tom',
       state: 'California',
       city: 'Los Angeles',
       address: 'No. 189, Grove St, Los Angeles',
-      zip: 'CA 90036'
     }, {
       date: '2016-05-07',
       name: 'Tom',
       state: 'California',
       city: 'Los Angeles',
       address: 'No. 189, Grove St, Los Angeles',
-      zip: 'CA 90036'
     }]
   }
 }
@@ -846,6 +834,7 @@ render() {
 | border | whether table has vertical border | boolean | — | false |
 | fit | whether width of column automatically fits its container | boolean | — | true |
 | rowClassName | function that returns custom class names for a row, or a string assigning class names for every row | Function(row, index) | - | - |
+| emptyText | Displayed text when data is empty | String | - | - |
 
 ### Table Events
 | Event Name | Description | Parameters |

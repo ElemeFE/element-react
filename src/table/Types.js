@@ -30,8 +30,9 @@ export type TableProps = {
   rowClassName: ()=>void,
   style: Object,
   highlightCurrentRow: boolean,
-  sumText: String,
-  showSummary: Boolean,
+  sumText: string,
+  emptyText: string,
+  showSummary: boolean,
   getSummaries: ()=>void,
 
   //Event
@@ -127,7 +128,7 @@ export type TableFooterState = {
 
 export type TableFooterProps = {
   leafColumns: Array<Object>,
-  sumText: String,
+  sumText: string,
   data: Array<Object>
 };
 

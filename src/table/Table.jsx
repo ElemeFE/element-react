@@ -7,7 +7,7 @@ import { getScrollBarWidth } from './utils';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
-
+import i18n from '../locale';
 
 import type {
   Column,
@@ -230,7 +230,8 @@ export default class Table extends Component{
       highlightCurrentRow,
       showSummary,
       sumText,
-      getSummaries
+      getSummaries,
+      emptyText
     } = this.props;
     let {
       bodyWidth,
@@ -311,16 +312,23 @@ export default class Table extends Component{
                 className="el-table__fixed-body-wrapper"
                 ref="fixedBodyWrapper"
                 style={{top: realTableHeaderHeight, height: bodyHeight ? (bodyHeight - scrollYWiddth) : ''}}>
-                <TableBody
-                  ref="fixedLeftBody"
-                  fixed="left"
-                  rowClassName={this.props.rowClassName}
-                  columns={_columns}
-                  data={data}
-                  flettenColumns={flettenColumns}
-                  highlightCurrentRow={highlightCurrentRow}
-                  style={{width: bodyWidth}}>
-                </TableBody>
+                {data && data.length && 
+                  <TableBody
+                    ref="fixedLeftBody"
+                    fixed="left"
+                    rowClassName={this.props.rowClassName}
+                    columns={_columns}
+                    data={data}
+                    flettenColumns={flettenColumns}
+                    highlightCurrentRow={highlightCurrentRow}
+                    style={{width: bodyWidth}}>
+                  </TableBody>
+                }
+                {(!data || data.length === 0) && 
+                  <div style={{ width: bodyWidth }} className="el-table__empty-block">
+                    <span className="el-table__empty-text">{ emptyText || i18n.t('el.table.emptyText') }</span>
+                  </div>
+                }
               </div>
             </div>)
         }
