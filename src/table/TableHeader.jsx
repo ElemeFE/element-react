@@ -23,7 +23,7 @@ export default class TableHeader extends  Component{
       dragState: {},
       sortStatus: 0, //0：没有排序 1：升序 2：降序
       sortPropertyName: '',
-      filterParams: {column: null, condi: null}//存储当前的过滤条件
+      filterParams: { column: null, condi: null }//存储当前的过滤条件
     };
   }
 
@@ -88,7 +88,6 @@ export default class TableHeader extends  Component{
       resizeProxy.style.left = this.state.dragState.startLeft + 'px';
 
       const preventFunc = function() { return false; };
-
       const handleMouseMove = (event:Object) => {
         const deltaLeft = event.clientX - this.state.dragState.startMouseLeft;
         const proxyLeft = this.state.dragState.startLeft + deltaLeft;
@@ -132,13 +131,14 @@ export default class TableHeader extends  Component{
   }
 
   onAllChecked(checked: boolean){
-    const body = this.context.$owerTable.refs.mainBody;
+    const { mainBody } = this.context.$owerTable.refs;
     this.setState({allChecked: checked});
-    body.selectAll(checked);
+    mainBody.selectAll(checked);
   }
 
   onSort(column: Object){
     const { sortStatus } = this.state;
+    const { $owerTable } = this.context;
     let  nextStatus;
 
     switch(sortStatus){
@@ -151,7 +151,10 @@ export default class TableHeader extends  Component{
       sortStatus: nextStatus,
       sortPropertyName: column.property
     });
-    this.context.$owerTable.sortBy(nextStatus, column.property, column.sortMethod);
+    $owerTable.sortBy(
+      nextStatus, 
+      column.property, 
+      column.sortMethod);
   }
 
   onFilter(e:any, filters:any, columnData:Object){
@@ -183,7 +186,9 @@ export default class TableHeader extends  Component{
       visible = true;
     }
 
-    const onClose = ()=>{arrow.className = arrow.className.replace('el-icon-arrow-up', '')}
+    const onClose = ()=>{
+      arrow.className = arrow.className.replace('el-icon-arrow-up', '');
+    }
 
     ReactDom.render(
       <Filter
@@ -203,7 +208,6 @@ export default class TableHeader extends  Component{
 
     filterParams.column = filterCondi && filterCondi.length? column : null
     filterParams.condi = filterCondi && filterCondi.length ? filterCondi : null;
-
     this.context.$owerTable.filterBy(column, filterCondi);
   }
 
@@ -220,8 +224,9 @@ export default class TableHeader extends  Component{
   }
 
   render() {
-    const { columns, style, isScrollY, fixed } = this.props;
+    const { columns, style, isScrollY, fixed, flettenColumns } = this.props;
     const { sortPropertyName, sortStatus } = this.state;
+    const { leafColumns, headerLevelColumns } = flettenColumns;
 
     return (
       <table
@@ -229,10 +234,23 @@ export default class TableHeader extends  Component{
         className={this.classNames('el-table__header')}
         cellPadding={0}
         cellSpacing={0}>
+        <colgroup>
+        {
+          leafColumns.map((item)=>{
+            return (
+              <col style={{width: item.width}}/>
+            )
+          })
+        }
+        </colgroup>
+
         <thead>
-          <tr>
+        {
+          headerLevelColumns.map((item, index)=>{
+          const columnList = item;
+          return (<tr key={index}>
             {
-              columns.map((column, idx)=>{
+              columnList.map((column, idx)=>{
                 const className = this.classNames({
                   'is-center': column.align == 'center',
                   'is-right' : column.align == 'right',
@@ -244,10 +262,12 @@ export default class TableHeader extends  Component{
                 return (
                   <th
                     key={idx}
+                    rowSpan={column.rowSpan}
+                    colSpan={column.colSpan}
                     className={className}
                     onMouseMove={(e)=>this.handleMouseMove(e, column)}
                     onMouseDown={(e)=>this.handleMouseDown(e, column)}
-                    style={{width: column.realWidth}}>
+                    style={column.colSpan?{}:{width: column.realWidth}}>
                     {
                       column.type == 'selection' && (
                         <div className="cell">
@@ -293,7 +313,9 @@ export default class TableHeader extends  Component{
             {
               !fixed && isScrollY&& <th className="gutter" style={{ width:  getScrollBarWidth() }}></th>
             }
-          </tr>
+          </tr>)
+          })
+        }
         </thead>
       </table>
     )
