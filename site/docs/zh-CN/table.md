@@ -1452,6 +1452,7 @@ render() {
 | sumText | 合计行第一列的文本 | String | - | 合计 |
 | showSummary | 是否在表尾显示合计行 | Boolean | - | false |
 | getSummaries | 自定义的合计计算方法 | Function({ columns, data }) | - | - |
+| emptyText | 空数据时显示的文本内容 | String | - | - |
 
 
 

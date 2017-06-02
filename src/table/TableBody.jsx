@@ -116,7 +116,6 @@ class BodyItem extends Component{
       'el-table__expand-icon--expanded': this.state.expand
     });
 
-
     return (
       <tr
         ref="root"
