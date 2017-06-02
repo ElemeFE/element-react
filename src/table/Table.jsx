@@ -9,11 +9,11 @@ import TableBody from './TableBody';
 import TableFooter from './TableFooter';
 
 
-import type { 
-  Column, 
+import type {
+  Column,
   TableProps,
-  TableState, 
-  DefaultTableProps 
+  TableState,
+  DefaultTableProps
 } from './Types';
 
 let tableIdSeed = 1;
@@ -91,7 +91,7 @@ export default class Table extends Component{
     if(!this._filterCon){
       this._filterCon = document.createElement('div');
       this._filterCon.style.cssText = "position:absolute;left:0;top:0";
-      this._filterCon.id = "__filter__" + Math.random(32).toString().slice(2);
+      this._filterCon.id = "__filter__" + Math.random().toString().slice(2);
       const body = document.body || document.createElement('body');
       body.appendChild(this._filterCon);
     }
@@ -224,13 +224,13 @@ export default class Table extends Component{
   }
 
   render() {
-    let { fit, 
-      stripe, 
-      border, 
-      highlightCurrentRow, 
-      showSummary, 
-      sumText, 
-      getSummaries 
+    let { fit,
+      stripe,
+      border,
+      highlightCurrentRow,
+      showSummary,
+      sumText,
+      getSummaries
     } = this.props;
     let {
       bodyWidth,
@@ -282,7 +282,7 @@ export default class Table extends Component{
         <div
           style={this.getBodyWrapperStyle()}
           className="el-table__body-wrapper"
-          onScroll={(e)=>{this.onScrollBodyWrapper(e)}}
+          onScroll={this.onScrollBodyWrapper.bind(this)}
           ref="bodyWrapper">
           <TableBody
             ref="mainBody"
@@ -358,9 +358,9 @@ export default class Table extends Component{
 
         {
           showSummary && (
-            <TableFooter 
-              leafColumns={leafColumns} 
-              sumText={sumText} 
+            <TableFooter
+              leafColumns={leafColumns}
+              sumText={sumText}
               getSummaries={getSummaries}
               data={data}/>
           )

@@ -108,11 +108,11 @@ export type TableBodyItemProps = {
   columns: Array<Column>,
   itemData: Object,
   fixed: string,
-  onSelected: ()=>void,
+  onSelected: (boolean, any)=>void,
   selected: boolean,
   isHiglight: boolean,
   rowIndex: number,
-  rowClassName: ()=>void,
+  rowClassName: (any, any)=>string,
   leafColumns: Array<Object>
 };
 
@@ -134,7 +134,7 @@ export type TableFooterProps = {
 export type FilterProps = {
   defaultCondi: null | Array<Object>,
   filters: Array<Object>,
-  onFilter: ()=>void,
+  onFilter: (any)=>void,
   onClose: ()=>void,
   visible: boolean,
   position: Object,
