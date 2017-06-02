@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import marked from 'marked';
+import prism from 'prismjs';
 
 import Canvas from './canvas';
 
@@ -33,6 +34,7 @@ export default class Markdown extends React.Component {
         ReactDOM.render(component, div);
       }
     }
+    prism.highlightAll();
   }
 
   render() {
