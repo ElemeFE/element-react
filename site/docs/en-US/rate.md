@@ -4,7 +4,7 @@ Used for rating
 
 ### Basic usage
 
-:::demo Rate divides rating scores into three levels and these levels can be distinguished by using different background colors. By default background colors are the same, but you can assign them to reflect three levels using the `colors` attribute, and their two thresholds can be defined by `low-threshold` and `high-threshold`.
+:::demo Rate divides rating scores into three levels and these levels can be distinguished by using different background colors. By default background colors are the same, but you can assign them to reflect three levels using the `colors` attribute, and their two thresholds can be defined by `lowThreshold` and `highThreshold`.
 
 ```js
 render() {
@@ -28,11 +28,21 @@ render() {
 ```
 :::
 
+### allow half
+
+::: demo Add attribute `allowHalf` can allow half。
+```js
+render() {
+  return <Rate allowHalf={true} onChange={(val) => console.log(val)} />
+}
+```
+:::
+
 ### With text
 
 Using text to indicate rating score
 
-:::demo Add attribute `show-text` to display text at the right of Rate. You can assign texts for different scores using `texts`. `texts` is an array whose length should be equal to the max score `max`.
+:::demo Add attribute `showText` to display text at the right of Rate. You can assign texts for different scores using `texts`. `texts` is an array whose length should be equal to the max score `max`.
 
 ```js
 render() {
@@ -50,7 +60,7 @@ render() {
 
 Read-only Rate is for displaying rating score. Half star is supported.
 
-:::demo Use attribute `disabled` to make the component read-only. Add `show-text` to display the rating score at the right side. Additionally, you can use attribute `text-template` to provide a text template. It must contain `{value}`, and `{value}` will be replaced with the rating score.
+:::demo Use attribute `disabled` to make the component read-only. Add `showText` to display the rating score at the right side. Additionally, you can use attribute `textTemplate` to provide a text template. It must contain `{value}`, and `{value}` will be replaced with the rating score.
 
 ```js
 render() {
@@ -64,19 +74,19 @@ render() {
 |---------- |-------- |---------- |-------------  |-------- |
 | max | max rating score | number | — | 5 |
 | disabled | whether Rate is read-only | boolean | — | false |
-| allow-half | whether picking half start is allowed | boolean | — | false |
-| low-threshold | threshold value between low and medium level. The value itself will be included in low level | number | — | 2 |
-| high-threshold | threshold value between medium and high level. The value itself will be included in high level | number | — | 4 |
+| allowHalf | whether picking half start is allowed | boolean | — | false |
+| lowThreshold | threshold value between low and medium level. The value itself will be included in low level | number | — | 2 |
+| highThreshold | threshold value between medium and high level. The value itself will be included in high level | number | — | 4 |
 | colors | color array for icons. It should have 3 elements, each of which corresponds with a score level  | array | — | ['#F7BA2A', '#F7BA2A', '#F7BA2A'] |
-| void-color | color of unselected icons | string | — | #C6D1DE |
+| voidColor | color of unselected icons | string | — | #C6D1DE |
 | disabledVoidColor | color of unselected read-only icons | string | — | #EFF2F7 |
-| icon-classes |  array of class names of icons. It should have 3 elements, each of which corresponds with a score level | array | — | ['el-icon-star-on', 'el-icon-star-on','el-icon-star-on'] |
-| void-icon-class | class name of unselected icons | string | — | el-icon-star-off |
-| disabled-void-icon-class | class name of unselected read-only icons | string | — | el-icon-star-on |
-| show-text | whether to display texts | boolean | — | false |
-| text-color | color of texts | string | — | #1F2D3D |
+| iconClasses |  array of class names of icons. It should have 3 elements, each of which corresponds with a score level | array | — | ['el-icon-star-on', 'el-icon-star-on','el-icon-star-on'] |
+| voidIconClass | class name of unselected icons | string | — | el-icon-star-off |
+| disabledVoidIconClass | class name of unselected read-only icons | string | — | el-icon-star-on |
+| showText | whether to display texts | boolean | — | false |
+| textColor | color of texts | string | — | #1F2D3D |
 | texts | text array | array | — | ['极差', '失望', '一般', '满意', '惊喜'] |
-| text-template | text template when the component is read-only | string | — | {value} |
+| textTemplate | text template when the component is read-only | string | — | {value} |
 
 ### Events
 | Event Name | Description | Parameters |

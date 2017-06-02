@@ -12,7 +12,7 @@ render() {
       <div className="block">
         <span className="demonstration">默认不区分颜色</span>
         <span className="wrapper">
-          <Rate change={(val) => alert(val)} />
+          <Rate onChange={(val) => alert(val)} />
         </span>
       </div>
       <div className="block">
@@ -23,6 +23,18 @@ render() {
       </div>
     </div>
   )
+}
+```
+:::
+
+### 允许半选
+
+可支持鼠标选择半星
+
+::: demo 为组件设置 `allowHalf` 属性点击图标左侧可选择半星。
+```js
+render() {
+  return <Rate allowHalf={true} onChange={(val) => console.log(val)} />
 }
 ```
 :::
@@ -58,6 +70,7 @@ render() {
 |---------- |-------- |---------- |-------------  |-------- |
 | max | 最大分值 | number | — | 5 |
 | disabled | 是否为只读 | boolean | — | false |
+| allowHalf | 是否允许半选 | boolean | — | false |
 | lowThreshold | 低分和中等分数的界限值，值本身<br>被划分在低分中 | number | — | 2 |
 | highThreshold | 高分和中等分数的界限值，值本身<br>被划分在高分中 | number | — | 4 |
 | colors | icon 的颜色数组，共有 3 个元素，<br>为 3 个分段所对应的颜色 | array | — | ['#F7BA2A', '#F7BA2A', '#F7BA2A'] |

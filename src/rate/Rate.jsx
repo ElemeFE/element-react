@@ -74,26 +74,30 @@ export default class Rate extends Component {
     }
   }
 
-  setCurrentValue(value: number): any {
+  hasClass(target: Object, classname: string) {
+    return target.classList.contains(classname)
+  }
+
+  setCurrentValue(e: Object, value: number): any {
     const { disabled, allowHalf } = this.props;
-    // const { pointerAtLeftHalf, currentValue, hoverIndex } = this.state;
+    const { pointerAtLeftHalf, currentValue, hoverIndex } = this.state;
     if (disabled) {
       return;
     }
     /* istanbul ignore if */
     if (allowHalf) {
-      // let target = window.event.target;
-      // console.log(target)
-      // if (hasClass(target, 'el-rate__item')) {
-      //   target = target.querySelector('.el-rate__icon');
-      // }
-      // if (hasClass(target, 'el-rate__decimal')) {
-      //   target = target.parentNode;
-      // }
-      // this.setState({
-      //   pointerAtLeftHalf: event.offsetX * 2 <= target.clientWidth,
-      //   currentValue: (event.offsetX * 2 <= target.clientWidth) ? value - 0.5 : value
-      // })
+      e.persist()
+      let target = e.target;
+      if (this.hasClass(target, 'el-rate__item')) {
+        target = target.querySelector('.el-rate__icon');
+      }
+      if (this.hasClass(target, 'el-rate__decimal')) {
+        target = target.parentNode;
+      }
+      this.setState({
+        pointerAtLeftHalf: (e.clientX - target.getBoundingClientRect().left) * 2 <= target.clientWidth,
+        currentValue: ((e.clientX - target.getBoundingClientRect().left) * 2 <= target.clientWidth) ? value - 0.5 : value
+      })
     } else {
       this.setState({
         currentValue: value
@@ -150,7 +154,7 @@ export default class Rate extends Component {
     let i = 0;
     let threshold = currentValue;
     if (allowHalf && currentValue !== Math.floor(currentValue)) {
-      threshold--;
+      threshold;
     }
     for (; i <= threshold; i++) {
       result.push(this.activeClass());
@@ -186,12 +190,17 @@ export default class Rate extends Component {
 
   selectValue(value: number): void {
     const { disabled, allowHalf, onChange } = this.props;
-    const { pointerAtLeftHalf } = this.state;
+    const { pointerAtLeftHalf, currentValue } = this.state;
     if (disabled) {
       return;
     }
     if (allowHalf && pointerAtLeftHalf) {
       // this.$emit('input', this.currentValue);
+      this.setState({
+        value: currentValue,
+      }, () => {
+        onChange && onChange(currentValue + 1);
+      })
     } else {
       this.setState({
         currentValue: value,
@@ -247,16 +256,16 @@ export default class Rate extends Component {
   }
 
   render(): React.Element<any> {
-    const { showText, textColor, disabled } = this.props;
+    const { showText, textColor, disabled, max } = this.props;
     const { hoverIndex } = this.state;
     return (
       <div style={this.style()} className={this.className('el-rate')}>
-        {[...Array(5)].map((v, k) => (
+        {[...Array(max)].map((v, k) => (
           <span
             className="el-rate__item"
             style={{ cursor: disabled ? 'auto' : 'pointer' }}
             onClick={() => this.selectValue(k)}
-            onMouseMove={() => this.setCurrentValue(k)}
+            onMouseMove={(e) => this.setCurrentValue(e, k)}
             onMouseLeave={() => this.resetCurrentValue()}
             key={k}
           >
