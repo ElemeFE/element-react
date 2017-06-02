@@ -9,6 +9,11 @@ export default class Markdown extends React.Component {
     super(props);
 
     this.components = new Map;
+
+    this.renderer = new marked.Renderer();
+    this.renderer.table = (header, body) => {
+      return `<table class="grid"><thead>${header}</thead><tbody>${body}</tbody></table>`;
+    };
   }
 
   componentDidMount() {
@@ -44,7 +49,7 @@ export default class Markdown extends React.Component {
         }, this.props), p1));
 
         return `<div id=${id}></div>`;
-      }));
+      }), { renderer: this.renderer });
 
       return (
         <div dangerouslySetInnerHTML={{

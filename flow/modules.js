@@ -6,26 +6,26 @@ declare module 'classnames' {
 
 declare module 'react-click-outside' {
   declare var exports: {
-    (): any
+    (module: any): any
   }
 }
 
 declare module 'throttle-debounce/throttle' {
   declare var exports: {
-    (): any
+    (...args: Array<any>): any
   }
 }
 
 declare module 'throttle-debounce/debounce' {
   declare var exports: {
-    (): any
+    (...args: Array<any>): any
   }
 }
 
 declare module 'async-validator' {
   declare class AsyncValidator {
     constructor(options: Object): void;
-    validate(param?: any): void;
+    validate(...args: Array<any>): void;
   }
   declare var exports: typeof AsyncValidator;
 }

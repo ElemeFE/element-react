@@ -113,9 +113,9 @@ class AutoComplete extends Component {
     }, 100);
   }
 
-  handleKeyEnter(): void {
-    if (this.suggestionVisible() && this.state.highlightedIndex >= 0 && this.state.highlightedIndex < this.state.suggestions.length) {
-      this.select(this.state.suggestions[this.state.highlightedIndex]);
+  handleKeyEnter(highlightedIndex: number): void {
+    if (this.suggestionVisible() && highlightedIndex >= 0 && highlightedIndex < this.state.suggestions.length) {
+      this.select(this.state.suggestions[highlightedIndex]);
     }
   }
 

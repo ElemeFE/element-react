@@ -4,17 +4,18 @@ import ReactDOM from 'react-dom';
 import { Component, PropTypes } from '../../libs';
 import Checkbox from '../checkbox';
 import { getScrollBarWidth } from './utils'
-import type { 
-  Column, 
-  TableBodyProps, 
-  TableBodyState, 
-  TableBodyItemProps, 
-  TableBodyItemState 
+
+import type {
+  TableBodyProps,
+  TableBodyState,
+  TableBodyItemProps,
+  TableBodyItemState
 } from './Types';
 
 class BodyItem extends Component{
   props: TableBodyItemProps;
   state: TableBodyItemState;
+
   constructor(props, context){
     super(props, context);
     this.state = {
@@ -24,10 +25,10 @@ class BodyItem extends Component{
   }
 
   onMouseState(hover){
-    const { 
-      fixedLeftBody, 
-      mainBody, 
-      fixedRightBody 
+    const {
+      fixedLeftBody,
+      mainBody,
+      fixedRightBody
     } = this.context.$owerTable.refs;
 
     fixedLeftBody && fixedLeftBody.hoverRowItem(this.props.rowIndex, hover);
@@ -42,10 +43,10 @@ class BodyItem extends Component{
   }
 
   onToggleSelectedRow(isHiglight, dataItem){
-    const { 
-      fixedLeftBody, 
-      mainBody, 
-      fixedRightBody 
+    const {
+      fixedLeftBody,
+      mainBody,
+      fixedRightBody
     } = this.context.$owerTable.refs;
 
     fixedLeftBody && fixedLeftBody.toggleSelectedRow(isHiglight, dataItem);
@@ -72,7 +73,7 @@ class BodyItem extends Component{
     if(!expand){
       const table = root.parentNode.parentNode;
       const index = Array.prototype.slice.apply(
-        root.parentNode.childNodes, 
+        root.parentNode.childNodes,
         [0, root.parentNode.childNodes.length]
       ).indexOf(root);
       const row = table.insertRow(index + 1);
@@ -89,12 +90,12 @@ class BodyItem extends Component{
   }
 
   render(){
-    const { 
-      itemData, 
-      columns, 
-      rowIndex, 
-      rowClassName, 
-      isHiglight, 
+    const {
+      itemData,
+      columns,
+      rowIndex,
+      rowClassName,
+      isHiglight,
       selected,
       leafColumns
     } = this.props;
@@ -142,33 +143,33 @@ class BodyItem extends Component{
                 className={className}
                 style={{width: column.realWidth}}>
                 {
-                  column.type == 'selection' && 
+                  column.type == 'selection' &&
                     <div className="cell">
-                      <Checkbox 
-                        checked={selected} 
+                      <Checkbox
+                        checked={selected}
                         onChange={(e)=>this.onChange(e)}/>
                     </div>
                 }
                 {
-                  column.type == 'index' && 
+                  column.type == 'index' &&
                     <div className="cell">
                       {rowIndex+1}
                     </div>
                 }
-                { column.type == 'expand' && 
+                { column.type == 'expand' &&
                   <div className="cell">
-                    <div 
-                      ref="expand" 
-                      className={epxandClass} 
-                      onClick={(e)=>this.onExpand(e)}>
+                    <div
+                      ref="expand"
+                      className={epxandClass}
+                      onClick={this.onExpand.bind(this)}>
                       <i className="el-icon el-icon-arrow-right"></i>
                     </div>
                   </div>
                 }
 
-                { column.type != 'selection' && 
-                   column.type != 'index' && 
-                   column.type != 'expand' && 
+                { column.type != 'selection' &&
+                   column.type != 'index' &&
+                   column.type != 'expand' &&
                    <div className="cell">
                    { content }
                   </div>
