@@ -19,5 +19,13 @@ script:
   - npm test
   - npm run typescript-test
 
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist/site
+  on:
+    branch: master
+
 notifications:
   slack: eleme:3Nouwh5OgNugxccCsiFYpUIB
