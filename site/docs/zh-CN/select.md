@@ -451,9 +451,9 @@ render() {
 | loading | 是否正在从远程获取数据 | boolean | — | false |
 
 ### Select Events
-| 事件名称 | 说明 | 回调参数 |
+| 事件名称 | 说明 | 回调参数 | 类型 |
 |---------|---------|---------|
-| onChange | 选中值发生变化时触发 | 目前的选中值 |
+| onChange | 选中值发生变化时触发 | 目前的选中值 | function(value, option) |
 
 ### Option Group Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
