@@ -1,6 +1,6 @@
 {
   "name": "element-react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Element UI for React",
   "private": false,
   "main": "dist/npm/es5/index.js",
@@ -12,7 +12,7 @@
     "test": "flow check && BABEL_ENV=development jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
-    "prepublishOnly": "./build/scripts/prepare.sh",
+    "prepubl¡sh": "./build/scripts/prepare.sh",
     "postpublish": "./build/scripts/release.sh"
   },
   "repository": {
