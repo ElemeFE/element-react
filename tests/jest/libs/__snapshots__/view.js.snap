@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`View with custom wrap component div 1`] = `
+<div
+  className="white"
+  style={
+    Object {
+      "color": "white",
+    }
+  }
+>
+  <div>
+    Children 1
+  </div>
+  <div>
+    Children 2
+  </div>
+</div>
+`;
+
+exports[`View with more than one children 1`] = `
+<span
+  className="white"
+  style={
+    Object {
+      "color": "white",
+    }
+  }
+>
+  <div>
+    Children 1
+  </div>
+  <div>
+    Children 2
+  </div>
+</span>
+`;
+
+exports[`View with more than one children not show 1`] = `
+<span
+  className="white"
+  style={
+    Object {
+      "color": "white",
+      "display": "none",
+    }
+  }
+>
+  <div>
+    Children 1
+  </div>
+  <div>
+    Children 2
+  </div>
+</span>
+`;
+
+exports[`View with one child 1`] = `
+<div
+  className="white"
+  style={
+    Object {
+      "color": "white",
+    }
+  }
+>
+  Children
+</div>
+`;
+
+exports[`View with one child not show 1`] = `
+<div
+  className="white"
+  style={
+    Object {
+      "color": "white",
+      "display": "none",
+    }
+  }
+>
+  Children
+</div>
+`;

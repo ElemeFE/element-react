@@ -204,7 +204,7 @@ export default class Upload extends Component {
       onStart: file => this.handleStart(file),
       onProgress: (e, file) => this.handleProgress(e, file),
       onSuccess: (res, file) => this.handleSuccess(res, file),
-      onError: (error, res, file) => this.handleError(error, res, file),
+      onError: (error, res, file) => this.handleError(error, file),
       onPreview: file => this.handlePreview(file),
       onRemove: file => this.handleRemove(file),
       ref: 'upload-inner',

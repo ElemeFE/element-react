@@ -159,5 +159,4 @@ render() {
 | loading   | determine whether it's loading   | Boolean    | — | false   |
 | disabled  | disable the button    | boolean   | —   | false   |
 | icon  | button icon, accepts an icon name of Element icon component | string   |  —  |  —  |
-| autofocus  | same as native button's `autofocus` | boolean   |  —  |  false  |
 | nativeType | same as native button's `type` | string | button/submit/reset | button |

@@ -75,7 +75,7 @@ export default class Menu extends Component {
     let isOpened = this.state.openedMenus.indexOf(index) !== -1;
 
     if (isOpened) {
-      this.closeMenu(index, indexPath);
+      this.closeMenu(index);
 
       if (this.props.onClose) {
         this.props.onClose(index, indexPath);

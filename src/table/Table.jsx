@@ -6,8 +6,15 @@ import { enhanceColumns, calculateBodyWidth, calculateFixedWidth, scheduleLayout
 import { getScrollBarWidth } from './utils';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
+import TableFooter from './TableFooter';
+import i18n from '../locale';
 
-import type { Column, TableProps, TableState, DefaultTableProps } from './Types';
+import type {
+  Column,
+  TableProps,
+  TableState,
+  DefaultTableProps
+} from './Types';
 
 let tableIdSeed = 1;
 
@@ -84,7 +91,7 @@ export default class Table extends Component{
     if(!this._filterCon){
       this._filterCon = document.createElement('div');
       this._filterCon.style.cssText = "position:absolute;left:0;top:0";
-      this._filterCon.id = "__filter__" + Math.random(32).toString().slice(2);
+      this._filterCon.id = "__filter__" + Math.random().toString().slice(2);
       const body = document.body || document.createElement('body');
       body.appendChild(this._filterCon);
     }
@@ -93,14 +100,24 @@ export default class Table extends Component{
   }
 
   initLayout(){
-    const { height, fit } = this.props;
-    const rootComputedStyle = window.getComputedStyle(this.refs.root);
-    const headerComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
-    const thisTableWidth = parseFloat(headerComputedStyle.getPropertyValue('width'));
-    const realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
-    const bodyWidth = scheduleLayout(this.state._columns, thisTableWidth, 0, fit).bodyWidth;
-    const headerHeight = this.refs.headerWrapper.offsetHeight;
-    const bodyHeight = height ? height - headerHeight : '';
+    const { height, fit, maxHeight } = this.props;
+
+    let rootComputedStyle = window.getComputedStyle(this.refs.root);
+    let headerComputedStyle = window.getComputedStyle(this.refs.headerWrapper);
+    let thisTableWidth = parseFloat(headerComputedStyle.getPropertyValue('width'));
+    let realTableHeight = parseFloat(rootComputedStyle.getPropertyValue('height'));
+    let bodyWidth = scheduleLayout(this.state._columns, thisTableWidth, 0, fit).bodyWidth;
+    let headerHeight = this.refs.headerWrapper.offsetHeight;
+    let  bodyHeight;
+
+    if(height){
+      bodyHeight = height - headerHeight;
+    }else if(maxHeight && maxHeight < realTableHeight){//流体布局
+      realTableHeight = maxHeight;
+      bodyHeight = maxHeight - headerHeight;
+    }else{
+      bodyHeight = '';
+    }
 
     this.setState({
       bodyWidth,
@@ -185,8 +202,37 @@ export default class Table extends Component{
     });
   }
 
+  flattenHeaderColumn(){
+    const { _columns } = this.state;
+    const headerLevelColumns = [];
+    const leafColumns = [];
+
+    let rescurveColumns = (list)=>{
+      list.forEach((item)=>{
+        headerLevelColumns[item.level] = headerLevelColumns[item.level] || [];
+        headerLevelColumns[item.level].push(item);
+        if(item.subColumns instanceof Array){
+          rescurveColumns(item.subColumns);
+        }else{
+          leafColumns.push(item);
+        }
+      });
+    };
+    rescurveColumns(_columns);
+
+    return {headerLevelColumns, leafColumns};
+  }
+
   render() {
-    let { fit, stripe, border, highlightCurrentRow } = this.props;
+    let { fit,
+      stripe,
+      border,
+      highlightCurrentRow,
+      showSummary,
+      sumText,
+      getSummaries,
+      emptyText
+    } = this.props;
     let {
       bodyWidth,
       bodyHeight,
@@ -199,7 +245,7 @@ export default class Table extends Component{
       scrollY,
       scrollX,
       sortList,
-      filterList
+      filterList,
     } = this.state;
 
     const rootClassName = this.classNames(
@@ -215,6 +261,9 @@ export default class Table extends Component{
 
     data = filterList || sortList || data;
 
+    const flettenColumns = this.flattenHeaderColumn();
+    const { leafColumns } = flettenColumns;
+
     return (
       <div
         ref="root"
@@ -227,19 +276,21 @@ export default class Table extends Component{
             ref="header"
             isScrollY={scrollY}
             style={{width: bodyWidth}}
+            flettenColumns={flettenColumns}
             columns={_columns}/>
         </div>
 
         <div
           style={this.getBodyWrapperStyle()}
           className="el-table__body-wrapper"
-          onScroll={(e)=>{this.onScrollBodyWrapper(e)}}
+          onScroll={this.onScrollBodyWrapper.bind(this)}
           ref="bodyWrapper">
           <TableBody
             ref="mainBody"
             style={{width: bodyWidth}}
             rowClassName={this.props.rowClassName}
             columns={_columns}
+            flettenColumns={flettenColumns}
             highlightCurrentRow={highlightCurrentRow}
             data={data}/>
         </div>
@@ -254,21 +305,30 @@ export default class Table extends Component{
                   fixed="left"
                   border="border"
                   columns={_columns}
+                  flettenColumns={flettenColumns}
                   style={{width: '100%', height: '100%'}}/>
               </div>
               <div
                 className="el-table__fixed-body-wrapper"
                 ref="fixedBodyWrapper"
                 style={{top: realTableHeaderHeight, height: bodyHeight ? (bodyHeight - scrollYWiddth) : ''}}>
-                <TableBody
-                  ref="fixedLeftBody"
-                  fixed="left"
-                  rowClassName={this.props.rowClassName}
-                  columns={_columns}
-                  data={data}
-                  highlightCurrentRow={highlightCurrentRow}
-                  style={{width: bodyWidth}}>
-                </TableBody>
+                {data && data.length && 
+                  <TableBody
+                    ref="fixedLeftBody"
+                    fixed="left"
+                    rowClassName={this.props.rowClassName}
+                    columns={_columns}
+                    data={data}
+                    flettenColumns={flettenColumns}
+                    highlightCurrentRow={highlightCurrentRow}
+                    style={{width: bodyWidth}}>
+                  </TableBody>
+                }
+                {(!data || data.length === 0) && 
+                  <div style={{ width: bodyWidth }} className="el-table__empty-block">
+                    <span className="el-table__empty-text">{ emptyText || i18n.t('el.table.emptyText') }</span>
+                  </div>
+                }
               </div>
             </div>)
         }
@@ -284,6 +344,7 @@ export default class Table extends Component{
               fixed="right"
               border="border"
               columns={_columns}
+              flettenColumns={flettenColumns}
               style={{width: '100%', height: '100%'}}/>
           </div>
           <div
@@ -296,11 +357,22 @@ export default class Table extends Component{
               rowClassName={this.props.rowClassName}
               columns={_columns}
               data={data}
+              flettenColumns={flettenColumns}
               highlightCurrentRow={highlightCurrentRow}
               style={{width: bodyWidth}}>
             </TableBody>
           </div>
         </div>
+
+        {
+          showSummary && (
+            <TableFooter
+              leafColumns={leafColumns}
+              sumText={sumText}
+              getSummaries={getSummaries}
+              data={data}/>
+          )
+        }
 
         <div
           style={{display: this.state.resizeProxyVisible?"block":"none"}}
@@ -326,5 +398,6 @@ Table.defaultProps = {
   stripe: false,
   border: false,
   fit: true,
+  showSummary: false,
   highlightCurrentRow: false
 };

@@ -12,9 +12,10 @@ export type Column = {
   resizable: boolean,
   formatter: ()=>void,
   selectable: boolean,
-  [fixed: string]: boolean,
+  fixed: boolean | string,
   filterMethod: ()=>void,
   filters: Array<Object>,
+  expandPannel: ()=>any,
   render: ()=>void
 };
 
@@ -22,12 +23,17 @@ export type TableProps = {
   columns: Array<Column>,
   data: Array<Object>,
   height: number,
+  maxHeight: number,
   stripe: boolean,
   border: boolean,
   fit: boolean,
   rowClassName: ()=>void,
   style: Object,
   highlightCurrentRow: boolean,
+  sumText: string,
+  emptyText: string,
+  showSummary: boolean,
+  getSummaries: ()=>void,
 
   //Event
   onCurrentChange: ()=>void,
@@ -71,7 +77,8 @@ export type TableHeaderProps = {
   fixed: string,
   border: string,
   style: Object,
-  isScrollY: boolean
+  isScrollY: boolean,
+  flettenColumns: Object
 };
 
 export type TableHeaderState = {
@@ -89,7 +96,8 @@ export type TableBodyProps = {
   rowClassName: ()=>void,
   highlightCurrentRow: boolean,
   style: Object,
-  fixed: string
+  fixed: string,
+  flettenColumns: Object
 };
 
 export type TableBodyState = {
@@ -101,21 +109,33 @@ export type TableBodyItemProps = {
   columns: Array<Column>,
   itemData: Object,
   fixed: string,
-  onSelected: ()=>void,
+  onSelected: (boolean, any)=>void,
   selected: boolean,
   isHiglight: boolean,
   rowIndex: number,
-  rowClassName: ()=>void
+  rowClassName: (any, any)=>string,
+  leafColumns: Array<Object>
 };
 
 export type TableBodyItemState = {
-  hover: boolean
+  hover: boolean,
+  expand: boolean
+};
+
+export type TableFooterState = {
+  dataList: Array<Object>
+};
+
+export type TableFooterProps = {
+  leafColumns: Array<Object>,
+  sumText: string,
+  data: Array<Object>
 };
 
 export type FilterProps = {
   defaultCondi: null | Array<Object>,
   filters: Array<Object>,
-  onFilter: ()=>void,
+  onFilter: (any)=>void,
   onClose: ()=>void,
   visible: boolean,
   position: Object,

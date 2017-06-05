@@ -121,6 +121,32 @@ render() {
 ```
 :::
 
+
+### Flat Card mode
+set card size same
+
+::: demo Setting `type` to `flatcard` activates the flatcard mode. Apart from the appearance, the biggest difference between card mode and common mode is that clicking the slides at both sides directly switches the carousel in card mode.
+```js
+render() {
+  return (
+    <div className="demo-4 medium">
+      <Carousel interval="4000" type="flatcard" height="200px">
+        {
+          [1,2,3,4,5,6].map((item, index) => {
+            return (
+              <Carousel.Item key={index}>
+                <h3>{item}</h3>
+              </Carousel.Item>
+            )
+          })
+        }
+      </Carousel>
+    </div>
+  )
+}
+```
+:::
+
 ### Carousel Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
