@@ -6,7 +6,7 @@ import { Component, PropTypes } from '../../libs';
 import { getScrollBarWidth } from './utils'
 import Filter from './filter'
 
-import type { Column, TableHeaderProps, TableHeaderState } from './Types';
+import type { TableHeaderProps, TableHeaderState } from './Types';
 
 export default class TableHeader extends  Component{
   props: TableHeaderProps;
@@ -27,7 +27,7 @@ export default class TableHeader extends  Component{
     };
   }
 
-  handleMouseMove(event:Object, column:Object){
+  handleMouseMove(event: Object, column: Object){
     let target = event.target;
     while (target && target.tagName !== 'TH') {
       target = target.parentNode;
@@ -56,7 +56,7 @@ export default class TableHeader extends  Component{
     }
   }
 
-  handleMouseDown(event:Object, column:Object){
+  handleMouseDown(event: Object, column: Object){
     if (this.draggingColumn && this.$ower.props.border) {
       this.dragging = true;
 
@@ -88,7 +88,7 @@ export default class TableHeader extends  Component{
       resizeProxy.style.left = this.state.dragState.startLeft + 'px';
 
       const preventFunc = function() { return false; };
-      const handleMouseMove = (event:Object) => {
+      const handleMouseMove = (event: Object) => {
         const deltaLeft = event.clientX - this.state.dragState.startMouseLeft;
         const proxyLeft = this.state.dragState.startLeft + deltaLeft;
 
@@ -152,12 +152,12 @@ export default class TableHeader extends  Component{
       sortPropertyName: column.property
     });
     $owerTable.sortBy(
-      nextStatus, 
-      column.property, 
+      nextStatus,
+      column.property,
       column.sortMethod);
   }
 
-  onFilter(e:any, filters:any, columnData:Object){
+  onFilter(e: any, filters: any, columnData: Object){
     const { filterParams } = this.state;
 
     e.stopPropagation();
@@ -198,12 +198,12 @@ export default class TableHeader extends  Component{
         onClose={onClose}
         filters={filters}
         position={pos}
-        ower={ower}/>,
+        ower={ower} />,
       ower.filterContainer
     );
   }
 
-  onFilterAction(column:Object, filterCondi:Array<Object>){
+  onFilterAction(column: Object, filterCondi: Array<Object>){
     const { filterParams } = this.state;
 
     filterParams.column = filterCondi && filterCondi.length? column : null
@@ -211,11 +211,11 @@ export default class TableHeader extends  Component{
     this.context.$owerTable.filterBy(column, filterCondi);
   }
 
-  getPosByEle(el:any){
+  getPosByEle(el: any){
     let y:number = el.offsetTop;
     let x:number = el.offsetLeft;
 
-    while(el = el.offsetParent){
+    while(el == el.offsetParent) {
       y += el.offsetTop;
       x += el.offsetLeft;
     }
@@ -224,7 +224,7 @@ export default class TableHeader extends  Component{
   }
 
   render() {
-    const { columns, style, isScrollY, fixed, flettenColumns } = this.props;
+    const { style, isScrollY, fixed, flettenColumns } = this.props;
     const { sortPropertyName, sortStatus } = this.state;
     const { leafColumns, headerLevelColumns } = flettenColumns;
 
@@ -235,87 +235,86 @@ export default class TableHeader extends  Component{
         cellPadding={0}
         cellSpacing={0}>
         <colgroup>
-        {
-          leafColumns.map((item, idx)=>{
-            return (
-              <col key={idx} style={{width: item.width}}/>
-            )
-          })
-        }
+          {
+            leafColumns.map((item, idx)=>{
+              return (
+                <col key={idx} style={{width: item.width}} />
+              )
+            })
+          }
         </colgroup>
-
         <thead>
-        {
-          headerLevelColumns.map((item, index)=>{
-          const columnList = item;
-          return (<tr key={index}>
-            {
-              columnList.map((column, idx)=>{
-                const className = this.classNames({
-                  'is-center': column.align == 'center',
-                  'is-right' : column.align == 'right',
-                  'is-hidden': !this.props.fixed && column.fixed,
-                  'ascending': (sortPropertyName == column.property && sortStatus == 1),
-                  'descending': (sortPropertyName == column.property && sortStatus == 2)
-                });
+          {
+            headerLevelColumns.map((item, index)=>{
+            const columnList = item;
+            return (<tr key={index}>
+              {
+                columnList.map((column, idx)=>{
+                  const className = this.classNames({
+                    'is-center': column.align == 'center',
+                    'is-right' : column.align == 'right',
+                    'is-hidden': !this.props.fixed && column.fixed,
+                    'ascending': (sortPropertyName == column.property && sortStatus == 1),
+                    'descending': (sortPropertyName == column.property && sortStatus == 2)
+                  });
 
-                return (
-                  <th
-                    key={idx}
-                    rowSpan={column.rowSpan}
-                    colSpan={column.colSpan}
-                    className={className}
-                    onMouseMove={(e)=>this.handleMouseMove(e, column)}
-                    onMouseDown={(e)=>this.handleMouseDown(e, column)}
-                    style={column.colSpan?{}:{width: column.realWidth}}>
-                    {
-                      column.type == 'selection' && (
+                  return (
+                    <th
+                      key={idx}
+                      rowSpan={column.rowSpan}
+                      colSpan={column.colSpan}
+                      className={className}
+                      onMouseMove={(e)=>this.handleMouseMove(e, column)}
+                      onMouseDown={(e)=>this.handleMouseDown(e, column)}
+                      style={column.colSpan?{}:{width: column.realWidth}}>
+                      {
+                        column.type == 'selection' && (
+                          <div className="cell">
+                            <Checkbox
+                              checked={this.state.allChecked}
+                              onChange={checked => this.onAllChecked(checked)} />
+                          </div>)
+                      }
+
+                      {
+                        column.type == 'index' && <div className="cell">#</div>
+                      }
+
+                      {
+                        column.type != 'selection' &&
+                        column.type != 'index' &&
                         <div className="cell">
-                          <Checkbox
-                            checked={this.state.allChecked}
-                            onChange={checked => this.onAllChecked(checked)}/>
-                        </div>)
-                    }
+                          {column.label}
 
-                    {
-                      column.type == 'index' && <div className="cell">#</div>
-                    }
+                          {
+                            column.sortable ? (
+                              <span className="caret-wrapper" onClick={()=>{this.onSort(column)}}>
+                                <i className="sort-caret ascending"></i>
+                                <i className="sort-caret descending"></i>
+                              </span>) : ''
+                          }
 
-                    {
-                      column.type != 'selection' &&
-                      column.type != 'index' &&
-                      <div className="cell">
-                        {column.label}
+                          {
+                            column.filterable ? (
+                              <span
+                                className="el-table__column-filter-trigger"
+                                onClick={(e)=>this.onFilter(e, column.filters, column)}>
+                                <i className="el-icon-arrow-down"></i>
+                              </span>
+                            ):''
+                          }
+                        </div>
+                      }
+                    </th>)
+                })
+              }
 
-                        {
-                          column.sortable ? (
-                            <span className="caret-wrapper" onClick={()=>{this.onSort(column)}}>
-                              <i className="sort-caret ascending"></i>
-                              <i className="sort-caret descending"></i>
-                            </span>) : ''
-                        }
-
-                        {
-                          column.filterable ? (
-                            <span
-                              className="el-table__column-filter-trigger"
-                              onClick={(e)=>this.onFilter(e, column.filters, column)}>
-                              <i className="el-icon-arrow-down"></i>
-                            </span>
-                          ):''
-                        }
-                      </div>
-                    }
-                  </th>)
-              })
-            }
-
-            {
-              !fixed && isScrollY&& <th className="gutter" style={{ width:  getScrollBarWidth() }}></th>
-            }
-          </tr>)
-          })
-        }
+              {
+                !fixed && isScrollY&& <th className="gutter" style={{ width:  getScrollBarWidth() }}></th>
+              }
+            </tr>)
+            })
+          }
         </thead>
       </table>
     )
