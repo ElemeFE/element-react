@@ -7,13 +7,13 @@ import { getScrollBarWidth } from './utils';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
+import i18n from '../locale';
 
-
-import type { 
-  Column, 
+import type {
+  Column,
   TableProps,
-  TableState, 
-  DefaultTableProps 
+  TableState,
+  DefaultTableProps
 } from './Types';
 
 let tableIdSeed = 1;
@@ -91,7 +91,7 @@ export default class Table extends Component{
     if(!this._filterCon){
       this._filterCon = document.createElement('div');
       this._filterCon.style.cssText = "position:absolute;left:0;top:0";
-      this._filterCon.id = "__filter__" + Math.random(32).toString().slice(2);
+      this._filterCon.id = "__filter__" + Math.random().toString().slice(2);
       const body = document.body || document.createElement('body');
       body.appendChild(this._filterCon);
     }
@@ -224,13 +224,14 @@ export default class Table extends Component{
   }
 
   render() {
-    let { fit, 
-      stripe, 
-      border, 
-      highlightCurrentRow, 
-      showSummary, 
-      sumText, 
-      getSummaries 
+    let { fit,
+      stripe,
+      border,
+      highlightCurrentRow,
+      showSummary,
+      sumText,
+      getSummaries,
+      emptyText
     } = this.props;
     let {
       bodyWidth,
@@ -282,7 +283,7 @@ export default class Table extends Component{
         <div
           style={this.getBodyWrapperStyle()}
           className="el-table__body-wrapper"
-          onScroll={(e)=>{this.onScrollBodyWrapper(e)}}
+          onScroll={this.onScrollBodyWrapper.bind(this)}
           ref="bodyWrapper">
           <TableBody
             ref="mainBody"
@@ -311,16 +312,23 @@ export default class Table extends Component{
                 className="el-table__fixed-body-wrapper"
                 ref="fixedBodyWrapper"
                 style={{top: realTableHeaderHeight, height: bodyHeight ? (bodyHeight - scrollYWiddth) : ''}}>
-                <TableBody
-                  ref="fixedLeftBody"
-                  fixed="left"
-                  rowClassName={this.props.rowClassName}
-                  columns={_columns}
-                  data={data}
-                  flettenColumns={flettenColumns}
-                  highlightCurrentRow={highlightCurrentRow}
-                  style={{width: bodyWidth}}>
-                </TableBody>
+                {data && data.length && 
+                  <TableBody
+                    ref="fixedLeftBody"
+                    fixed="left"
+                    rowClassName={this.props.rowClassName}
+                    columns={_columns}
+                    data={data}
+                    flettenColumns={flettenColumns}
+                    highlightCurrentRow={highlightCurrentRow}
+                    style={{width: bodyWidth}}>
+                  </TableBody>
+                }
+                {(!data || data.length === 0) && 
+                  <div style={{ width: bodyWidth }} className="el-table__empty-block">
+                    <span className="el-table__empty-text">{ emptyText || i18n.t('el.table.emptyText') }</span>
+                  </div>
+                }
               </div>
             </div>)
         }
@@ -358,9 +366,9 @@ export default class Table extends Component{
 
         {
           showSummary && (
-            <TableFooter 
-              leafColumns={leafColumns} 
-              sumText={sumText} 
+            <TableFooter
+              leafColumns={leafColumns}
+              sumText={sumText}
               getSummaries={getSummaries}
               data={data}/>
           )

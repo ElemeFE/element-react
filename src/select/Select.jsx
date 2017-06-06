@@ -340,7 +340,7 @@ class Select extends Component {
 
       valueChangeBySelected = true;
 
-      onChange && onChange(val.map(item => item.props.value));
+      onChange && onChange(val.map(item => item.props.value), val);
 
       // this.dispatch('form-item', 'el.form.change', val);
 
@@ -364,7 +364,7 @@ class Select extends Component {
         });
       }
 
-      onChange && onChange(val.props.value);
+      onChange && onChange(val.props.value, val);
     }
   }
 

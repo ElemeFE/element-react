@@ -30,8 +30,9 @@ export type TableProps = {
   rowClassName: ()=>void,
   style: Object,
   highlightCurrentRow: boolean,
-  sumText: String,
-  showSummary: Boolean,
+  sumText: string,
+  emptyText: string,
+  showSummary: boolean,
   getSummaries: ()=>void,
 
   //Event
@@ -108,11 +109,11 @@ export type TableBodyItemProps = {
   columns: Array<Column>,
   itemData: Object,
   fixed: string,
-  onSelected: ()=>void,
+  onSelected: (boolean, any)=>void,
   selected: boolean,
   isHiglight: boolean,
   rowIndex: number,
-  rowClassName: ()=>void,
+  rowClassName: (any, any)=>string,
   leafColumns: Array<Object>
 };
 
@@ -127,14 +128,14 @@ export type TableFooterState = {
 
 export type TableFooterProps = {
   leafColumns: Array<Object>,
-  sumText: String,
+  sumText: string,
   data: Array<Object>
 };
 
 export type FilterProps = {
   defaultCondi: null | Array<Object>,
   filters: Array<Object>,
-  onFilter: ()=>void,
+  onFilter: (any)=>void,
   onClose: ()=>void,
   visible: boolean,
   position: Object,
