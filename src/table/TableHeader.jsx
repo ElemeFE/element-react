@@ -236,9 +236,9 @@ export default class TableHeader extends  Component{
         cellSpacing={0}>
         <colgroup>
           {
-            leafColumns.map((item, index)=>{
+            leafColumns.map((item, idx)=>{
               return (
-                <col key={index} style={{width: item.width}} />
+                <col key={idx} style={{width: item.width}} />
               )
             })
           }
