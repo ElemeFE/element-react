@@ -83,7 +83,7 @@ class BodyItem extends Component{
       td.className = 'el-table__expanded-cell';
       row.appendChild(td);
 
-      ReactDOM.render(this.props.columns[0].expandPannel(), td);
+      ReactDOM.render(this.props.columns[0].expandPannel(this.props.itemData), td);
     }else{
       root.parentNode.removeChild(root.nextElementSibling);
     }

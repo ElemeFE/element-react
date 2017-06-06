@@ -15,7 +15,7 @@ export type Column = {
   fixed: boolean | string,
   filterMethod: ()=>void,
   filters: Array<Object>,
-  expandPannel: ()=>any,
+  expandPannel: (any)=>any,
   render: ()=>void
 };
 
