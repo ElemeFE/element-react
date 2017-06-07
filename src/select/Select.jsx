@@ -263,6 +263,7 @@ class Select extends Component {
         if (multiple) {
           this.refs.input.focus();
         } else {
+          this.refs.reference.focus();
           // this.broadcast('input', 'inputSelect');
         }
       }
