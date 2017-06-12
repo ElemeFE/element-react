@@ -872,7 +872,7 @@ class Select extends Component {
           size={size}
           disabled={disabled}
           readOnly={!filterable || multiple}
-          icon={this.iconClass()}
+          icon={this.iconClass() || undefined}
           onChange={value => this.setState({ selectedLabel: value })}
           onIconClick={this.handleIconClick.bind(this)}
           onMouseDown={this.onMouseDown.bind(this)}
