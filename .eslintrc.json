@@ -22,6 +22,7 @@
     "react/jsx-boolean-value": 0,
     "react/no-did-mount-set-state": 1,
     "react/jsx-first-prop-new-line": 0,
+    "react/jsx-max-props-per-line": 0,
     "react/require-default-props": 0,
     "jsx-a11y/img-has-alt": 0,
     "jsx-a11y/label-has-for": 0,
