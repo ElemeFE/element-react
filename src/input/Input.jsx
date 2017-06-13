@@ -34,11 +34,15 @@ export default class Input extends Component {
   /* <Instance Methods */
 
   focus(): void {
-    (this.refs.input || this.refs.textarea).focus();
+    setTimeout(() => {
+      (this.refs.input || this.refs.textarea).focus();
+    });
   }
 
   blur(): void {
-    (this.refs.input || this.refs.textarea).blur();
+    setTimeout(() => {
+      (this.refs.input || this.refs.textarea).blur();
+    });
   }
 
   /* Instance Methods> */
