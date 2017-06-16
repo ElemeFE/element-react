@@ -2,8 +2,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Component, PropTypes } from '../../libs';
+import { getScrollBarWidth } from './utils';
 import Checkbox from '../checkbox';
-import { getScrollBarWidth } from './utils'
 
 import type {
   TableBodyProps,
@@ -92,7 +92,6 @@ class BodyItem extends Component{
   render(){
     const {
       itemData,
-      columns,
       rowIndex,
       rowClassName,
       isHiglight,
@@ -146,7 +145,7 @@ class BodyItem extends Component{
                     <div className="cell">
                       <Checkbox
                         checked={selected}
-                        onChange={(e)=>this.onChange(e)}/>
+                        onChange={(e)=>this.onChange(e)} />
                     </div>
                 }
                 {
@@ -169,9 +168,7 @@ class BodyItem extends Component{
                 { column.type != 'selection' &&
                    column.type != 'index' &&
                    column.type != 'expand' &&
-                   <div className="cell">
-                   { content }
-                  </div>
+                   <div className="cell">{ content }</div>
                 }
               </td>
             )
@@ -254,8 +251,7 @@ export default class TableBody extends  Component{
       data,
       rowClassName,
       fixed,
-      flettenColumns,
-      highlightCurrentRow
+      flettenColumns
     } = this.props;
 
     const { highlightRows, selected } = this.state;
@@ -286,7 +282,7 @@ export default class TableBody extends  Component{
                   rowClassName={rowClassName}
                   itemData={dataItem}
                   leafColumns={leafColumns}
-                  columns={columns}/>
+                  columns={columns} />
               )
             })
           }
