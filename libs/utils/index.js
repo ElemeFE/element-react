@@ -1,5 +1,5 @@
 import {require_condition} from './assert'
-import * as ReactUtils from './react'
+import * as ReactUtils from './firstChild'
 import * as Errors from './errors'
 
 export {require_condition, ReactUtils, Errors}
