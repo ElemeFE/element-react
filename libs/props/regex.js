@@ -1,4 +1,4 @@
-import { createPropType } from '../utils';
+var createPropType = require('../utils').createPropType;
 
 module.exports = createPropType((props, propName, componentName) => {
   const value = props[propName];
