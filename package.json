@@ -71,6 +71,7 @@
   "dependencies": {
     "async-validator": "^1.6.9",
     "classnames": "^2.2.5",
+    "codemirror": "^5.26.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-click-outside": "^2.3.1",
