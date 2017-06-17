@@ -15,7 +15,7 @@ export type Column = {
   fixed: boolean | string,
   filterMethod: ()=>void,
   filters: Array<Object>,
-  expandPannel: ()=>any,
+  expandPannel: (any)=>any,
   render: ()=>void
 };
 
@@ -123,13 +123,14 @@ export type TableBodyItemState = {
 };
 
 export type TableFooterState = {
-  dataList: Array<Object>
+  dataList: Array<mixed>
 };
 
 export type TableFooterProps = {
   leafColumns: Array<Object>,
   sumText: string,
-  data: Array<Object>
+  data: Array<Object>,
+  getSummaries: (any, any) => mixed
 };
 
 export type FilterProps = {
@@ -139,6 +140,7 @@ export type FilterProps = {
   onClose: ()=>void,
   visible: boolean,
   position: Object,
+  popper: any,
   ower: Object
 };
 

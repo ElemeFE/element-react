@@ -132,7 +132,13 @@ export default class MessageBox extends Component {
                     this.props.title && (
                       <div className="el-message-box__header">
                         <div className="el-message-box__title">{this.props.title}</div>
-                        { this.props.showClose && <i className="el-message-box__close el-icon-close" onClick={this.handleAction.bind(this, 'cancel')} /> }
+                        {
+                          this.props.showClose && (
+                            <button type="button" className="el-message-box__headerbtn" aria-label="Close" onClick={this.handleAction.bind(this, 'cancel')}>
+                              <i className="el-message-box__close el-icon-close" />
+                            </button>
+                          )
+                        }
                       </div>
                     )
                   }

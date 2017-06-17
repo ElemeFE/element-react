@@ -89,7 +89,8 @@ export default class Switch extends Component {
         style={this.style()}
         className={this.className('el-switch', {
           'is-disabled' : disabled,
-          'el-switch--wide' : this.hasText()
+          'el-switch--wide' : this.hasText(),
+          'is-checked' : value === onValue
         })}>
 
         <View show={disabled}>

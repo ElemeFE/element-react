@@ -97,7 +97,6 @@ export const execColRowSpan = (enhancedColumns: Array<Object>=[])=>{
       if(item.subColumns instanceof Array){
         item.colSpan = getColByObject(item);
         recursiveCol(item.subColumns, ++level);
-        console.log(enhancedColumns);
       }else{
         maxLevel = level > maxLevel ? level : maxLevel;
       }
@@ -168,7 +167,7 @@ export const enhanceColumns = (columns: Array<Object>=[], tableId: number)=>{
   execColRowSpan(_columns);
 
   const filterFixedLeftColumns = (list=[])=>{
-    return list.filter((col)=>{ 
+    return list.filter((col)=>{
       return (typeof col.fixed == 'boolean' &&  !!col.fixed) || col.fixed == 'left';
     });
   };
@@ -203,9 +202,9 @@ export const calculateBodyWidth = (columns: Array<Object>, owerTableWidth: numbe
 }
 
 export const scheduleLayout = (
-  columns: Array<Object> = [], 
-  owerTableWidth: '' | number, 
-  scrollY: number, 
+  columns: Array<Object> = [],
+  owerTableWidth: '' | number,
+  scrollY: number,
   fit: boolean) => {
 
   const layout = {};
@@ -219,7 +218,7 @@ export const scheduleLayout = (
   }, 0);
 
   const gutterWidth:number = scrollY ? getScrollBarWidth() : 0;
-  
+
   if(typeof owerTableWidth == 'number'){
     owerTableWidth -= gutterWidth;
   }
@@ -237,7 +236,3 @@ export const scheduleLayout = (
 
   return layout;
 };
-
-
-
-
