@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Component, PropTypes } from '../../libs';
-import { enhanceColumns, calculateBodyWidth, calculateFixedWidth, scheduleLayout } from './mixins';
+import { enhanceColumns, calculateFixedWidth, scheduleLayout } from './mixins';
 import { getScrollBarWidth } from './utils';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
@@ -10,7 +10,6 @@ import TableFooter from './TableFooter';
 import i18n from '../locale';
 
 import type {
-  Column,
   TableProps,
   TableState,
   DefaultTableProps
@@ -23,7 +22,7 @@ export default class Table extends Component{
   state: TableState;
   static defaultProps: DefaultTableProps;
 
-  constructor(props:Object, context:Object){
+  constructor(props: Object, context: Object){
     super(props, context);
     this.tableId = tableIdSeed++;
 
@@ -75,7 +74,7 @@ export default class Table extends Component{
     }
   }
 
-  componentWillReceiveProps(nextProps:Object){
+  componentWillReceiveProps(nextProps: Object){
     if(nextProps.data != this.props.data){
       this.setState({data: nextProps.data}, ()=>{
         this.initLayout();
@@ -173,7 +172,7 @@ export default class Table extends Component{
     }
   }
 
-  sortBy(sort:number, prop:string, compare:any){
+  sortBy(sort: number, prop: string, compare: any){
     const data = this.state.filterList || this.state.data;
     const sortList = data.slice(0);
 
@@ -189,7 +188,7 @@ export default class Table extends Component{
     }
   }
 
-  filterBy(column:Object, filteCondi:Array<Object>){
+  filterBy(column: Object, filteCondi: Array<Object>){
     const data = this.state.sortList || this.state.data;
 
     const filterList = data.filter((d)=>{
@@ -277,7 +276,7 @@ export default class Table extends Component{
             isScrollY={scrollY}
             style={{width: bodyWidth}}
             flettenColumns={flettenColumns}
-            columns={_columns}/>
+            columns={_columns} />
         </div>
 
         <div
@@ -292,7 +291,7 @@ export default class Table extends Component{
             columns={_columns}
             flettenColumns={flettenColumns}
             highlightCurrentRow={highlightCurrentRow}
-            data={data}/>
+            data={data} />
         </div>
         {
           !!fixedLeftColumns.length && (
@@ -306,13 +305,13 @@ export default class Table extends Component{
                   border="border"
                   columns={_columns}
                   flettenColumns={flettenColumns}
-                  style={{width: '100%', height: '100%'}}/>
+                  style={{width: '100%', height: '100%'}} />
               </div>
               <div
                 className="el-table__fixed-body-wrapper"
                 ref="fixedBodyWrapper"
                 style={{top: realTableHeaderHeight, height: bodyHeight ? (bodyHeight - scrollYWiddth) : ''}}>
-                {data && data.length && 
+                {data && data.length &&
                   <TableBody
                     ref="fixedLeftBody"
                     fixed="left"
@@ -324,7 +323,7 @@ export default class Table extends Component{
                     style={{width: bodyWidth}}>
                   </TableBody>
                 }
-                {(!data || data.length === 0) && 
+                {(!data || data.length === 0) &&
                   <div style={{ width: bodyWidth }} className="el-table__empty-block">
                     <span className="el-table__empty-text">{ emptyText || i18n.t('el.table.emptyText') }</span>
                   </div>
@@ -345,7 +344,7 @@ export default class Table extends Component{
               border="border"
               columns={_columns}
               flettenColumns={flettenColumns}
-              style={{width: '100%', height: '100%'}}/>
+              style={{width: '100%', height: '100%'}} />
           </div>
           <div
             className="el-table__fixed-body-wrapper"
@@ -370,7 +369,7 @@ export default class Table extends Component{
               leafColumns={leafColumns}
               sumText={sumText}
               getSummaries={getSummaries}
-              data={data}/>
+              data={data} />
           )
         }
 

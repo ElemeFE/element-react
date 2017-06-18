@@ -1,6 +1,8 @@
+// @flow
+
 import React from 'react';
 import { Component, PropTypes } from '../../libs';
-import type { TableFooterState, TableFooterProps } from './Types';
+import type { TableFooterState, TableFooterProps, TableBodyProps } from './Types';
 
 export default class TableFooter extends  Component{
   props: TableFooterProps;
@@ -8,6 +10,7 @@ export default class TableFooter extends  Component{
 
   constructor(props: TableBodyProps, context: Object){
     super(props, context);
+
     this.state = {
       dataList: []
     };
@@ -25,7 +28,7 @@ export default class TableFooter extends  Component{
         let total = 0;
         for(let j=0; j < data.length; j++){
           let value = data[j][leafColumns[i]['property']];
-        
+
           if(isNaN(value)){
             total = 'N/A'
             break;
@@ -41,8 +44,7 @@ export default class TableFooter extends  Component{
   render() {
     const {
       leafColumns,
-      sumText,
-      data
+      sumText
     } = this.props;
 
     return (
@@ -50,28 +52,30 @@ export default class TableFooter extends  Component{
         <table cellPadding={0} cellSpacing={0}>
           <colgroup>
             {
-              leafColumns.map((item)=>{
+              leafColumns.map((item, idx)=>{
                 return (
-                  <col style={{width: item.width}}/>
+                  <col key={idx} style={{width: item.width}} />
                 )
               })
             }
-            </colgroup>
-            <tbody>
-              <tr>
-                {
-                  leafColumns.map((column, idx)=>{
-                    if(idx == 0){
-                      return <td style={{width: column.realWidth}}><div className="cell">{ sumText || "合计"}</div></td>
-                    }
-                    return (
-                      <td style={{width: column.realWidth}}>
-                        <div className="cell">{this.state.dataList[idx]}</div>
-                      </td>)
-                  })
-                }
-              </tr>
-            </tbody>
+          </colgroup>
+          <tbody>
+            <tr>
+              {
+                leafColumns.map((column, idx)=>{
+                  if(idx == 0){
+                    return <td key={idx} style={{width: column.realWidth}}><div className="cell">{ sumText || "合计"}</div></td>
+                  }
+                  
+                  return (
+                    <td key={idx} style={{width: column.realWidth}}>
+                      <div className="cell">{this.state.dataList[idx]}</div>
+                    </td>
+                  )
+                })
+              }
+            </tr>
+          </tbody>
         </table>
       </div>
     )
