@@ -1,20 +1,25 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import CodeMirror from 'codemirror'
+
 import 'codemirror/lib/codemirror.css'
-import { options, requireAddons } from './codemirrorConfig'
 import './style.scss'
 
+import { options, requireAddons } from './config'
+
 export default class Editor extends Component {
+  componentWillMount() {
+    requireAddons()
+  }
+  
   componentDidMount() {
     const { onChange, readOnly, value } = this.props
 
-    requireAddons()
-    const Codemirror = require('codemirror')
-    this.cm = Codemirror(this.editor, Object.assign(options, { readOnly }))
+    this.cm = CodeMirror(this.editor, Object.assign(options, { readOnly }))
+    this.cm.setValue(value)
     this.cm.on('changes', cm => {
       onChange && onChange(cm.getValue())
     })
-    this.cm.setValue(value)
   }
 
   render() {
