@@ -21,10 +21,6 @@ export default class Markdown extends React.Component {
     this.renderDOM();
   }
 
-  componentDidUpdate() {
-    this.renderDOM();
-  }
-
   renderDOM() {
     for (const [id, component] of this.components) {
       const div = document.getElementById(id);
