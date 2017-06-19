@@ -4,6 +4,7 @@ export const options = {
   theme: 'react',
   keyMap: 'sublime',
   indentUnit: 2,
+  viewportMargin: Infinity,
   lineNumbers: true,
   dragDrop: false,
   showCursorWhenSelecting: true,

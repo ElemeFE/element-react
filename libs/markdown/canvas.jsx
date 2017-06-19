@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import marked from 'marked'
 import { transform } from 'babel-standalone'
+
 import Editor from '../editor'
 
 export default class Canvas extends React.Component {
@@ -21,13 +22,6 @@ export default class Canvas extends React.Component {
 
   componentDidMount() {
     this.renderSource(this.source[2])
-  }
-
-  get height() {
-    return Math.max(
-      this.refs.editor.offsetHeight,
-      (this.refs.description && this.refs.description.offsetHeight) || 0
-    )
   }
 
   blockControl() {
@@ -71,7 +65,7 @@ export default class Canvas extends React.Component {
 
         this.source[2] = value
       })
-      .catch(e => console.log(e))
+      .catch(console.log)
   }
 
   render() {
@@ -81,38 +75,42 @@ export default class Canvas extends React.Component {
         <div
           className="meta"
           style={{
-            height: this.state.showBlock ? this.height : 0
+            height: this.state.showBlock ? 'auto' : 0
           }}
         >
-          {this.description &&
-            <div
-              ref="description"
-              className="description"
-              dangerouslySetInnerHTML={{ __html: this.description }}
-            />}
-          <div ref="editor">
-            <Editor
-              value={this.source[2]}
-              onChange={code => this.renderSource(code)}
-            />
-          </div>
-
+          {
+            this.description && (
+              <div
+                ref="description"
+                className="description"
+                dangerouslySetInnerHTML={{ __html: this.description }}
+              />
+            )
+          }
+          <Editor
+            value={this.source[2]}
+            onChange={code => this.renderSource(code)}
+          />
         </div>
-        {this.state.showBlock
-          ? <div
+        {
+          this.state.showBlock ? (
+            <div
               className="demo-block-control"
               onClick={this.blockControl.bind(this)}
             >
               <i className="el-icon-caret-top" />
               <span>{this.props.locale.hide}</span>
             </div>
-          : <div
+          ) : (
+            <div
               className="demo-block-control"
               onClick={this.blockControl.bind(this)}
             >
               <i className="el-icon-caret-bottom" />
               <span>{this.props.locale.show}</span>
-            </div>}
+            </div>
+          )
+        }
       </div>
     )
   }
