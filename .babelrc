@@ -4,6 +4,9 @@
       "presets" : ["es2015", "stage-1", "react"],
       "plugins" : ["react-hot-loader/babel"]
     },
+    "test": {
+      "presets" : ["es2015", "stage-1", "react"]
+    },
     "production": {
       "presets" : [["es2015", { "modules": false, "loose": true }], "stage-1", "react"]
     }

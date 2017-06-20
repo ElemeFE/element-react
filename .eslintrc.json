@@ -5,7 +5,8 @@
   "env": {
     "browser": true,
     "commonjs": true,
-    "es6": true
+    "es6": true,
+    "jest": true
   },
   "settings": {
     "flowtype": {
@@ -27,8 +28,8 @@
     "jsx-a11y/img-has-alt": 0,
     "jsx-a11y/label-has-for": 0,
     "import/no-named-as-default-member": 0,
-    "import/no-extraneous-dependencies": 1,
     "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/__test__/**/*.js", "**/__test__/**/*.jsx", "**/*_test.jsx", "**/*_test.js"]}],
     "no-empty": 1,
     "no-console": 1,
     "react/sort-comp": 0,
