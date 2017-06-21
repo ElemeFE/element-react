@@ -12,7 +12,7 @@ constructor(props) {
   super(props)
 
   this.state = {
-    value: new Date(2016, 9, 10, 14, 30),
+    value: new Date(2016, 9, 10, 8, 30),
   }
 }
 
@@ -159,7 +159,6 @@ render() {
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | align | alignment | string | left, center, right | left |
 | placeholder | placeholder | string | — | — |
-| format | format of the picker | string | hour `HH`, minute `mm`, second `ss` |
 | isShowTrigger | whether DatePicker show trigger | bool | - | - |
 | isReadOnly | whether DatePicker is read only | boolean | — | false |
 | isDisabled | whether DatePicker is disabled | boolean | — | false |
