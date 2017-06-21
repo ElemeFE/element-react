@@ -89,6 +89,7 @@ Please make sure to read the [Contributing Guide](https://github.com/eleme/eleme
 ## Acknowledgments
 
 * [@doxiaodong](https://github.com/doxiaodong) for adding typescript ambient declarations.
+* [@cuining](https://github.com/cuining) for building the live code editor.
 
 ## Credits
 
