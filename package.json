@@ -10,7 +10,7 @@
     "start": "cd site && node run.js",
     "typescript-test": "tsc --project typings/typing-tests",
     "test": "flow check && BABEL_ENV=development jest",
-    "itest": "jest",
+    "jtest": "jest",
     "lint": "eslint src libs site --quiet",
     "build": "cd build/site && webpack --progress",
     "prepubl¡sh": "./build/scripts/prepare.sh",
