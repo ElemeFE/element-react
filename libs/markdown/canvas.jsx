@@ -10,7 +10,7 @@ export default class Canvas extends React.Component {
   constructor(props) {
     super(props)
 
-    this.playerId = `player-${parseInt(Math.random() * 1e9)}`
+    this.playerId = `${parseInt(Math.random() * 1e9).toString(36)}`
     this.document = this.props.children.match(/([^]*)\n?(```[^]+```)/)
     this.description = marked(this.document[1])
     this.source = this.document[2].match(/```(.*)\n([^]+)```/)
@@ -31,86 +31,74 @@ export default class Canvas extends React.Component {
   }
 
   renderSource(value) {
-    import('../../src')
-      .then(Element => {
-        const args = ['context', 'React', 'ReactDOM']
-        const argv = [this, React, ReactDOM]
+    import('../../src').then(Element => {
+      const args = ['context', 'React', 'ReactDOM']
+      const argv = [this, React, ReactDOM]
 
-        for (const key in Element) {
-          args.push(key)
-          argv.push(Element[key])
-        }
+      for (const key in Element) {
+        args.push(key)
+        argv.push(Element[key])
+      }
 
-        return {
-          args,
-          argv
-        }
-      })
-      .then(({ args, argv }) => {
-        const code = transform(
-          `
+      return {
+        args,
+        argv
+      }
+    }).then(({ args, argv }) => {
+      const code = transform(`
         class Demo extends React.Component {
           ${value}
         }
+
         ReactDOM.render(<Demo {...context.props} />, document.getElementById('${this.playerId}'))
-      `,
-          {
-            presets: ['es2015', 'react']
-          }
-        ).code
+      `, {
+        presets: ['es2015', 'react']
+      }).code
 
-        args.push(code)
+      args.push(code)
 
-        new Function(...args).apply(null, argv)
+      new Function(...args).apply(null, argv)
 
-        this.source[2] = value
-      })
-      .catch(console.log)
+      this.source[2] = value
+    }).catch(console.log)
   }
 
   render() {
     return (
       <div className={`demo-block demo-box demo-${this.props.name}`}>
         <div className="source" id={this.playerId} />
-        <div
-          className="meta"
-          style={{
-            height: this.state.showBlock ? 'auto' : 0
-          }}
-        >
-          {
-            this.description && (
-              <div
-                ref="description"
-                className="description"
-                dangerouslySetInnerHTML={{ __html: this.description }}
-              />
-            )
-          }
-          <Editor
-            value={this.source[2]}
-            onChange={code => this.renderSource(code)}
-          />
-        </div>
         {
-          this.state.showBlock ? (
-            <div
-              className="demo-block-control"
-              onClick={this.blockControl.bind(this)}
-            >
-              <i className="el-icon-caret-top" />
-              <span>{this.props.locale.hide}</span>
-            </div>
-          ) : (
-            <div
-              className="demo-block-control"
-              onClick={this.blockControl.bind(this)}
-            >
-              <i className="el-icon-caret-bottom" />
-              <span>{this.props.locale.show}</span>
+          this.state.showBlock && (
+            <div className="meta">
+              {
+                this.description && (
+                  <div
+                    ref="description"
+                    className="description"
+                    dangerouslySetInnerHTML={{ __html: this.description }}
+                  />
+                )
+              }
+              <Editor
+                value={this.source[2]}
+                onChange={code => this.renderSource(code)}
+              />
             </div>
           )
         }
+        <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
+          {
+            this.state.showBlock ? (
+              <span>
+                <i className="el-icon-caret-top" />{this.props.locale.hide}
+              </span>
+            ) : (
+              <span>
+                <i className="el-icon-caret-bottom" />{this.props.locale.show}
+              </span>
+            )
+          }
+        </div>
       </div>
     )
   }
