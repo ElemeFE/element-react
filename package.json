@@ -65,7 +65,7 @@
     "style-loader": "^0.18.2",
     "typescript": "^2.4.0",
     "url-loader": "^0.5.8",
-    "webpack": "^2.6.1",
+    "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
