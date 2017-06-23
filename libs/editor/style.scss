@@ -3,7 +3,7 @@
   font-size: 13px;
   line-height: 20px;
   color: #484848;
-  padding: 12px 0;
+  padding: 15px 0;
   border-right: 1px solid #eaeefb;
   height: auto;
   background: transparent;
@@ -14,23 +14,12 @@
     z-index: 0;
   }
 
-  .CodeMirror-linenumber {
-    color: #D8D8D8;
-    padding: 0 3px 0 3px;
-    font-size: 10px;
-    line-height: 22px;
-  }
-
   .CodeMirror-selected {
     background: #E6EFFB;
   }
 
-  .CodeMirror-matchingtag {
-    background: transparent;
-  }
-
   pre {
-    padding: 0 10px;
+    padding: 0 25px;
   }
 
   span.cm-keyword { color: #1990B8; }

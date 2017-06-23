@@ -30,7 +30,6 @@ export default class Markdown extends React.Component {
       const div = document.getElementById(id);
 
       if (div instanceof HTMLElement) {
-        ReactDOM.unmountComponentAtNode(div);
         ReactDOM.render(component, div);
       }
     }
