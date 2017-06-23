@@ -61,6 +61,7 @@
     "mock-raf": "^1.0.0",
     "node-sass": "^4.5.3",
     "prismjs": "^1.6.0",
+    "codemirror": "^5.26.0",
     "raw-loader": "^0.5.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "react-scroll-up": "^1.3.0",
