@@ -218,19 +218,33 @@ render() {
 :::
 
 
-### DateRangePanel
+### 公共参数
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | - | Date[]/null | — | false |
-| shortcuts | 快捷选项 | {text: string, onClick: ()=>() } | - | false |
-| showWeekNumber | 是否展示周数 | boolean | - | false |
-
+| placeholder | 占位内容 | string | — | — |
+| format | 时间日期格式化 | string | 年 `yyyy`，月 `MM`，日 `dd`，小时 `HH`，分 `mm`，秒 `ss` | yyyy-MM-dd |
+| align | 对齐方式 | string | left, center, right | left |
+| isShowTrigger | 是否显示图标 | boolean | - | true |
+| isReadOnly | 是否是只读 | boolean | - | false |
+| isDisabled | 是否是禁用 | boolean | - | false |
+| onFocus | focus 事件触发 | (SyntheticEvent)=>() | - | - |
+| onBlur | blur 事件触发 | (SyntheticEvent)=>() | - | - |
 
 ### DatePicker
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | - | Date/null | — | false |
-| shortcuts | 快捷选项 | {text: string, onClick: ()=>() } | - | false |
+| value | - | Date/null | — | - |
+| shortcuts | 快捷选项 | {text: string, onClick: ()=>()}[] | - | - |
 | selectionMode | 日期类型 | string, one of ['year', 'month', 'week', 'day'] | - | 'day' |
 | disabledDate | 是否禁用日期 | (Date)=>boolean | - | - |
 | showWeekNumber | 是否展示周数 | boolean | - | false |
+
+
+### DateRangePanel
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| value | - | Date[]/null | — | - |
+| shortcuts | 快捷选项 | {text: string, onClick: ()=>()}[] | - | - |
+| showWeekNumber | 是否展示周数 | boolean | - | false |
+
+

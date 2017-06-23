@@ -10,3 +10,5 @@ export function mockRAf(count = 10){
     // Take 10 `requestAnimationFrame` steps (your callback will fire 10 times)
     mockRaf.step({ count });
 }
+
+export const nativeEvent = { nativeEvent: { stopImmediatePropagation: () => { } } }
