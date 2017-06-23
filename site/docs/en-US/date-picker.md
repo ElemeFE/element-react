@@ -218,20 +218,32 @@ render() {
 
 :::
 
-
-### DateRangePanel
-| Attribute      | Description          | Type      | Accepted Values       | Default  |
+### Common Props
+| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | - | Date[]/null | — | false |
-| shortcuts | - | {text: string, onClick: ()=>() } | - | false |
-| showWeekNumber | whether to show week number | boolean | - | false |
+| placeholder | - | string | — | — |
+| format | - | string | 年 `yyyy`，月 `MM`，日 `dd`，小时 `HH`，分 `mm`，秒 `ss` | yyyy-MM-dd |
+| align | - | string | left, center, right | left |
+| isShowTrigger | whether to show trigger icon | boolean | - | true |
+| isReadOnly | - | boolean | - | false |
+| isDisabled | - | boolean | - | false |
+| onFocus | - | (SyntheticEvent)=>() | - | - |
+| onBlur | - | (SyntheticEvent)=>() | - | - |
 
 
 ### DatePicker
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | - | Date/null | — | false |
-| shortcuts | - | {text: string, onClick: ()=>() } | - | false |
+| value | - | Date/null | — | - |
+| shortcuts | - | {text: string, onClick: ()=>() }[] | - | - |
 | selectionMode | calendar type  | string, one of ['year', 'month', 'week', 'day'] | - | 'day' |
 | disabledDate | whether to disabled date selection | (Date)=>boolean | - | - |
+| showWeekNumber | whether to show week number | boolean | - | false |
+
+
+### DateRangePanel
+| Attribute      | Description          | Type      | Accepted Values       | Default  |
+|---------- |-------------- |---------- |--------------------------------  |-------- |
+| value | - | Date[]/null | — | - |
+| shortcuts | - | {text: string, onClick: ()=>() }[] | - | - |
 | showWeekNumber | whether to show week number | boolean | - | false |

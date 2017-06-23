@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme';
 import sinon from 'sinon'
 
 import TimeSelect from '../TimeSelect'
-import { mockRAf } from './utils'
+import { mockRAf, nativeEvent} from './utils'
 
 // https://facebook.github.io/jest/docs/expect.html
 // http://airbnb.io/enzyme/docs/api/ShallowWrapper/exists.html
@@ -24,7 +24,6 @@ describe('TimePicker test', function () {
     placeholder: 'Select time'
   }
 
-  const nativeEvent = { nativeEvent: { stopImmediatePropagation: () => { } } }
 
   function mountDefault(props={}){
     return mount(
