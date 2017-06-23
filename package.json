@@ -87,7 +87,8 @@
   "jest": {
     "testRegex": "(/jest/.+\\.(js|jsx)$)|_test.jsx?$",
     "testPathIgnorePatterns": [
-      "<rootDir>/tests/jest/mock.js"
+      "<rootDir>/tests/jest/mock.js",
+      "<rootDir>/dist"
     ],
     "moduleNameMapper": {
       "\\.(png|eot|svg|ttf|woff|woff2)(\\?.+)?$": "<rootDir>/tests/jest/mock.js",
