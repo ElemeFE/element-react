@@ -7,8 +7,7 @@ import { Component, PropTypes, Transition } from '../../libs';
 type State = {
   error: string,
   valid: boolean,
-  validating: boolean,
-  isRequired: boolean
+  validating: boolean
 };
 
 export default class FormItem extends Component {
@@ -20,8 +19,7 @@ export default class FormItem extends Component {
     this.state = {
       error: '',
       valid: false,
-      validating: false,
-      isRequired: false
+      validating: false
     }
   }
 
@@ -32,18 +30,6 @@ export default class FormItem extends Component {
       this.parent().addField(this);
 
       this.initialValue = this.getInitialValue();
-
-      let rules = this.getRules();
-
-      if (rules.length) {
-        rules.every(rule => {
-          if (rule.required) {
-            this.state.isRequired = true;
-
-            return false;
-          }
-        });
-      }
     }
   }
 
@@ -53,6 +39,24 @@ export default class FormItem extends Component {
 
   parent(): Component {
     return this.context.component;
+  }
+
+  isRequired(): boolean {
+    let rules = this.getRules();
+    let isRequired = false;
+
+    if (rules && rules.length) {
+      rules.every(rule => {
+        if (rule.required) {
+          isRequired = true;
+
+          return false;
+        }
+        return true;
+      });
+    }
+
+    return isRequired;
   }
 
   onFieldBlur(): void {
@@ -178,14 +182,14 @@ export default class FormItem extends Component {
   }
 
   render(): React.Element<any> {
-    const { error, validating, isRequired } = this.state;
+    const { error, validating } = this.state;
     const { label, required } = this.props;
 
     return (
       <div style={this.style()} className={this.className('el-form-item', {
         'is-error': error !== '',
         'is-validating': validating,
-        'is-required': isRequired || required
+        'is-required': this.isRequired() || required
       })} onBlur={this.onFieldBlur.bind(this)} onChange={this.onFieldChange.bind(this)}>
         {
           label && (
