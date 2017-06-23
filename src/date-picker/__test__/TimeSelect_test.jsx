@@ -65,7 +65,7 @@ describe('TimePicker test', function () {
 
     // https://github.com/Semantic-Org/Semantic-UI-React/issues/1319
     w.find('.time-select-item').at(0).simulate('click', nativeEvent)
-    expect(onChange.args[0].toLocaleString()).toBe('1/1/2017, 8:30:00 AM')
+    expect(onChange.args[0][0].getTime()).toBe(new Date(2017, 0, 1, 8, 30).getTime())
     w.find('i.el-input__icon').simulate('click', nativeEvent)
     expect(onChange.calledWith(null)).toBeTruthy()
   })
