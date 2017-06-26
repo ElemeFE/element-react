@@ -106,13 +106,6 @@ class AutoComplete extends Component {
     }
   }
 
-  handleBlur(): void {
-    // 因为 blur 事件处理优先于 select 事件执行
-    setTimeout(() => {
-      this.setState({ isFocus: false });
-    }, 100);
-  }
-
   handleKeyEnter(highlightedIndex: number): void {
     if (this.suggestionVisible() && highlightedIndex >= 0 && highlightedIndex < this.state.suggestions.length) {
       this.select(this.state.suggestions[highlightedIndex]);
@@ -209,7 +202,6 @@ class AutoComplete extends Component {
           onIconClick={onIconClick}
           onChange={this.handleChange.bind(this)}
           onFocus={this.handleFocus.bind(this)}
-          onBlur={this.handleBlur.bind(this)}
           onKeyDown={this.onKeyDown.bind(this)}
         />
         <Suggestions
