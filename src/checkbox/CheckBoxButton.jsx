@@ -4,6 +4,8 @@ import React from 'react';
 import CheckBox from './CheckBox';
 
 export default class CheckboxButton extends CheckBox {
+  static elementType = 'CheckboxButton';
+
   render(): React.Element<any> {
     const group = this.context.ElCheckboxGroup;
 

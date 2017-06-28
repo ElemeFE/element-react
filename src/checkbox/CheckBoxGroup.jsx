@@ -3,9 +3,6 @@
 import React, { Children } from 'react';
 import { Component, PropTypes } from '../../libs'
 
-import Checkbox from './CheckBox';
-import CheckboxButton from './CheckBoxButton';
-
 type State = {
   options: Array<string>,
 }
@@ -60,9 +57,13 @@ export default class CheckboxGroup extends Component {
       if (!child) {
         return null;
       }
-      if (child.type !== Checkbox || child.type !== CheckboxButton) {
-        throw new Error(`"CheckboxGroup's children must be Checkbox or CheckboxButton, but received '${child.type}'"`)
+
+      const { elementType } = child.type;
+      // 过滤非Checkbox和CheckboxButton的子组件
+      if (elementType !== 'Checkbox' && elementType !== 'CheckboxButton') {
+        return null;
       }
+
       return React.cloneElement(
         child,
         Object.assign({}, child.props, {
@@ -93,4 +94,4 @@ CheckboxGroup.propTypes = {
   textColor: PropTypes.string,
   value: PropTypes.any,
   onChange: PropTypes.func,
-}
+};
