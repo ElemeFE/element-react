@@ -3,6 +3,9 @@
 import React, { Children } from 'react';
 import { Component, PropTypes } from '../../libs'
 
+import Checkbox from './CheckBox';
+import CheckboxButton from './CheckBoxButton';
+
 type State = {
   options: Array<string>,
 }
@@ -54,6 +57,12 @@ export default class CheckboxGroup extends Component {
     const { options } = this.state;
 
     const children = Children.map(this.props.children, (child, index) => {
+      if (!child) {
+        return null;
+      }
+      if (child.type !== Checkbox || child.type !== CheckboxButton) {
+        throw new Error(`"CheckboxGroup's children must be Checkbox or CheckboxButton, but received '${child.type}'"`)
+      }
       return React.cloneElement(
         child,
         Object.assign({}, child.props, {
