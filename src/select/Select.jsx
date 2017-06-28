@@ -185,16 +185,17 @@ class Select extends Component {
   }
 
   handleValueChange() {
-    const { remote, multiple } = this.props;
+    const { multiple } = this.props;
     const { value, options } = this.state;
 
-    if (remote && multiple && Array.isArray(value)) {
+    if (multiple && Array.isArray(value)) {
       this.setState({
         selected: options.reduce((prev, curr) => {
           return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
         }, [])
       }, () => {
         this.resetInputHeight();
+        this.onSelectedChange(this.state.selected);
       });
     } else {
       const selected = options.filter(option => {
