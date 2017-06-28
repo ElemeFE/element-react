@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Children } from 'react';
+import React from 'react';
 import { Component, PropTypes } from '../../libs'
 
 type State = {
@@ -53,7 +53,7 @@ export default class CheckboxGroup extends Component {
   render(): React.Element<any> {
     const { options } = this.state;
 
-    const children = Children.map(this.props.children, (child, index) => {
+    const children = React.Children.map(this.props.children, (child, index) => {
       if (!child) {
         return null;
       }
