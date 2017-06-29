@@ -194,8 +194,7 @@ class Select extends Component {
           return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
         }, [])
       }, () => {
-        this.resetInputHeight();
-        this.onSelectedChange(this.state.selected);
+        this.onSelectedChange(this.state.selected, false);
       });
     } else {
       const selected = options.filter(option => {
@@ -287,7 +286,16 @@ class Select extends Component {
 
   onValueChange(val: mixed) {
     const { multiple } = this.props;
-    let { options, valueChangeBySelected, selectedInit, selected, selectedLabel, currentPlaceholder, cachedPlaceHolder } = this.state;
+    
+    let {
+      options,
+      valueChangeBySelected,
+      selectedInit,
+      selected,
+      selectedLabel,
+      currentPlaceholder,
+      cachedPlaceHolder
+    } = this.state;
 
     if (valueChangeBySelected) {
       return this.setState({
@@ -303,7 +311,7 @@ class Select extends Component {
       currentPlaceholder = cachedPlaceHolder;
 
       val.forEach(item => {
-        let option = this.options.filter(option => option.props.value === item)[0];
+        let option = options.filter(option => option.props.value === item)[0];
         if (option) {
           this.addOptionToValue(option);
         }
@@ -326,7 +334,7 @@ class Select extends Component {
     });
   }
 
-  onSelectedChange(val: any) {
+  onSelectedChange(val: any, bubble: boolean = true) {
     const { multiple, filterable, onChange } = this.props;
     let { query, hoverIndex, inputLength, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
@@ -343,7 +351,7 @@ class Select extends Component {
 
       valueChangeBySelected = true;
 
-      onChange && onChange(val.map(item => item.props.value), val);
+      bubble && onChange && onChange(val.map(item => item.props.value), val);
 
       // this.dispatch('form-item', 'el.form.change', val);
 
@@ -367,7 +375,7 @@ class Select extends Component {
         });
       }
 
-      onChange && onChange(val.props.value, val);
+      bubble && onChange && onChange(val.props.value, val);
     }
   }
 
