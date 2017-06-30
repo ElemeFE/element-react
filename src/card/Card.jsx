@@ -15,7 +15,7 @@ export default class Card extends Component {
     return (
       <div style={this.style()} className={this.className('el-card')}>
         {
-          header && <div className="el-card__header"> { header }</div>
+          header && <div className="el-card__header">{ header }</div>
         }
         <div className="el-card__body" style={ bodyStyle }>
           { children }
