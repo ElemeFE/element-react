@@ -12,7 +12,7 @@ constructor(props) {
   super(props)
 
   this.state = {
-    value: new Date(2016, 9, 10, 14, 30),
+    value: new Date(2016, 9, 10, 8, 30),
   }
 }
 
@@ -159,7 +159,6 @@ render() {
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | align | alignment | string | left, center, right | left |
 | placeholder | placeholder | string | — | — |
-| format | format of the picker | string | hour `HH`, minute `mm`, second `ss` |
 | isShowTrigger | whether DatePicker show trigger | bool | - | - |
 | isReadOnly | whether DatePicker is read only | boolean | — | false |
 | isDisabled | whether DatePicker is disabled | boolean | — | false |
@@ -181,11 +180,11 @@ render() {
 | Attribute      | Description          | Type      | Accepted Values                           | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | value | value of the picker | date/null | — | - |
-| selectableRange | available time range, e.g.`'18:30:00 - 20:30:00'`or`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/array | string/string[] | — | — |
+| selectableRange | available time range, e.g.`'18:30:00 - 20:30:00'`or`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/string[] | — | — |
 
 
 ### TimeRangePicker
 | Attribute      | Description          | Type      | Accepted Values                           | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | value | value of the picker | date[]/null | — | - |
-| selectableRange | available time range, e.g.`'18:30:00 - 20:30:00'`or`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/array | string/string[] | — | — |
+| selectableRange | available time range, e.g.`'18:30:00 - 20:30:00'`or`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/string[] | — | — |

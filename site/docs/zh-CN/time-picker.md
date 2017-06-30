@@ -12,7 +12,7 @@ constructor(props) {
   super(props)
 
   this.state = {
-    value: new Date(2016, 9, 10, 14, 30),
+    value: new Date(2016, 9, 10, 8, 30),
   }
 }
 
@@ -156,7 +156,6 @@ render() {
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | align | 对齐方式 | string | left, center, right | left |
 | placeholder | 占位内容 | string | — | — |
-| format | 时间格式化(TimePicker) | string | 小时：`HH`，分：`mm`，秒：`ss` | 'HH:mm:ss' |
 | isShowTrigger | 是否显示图标 | bool | - | - |
 | isReadOnly | 只读 | boolean | — | false |
 | isDisabled | 是否禁用 | boolean | — | false |

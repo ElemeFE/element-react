@@ -5,7 +5,8 @@
   "env": {
     "browser": true,
     "commonjs": true,
-    "es6": true
+    "es6": true,
+    "jest": true
   },
   "settings": {
     "flowtype": {
@@ -22,12 +23,13 @@
     "react/jsx-boolean-value": 0,
     "react/no-did-mount-set-state": 1,
     "react/jsx-first-prop-new-line": 0,
+    "react/jsx-max-props-per-line": 0,
     "react/require-default-props": 0,
     "jsx-a11y/img-has-alt": 0,
     "jsx-a11y/label-has-for": 0,
     "import/no-named-as-default-member": 0,
-    "import/no-extraneous-dependencies": 1,
     "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": [1, {"devDependencies": ["**/__test__/**/*.js", "**/__test__/**/*.jsx", "**/*_test.jsx", "**/*_test.js"]}],
     "no-empty": 1,
     "no-console": 1,
     "react/sort-comp": 0,

@@ -34,11 +34,15 @@ export default class Input extends Component {
   /* <Instance Methods */
 
   focus(): void {
-    (this.refs.input || this.refs.textarea).focus();
+    setTimeout(() => {
+      (this.refs.input || this.refs.textarea).focus();
+    });
   }
 
   blur(): void {
-    (this.refs.input || this.refs.textarea).blur();
+    setTimeout(() => {
+      (this.refs.input || this.refs.textarea).blur();
+    });
   }
 
   /* Instance Methods> */
@@ -134,7 +138,7 @@ export default class Input extends Component {
       return (
         <div style={this.style()} className={this.className(classname)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
           { prepend && <div className="el-input-group__prepend">{prepend}</div> }
-          { typeof icon != 'string' ? icon : <i className={`el-input__icon el-icon-${icon}`} onClick={this.handleIconClick.bind(this)}>{prepend}</i> }
+          { typeof icon === 'string' ? <i className={`el-input__icon el-icon-${icon}`} onClick={this.handleIconClick.bind(this)}>{prepend}</i> : icon }
           <input { ...otherProps }
             ref="input"
             type={type}

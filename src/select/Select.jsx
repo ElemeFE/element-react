@@ -263,6 +263,8 @@ class Select extends Component {
         if (multiple) {
           this.refs.input.focus();
         } else {
+          this.refs.reference.focus();
+
           // this.broadcast('input', 'inputSelect');
         }
       }
@@ -536,6 +538,12 @@ class Select extends Component {
     });
   }
 
+  resetInputWidth() {
+    this.setState({
+      inputWidth: this.reference.getBoundingClientRect().width
+    })
+  }
+
   resetInputHeight() {
     let inputChildNodes = this.reference.childNodes;
     let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0];
@@ -679,6 +687,14 @@ class Select extends Component {
     this.setState({ selected });
   }
 
+  handleIconClick(event) {
+    if (this.iconClass().indexOf('circle-close') > -1) {
+      this.deleteSelected(event);
+    } else {
+      this.toggleMenu();
+    }
+  }
+
   onInputChange() {
     if (this.props.filterable && this.state.selectedLabel !== this.state.value) {
       this.setState({
@@ -749,6 +765,16 @@ class Select extends Component {
     });
   }
 
+  onMouseDown(event) {
+    event.preventDefault();
+
+    if (this.refs.input) {
+      this.refs.input.focus();
+    }
+
+    this.toggleMenu();
+  }
+
   onMouseEnter() {
     this.setState({
       inputHovering: true
@@ -761,25 +787,16 @@ class Select extends Component {
     })
   }
 
-  resetInputWidth() {
-    this.setState({
-      inputWidth: this.reference.getBoundingClientRect().width
-    })
-  }
-
   render() {
     const { multiple, size, disabled, filterable, loading } = this.props;
     const { selected, inputWidth, inputLength, query, selectedLabel, visible, options, filteredOptionsCount, currentPlaceholder } = this.state;
 
     return (
-      <div ref="root" style={this.style()} className={this.className('el-select', {
-          'is-multiple': multiple,
-          'is-small': size === 'small'
-        })}>
+      <div ref="root" style={this.style()} className={this.className('el-select')}>
         {
           multiple && (
             <div ref="tags" className="el-select__tags" onClick={this.toggleMenu.bind(this)} style={{
-              maxWidth: inputWidth - 32 + 'px'
+              maxWidth: inputWidth - 32
             }}>
               {
                 selected.map(el => {
@@ -791,7 +808,9 @@ class Select extends Component {
                       closable={true}
                       closeTransition={true}
                       onClose={this.deleteTag.bind(this, el)}
-                    >{el.currentLabel()}</Tag>
+                    >
+                      <span className="el-select__tags-text">{el.currentLabel()}</span>
+                    </Tag>
                   )
                 })
               }
@@ -800,21 +819,11 @@ class Select extends Component {
                   <input
                     ref="input"
                     type="text"
-                    className="el-select__input"
+                    className={this.classNames('el-select__input', size && `is-${size}`)}
                     style={{ width: inputLength, maxWidth: inputWidth - 42 }}
+                    disabled={disabled}
                     defaultValue={query}
                     onKeyUp={this.managePlaceholder.bind(this)}
-                    onChange={e => {
-                      clearTimeout(this.timeout);
-
-                      this.timeout = setTimeout(() => {
-                        this.setState({
-                          query: this.state.value
-                        });
-                      }, this.debounce());
-
-                      this.state.value = e.target.value;
-                    }}
                     onKeyDown={e => {
                       this.resetInputState(e);
 
@@ -838,6 +847,17 @@ class Select extends Component {
                           break;
                       }
                     }}
+                    onChange={e => {
+                      clearTimeout(this.timeout);
+
+                      this.timeout = setTimeout(() => {
+                        this.setState({
+                          query: this.state.value
+                        });
+                      }, this.debounce());
+
+                      this.state.value = e.target.value;
+                    }}
                   />
                 )
               }
@@ -850,12 +870,13 @@ class Select extends Component {
           type="text"
           placeholder={currentPlaceholder}
           name="name"
+          size={size}
           disabled={disabled}
           readOnly={!filterable || multiple}
-          icon={this.iconClass()}
+          icon={this.iconClass() || undefined}
           onChange={value => this.setState({ selectedLabel: value })}
-          onClick={this.toggleMenu.bind(this)}
-          onIconClick={this.toggleMenu.bind(this)}
+          onIconClick={this.handleIconClick.bind(this)}
+          onMouseDown={this.onMouseDown.bind(this)}
           onMouseEnter={this.onMouseEnter.bind(this)}
           onMouseLeave={this.onMouseLeave.bind(this)}
           onKeyUp={this.debouncedOnInputChange.bind(this)}

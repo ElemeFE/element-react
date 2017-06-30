@@ -45,9 +45,11 @@ export default class InputNumber extends Component {
   }
 
   onBlur(): void {
-    let value = Number(this.state.value);
+    let value = parseFloat(this.state.value);
 
-    if (value > this.props.max) {
+    if (isNaN(value)) {
+      value = ''
+    } else if (value > this.props.max) {
       value = this.props.max;
     } else if (value < this.props.min) {
       value = this.props.min;

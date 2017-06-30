@@ -194,7 +194,7 @@ body {
   }
 
   pre {
-    background-color: #f9fafc;
+    background-color: transparent;
     overflow-x: auto;
     padding: 18px 24px;
     line-height: 1.8;
@@ -306,7 +306,6 @@ body {
     overflow: hidden;
     background-color: #f9fafc;
     border-top: solid 1px #eaeefb;
-    transition: all .2s;
   }
 
   .highlight {
@@ -355,14 +354,16 @@ body {
     cursor: pointer;
     transition: .2s;
     position: relative;
+
     i {
       font-size: 12px;
       line-height: 36px;
-      transition: .3s;
+      margin-right: 5px;
     }
+
     span {
-      position: absolute;
-      transform: translateX(10px);
+      display: inline-block;
+      transform: translateX(40px);
       font-size: 14px;
       line-height: 36px;
       transition: .3s;
@@ -376,13 +377,9 @@ body {
   }
 
   .demo-block-control:hover {
-    i {
-      transform: translateX(-40px);
-    }
     span {
-      display: inline-block;
       opacity: 1;
-      transform: translateX(-30px);
+      transform: translateX(0);
     }
   }
 }
