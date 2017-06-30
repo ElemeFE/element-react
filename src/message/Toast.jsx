@@ -2,17 +2,11 @@
 
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
+import icons from './assets';
 
 type State = {
   visible: boolean
 };
-
-const icons = {
-  error: require('./assets/error.svg'),
-  info: require('./assets/info.svg'),
-  success: require('./assets/success.svg'),
-  warning: require('./assets/warning.svg')
-}
 
 export default class Toast extends Component {
   state: State;

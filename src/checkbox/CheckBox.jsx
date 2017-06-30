@@ -10,6 +10,8 @@ type State = {
 }
 
 export default class Checkbox extends Component {
+  static elementType = 'Checkbox';
+
   state: State;
 
   constructor(props: Object) {
