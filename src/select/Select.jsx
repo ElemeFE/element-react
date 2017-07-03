@@ -286,7 +286,7 @@ class Select extends Component {
 
   onValueChange(val: mixed) {
     const { multiple } = this.props;
-    
+
     let {
       options,
       valueChangeBySelected,
@@ -686,14 +686,15 @@ class Select extends Component {
   }
 
   deleteTag(tag: any) {
-    let selected = this.state.selected.slice(0);
-    let index = selected.indexOf(tag);
+    const index = this.state.selected.indexOf(tag);
 
-    if (index > -1) {
+    if (index > -1 && !this.props.disabled) {
+      const selected = this.state.selected.slice(0);
+
       selected.splice(index, 1);
-    }
 
-    this.setState({ selected });
+      this.setState({ selected });
+    }
   }
 
   handleIconClick(event) {
@@ -814,7 +815,7 @@ class Select extends Component {
                       type="primary"
                       key={el.props.value}
                       hit={el.hitState}
-                      closable={true}
+                      closable={!disabled}
                       closeTransition={true}
                       onClose={this.deleteTag.bind(this, el)}
                     >
