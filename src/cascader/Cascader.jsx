@@ -43,7 +43,7 @@ class Cascader extends Component {
 
     this.debouncedInputChange = debounce(props.debounce, () => {
       const value = this.state.inputValue;
-      const before = this.beforeFilter(value);
+      const before = this.props.beforeFilter(value);
 
       if (before && before.then) {
         this.state.menu.setState({
