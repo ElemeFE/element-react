@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import { PropTypes, Component } from '../../libs';
 import { EventRegister } from '../../libs/internal'
 
+
 import Input from '../input'
 import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
 import { Errors, require_condition, IDGenerator } from '../../libs/utils';
@@ -104,7 +105,7 @@ export default class BasePicker extends Component {
   }
 
   // (string) => Date | null
-  parseDate(dateStr: string) : NullableDate{
+  parseDate(dateStr: string): NullableDate{
     if (!dateStr) return null
     const type = this.type;
     const parser = (
@@ -178,7 +179,7 @@ export default class BasePicker extends Component {
 
   // (state, props)=>ReactElement
   pickerPanel(state: any, props: $Subtype<BasePickerProps>) {
-    throw new Errors.MethodImplementationRequiredError()
+    throw new Errors.MethodImplementationRequiredError(props)
   }
 
   isDateValid(date: ValidDateType) {
@@ -201,12 +202,12 @@ export default class BasePicker extends Component {
     return true
   }
 
-  handleClickOutside() {
+  handleClickOutside(evt: SyntheticEvent) {
     const {value, pickerVisible} = this.state
     if (!this.isInputFocus && !pickerVisible) {
       return
     }
-
+    if (this.domRoot.contains(evt.target)) return
     if (this.isDateValid(value)) {
       this.setState({ pickerVisible: false })
       this.props.onChange(value)
@@ -278,11 +279,8 @@ export default class BasePicker extends Component {
           'is-active': pickerVisible,
           'is-filled': !!value
         })}
-        onClick={(evt) => {
-          evt.stopPropagation()
-          evt.nativeEvent.stopImmediatePropagation();
-          return false
-        } }
+
+        ref={v=>this.domRoot=v}
         >
 
         <EventRegister
