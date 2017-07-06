@@ -78,7 +78,7 @@ export type TableHeaderProps = {
   border: string,
   style: Object,
   isScrollY: boolean,
-  flettenColumns: Object
+  flattenColumns: Object
 };
 
 export type TableHeaderState = {
@@ -97,7 +97,7 @@ export type TableBodyProps = {
   highlightCurrentRow: boolean,
   style: Object,
   fixed: string,
-  flettenColumns: Object
+  flattenColumns: Object
 };
 
 export type TableBodyState = {
