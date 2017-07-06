@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { Children } from 'react';
+import React from 'react';
 import { Component, PropTypes } from '../../libs'
 
 type State = {
@@ -53,7 +53,17 @@ export default class CheckboxGroup extends Component {
   render(): React.Element<any> {
     const { options } = this.state;
 
-    const children = Children.map(this.props.children, (child, index) => {
+    const children = React.Children.map(this.props.children, (child, index) => {
+      if (!child) {
+        return null;
+      }
+
+      const { elementType } = child.type;
+      // 过滤非Checkbox和CheckboxButton的子组件
+      if (elementType !== 'Checkbox' && elementType !== 'CheckboxButton') {
+        return null;
+      }
+
       return React.cloneElement(
         child,
         Object.assign({}, child.props, {
@@ -84,4 +94,4 @@ CheckboxGroup.propTypes = {
   textColor: PropTypes.string,
   value: PropTypes.any,
   onChange: PropTypes.func,
-}
+};

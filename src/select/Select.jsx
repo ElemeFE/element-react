@@ -185,16 +185,16 @@ class Select extends Component {
   }
 
   handleValueChange() {
-    const { remote, multiple } = this.props;
+    const { multiple } = this.props;
     const { value, options } = this.state;
 
-    if (remote && multiple && Array.isArray(value)) {
+    if (multiple && Array.isArray(value)) {
       this.setState({
         selected: options.reduce((prev, curr) => {
           return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
         }, [])
       }, () => {
-        this.resetInputHeight();
+        this.onSelectedChange(this.state.selected, false);
       });
     } else {
       const selected = options.filter(option => {
@@ -286,7 +286,16 @@ class Select extends Component {
 
   onValueChange(val: mixed) {
     const { multiple } = this.props;
-    let { options, valueChangeBySelected, selectedInit, selected, selectedLabel, currentPlaceholder, cachedPlaceHolder } = this.state;
+
+    let {
+      options,
+      valueChangeBySelected,
+      selectedInit,
+      selected,
+      selectedLabel,
+      currentPlaceholder,
+      cachedPlaceHolder
+    } = this.state;
 
     if (valueChangeBySelected) {
       return this.setState({
@@ -302,7 +311,7 @@ class Select extends Component {
       currentPlaceholder = cachedPlaceHolder;
 
       val.forEach(item => {
-        let option = this.options.filter(option => option.props.value === item)[0];
+        let option = options.filter(option => option.props.value === item)[0];
         if (option) {
           this.addOptionToValue(option);
         }
@@ -325,7 +334,7 @@ class Select extends Component {
     });
   }
 
-  onSelectedChange(val: any) {
+  onSelectedChange(val: any, bubble: boolean = true) {
     const { multiple, filterable, onChange } = this.props;
     let { query, hoverIndex, inputLength, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
@@ -342,7 +351,7 @@ class Select extends Component {
 
       valueChangeBySelected = true;
 
-      onChange && onChange(val.map(item => item.props.value), val);
+      bubble && onChange && onChange(val.map(item => item.props.value), val);
 
       // this.dispatch('form-item', 'el.form.change', val);
 
@@ -366,7 +375,7 @@ class Select extends Component {
         });
       }
 
-      onChange && onChange(val.props.value, val);
+      bubble && onChange && onChange(val.props.value, val);
     }
   }
 
@@ -677,14 +686,15 @@ class Select extends Component {
   }
 
   deleteTag(tag: any) {
-    let selected = this.state.selected.slice(0);
-    let index = selected.indexOf(tag);
+    const index = this.state.selected.indexOf(tag);
 
-    if (index > -1) {
+    if (index > -1 && !this.props.disabled) {
+      const selected = this.state.selected.slice(0);
+
       selected.splice(index, 1);
-    }
 
-    this.setState({ selected });
+      this.setState({ selected });
+    }
   }
 
   handleIconClick(event) {
@@ -805,7 +815,7 @@ class Select extends Component {
                       type="primary"
                       key={el.props.value}
                       hit={el.hitState}
-                      closable={true}
+                      closable={!disabled}
                       closeTransition={true}
                       onClose={this.deleteTag.bind(this, el)}
                     >
