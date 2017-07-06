@@ -101,7 +101,8 @@ class BodyItem extends Component{
 
     const classSet:Object = {
       'hover-row': this.state.hover,
-      'current-row': isHiglight
+      'current-row': isHiglight,
+      'el-table__row--striped': this.context.stripe && rowIndex % 2 !== 0,
     };
 
     if(rowClassName){
@@ -181,7 +182,8 @@ class BodyItem extends Component{
 
 
 BodyItem.contextTypes = {
-  $owerTable: PropTypes.object
+  $owerTable: PropTypes.object,
+  stripe: PropTypes.bool,
 };
 
 export default class TableBody extends  Component{
@@ -245,18 +247,22 @@ export default class TableBody extends  Component{
     onSelectAll && onSelectAll(checked ? data : [], checked);
   }
 
+  clearSelect() {
+    this.setState({ selected: [] });
+  }
+
   render() {
     const {
       columns,
       data,
       rowClassName,
       fixed,
-      flettenColumns
+      flattenColumns
     } = this.props;
 
     const { highlightRows, selected } = this.state;
     const rowPrefix = this.rowPrefix;
-    const { leafColumns } = flettenColumns;
+    const { leafColumns } = flattenColumns;
 
     return (
       <table
@@ -264,7 +270,8 @@ export default class TableBody extends  Component{
         style={this.style()}
         className={this.classNames('el-table__body')}
         cellPadding={0}
-        cellSpacing={0}>
+        cellSpacing={0}
+      >
         <tbody>
           {
             data.map((dataItem, dataIdx)=>{
@@ -282,7 +289,8 @@ export default class TableBody extends  Component{
                   rowClassName={rowClassName}
                   itemData={dataItem}
                   leafColumns={leafColumns}
-                  columns={columns} />
+                  columns={columns}
+                />
               )
             })
           }
@@ -293,5 +301,5 @@ export default class TableBody extends  Component{
 }
 
 TableBody.contextTypes = {
-  $owerTable: PropTypes.object
+  $owerTable: PropTypes.object,
 };

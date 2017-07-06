@@ -53,7 +53,8 @@ export default class Table extends Component{
 
   getChildContext(){
     return {
-      $owerTable: this
+      $owerTable: this,
+      stripe: this.props.stripe,
     }
   }
 
@@ -222,6 +223,11 @@ export default class Table extends Component{
     return {headerLevelColumns, leafColumns};
   }
 
+  clearSelection() {
+    this.refs.mainBody.clearSelect();
+    this.refs.header.cancelAllChecked();
+  }
+
   render() {
     let { fit,
       stripe,
@@ -250,6 +256,7 @@ export default class Table extends Component{
     const rootClassName = this.classNames(
       'el-table',
       {
+        'el-table--enable-row-hover': !fixedLeftColumns.length && !fixedRightColumns.length,
         'el-table--fit': fit,
         'el-table--striped': stripe,
         'el-table--border': border
@@ -260,8 +267,8 @@ export default class Table extends Component{
 
     data = filterList || sortList || data;
 
-    const flettenColumns = this.flattenHeaderColumn();
-    const { leafColumns } = flettenColumns;
+    const flattenColumns = this.flattenHeaderColumn();
+    const { leafColumns } = flattenColumns;
 
     return (
       <div
@@ -275,7 +282,7 @@ export default class Table extends Component{
             ref="header"
             isScrollY={scrollY}
             style={{width: bodyWidth}}
-            flettenColumns={flettenColumns}
+            flattenColumns={flattenColumns}
             columns={_columns} />
         </div>
 
@@ -289,7 +296,7 @@ export default class Table extends Component{
             style={{width: bodyWidth}}
             rowClassName={this.props.rowClassName}
             columns={_columns}
-            flettenColumns={flettenColumns}
+            flattenColumns={flattenColumns}
             highlightCurrentRow={highlightCurrentRow}
             data={data} />
         </div>
@@ -304,7 +311,7 @@ export default class Table extends Component{
                   fixed="left"
                   border="border"
                   columns={_columns}
-                  flettenColumns={flettenColumns}
+                  flattenColumns={flattenColumns}
                   style={{width: '100%', height: '100%'}} />
               </div>
               <div
@@ -318,7 +325,7 @@ export default class Table extends Component{
                     rowClassName={this.props.rowClassName}
                     columns={_columns}
                     data={data}
-                    flettenColumns={flettenColumns}
+                    flattenColumns={flattenColumns}
                     highlightCurrentRow={highlightCurrentRow}
                     style={{width: bodyWidth}}>
                   </TableBody>
@@ -343,7 +350,7 @@ export default class Table extends Component{
               fixed="right"
               border="border"
               columns={_columns}
-              flettenColumns={flettenColumns}
+              flattenColumns={flattenColumns}
               style={{width: '100%', height: '100%'}} />
           </div>
           <div
@@ -356,7 +363,7 @@ export default class Table extends Component{
               rowClassName={this.props.rowClassName}
               columns={_columns}
               data={data}
-              flettenColumns={flettenColumns}
+              flattenColumns={flattenColumns}
               highlightCurrentRow={highlightCurrentRow}
               style={{width: bodyWidth}}>
             </TableBody>
@@ -388,7 +395,8 @@ export default class Table extends Component{
 }
 
 Table.childContextTypes = {
-  $owerTable: PropTypes.object
+  $owerTable: PropTypes.object,
+  stripe: PropTypes.bool,
 };
 
 Table.defaultProps = {

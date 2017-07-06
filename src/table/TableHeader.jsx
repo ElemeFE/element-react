@@ -224,10 +224,14 @@ export default class TableHeader extends  Component{
     return { x, y }
   }
 
+  cancelAllChecked() {
+    this.setState({ allChecked: false });
+  }
+
   render() {
-    const { style, isScrollY, fixed, flettenColumns } = this.props;
+    const { style, isScrollY, fixed, flattenColumns } = this.props;
     const { sortPropertyName, sortStatus } = this.state;
-    const { leafColumns, headerLevelColumns } = flettenColumns;
+    const { leafColumns, headerLevelColumns } = flattenColumns;
 
     return (
       <table
