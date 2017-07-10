@@ -236,8 +236,10 @@ class Select extends Component {
           bottomOverflowBeforeHidden = element.getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
         }
 
-        if (selected && selected.props.value) {
+        if (selected && selected.props && selected.props.value) {
           selectedLabel = selected.currentLabel();
+        }else {
+          selectedLabel = '';
         }
 
         this.setState({ bottomOverflowBeforeHidden, selectedLabel });
