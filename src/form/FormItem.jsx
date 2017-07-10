@@ -76,29 +76,33 @@ export default class FormItem extends Component {
   }
 
   validate(trigger: string, cb?: Function): boolean | void {
-    let { validating, valid, error } = this.state;
-
     const rules = this.getFilteredRule(trigger);
 
     if (!rules || rules.length === 0) {
-      cb && cb();
+      if (cb instanceof Function) {
+        cb();
+      }
+
       return true;
     }
 
-    validating = true;
+    this.setState({ validating: true });
 
     const descriptor = { [this.props.prop]: rules };
     const validator = new AsyncValidator(descriptor);
     const model = { [this.props.prop]: this.fieldValue() };
 
     validator.validate(model, { firstFields: true }, errors => {
-      valid = !errors;
-      error = errors ? errors[0].message : '';
-      cb && cb(errors);
-      validating = false;
+      this.setState({
+        error: errors ? errors[0].message : '',
+        validating: false,
+        valid: !errors
+      }, () => {
+        if (cb instanceof Function) {
+          cb(errors);
+        }
+      });
     });
-
-    this.setState({ validating, valid, error });
   }
 
   getInitialValue(): string | void {

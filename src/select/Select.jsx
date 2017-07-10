@@ -238,7 +238,7 @@ class Select extends Component {
 
         if (selected && selected.props && selected.props.value) {
           selectedLabel = selected.currentLabel();
-        }else {
+        } else {
           selectedLabel = '';
         }
 
