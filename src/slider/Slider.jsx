@@ -108,14 +108,13 @@ export default class Slider extends Component {
   }
 
   valueChanged(): boolean {
-    const { range, value } = this.props;
-    const { oldValue } = this.state;
+    const { range } = this.props;
+    const { firstValue, oldValue } = this.state;
 
     if (range && Array.isArray(oldValue)) {
-      return ![this.minValue(), this.maxValue()]
-        .every((item, index) => item === oldValue[index]);
+      return ![this.minValue(), this.maxValue()].every((item, index) => item === oldValue[index]);
     } else {
-      return value !== oldValue;
+      return firstValue !== oldValue;
     }
   }
 
@@ -148,12 +147,12 @@ export default class Slider extends Component {
       } else if (value > max) {
         inputValue = max;
       } else {
-        firstValue = value;
+        inputValue = firstValue;
 
         if (this.valueChanged()) {
-          this.onValueChanged(value);
+          this.onValueChanged(firstValue);
 
-          oldValue = value;
+          oldValue = firstValue;
         }
       }
     }
