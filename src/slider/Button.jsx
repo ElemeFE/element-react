@@ -13,8 +13,7 @@ type State = {
   currentX: number,
   currentY: number,
   startPosition: number,
-  newPosition: number,
-  oldValue: number
+  newPosition: number
 }
 
 export default class SliderButton extends Component {
@@ -35,8 +34,7 @@ export default class SliderButton extends Component {
       currentX: 0,
       currentY: 0,
       startPosition: 0,
-      newPosition: 0,
-      oldValue: props.value
+      newPosition: 0
     }
   }
 
@@ -72,8 +70,6 @@ export default class SliderButton extends Component {
       startX: event.clientX,
       startY: event.clientY,
       startPosition: parseInt(this.currentPosition(), 10)
-    }, () => {
-      this.parent().onDraggingChanged(this.state.dragging);
     });
   }
 
@@ -108,7 +104,6 @@ export default class SliderButton extends Component {
           dragging: false
         }, () => {
           this.setPosition(this.state.newPosition);
-          this.parent().onDraggingChanged(this.state.dragging);
         });
       }, 0);
 
@@ -127,18 +122,9 @@ export default class SliderButton extends Component {
 
     const lengthPerStep = 100 / ((this.max() - this.min()) / this.step());
     const steps = Math.round(newPosition / lengthPerStep);
-    let value = steps * lengthPerStep * (this.max() - this.min()) * 0.01 + this.min();
+    const value = steps * lengthPerStep * (this.max() - this.min()) * 0.01 + this.min();
 
-    value = parseFloat(value.toFixed(this.precision()));
-
-    this.props.onChange(value);
-    // this.refs.tooltip && this.refs.tooltip.updatePopper();
-
-    if (!this.state.dragging && this.props.value !== this.state.oldValue) {
-      this.setState({
-        oldValue: this.props.value
-      })
-    }
+    this.props.onChange(parseFloat(value.toFixed(this.precision())));
   }
 
   /* Computed Methods */
