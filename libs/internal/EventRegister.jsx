@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { require_condition } from '../utils';
 
-const registerMap = window.__registerMap = window.__registerMap || {
+let windowKey = Symbol.for("er_register_map")
+const registerMap = window[windowKey] = window[windowKey] || {
   ids: {},
 }
 
@@ -14,7 +15,7 @@ const hasRegistered = ({ id }) => {
 
 const cleanRegister = (props) => {
   const { target, eventName, func, isUseCapture, id } = props
-  if (hasRegistered(this.cached)) {
+  if (hasRegistered(props)) {
     target.removeEventListener(eventName, func, isUseCapture);
     delete registerMap.ids[id]
   }
