@@ -44,6 +44,17 @@ describe('DatePicker tests', function () {
       expect(w.exists()).toBeTruthy();
     })
 
+
+    it('should unmount without exploding', () => {
+      let w = mount(
+        <DatePicker
+          {...minProps}
+        />
+      )
+      w.unmount();
+      expect(true).toBeTruthy();
+    })
+
     it('disabledDate should work', () => {
       mockRAf()
       let date = new Date(2017, 1, 2)
