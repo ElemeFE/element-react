@@ -76,6 +76,7 @@ describe('DatePicker tests', function () {
         onChange
       })
       w.find('input').simulate('focus');
+      w.find('input').simulate('change', {target: {value: ''}})
       w.find('.el-date-table td.available').at(0).simulate('click', nativeEvent)
       expect(onChange.called).toBeTruthy()
       expect(onChange.args[0][0] instanceof Date).toBeTruthy()

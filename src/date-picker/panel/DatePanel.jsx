@@ -49,7 +49,8 @@ export default class DatePanel extends Component {
   }
 
   componentWillReceiveProps(nextProps: any) {
-    this.setState({ date: nextProps.value })
+    let date = nextProps.value || new Date()
+    this.setState({ date })
   }
 
   resetDate() {
@@ -271,7 +272,6 @@ export default class DatePanel extends Component {
     const {month} = deconstructDate(date)
     const t = Locale.t
 
-    //todo: handle v-*
     return (
       <div
         ref="root"
@@ -413,6 +413,7 @@ export default class DatePanel extends Component {
 
 DatePanel.propTypes = {
   // user picked date value
+  // value: Date | null
   value: PropTypes.instanceOf(Date),
   // todo:
   onPick: PropTypes.func.isRequired,
