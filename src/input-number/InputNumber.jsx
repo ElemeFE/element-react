@@ -25,7 +25,7 @@ export default class InputNumber extends Component {
 
   componentWillReceiveProps(props: Object) {
     if (props.value != this.props.value) {
-      this.setState({ value: props.value });
+      this.setState({ value: Number(props.value) });
     }
   }
 
@@ -45,20 +45,24 @@ export default class InputNumber extends Component {
   }
 
   onBlur(): void {
-    let value = parseFloat(this.state.value);
+    let value = this.state.value;
 
-    if (isNaN(value)) {
-      value = ''
-    } else if (value > this.props.max) {
-      value = this.props.max;
+    if (value > this.props.max) {
+      value = Number(this.props.max);
     } else if (value < this.props.min) {
-      value = this.props.min;
+      value = Number(this.props.min);
     }
 
     this.setState({ value }, this.onChange);
   }
 
   onInput(value: mixed): void {
+    value = Number(value);
+
+    if (isNaN(value)) {
+      return;
+    }
+
     this.setState({ value });
   }
 
@@ -69,18 +73,18 @@ export default class InputNumber extends Component {
   }
 
   minDisabled(): boolean {
-    return this.state.value - this.props.step < this.props.min;
+    return this.state.value - Number(this.props.step) < this.props.min;
   }
 
   maxDisabled(): boolean {
-    return this.state.value + this.props.step > this.props.max;
+    return this.state.value + Number(this.props.step) > this.props.max;
   }
 
   increase(): void {
     const { step, max, disabled } = this.props;
     let { value, inputActive } = this.state;
 
-    if (value + step > max || disabled) return;
+    if (value + Number(step) > max || disabled) return;
 
     value = accAdd(step, value);
 
@@ -95,7 +99,7 @@ export default class InputNumber extends Component {
     const { step, min, disabled } = this.props;
     let { value, inputActive } = this.state;
 
-    if (value - step < min || disabled) return;
+    if (value - Number(step) < min || disabled) return;
 
     value = accSub(value, step);
 
@@ -123,10 +127,11 @@ export default class InputNumber extends Component {
   }
 
   render(): React.Element<any> {
-    const { controls, disabled } = this.props;
+    const { controls, disabled, size } = this.props;
+    const { value, inputActive } = this.state;
 
     return (
-      <div style={this.style()} className={this.className('el-input-number', this.props.size && `el-input-number--${this.props.size}`, {
+      <div style={this.style()} className={this.className('el-input-number', size && `el-input-number--${size}`, {
         'is-disabled': disabled,
         'is-without-controls': !controls
       })}>
@@ -157,11 +162,11 @@ export default class InputNumber extends Component {
         <Input
           ref="input"
           className={this.classNames({
-            'is-active': this.state.inputActive
+            'is-active': inputActive
           })}
-          value={this.state.value}
-          disabled={this.props.disabled}
-          size={this.props.size}
+          value={value}
+          disabled={disabled}
+          size={size}
           onChange={this.onInput.bind(this)}
           onKeyDown={this.onKeyDown.bind(this)}
           onBlur={this.onBlur.bind(this)} />
