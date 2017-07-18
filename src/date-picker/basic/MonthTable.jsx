@@ -1,29 +1,27 @@
-//@flow
 import React from 'react'
 
 import { PropTypes, Component } from '../../../libs';
 import { hasClass, deconstructDate } from '../utils'
 import Locale from '../../locale'
 
-import type {MonthTableProps} from '../Types';
 
 export default class MonthTable extends Component {
-  constructor(props: MonthTableProps){
+  constructor(props){
     super(props)
   }
 
-  getCellStyle(month: number) {
+  getCellStyle(month) {
     const {date, disabledDate, value} = this.props
-    const style: any = {};
+    const style = {};
     const ndate = new Date(date)
     ndate.setMonth(month);
     style.disabled = typeof disabledDate === 'function' && disabledDate(ndate);
-    style.current = deconstructDate(value).month === month;
+    style.current = value && deconstructDate(value).month === month;
     return style;
   }
 
-  handleMonthTableClick(event: SyntheticMouseEvent) {
-    const target: any = event.target;
+  handleMonthTableClick(event) {
+    const target = event.target;
     if (target.tagName !== 'A') return;
     if (hasClass(target.parentNode, 'disabled')) return;
     const column = target.parentNode.cellIndex;
@@ -66,8 +64,8 @@ export default class MonthTable extends Component {
 MonthTable.propTypes = {
   // current date, specific to view
   date: PropTypes.instanceOf(Date).isRequired,
-  // user picked value
-  value: PropTypes.instanceOf(Date).isRequired,
+  // user picked value, value: Date|null
+  value: PropTypes.instanceOf(Date),
   onPick: PropTypes.func.isRequired,
   // (Date)=>boolean
   disabledDate: PropTypes.func

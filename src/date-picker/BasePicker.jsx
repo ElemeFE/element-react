@@ -302,9 +302,9 @@ export default class BasePicker extends Component {
             const iptxt = value
             const nstate: Object = { text: iptxt }
 
-            if (iptxt.trim() === '') {
+            if (iptxt.trim() === '' || !this.isInputValid(iptxt)) {
               nstate.value = null
-            } else if (this.isInputValid(iptxt)) {//only set value on a valid date input
+            } else {//only set value on a valid date input
               nstate.value = this.parseDate(iptxt)
             }
             this.setState(nstate)
