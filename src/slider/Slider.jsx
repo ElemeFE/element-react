@@ -79,43 +79,23 @@ export default class Slider extends Component {
 
     if (props.value != this.props.value) {
       const { oldValue } = this.state;
+
       if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && Array.isArray(oldValue) && this.props.value.every((item, index) => item === oldValue[index])) {
         return;
       }
 
       this.setValues();
     }
-
-    if (state.firstValue != this.state.firstValue) {
-      if (this.props.range) {
-        this.setState({
-          inputValue: [this.minValue(), this.maxValue()]
-        });
-      } else {
-        this.setState({
-          inputValue: this.state.firstValue
-        });
-      }
-    }
-
-    if (state.secondValue != this.state.secondValue) {
-      if (this.props.range) {
-        this.setState({
-          inputValue: [this.minValue(), this.maxValue()]
-        });
-      }
-    }
   }
 
   valueChanged(): boolean {
-    const { range, value } = this.props;
-    const { oldValue } = this.state;
+    const { range } = this.props;
+    const { firstValue, oldValue } = this.state;
 
     if (range && Array.isArray(oldValue)) {
-      return ![this.minValue(), this.maxValue()]
-        .every((item, index) => item === oldValue[index]);
+      return ![this.minValue(), this.maxValue()].every((item, index) => item === oldValue[index]);
     } else {
-      return value !== oldValue;
+      return firstValue !== oldValue;
     }
   }
 
@@ -148,12 +128,12 @@ export default class Slider extends Component {
       } else if (value > max) {
         inputValue = max;
       } else {
-        firstValue = value;
+        inputValue = firstValue;
 
         if (this.valueChanged()) {
-          this.onValueChanged(value);
+          this.onValueChanged(firstValue);
 
-          oldValue = value;
+          oldValue = firstValue;
         }
       }
     }
@@ -192,6 +172,8 @@ export default class Slider extends Component {
       const sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
       this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderSize() * 100);
     }
+
+    this.setValues();
   }
 
   /* Watched Methods */
@@ -205,23 +187,23 @@ export default class Slider extends Component {
     this.setState({
       inputValue: e,
       firstValue: e
+    }, () => {
+      this.setValues();
     });
   }
 
   onFirstValueChange(e: number): void {
-    this.setState({
-      firstValue: e
-    });
+    if (this.state.firstValue != e) {
+      this.state.firstValue = e;
+      this.forceUpdate();
+      this.setValues();
+    }
   }
 
   onSecondValueChange(e: number): void {
-    this.setState({
-      secondValue: e
-    });
-  }
-
-  onDraggingChanged(val: boolean): void {
-    if (!val) {
+    if (this.state.secondValue != e) {
+      this.state.secondValue = e;
+      this.forceUpdate();
       this.setValues();
     }
   }

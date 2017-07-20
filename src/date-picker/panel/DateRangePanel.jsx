@@ -228,7 +228,10 @@ export default class DateRangePanel extends Component {
 
 DateRangePanel.propTypes = {
   // user picked date value
-  value: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  /*
+  value: null | [Date, null | false]
+  */
+  value: PropTypes.any,
   // ([value1, value2]|null, isKeepPanel)=>()
   onPick: PropTypes.func.isRequired,
   showTime: PropTypes.bool,

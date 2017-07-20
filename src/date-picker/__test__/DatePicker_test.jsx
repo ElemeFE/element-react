@@ -44,6 +44,17 @@ describe('DatePicker tests', function () {
       expect(w.exists()).toBeTruthy();
     })
 
+
+    it('should unmount without exploding', () => {
+      let w = mount(
+        <DatePicker
+          {...minProps}
+        />
+      )
+      w.unmount();
+      expect(true).toBeTruthy();
+    })
+
     it('disabledDate should work', () => {
       mockRAf()
       let date = new Date(2017, 1, 2)
@@ -65,6 +76,7 @@ describe('DatePicker tests', function () {
         onChange
       })
       w.find('input').simulate('focus');
+      w.find('input').simulate('change', {target: {value: ''}})
       w.find('.el-date-table td.available').at(0).simulate('click', nativeEvent)
       expect(onChange.called).toBeTruthy()
       expect(onChange.args[0][0] instanceof Date).toBeTruthy()

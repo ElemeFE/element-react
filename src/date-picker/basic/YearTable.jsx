@@ -18,7 +18,7 @@ export default class YearTable extends Component {
 
     ndate.setFullYear(year);
     style.disabled = typeof disabledDate === 'function' && disabledDate(ndate);
-    style.current = deconstructDate(value).year === year;
+    style.current = value && deconstructDate(value).year === year;
 
     return style;
   }
@@ -84,7 +84,7 @@ export default class YearTable extends Component {
 }
 
 YearTable.propTypes = {
-  value: PropTypes.instanceOf(Date).isRequired,
+  value: PropTypes.instanceOf(Date),
   date: PropTypes.instanceOf(Date).isRequired,
   // (year: number)=>
   onPick: PropTypes.func.isRequired,
