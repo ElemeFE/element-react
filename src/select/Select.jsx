@@ -339,6 +339,7 @@ class Select extends Component {
   }
 
   onSelectedChange(val: any, bubble: boolean = true) {
+    const { form } = this.context;
     const { multiple, filterable, onChange } = this.props;
     let { query, hoverIndex, inputLength, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
@@ -355,7 +356,10 @@ class Select extends Component {
 
       valueChangeBySelected = true;
 
-      bubble && onChange && onChange(val.map(item => item.props.value), val);
+      if (bubble) {
+        onChange && onChange(val.map(item => item.props.value), val);
+        form && form.onFieldChange();
+      }
 
       // this.dispatch('form-item', 'el.form.change', val);
 
@@ -379,7 +383,10 @@ class Select extends Component {
         });
       }
 
-      bubble && onChange && onChange(val.props.value, val);
+      if (bubble) {
+        onChange && onChange(val.props.value, val);
+        form && form.onFieldChange();
+      }
     }
   }
 
@@ -686,6 +693,8 @@ class Select extends Component {
 
     if (this.props.onChange) {
       this.props.onChange('');
+
+      this.context.form && this.context.form.onFieldChange();
     }
   }
 
@@ -941,6 +950,10 @@ class Select extends Component {
 
 Select.childContextTypes = {
   component: PropTypes.any
+};
+
+Select.contextTypes = {
+  form: PropTypes.any
 };
 
 Select.propTypes = {

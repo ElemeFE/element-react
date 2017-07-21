@@ -23,6 +23,12 @@ export default class FormItem extends Component {
     }
   }
 
+  getChildContext(): Object {
+    return {
+      form: this
+    };
+  }
+
   componentDidMount() {
     const { prop } = this.props;
 
@@ -217,6 +223,10 @@ export default class FormItem extends Component {
 
 FormItem.contextTypes = {
   component: PropTypes.any
+};
+
+FormItem.childContextTypes = {
+  form: PropTypes.any
 };
 
 FormItem.propTypes = {
