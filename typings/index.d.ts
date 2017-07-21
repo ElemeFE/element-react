@@ -475,6 +475,7 @@ declare namespace ElementReact {
   }
   interface SubMenuProps extends ElementReactLibs.ComponentProps<{}> {
     index: menuIndex
+    title?: React.ReactElement<any> | string
   }
   interface MenuItemProps extends ElementReactLibs.ComponentProps<{}> {
     index: menuIndex
