@@ -82,12 +82,15 @@ export default class BasePicker extends Component {
    */
   onPicked(value: ValidDateType, isKeepPannel: boolean = false) {//only change input value on picked triggered
     require_condition(isValidValue(value))
+    
     this.setState({
       pickerVisible: isKeepPannel,
       value,
       text: this.dateToStr(value)
     })
-    this.props.onChange(value)
+
+    this.props.onChange(value);
+    this.context.form && this.context.form.onFieldChange();
   }
 
   dateToStr(date: ValidDateType) {
@@ -211,6 +214,7 @@ export default class BasePicker extends Component {
     if (this.isDateValid(value)) {
       this.setState({ pickerVisible: false })
       this.props.onChange(value)
+      this.context.form && this.context.form.onFieldChange();
     } else {
       this.setState({ pickerVisible: false, text: this.dateToStr(value) })
     }
@@ -226,6 +230,7 @@ export default class BasePicker extends Component {
     } else {
       this.setState({ text: '', value: null, pickerVisible: false })
       this.props.onChange(null)
+      this.context.form && this.context.form.onFieldChange();
     }
   }
 
@@ -307,6 +312,7 @@ export default class BasePicker extends Component {
             } else {//only set value on a valid date input
               nstate.value = this.parseDate(iptxt)
             }
+
             this.setState(nstate)
           } }
           ref="inputRoot"
@@ -319,3 +325,7 @@ export default class BasePicker extends Component {
     )
   }
 }
+
+BasePicker.contextTypes = {
+  form: PropTypes.any
+};
