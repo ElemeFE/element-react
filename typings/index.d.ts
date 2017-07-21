@@ -674,7 +674,7 @@ declare namespace ElementReact {
   class FormItem extends ElementReactLibs.Component<FormItemProps, {}> { }
   export class Form extends ElementReactLibs.Component<FormProps, {}> {
     static Item: typeof FormItem
-    validate(cb?: () => void): void
+    validate(cb?: (valid: boolean) => void): void
     validateField(prop: string, cb?: () => void): void
     resetFields(): void
   }
