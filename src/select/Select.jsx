@@ -685,16 +685,18 @@ class Select extends Component {
   deleteSelected(e: Object) {
     e.stopPropagation();
 
-    this.setState({
-      selected: {},
-      selectedLabel: '',
-      visible: false
-    });
-
-    if (this.props.onChange) {
-      this.props.onChange('');
+    if (this.state.selectedLabel != '') {
+      this.setState({
+        selected: {},
+        selectedLabel: '',
+        visible: false
+      });
 
       this.context.form && this.context.form.onFieldChange();
+
+      if (this.props.onChange) {
+        this.props.onChange('');
+      }
     }
   }
 
