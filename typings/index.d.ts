@@ -794,7 +794,7 @@ declare namespace ElementReact {
     total?: number
     pageCount?: number
     currentPage?: number
-    layout?: 'sizes' | 'prev' | 'pager' | 'next' | 'jumper' | '->' | 'total'
+    layout?: string,
     pageSizes?: number[]
     onCurrentChange?(currentPage?: number): void
     onSizeChange?(size?: number): void
