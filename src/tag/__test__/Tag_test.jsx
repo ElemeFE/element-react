@@ -34,13 +34,14 @@ describe('Tag test', () => {
     expect(w.childAt(0).hasClass('is-hit')).toBeTruthy();
   });
 
-  // it('onClose', () => {
-  //   const fn = sinon.spy();
-  //   const w = mount(
-  //     <Tag type="primary" closable={true} onClose={fn}>TEST</Tag>
-  //   );
-  //   const closeIcon = w.childAt(0).find('i.el-tag__close');
-  //   closeIcon.simulate('click');
-  //   expect(fn.calledOnce).toBeTruthy();
-  // });
+  it('onClose', () => {
+    const onClose = sinon.spy();
+    const w = mount(
+      <Tag type="primary" closable={true} onClose={onClose}>TEST</Tag>
+    );
+
+    w.find('i.el-tag__close').simulate('click');
+
+    expect(onClose.calledOnce).toBe(true);
+  });
 });
