@@ -16,21 +16,21 @@ export default class Tag extends Component {
     this.setState({
       visible: false
     }, () => {
-      setTimeout(() => {
-        if (this.props.onClose) {
-          this.props.onClose();
-        }
-      }, this.duration);
+      if (this.props.onClose) {
+        this.props.onClose();
+      }
     });
   }
 
   render() {
-    const { type, hit, closable, closeTransition } = this.props;
+    const { type, hit, closable, closeTransition, color } = this.props;
 
     return(
       <Transition name={closeTransition ? '' : 'el-zoom-in-center'} duration="200">
         <View key={this.state.visible} show={this.state.visible}>
-          <span style={this.style()} className={this.className('el-tag', type && `el-tag--${type}`, {
+          <span style={this.style({
+            backgroundColor: color
+          })} className={this.className('el-tag', type && `el-tag--${type}`, {
             'is-hit': hit
           })}>
             {this.props.children}
@@ -46,6 +46,7 @@ Tag.propTypes = {
   closable: PropTypes.bool,
   type: PropTypes.string,
   hit: PropTypes.bool,
+  color: PropTypes.string,
   closeTransition: PropTypes.bool,
   onClose: PropTypes.func
 }

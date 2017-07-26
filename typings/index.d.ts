@@ -710,7 +710,8 @@ declare namespace ElementReact {
   interface TagProps extends ElementReactLibs.ComponentProps<{}> {
     closable?: boolean
     type?: 'primary' | 'gray' | 'success' | 'warning' | 'danger'
-    hit?: boolean
+    hit?: boolean,
+    color?: string,
     closeTransition?: boolean
     onClose?(): void
   }
