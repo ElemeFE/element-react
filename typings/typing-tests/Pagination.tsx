@@ -5,7 +5,7 @@ import { Pagination as PaginationNext } from 'element-react/next'
 class Component extends React.Component<{}, {}> {
   onCurrentChange = (currentPage) => { }
   onSizeChange = (size) => { }
-  layout: 'sizes' | 'prev' | 'pager' | 'next' | 'jumper' | '->' | 'total'
+  layout: 'total, prev, pager, next'
   render() {
     return (
       <div>

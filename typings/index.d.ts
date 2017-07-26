@@ -475,6 +475,7 @@ declare namespace ElementReact {
   }
   interface SubMenuProps extends ElementReactLibs.ComponentProps<{}> {
     index: menuIndex
+    title?: React.ReactElement<any> | string
   }
   interface MenuItemProps extends ElementReactLibs.ComponentProps<{}> {
     index: menuIndex
@@ -673,7 +674,7 @@ declare namespace ElementReact {
   class FormItem extends ElementReactLibs.Component<FormItemProps, {}> { }
   export class Form extends ElementReactLibs.Component<FormProps, {}> {
     static Item: typeof FormItem
-    validate(cb?: () => void): void
+    validate(cb?: (valid: boolean) => void): void
     validateField(prop: string, cb?: () => void): void
     resetFields(): void
   }
@@ -793,7 +794,7 @@ declare namespace ElementReact {
     total?: number
     pageCount?: number
     currentPage?: number
-    layout?: 'sizes' | 'prev' | 'pager' | 'next' | 'jumper' | '->' | 'total'
+    layout?: string,
     pageSizes?: number[]
     onCurrentChange?(currentPage?: number): void
     onSizeChange?(size?: number): void
