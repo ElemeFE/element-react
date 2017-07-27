@@ -145,7 +145,7 @@ export default class DateTable extends Component {
           }
         }
 
-        cell.disabled = isFunction(disabledDate) && disabledDate(new Date(time));
+        cell.disabled = isFunction(disabledDate) && disabledDate(new Date(time), SELECTION_MODES.DAY);
       }
 
       if (selectionMode === SELECTION_MODES.WEEK) {

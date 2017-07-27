@@ -2,7 +2,7 @@
 import React from 'react'
 
 import { PropTypes, Component } from '../../../libs';
-import { hasClass, deconstructDate } from '../utils'
+import { hasClass, deconstructDate, SELECTION_MODES } from '../utils'
 
 import type {YearTableProps} from '../Types';
 
@@ -17,7 +17,7 @@ export default class YearTable extends Component {
     const ndate = new Date(date);
 
     ndate.setFullYear(year);
-    style.disabled = typeof disabledDate === 'function' && disabledDate(ndate);
+    style.disabled = typeof disabledDate === 'function' && disabledDate(ndate, SELECTION_MODES.YEAR);
     style.current = value && deconstructDate(value).year === year;
 
     return style;
@@ -28,7 +28,7 @@ export default class YearTable extends Component {
     if (target.tagName === 'A') {
       if (hasClass(target.parentNode, 'disabled')) return;
       const year = target.textContent || target.innerText;
-      this.props.onPick(parseInt(year, 10))
+      this.props.onPick(parseInt(year))
     }
   }
 

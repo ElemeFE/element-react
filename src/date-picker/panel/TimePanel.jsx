@@ -6,7 +6,7 @@ import { limitRange } from '../utils'
 import TimeSpinner from '../basic/TimeSpinner'
 import { PopperReactMixin } from '../../../libs/utils'
 import Locale from '../../locale'
-import type {TimePanelProps, TimeTypes} from '../Types';
+import type {TimePanelProps} from '../Types';
 
 const mapPropsToState = (props) => {
   const state: any = {
@@ -67,7 +67,7 @@ export default class TimePanel extends Component {
 
   // type: string,  one of [hours, minutes, seconds]
   // date: {type: number}
-  handleChange(date: {TimeTypes: number}) {
+  handleChange(date: {string: number}) {
     const {currentDate} = this.state
 
     if (date.hours !== undefined) {
@@ -90,7 +90,7 @@ export default class TimePanel extends Component {
     const {currentDate} = this.state
     const {onPicked, selectableRange} = this.props
 
-    const date = new Date(limitRange(currentDate, selectableRange));
+    const date = new Date(limitRange(currentDate, selectableRange, 'HH:mm:ss'));
     onPicked(date, isKeepPannelOpen)
   }
 

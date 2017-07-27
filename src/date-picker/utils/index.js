@@ -1,4 +1,17 @@
 import { DateUtils } from '../../../libs/utils';
+import Locale from '../../locale'
+
+const t = Locale.t
+const weeks = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+DateUtils.i18n = {
+  dayNamesShort: weeks.map(week => t(`el.datepicker.weeks.${ week }`)),
+  dayNames: weeks.map(week => t(`el.datepicker.weeks.${ week }`)),
+  monthNamesShort: months.map(month => t(`el.datepicker.months.${ month }`)),
+  monthNames: months.map((month, index) => t(`el.datepicker.month${ index + 1 }`))
+};
+
 
 const newArray = function (start, end) {
   let result = [];
@@ -12,13 +25,13 @@ export const equalDate = function (dateA, dateB) {
   return dateA === dateB || new Date(dateA).getTime() === new Date(dateB).getTime();
 };
 
-export const toDate = function (date) {
+export const toDate = function(date) {
   return isDate(date) ? new Date(date) : null;
 };
 
-export const isDate = function (date) {
-  date = new Date(date);
-  if (isNaN(date.getTime())) return false;
+export const isDate = function(date) {
+  if (date === null || date === undefined) return false;
+  if (isNaN(new Date(date).getTime())) return false;
   return true;
 };
 
@@ -56,6 +69,7 @@ export const getFirstDayOfMonth = function (date) {
 
 export const DAY_DURATION = 86400000;
 
+// return date corresponding to the first cell on datetable 
 export const getStartDateOfMonth = function (year, month, offsetWeek = 0) {
   const result = new Date(year, month, 1);
   const day = result.getDay();
@@ -71,7 +85,7 @@ export const getStartDateOfMonth = function (year, month, offsetWeek = 0) {
 };
 
 export function getOffsetToWeekOrigin(day, offsetWeek = 0) {
-  return day >= offsetWeek ? day - offsetWeek : (7 - offsetWeek) + day;
+  return day >= offsetWeek ? day - offsetWeek : 7 + day - offsetWeek;
 }
 
 export const getWeekNumber = function (src) {
@@ -158,11 +172,10 @@ export const getRangeHours = function (ranges) {
   return hours;
 };
 
-export const limitRange = function (date, ranges) {
+export const limitRange = function(date, ranges, format = 'yyyy-MM-dd HH:mm:ss') {
   if (!ranges || !ranges.length) return date;
 
   const len = ranges.length;
-  const format = 'HH:mm:ss';
 
   date = DateUtils.parse(DateUtils.format(date, format), format);
   for (let i = 0; i < len; i++) {
