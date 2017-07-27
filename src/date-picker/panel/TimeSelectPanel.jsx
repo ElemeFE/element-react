@@ -4,7 +4,7 @@ import React from 'react';
 import { PropTypes, Component } from '../../../libs';
 import { PopperReactMixin } from '../../../libs/utils'
 import {Scrollbar} from '../../scrollbar'
-import type {TimeSelectPanelProps, TimeTypes} from '../Types';
+import type {TimeSelectPanelProps} from '../Types';
 
 export default class TimeSelectPanel extends Component {
   constructor(props: TimeSelectPanelProps) {
@@ -64,8 +64,7 @@ TimeSelectPanel.items = ({start, end, step, minTime, maxTime}) => {
     while (compareTime(current, end) <= 0) {
       result.push({
         value: current,
-        disabled: compareTime(current, minTime || '00:00') <= 0 || compareTime(current, maxTime || '100:100') >= 0
-
+        disabled: compareTime(current, minTime || '-1:-1') <= 0 || compareTime(current, maxTime || '100:100') >= 0
       });
       current = nextTime(current, step);
     }
