@@ -15,17 +15,21 @@ class Component extends React.Component<{}, {}> {
         <DatePicker
           value={value1}
           placeholder="选择日期"
+          firstDayOfWeek={2}
           onChange={date => {
             console.debug('DatePicker1 changed: ', date)
             this.setState({ value1: date })
           }}
-          disabledDate={time => time.getTime() < Date.now() - 8.64e7}
+          disabledDate={(time) => time.getTime() < Date.now() - 8.64e7}
         />
         <DateRangePicker
           value={value2}
           placeholder="选择日期范围"
           align="right"
           ref={e => this.daterangepicker2 = e}
+          rangeSeparator="-"
+          disabledDate={(time, type) => time.getTime() < Date.now() - 8.64e7}
+          firstDayOfWeek={2}
           onChange={date => {
             console.debug('DateRangePicker2 changed: ', date)
             this.setState({ value2: date })

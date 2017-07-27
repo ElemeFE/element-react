@@ -188,3 +188,4 @@ render() {
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | value | value of the picker | date[]/null | — | - |
 | selectableRange | available time range, e.g.`'18:30:00 - 20:30:00'`or`['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']` | string/string[] | — | — |
+| rangeSeparator | range separator | string | - | ' - ' |

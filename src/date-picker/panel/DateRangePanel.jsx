@@ -131,7 +131,7 @@ export default class DateRangePanel extends Component {
   }
 
   render() {
-    const {shortcuts, showTime, disabledDate} = this.props
+    const {shortcuts, showTime, disabledDate, firstDayOfWeek} = this.props
     const {date, rangeState, minDate, maxDate} = this.state
     const rightDate = this.rightDate
 
@@ -191,6 +191,7 @@ export default class DateRangePanel extends Component {
                 disabledDate={disabledDate}
                 onChangeRange={this.handleChangeRange.bind(this)}
                 onPick={this.handleRangePick.bind(this)}
+                firstDayOfWeek={firstDayOfWeek}
                 />
             </div>
             <div className="el-picker-panel__content el-date-range-picker__content is-right">
@@ -215,6 +216,7 @@ export default class DateRangePanel extends Component {
                 disabledDate={disabledDate}
                 onChangeRange={this.handleChangeRange.bind(this)}
                 onPick={this.handleRangePick.bind(this)}
+                firstDayOfWeek={firstDayOfWeek}
                 />
             </div>
           </div>
@@ -245,6 +247,7 @@ DateRangePanel.propTypes = {
   ),
   // (Date)=>bool, if true, disabled
   disabledDate: PropTypes.func,
+  firstDayOfWeek: PropTypes.range(0, 6),
   //()=>HtmlElement
   getPopperRefElement: PropTypes.func,
   popperMixinOption: PropTypes.object

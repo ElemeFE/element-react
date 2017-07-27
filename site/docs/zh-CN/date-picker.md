@@ -227,6 +227,7 @@ render() {
 | isShowTrigger | 是否显示图标 | boolean | - | true |
 | isReadOnly | 是否是只读 | boolean | - | false |
 | isDisabled | 是否是禁用 | boolean | - | false |
+| firstDayOfWeek | 周起始日 | Number | 0 到 6 | 0 |
 | onFocus | focus 事件触发 | (SyntheticEvent)=>() | - | - |
 | onBlur | blur 事件触发 | (SyntheticEvent)=>() | - | - |
 
@@ -236,7 +237,7 @@ render() {
 | value | - | Date/null | — | - |
 | shortcuts | 快捷选项 | {text: string, onClick: ()=>()}[] | - | - |
 | selectionMode | 日期类型 | string, one of ['year', 'month', 'week', 'day'] | - | 'day' |
-| disabledDate | 是否禁用日期 | (Date)=>boolean | - | - |
+| disabledDate | 是否禁用日期 | (Date, selectionMode)=>boolean | - | - |
 | showWeekNumber | 是否展示周数 | boolean | - | false |
 
 
@@ -246,5 +247,5 @@ render() {
 | value | - | Date[]/null | — | - |
 | shortcuts | 快捷选项 | {text: string, onClick: ()=>()}[] | - | - |
 | showWeekNumber | 是否展示周数 | boolean | - | false |
-
+| rangeSeparator | 选择范围时的分隔符 | string | - | ' - ' |
 
