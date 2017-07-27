@@ -6,7 +6,7 @@ import { limitRange, parseDate } from '../utils';
 import TimeSpinner from '../basic/TimeSpinner';
 import { PopperReactMixin } from '../../../libs/utils';
 import Locale from '../../locale';
-import type {TimeRangePanelProps, TimeTypes} from '../Types';
+import type {TimeRangePanelProps} from '../Types';
 
 const MIN_TIME = parseDate('00:00:00', 'HH:mm:ss');
 const MAX_TIME = parseDate('23:59:59', 'HH:mm:ss');
@@ -115,7 +115,7 @@ export default class TimeRangePanel extends Component {
 
   // type: string,  one of [hours, minutes, seconds]
   // date: {type: number}
-  handleChange(date: {TimeTypes: ?number}, field: string) {
+  handleChange(date: {string: ?number}, field: string) {
     const ndate = this.state[field];
 
     if (date.hours !== undefined) {
