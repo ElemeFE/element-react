@@ -227,6 +227,8 @@ render() {
 | isShowTrigger | whether to show trigger icon | boolean | - | true |
 | isReadOnly | - | boolean | - | false |
 | isDisabled | - | boolean | - | false |
+| isDisabled | - | boolean | - | false |
+| firstDayOfWeek | first day of week | Number | 0 to 6 | 0 |
 | onFocus | - | (SyntheticEvent)=>() | - | - |
 | onBlur | - | (SyntheticEvent)=>() | - | - |
 
@@ -237,7 +239,7 @@ render() {
 | value | - | Date/null | — | - |
 | shortcuts | - | {text: string, onClick: ()=>() }[] | - | - |
 | selectionMode | calendar type  | string, one of ['year', 'month', 'week', 'day'] | - | 'day' |
-| disabledDate | whether to disabled date selection | (Date)=>boolean | - | - |
+| disabledDate | whether to disabled date selection | (Date, selectionMode)=>boolean | - | - |
 | showWeekNumber | whether to show week number | boolean | - | false |
 
 
@@ -247,3 +249,4 @@ render() {
 | value | - | Date[]/null | — | - |
 | shortcuts | - | {text: string, onClick: ()=>() }[] | - | - |
 | showWeekNumber | whether to show week number | boolean | - | false |
+| rangeSeparator | range separator | string | - | ' - ' |

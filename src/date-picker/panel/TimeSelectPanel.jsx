@@ -3,8 +3,10 @@ import React from 'react';
 
 import { PropTypes, Component } from '../../../libs';
 import { PopperReactMixin } from '../../../libs/utils'
-import {Scrollbar} from '../../scrollbar'
-import type {TimeSelectPanelProps} from '../Types';
+import { scrollIntoView } from '../../../libs/utils/dom';
+
+import { Scrollbar } from '../../scrollbar'
+import type {TimeSelectPanelProps } from '../Types';
 
 export default class TimeSelectPanel extends Component {
   constructor(props: TimeSelectPanelProps) {
@@ -16,7 +18,7 @@ export default class TimeSelectPanel extends Component {
   }
 
   handleClick(item: any) {
-    const {onPicked, dateParser} = this.props
+    const { onPicked, dateParser } = this.props
     if (!item.disabled) {
       onPicked(dateParser(item.value));
     }
@@ -26,8 +28,24 @@ export default class TimeSelectPanel extends Component {
     return TimeSelectPanel.items(this.props)
   }
 
+  scrollToOption(className: string = 'selected') {
+    const menu = this.refs.root.querySelector('.el-picker-panel__content');
+    scrollIntoView(menu, menu.getElementsByClassName(className)[0]);
+  }
+
+  componentDidMount() {
+    this.scrollToOption()
+  }
+
+  componentWillReceiveProps(nextProps: any) {
+    clearTimeout(this._timer)
+    if (nextProps.value !== this.props.value) {
+      this._timer = setTimeout(() => this.scrollToOption(), 0)
+    }
+  }
+
   render() {
-    const {value} = this.props
+    const { value } = this.props
 
     return (
       <div
@@ -51,12 +69,12 @@ export default class TimeSelectPanel extends Component {
   }
 }
 
-TimeSelectPanel.isValid = (value, {start, end, step, minTime, maxTime}) => {
+TimeSelectPanel.isValid = (value, { start, end, step, minTime, maxTime }) => {
   const items = TimeSelectPanel.items({ start, end, step, minTime, maxTime })
   return !!items.filter(e => !e.disabled).find(e => e.value === value)
 }
 
-TimeSelectPanel.items = ({start, end, step, minTime, maxTime}) => {
+TimeSelectPanel.items = ({ start, end, step, minTime, maxTime }) => {
   const result = [];
 
   if (start && end && step) {
@@ -99,7 +117,7 @@ TimeSelectPanel.defaultProps = {
 
 
 const parseTime = function (time) {
-  const values = ('' || time).split(':');
+  const values = (time || '').split(':');
   if (values.length >= 2) {
     const hours = parseInt(values[0], 10);
     const minutes = parseInt(values[1], 10);

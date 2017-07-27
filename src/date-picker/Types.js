@@ -1,7 +1,7 @@
 // @flow
 
 export type ValidDateType = Date | Date[] | null
-export type DisableDateFunc = (date: Date)=>boolean
+export type DisableDateFunc = (date: Date, type: ?string)=>boolean
 export type Shortcut = {text: string, onClick: ()=>void}
 
 
@@ -19,7 +19,6 @@ export type DateTableProps = {
   rangeState: ?{endDate: Date, selecting: boolean },
   firstDayOfWeek: number
 }
-
 
 export type MonthTableProps = {
   date: Date,
@@ -140,12 +139,15 @@ export type DatePickerProps =  BasePickerProps & {
   disabledDate: ?DisableDateFunc,
   getPopperRefElement: ?GetPopperRefElement,
   popperMixinOption: ?PopperMixinOption,
+  firstDayofweek: ?number
 }
 
 export type DateRangePickerProps = BasePickerProps & {
   value: DateRange,
   showTime: boolean,
   shortcuts: ?Shortcut[],
+  rangeSeparator: string,
+  firstDayofweek: ?number
 }
 
 
@@ -155,7 +157,7 @@ export type TimePickerProps = BasePickerProps & {
 
 
 export type TimeRangePickerProps = BasePickerProps & {
-
+  rangeSeparator: string,
 }
 
 export type TimeSelectProps = BasePickerProps & {
