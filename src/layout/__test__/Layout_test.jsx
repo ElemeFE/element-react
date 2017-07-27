@@ -216,7 +216,7 @@ describe('Layout test', () => {
   it('Column with push', () => {
     const w = mount(
       <Layout.Row gutter="20">
-        <Layout.Col span="12" push={12}><div className="grid-content bg-purple"></div></Layout.Col>
+        <Layout.Col span="12" push="12"><div className="grid-content bg-purple"></div></Layout.Col>
       </Layout.Row>
     );
     expect(w.find('.el-col-12').hasClass('el-col-push-12')).toBeTruthy();
