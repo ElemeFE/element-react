@@ -59,8 +59,8 @@ Col.contextTypes = {
 Col.propTypes = {
   span: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  pull: PropTypes.number,
-  push: PropTypes.number,
+  pull: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  push: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   xs: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
   sm: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
   md: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
