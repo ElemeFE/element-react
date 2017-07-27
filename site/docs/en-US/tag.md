@@ -161,7 +161,7 @@ render() {
 | closable | whether Tab can be removed | boolean | — | false |
 | closeTransition |  whether the removal animation is disabled  | boolean | — | false |
 | hit | whether Tag has a highlighted border | boolean | — | false |
-
+| color | background color of the tag | string | — | — |
 
 ### Events
 | Event Name | Description | Parameters |
