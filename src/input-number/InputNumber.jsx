@@ -47,23 +47,29 @@ export default class InputNumber extends Component {
   onBlur(): void {
     let value = this.state.value;
 
-    if (value > this.props.max) {
-      value = Number(this.props.max);
-    } else if (value < this.props.min) {
-      value = Number(this.props.min);
+    if (this.isValid) {
+      value = Number(value);
+      
+      if (value > this.props.max) {
+        value = Number(this.props.max);
+      } else if (value < this.props.min) {
+        value = Number(this.props.min);
+      }
+    } else {
+      value = undefined;
     }
 
     this.setState({ value }, this.onChange);
   }
 
   onInput(value: mixed): void {
-    value = Number(value);
+    this.setState({ value }, () => {
+      clearTimeout(this.timeout);
 
-    if (isNaN(value)) {
-      return;
-    }
-
-    this.setState({ value });
+      this.timeout = setTimeout(() => {
+        this.onBlur();
+      }, 300);
+    });
   }
 
   onChange(): void {
@@ -72,24 +78,28 @@ export default class InputNumber extends Component {
     }
   }
 
-  minDisabled(): boolean {
-    return this.state.value - Number(this.props.step) < this.props.min;
+  get isValid(): boolean {
+    return this.state.value !== '' && !isNaN(Number(this.state.value));
   }
 
-  maxDisabled(): boolean {
-    return this.state.value + Number(this.props.step) > this.props.max;
+  get minDisabled(): boolean {
+    return !this.isValid || (this.state.value - Number(this.props.step) < this.props.min);
+  }
+
+  get maxDisabled(): boolean {
+    return !this.isValid || (this.state.value + Number(this.props.step) > this.props.max);
   }
 
   increase(): void {
     const { step, max, disabled } = this.props;
     let { value, inputActive } = this.state;
 
-    if (value + Number(step) > max || disabled) return;
-
-    value = accAdd(step, value);
-
-    if (this.maxDisabled()) {
+    if (this.maxDisabled) {
       inputActive = false;
+    } else {
+      if (value + Number(step) > max || disabled) return;
+
+      value = accAdd(step, value);
     }
 
     this.setState({ value, inputActive }, this.onChange);
@@ -99,12 +109,12 @@ export default class InputNumber extends Component {
     const { step, min, disabled } = this.props;
     let { value, inputActive } = this.state;
 
-    if (value - Number(step) < min || disabled) return;
-
-    value = accSub(value, step);
-
-    if (this.minDisabled()) {
+    if (this.minDisabled) {
       inputActive = false;
+    } else {
+      if (value - Number(step) < min || disabled) return;
+
+      value = accSub(value, step);
     }
 
     this.setState({ value, inputActive }, this.onChange);
@@ -139,7 +149,7 @@ export default class InputNumber extends Component {
           controls && (
             <span
               className={this.classNames("el-input-number__decrease", {
-                'is-disabled': this.minDisabled()
+                'is-disabled': this.minDisabled
               })}
               onClick={this.decrease.bind(this)}
             >
@@ -151,7 +161,7 @@ export default class InputNumber extends Component {
           controls && (
             <span
               className={this.classNames("el-input-number__increase", {
-                'is-disabled': this.maxDisabled()
+                'is-disabled': this.maxDisabled
               })}
               onClick={this.increase.bind(this)}
             >
