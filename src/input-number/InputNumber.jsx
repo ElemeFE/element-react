@@ -49,14 +49,14 @@ export default class InputNumber extends Component {
 
     if (this.isValid) {
       value = Number(value);
-      
+
       if (value > this.props.max) {
         value = Number(this.props.max);
       } else if (value < this.props.min) {
         value = Number(this.props.min);
       }
     } else {
-      value = undefined;
+      value = '';
     }
 
     this.setState({ value }, this.onChange);
@@ -83,22 +83,22 @@ export default class InputNumber extends Component {
   }
 
   get minDisabled(): boolean {
-    return !this.isValid || (this.state.value - Number(this.props.step) < this.props.min);
+    return  (this.state.value - Number(this.props.step) < this.props.min);
   }
 
   get maxDisabled(): boolean {
-    return !this.isValid || (this.state.value + Number(this.props.step) > this.props.max);
+    return  (this.state.value + Number(this.props.step) > this.props.max);
   }
 
   increase(): void {
-    const { step, max, disabled } = this.props;
+    const { step, max, disabled, min} = this.props;
     let { value, inputActive } = this.state;
 
     if (this.maxDisabled) {
       inputActive = false;
     } else {
       if (value + Number(step) > max || disabled) return;
-
+      if (value + Number(step) < min ) value = min - Number(step);
       value = accAdd(step, value);
     }
 
@@ -106,14 +106,14 @@ export default class InputNumber extends Component {
   }
 
   decrease(): void {
-    const { step, min, disabled } = this.props;
+    const { step, min, disabled, max } = this.props;
     let { value, inputActive } = this.state;
 
     if (this.minDisabled) {
       inputActive = false;
     } else {
       if (value - Number(step) < min || disabled) return;
-
+      if (value - Number(step) > max) value = Number(max) + Number(step);
       value = accSub(value, step);
     }
 
