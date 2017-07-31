@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 
-PropTypes.range = require('./range');
-PropTypes.regex = require('./regex');
+import rangeType from './range';
+import regexType from './regex';
+
+PropTypes.range = rangeType;
+PropTypes.regex = regexType;
 
 export default PropTypes;
