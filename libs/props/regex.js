@@ -1,6 +1,6 @@
 import { createPropType } from '../utils';
 
-module.exports = createPropType((props, propName, componentName) => {
+export default createPropType((props, propName, componentName) => {
   const value = props[propName];
 
   if (!(value instanceof RegExp)) {
