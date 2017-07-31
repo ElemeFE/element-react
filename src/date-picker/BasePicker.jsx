@@ -25,6 +25,21 @@ const isValidValue = (value) => {
   return false
 }
 
+// only considers date-picker's value: Date or [Date, Date]
+const valueEquals = function (a: any, b: any) {
+  const aIsArray = a instanceof Array;
+  const bIsArray = b instanceof Array;
+  if (aIsArray && bIsArray) {
+    return new Date(a[0]).getTime() === new Date(b[0]).getTime() &&
+      new Date(a[1]).getTime() === new Date(b[1]).getTime();
+  }
+  if (!aIsArray && !bIsArray) {
+    return new Date(a).getTime() === new Date(b).getTime();
+  }
+  return false;
+};
+
+
 export default class BasePicker extends Component {
   state: any;
 
@@ -69,6 +84,17 @@ export default class BasePicker extends Component {
     this.clickOutsideId = 'clickOutsideId_' + idGen.next()
   }
 
+  // ---: start, abstract methods
+  // (state, props)=>ReactElement
+  pickerPanel(state: any, props: $Subtype<BasePickerProps>) {
+    throw new Errors.MethodImplementationRequiredError(props)
+  }
+
+  getFormatSeparator() {
+    return undefined
+  }
+  // ---: end, abstract methods
+
   componentWillReceiveProps(nextProps: any) {
     this.setState(this.propsToState(nextProps))
   }
@@ -82,15 +108,18 @@ export default class BasePicker extends Component {
    */
   onPicked(value: ValidDateType, isKeepPannel: boolean = false) {//only change input value on picked triggered
     require_condition(isValidValue(value))
-    
+
+    let hasChanged = !valueEquals(this.state.value, value)
     this.setState({
       pickerVisible: isKeepPannel,
       value,
       text: this.dateToStr(value)
     })
 
-    this.props.onChange(value);
-    this.context.form && this.context.form.onFieldChange();
+    if (hasChanged) {
+      this.props.onChange(value);
+      this.context.form && this.context.form.onFieldChange();
+    }
   }
 
   dateToStr(date: ValidDateType) {
@@ -102,20 +131,20 @@ export default class BasePicker extends Component {
       TYPE_VALUE_RESOLVER_MAP[this.type] ||
       TYPE_VALUE_RESOLVER_MAP['default']
     ).formatter;
-    const result = formatter(tdate, this.getFormat());
+    const result = formatter(tdate, this.getFormat(), this.getFormatSeparator());
 
     return result;
   }
 
   // (string) => Date | null
-  parseDate(dateStr: string): NullableDate{
+  parseDate(dateStr: string): NullableDate {
     if (!dateStr) return null
     const type = this.type;
     const parser = (
       TYPE_VALUE_RESOLVER_MAP[type] ||
       TYPE_VALUE_RESOLVER_MAP['default']
     ).parser;
-    return parser(dateStr, this.getFormat());
+    return parser(dateStr, this.getFormat(), this.getFormatSeparator());
   }
 
   getFormat(): string {
@@ -169,8 +198,9 @@ export default class BasePicker extends Component {
   handleKeydown(evt: SyntheticKeyboardEvent) {
     const keyCode = evt.keyCode;
     // tab
-    if (keyCode === 9) {
-      this.setState({ pickerVisible: false });
+    if (keyCode === 9 || keyCode === 27) {
+      this.setState({ pickerVisible: false })
+      evt.stopPropagation()
     }
   }
 
@@ -178,11 +208,6 @@ export default class BasePicker extends Component {
     this.setState({
       pickerVisible: !this.state.pickerVisible
     })
-  }
-
-  // (state, props)=>ReactElement
-  pickerPanel(state: any, props: $Subtype<BasePickerProps>) {
-    throw new Errors.MethodImplementationRequiredError(props)
   }
 
   isDateValid(date: ValidDateType) {
@@ -206,7 +231,7 @@ export default class BasePicker extends Component {
   }
 
   handleClickOutside(evt: SyntheticEvent) {
-    const {value, pickerVisible} = this.state
+    const { value, pickerVisible } = this.state
     if (!this.isInputFocus && !pickerVisible) {
       return
     }
@@ -221,8 +246,8 @@ export default class BasePicker extends Component {
   }
 
   handleClickIcon() {
-    const {isReadOnly, isDisabled} = this.props
-    const {text} = this.state
+    const { isReadOnly, isDisabled } = this.props
+    const { text } = this.state
 
     if (isReadOnly || isDisabled) return
     if (!text) {
@@ -235,8 +260,8 @@ export default class BasePicker extends Component {
   }
 
   render() {
-    const {isReadOnly, placeholder, isDisabled} = this.props;
-    const {pickerVisible, value, text, isShowClose} = this.state;
+    const { isReadOnly, placeholder, isDisabled } = this.props;
+    const { pickerVisible, value, text, isShowClose } = this.state;
 
     const createIconSlot = () => {
       if (this.calcIsShowTrigger()) {
@@ -250,11 +275,11 @@ export default class BasePicker extends Component {
               if (text) {
                 this.setState({ isShowClose: true })
               }
-            } }
+            }}
             onMouseLeave={() => {
               this.setState({ isShowClose: false })
-            } }
-            ></i>
+            }}
+          ></i>
         )
       } else {
         return null
@@ -285,8 +310,8 @@ export default class BasePicker extends Component {
           'is-filled': !!value
         })}
 
-        ref={v=>this.domRoot=v}
-        >
+        ref={v => this.domRoot = v}
+      >
 
         <EventRegister
           id={this.clickOutsideId}
@@ -314,11 +339,11 @@ export default class BasePicker extends Component {
             }
 
             this.setState(nstate)
-          } }
+          }}
           ref="inputRoot"
           value={text}
           icon={createIconSlot()}
-          />
+        />
 
         {createPickerPanel()}
       </span>

@@ -6,12 +6,12 @@ import { limitRange, parseDate } from '../utils';
 import TimeSpinner from '../basic/TimeSpinner';
 import { PopperReactMixin } from '../../../libs/utils';
 import Locale from '../../locale';
-import type {TimeRangePanelProps} from '../Types';
+import type {TimeRangePanelProps } from '../Types';
 
 const MIN_TIME = parseDate('00:00:00', 'HH:mm:ss');
 const MAX_TIME = parseDate('23:59:59', 'HH:mm:ss');
 
-const isDisabled = function(minTime, maxTime) {
+const isDisabled = function (minTime, maxTime) {
   const minValue = minTime.getHours() * 3600 +
     minTime.getMinutes() * 60 +
     minTime.getSeconds();
@@ -22,7 +22,7 @@ const isDisabled = function(minTime, maxTime) {
   return minValue > maxValue;
 };
 
-const calcTime = function(time) {
+const calcTime = function (time) {
   time = Array.isArray(time) ? time : [time];
   const minTime = time[0] || new Date();
   const date = new Date();
@@ -113,9 +113,9 @@ export default class TimeRangePanel extends Component {
     this.setState(mapPropsToState(nextProps));
   }
 
-  // type: string,  one of [hours, minutes, seconds]
+  // type = hours | minutes | seconds
   // date: {type: number}
-  handleChange(date: {string: ?number}, field: string) {
+  handleChange(date: { string: ?number }, field: string) {
     const ndate = this.state[field];
 
     if (date.hours !== undefined) {
@@ -135,18 +135,15 @@ export default class TimeRangePanel extends Component {
     };
 
     const { minTime, maxTime } = this.state;
-    if (minTime > maxTime) {
-      this.setState(state);
-    } else {
-      state.minSelectableRange = [[MIN_TIME, maxTime]];
-      state.maxSelectableRange = [[minTime, MAX_TIME]];
+    state.minSelectableRange = [[MIN_TIME, maxTime]];
+    state.maxSelectableRange = [[minTime, MAX_TIME]];
 
-      state.minTime = limitRange(minTime, state.minSelectableRange);
-      state.maxTime = limitRange(maxTime, state.maxSelectableRange);
+    state.minTime = limitRange(minTime, state.minSelectableRange);
+    state.maxTime = limitRange(maxTime, state.maxSelectableRange);
 
-      this.setState(state);
-      this.handleConfirm(true);
-    }
+    this.setState(state);
+    this.handleConfirm(true);
+
   }
 
   handleConfirm(isKeepPannelOpen: boolean = false) {

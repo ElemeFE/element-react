@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { PropTypes, Component } from '../../../libs';
-import { hasClass, deconstructDate } from '../utils'
+import { hasClass, deconstructDate, SELECTION_MODES } from '../utils'
 import Locale from '../../locale'
 
 
@@ -15,7 +15,10 @@ export default class MonthTable extends Component {
     const style = {};
     const ndate = new Date(date)
     ndate.setMonth(month);
-    style.disabled = typeof disabledDate === 'function' && disabledDate(ndate);
+    // in the element repo, you could see the original code that only disable current month only when all days contains in this month are disabled
+    // which i don't think is a good design, so i changed disabledDate callback with an additional type param to solve this kind issue.
+    // so the caller can handle different picker views on each switch arm condition.
+    style.disabled = typeof disabledDate === 'function' && disabledDate(ndate, SELECTION_MODES.MONTH);
     style.current = value && deconstructDate(value).month === month;
     return style;
   }

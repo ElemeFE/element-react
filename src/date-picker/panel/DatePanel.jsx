@@ -431,6 +431,7 @@ DatePanel.propTypes = {
   selectionMode: PropTypes.oneOf(Object.keys(SELECTION_MODES).map(e => SELECTION_MODES[e])),
   // (Date)=>bool, if true, disabled
   disabledDate: PropTypes.func,
+  firstDayOfWeek: PropTypes.range(0, 6),
 
   //()=>HtmlElement
   getPopperRefElement: PropTypes.func,

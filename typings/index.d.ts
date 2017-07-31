@@ -842,6 +842,7 @@ declare namespace ElementReact {
   interface TimeRangePickerProps extends ElementReactLibs.DatePickerBaseProps {
     selectableRange?: string | string[]
     value?: ElementReactLibs.dateType[]
+    rangeSeparator?: string
   }
   export class TimeRangePicker extends ElementReactLibs.DatePickerBaseComponet<TimeRangePickerProps, {}> { }
 
@@ -854,6 +855,7 @@ declare namespace ElementReact {
   // DateRangePicker
   interface DateRangePickerProps extends ElementReactLibs.DatePanelProps {
     value?: ElementReactLibs.dateType[]
+    rangeSeparator?: string,
   }
   export class DateRangePicker extends ElementReactLibs.DatePickerBaseComponet<DateRangePickerProps, {}> { }
 
@@ -962,6 +964,7 @@ declare namespace ElementReact {
 
 declare namespace ElementReactLibs {
   type dateType = Date | string
+  type SelectionMode = 'year' | 'month' | 'week' | 'day'
   interface ComponentProps<T> {
     className?: string
     style?: React.CSSProperties
@@ -990,8 +993,9 @@ declare namespace ElementReactLibs {
     showWeekNumber?: boolean
     format?: string
     shortcuts?: any[]
-    selectionMode?: 'year' | 'month' | 'week' | 'day'
-    disabledDate?(date?: Date): boolean
+    selectionMode?: SelectionMode
+    disabledDate?(date?: Date, type?: SelectionMode): boolean
+    firstDayOfWeek?: number
     getPopperRefElement?: any
     popperMixinOption?: any
   }
