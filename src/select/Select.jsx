@@ -202,7 +202,7 @@ class Select extends Component {
        })[0];
 
        if (selected) {
-         this.state.selectedLabel = selected.props.label;
+         this.state.selectedLabel = selected.props.label || selected.props.value;
        }
     }
   }
