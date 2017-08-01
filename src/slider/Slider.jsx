@@ -185,8 +185,8 @@ export default class Slider extends Component {
 
   onInputValueChanged(e: number): void {
     this.setState({
-      inputValue: e,
-      firstValue: e
+      inputValue: e || 0,
+      firstValue: e || 0
     }, () => {
       this.setValues();
     });

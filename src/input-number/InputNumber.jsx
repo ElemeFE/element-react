@@ -25,7 +25,7 @@ export default class InputNumber extends Component {
 
   componentWillReceiveProps(props: Object) {
     if (props.value != this.props.value) {
-      this.setState({ value: Number(props.value) });
+      this.setState({ value: props.value });
     }
   }
 
@@ -56,7 +56,7 @@ export default class InputNumber extends Component {
         value = Number(this.props.min);
       }
     } else {
-      value = '';
+      value = undefined;
     }
 
     this.setState({ value }, this.onChange);
@@ -83,11 +83,11 @@ export default class InputNumber extends Component {
   }
 
   get minDisabled(): boolean {
-    return  (this.state.value - Number(this.props.step) < this.props.min);
+    return  !this.isValid || (this.state.value - Number(this.props.step) < this.props.min);
   }
 
   get maxDisabled(): boolean {
-    return  (this.state.value + Number(this.props.step) > this.props.max);
+    return  !this.isValid || (this.state.value + Number(this.props.step) > this.props.max);
   }
 
   increase(): void {
@@ -99,6 +99,7 @@ export default class InputNumber extends Component {
     } else {
       if (value + Number(step) > max || disabled) return;
       if (value + Number(step) < min ) value = min - Number(step);
+
       value = accAdd(step, value);
     }
 
