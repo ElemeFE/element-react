@@ -49,7 +49,7 @@ render() {
       </Form.Item>
       <Form.Item label="活动时间">
         <Layout.Col span="11">
-          <Form.Item prop="date1">
+          <Form.Item prop="date1" labelWidth="0px">
             <DatePicker
               value={this.state.form.date1}
               placeholder="选择日期"
@@ -59,7 +59,7 @@ render() {
         </Layout.Col>
         <Layout.Col className="line" span="2">-</Layout.Col>
         <Layout.Col span="11">
-          <Form.Item prop="date2">
+          <Form.Item prop="date2" labelWidth="0px">
             <TimePicker
               value={this.state.form.date2}
               selectableRange="18:30:00 - 20:30:00"
@@ -294,7 +294,7 @@ render() {
       </Form.Item>
       <Form.Item label="活动时间" required={true}>
         <Layout.Col span="11">
-          <Form.Item prop="date1">
+          <Form.Item prop="date1" labelWidth="0px">
             <DatePicker
               value={this.state.form.date1}
               placeholder="选择日期"
@@ -304,7 +304,7 @@ render() {
         </Layout.Col>
         <Layout.Col className="line" span="2">-</Layout.Col>
         <Layout.Col span="11">
-          <Form.Item prop="date2">
+          <Form.Item prop="date2" labelWidth="0px">
             <TimePicker
               value={this.state.form.date2}
               selectableRange="18:30:00 - 20:30:00"
