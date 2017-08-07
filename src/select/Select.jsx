@@ -733,26 +733,28 @@ class Select extends Component {
     this.state.optionsCount++;
     this.state.filteredOptionsCount++;
 
-    this.setState(this.state);
+    this.forceUpdate();
+    this.handleValueChange();
   }
 
   onOptionDestroy(option: any) {
     this.state.optionsCount--;
     this.state.filteredOptionsCount--;
 
-    let index = this.state.options.indexOf(option);
+    const index = this.state.options.indexOf(option);
 
     if (index > -1) {
       this.state.options.splice(index, 1);
     }
 
-    this.setState(this.state, () => {
-      this.state.options.forEach(el => {
-        if (el != option) {
-          el.resetIndex();
-        }
-      });
+    this.state.options.forEach(el => {
+      if (el != option) {
+        el.resetIndex();
+      }
     });
+
+    this.forceUpdate();
+    this.handleValueChange();
   }
 
   onOptionClick(option: any) {
