@@ -1,6 +1,6 @@
 {
   "name": "element-react",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Element UI for React",
   "private": false,
   "main": "dist/npm/es5/index.js",
@@ -85,6 +85,10 @@
     "react-dom": "^15.6.1",
     "react-transition-group": "^1.2.0",
     "throttle-debounce": "^1.0.1"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   },
   "jest": {
     "testRegex": "(/jest/.+\\.(js|jsx)$)|_test.jsx?$",
