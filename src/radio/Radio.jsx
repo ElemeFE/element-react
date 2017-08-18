@@ -9,6 +9,8 @@ type State = {
 };
 
 export default class Radio extends Component {
+  static elementType = 'Radio';
+
   state: State;
 
   constructor(props: Object) {
