@@ -6,6 +6,8 @@ import { Component, PropTypes } from '../../libs';
 import Radio from './Radio';
 
 export default class RadioButton extends Radio {
+  static elementType = 'RadioButton';
+
   parent(): Component {
     return this.context.component;
   }
