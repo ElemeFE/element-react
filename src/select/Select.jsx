@@ -130,6 +130,9 @@ class Select extends Component {
     }
 
     if (state.visible != this.state.visible) {
+      if (this.props.onVisibleChange) {
+        this.props.onVisibleChange(state.visible);
+      }
       this.onVisibleChange(state.visible);
     }
 
