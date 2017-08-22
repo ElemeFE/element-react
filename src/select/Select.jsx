@@ -133,6 +133,7 @@ class Select extends Component {
       if (this.props.onVisibleChange) {
         this.props.onVisibleChange(state.visible);
       }
+
       this.onVisibleChange(state.visible);
     }
 
@@ -700,6 +701,10 @@ class Select extends Component {
       if (this.props.onChange) {
         this.props.onChange('');
       }
+
+      if (this.props.onClear) {
+        this.props.onClear();
+      }
     }
   }
 
@@ -711,7 +716,11 @@ class Select extends Component {
 
       selected.splice(index, 1);
 
-      this.setState({ selected });
+      this.setState({ selected }, () => {
+        if (this.props.onRemoveTag) {
+          this.props.onRemoveTag(tag.props.value);
+        }
+      });
     }
   }
 
@@ -975,7 +984,10 @@ Select.propTypes = {
   filterMethod: PropTypes.func,
   multiple: PropTypes.bool,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onVisibleChange: PropTypes.func,
+  onRemoveTag: PropTypes.func,
+  onClear: PropTypes.func
 }
 
 export default ClickOutside(Select);
