@@ -465,6 +465,8 @@ render() {
 |---------|---------|---------|
 | onChange | triggers when the selected value changes | current selected value |
 | onVisibleChange | triggers when the dropdown appears/disappears | true when it appears, and false otherwise |
+| onRemoveTag | triggers when a tag is removed in multiple mode | removed tag value |
+| onClear | triggers when the clear icon is clicked in a clearable Select | - |
 
 ### Option Group Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
