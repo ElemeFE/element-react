@@ -73,7 +73,7 @@ export default class Form extends Component {
     return (
       <form style={this.style()} className={this.className('el-form', this.props.labelPosition && `el-form--label-${this.props.labelPosition}`, {
         'el-form--inline': this.props.inline
-      })}>{this.props.children}</form>
+      })} onSubmit={this.props.onSubmit}>{this.props.children}</form>
     )
   }
 }
@@ -88,7 +88,8 @@ Form.propTypes = {
   labelPosition: PropTypes.oneOf(['right', 'left', 'top']),
   labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   labelSuffix: PropTypes.string,
-  inline: PropTypes.bool
+  inline: PropTypes.bool,
+  onSubmit: PropTypes.func
 }
 
 Form.defaultProps = {
