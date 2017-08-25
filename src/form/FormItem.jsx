@@ -156,7 +156,7 @@ export default class FormItem extends Component {
     });
   }
 
-  labelStyle(): { width?: number } {
+  labelStyle(): { width?: number | string } {
     const ret = {};
 
     if (this.parent().props.labelPosition === 'top') return ret;
@@ -164,13 +164,13 @@ export default class FormItem extends Component {
     const labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
 
     if (labelWidth) {
-      ret.width = Number(labelWidth);
+      ret.width = parseInt(labelWidth);
     }
 
     return ret;
   }
 
-  contentStyle(): { marginLeft?: number } {
+  contentStyle(): { marginLeft?: number | string } {
     const ret = {};
 
     if (this.parent().props.labelPosition === 'top' || this.parent().props.inline) return ret;
@@ -178,7 +178,7 @@ export default class FormItem extends Component {
     const labelWidth = this.props.labelWidth || this.parent().props.labelWidth;
 
     if (labelWidth) {
-      ret.marginLeft = Number(labelWidth);
+      ret.marginLeft = parseInt(labelWidth);
     }
 
     return ret;
