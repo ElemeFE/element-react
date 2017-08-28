@@ -41,7 +41,6 @@ const valueEquals = function (a: any, b: any) {
 };
 
 
-
 export default class BasePicker extends Component {
   state: any;
 
