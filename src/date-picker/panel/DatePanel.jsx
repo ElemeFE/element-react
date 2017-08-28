@@ -278,7 +278,8 @@ export default class DatePanel extends Component {
         className={this.classNames('el-picker-panel el-date-picker', {
           'has-sidebar': shortcuts,
           'has-time': showTime
-        })}>
+        })}
+        >
 
         <div className="el-picker-panel__body-wrapper">
           {

@@ -10,6 +10,7 @@ import { EventRegister } from '../../libs/internal'
 import Input from '../input'
 import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
 import { Errors, require_condition, IDGenerator } from '../../libs/utils';
+import { MountBody } from './MountBody'
 import type { BasePickerProps, ValidDateType } from './Types';
 
 type NullableDate = Date | null
@@ -38,6 +39,7 @@ const valueEquals = function (a: any, b: any) {
   }
   return false;
 };
+
 
 
 export default class BasePicker extends Component {
@@ -236,6 +238,7 @@ export default class BasePicker extends Component {
       return
     }
     if (this.domRoot.contains(evt.target)) return
+    if (this.pickerProxy && this.pickerProxy.getMountNode().contains(evt.target)) return
     if (this.isDateValid(value)) {
       this.setState({ pickerVisible: false })
       this.props.onChange(value)
@@ -288,14 +291,20 @@ export default class BasePicker extends Component {
 
     const createPickerPanel = () => {
       if (pickerVisible) {
-        return this.pickerPanel(
-          this.state,
-          Object.assign({}, this.props, {
-            getPopperRefElement: () => ReactDOM.findDOMNode(this.refs.inputRoot),
-            popperMixinOption: {
-              placement: PLACEMENT_MAP[this.props.align] || PLACEMENT_MAP.left
+        return (
+          <MountBody ref={e => this.pickerProxy = e}>
+            {
+              this.pickerPanel(
+                this.state,
+                Object.assign({}, this.props, {
+                  getPopperRefElement: () => ReactDOM.findDOMNode(this.refs.inputRoot),
+                  popperMixinOption: {
+                    placement: PLACEMENT_MAP[this.props.align] || PLACEMENT_MAP.left
+                  }
+                })
+              )
             }
-          })
+          </MountBody>
         )
       } else {
         return null
@@ -350,6 +359,7 @@ export default class BasePicker extends Component {
     )
   }
 }
+
 
 BasePicker.contextTypes = {
   form: PropTypes.any

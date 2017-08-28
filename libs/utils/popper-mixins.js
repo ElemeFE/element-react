@@ -10,11 +10,10 @@ const MixinMethods = {
      */
   createPopper(popupElement, refElement, popperOptions) {
     require_condition(popupElement && refElement)
-    if (!popperOptions) {
-      popperOptions = {}
-    }
 
-    const {visibleArrow, placement, zIndex, offset} = this._popper_config
+    const {visibleArrow, placement, zIndex, offset, width, ...others} = this._popper_config
+    popperOptions = {...popperOptions, ...others}
+    
     if (!/^(top|bottom|left|right)(-start|-end)?$/g.test(placement)) {
       return;
     }
@@ -35,13 +34,14 @@ const MixinMethods = {
     if (!popperOptions.offset) {
       popperOptions.offset = offset;
     }
-
+    
     this._poperJS = new PopperJS(reference, popper, popperOptions);
 
     this._poperJS.onCreate(() => {
       this._resetTransformOrigin();
       this._popper_state.isCreated = true
       this._poperJS._popper.style.zIndex = zIndex
+      this._poperJS._popper.style.width = width !== null ? `${width}px` : reference.getBoundingClientRect().width + 'px'
     });
   },
 
@@ -92,7 +92,8 @@ const MixinMethods = {
 export function PopperMixin(config) {
   this._popper_config = Object.assign(
     {}, {
-      zIndex: 100,
+      width: null,
+      zIndex: 1050,
       offset: 0,
       placement: 'bottom',
       boundariesPadding: 5,
@@ -149,12 +150,7 @@ export function PopperReactMixin(getPopperRootDom, getRefDom, ...args) {
   require_condition(typeof getRefDom === 'function', '`getRefDom` func is required!')
 
   PopperMixin.apply(this, args)
-
-  for (const m in PopperReactMixinMethods) {
-    this[m] = PopperReactMixinMethods[m]
-  }
-
-  this.hookReactLifeCycle(getPopperRootDom, getRefDom)
+  PopperReactMixinMethods.hookReactLifeCycle.call(this, getPopperRootDom, getRefDom)
 
   return this
 }
