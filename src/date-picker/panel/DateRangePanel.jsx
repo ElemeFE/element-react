@@ -1,13 +1,13 @@
 //@flow
 import React from 'react'
 
-import { PropTypes, Component } from '../../../libs';
+import { PropTypes } from '../../../libs';
 import Locale from '../../locale'
 
 import { SELECTION_MODES, toDate, prevMonth, nextMonth } from '../utils'
 import { DateTable } from '../basic'
-import { PopperReactMixin } from '../../../libs/utils'
-import type {DateRangePanelProps, Shortcut} from '../Types';
+import type {DateRangePanelProps, Shortcut } from '../Types';
+import { PopperBase } from './PopperBase'
 
 const prevYear = (date) => {
   var d = toDate(date)
@@ -22,7 +22,7 @@ const nextYear = (date) => {
 }
 
 const mapPropsToState = (props) => {
-  const {value} = props
+  const { value } = props
   let state: any = {
     rangeState: {
       endDate: null,
@@ -50,24 +50,47 @@ const mapPropsToState = (props) => {
   return state
 }
 
-export default class DateRangePanel extends Component {
+export default class DateRangePanel extends PopperBase {
+  static get propTypes() {
+    return Object.assign({
+      // user picked date value
+      /*
+      value: null | [Date, null | false]
+      */
+      value: PropTypes.any,
+      // ([value1, value2]|null, isKeepPanel)=>()
+      onPick: PropTypes.func.isRequired,
+      showTime: PropTypes.bool,
+      // Array[{text: String, onClick: (picker)=>()}]
+      shortcuts: PropTypes.arrayOf(
+        PropTypes.shape({
+          text: PropTypes.string.isRequired,
+          // ()=>()
+          onClick: PropTypes.func.isRequired
+        })
+      ),
+      // (Date)=>bool, if true, disabled
+      disabledDate: PropTypes.func,
+      firstDayOfWeek: PropTypes.range(0, 6),
+      //()=>HtmlElement
+      getPopperRefElement: PropTypes.func,
+      popperMixinOption: PropTypes.object
+    }, PopperBase.propTypes)
+  }
+
   constructor(props: DateRangePanelProps) {
     super(props)
 
     this.state = {}
     this.state = Object.assign(this.state, mapPropsToState(props))
-    PopperReactMixin.call(this, () => this.refs.root, props.getPopperRefElement, Object.assign({
-      boundariesPadding: 0,
-      gpuAcceleration: false
-    }, props.popperMixinOption));
   }
 
   componentWillReceiveProps(nextProps: any) {
     this.setState(mapPropsToState(nextProps))
   }
 
-  handleRangePick({minDate, maxDate}: {minDate: Date, maxDate: Date}, isClose: boolean) {
-    const {showTime, onPick} = this.props
+  handleRangePick({ minDate, maxDate }: { minDate: Date, maxDate: Date }, isClose: boolean) {
+    const { showTime, onPick } = this.props
     this.setState({ minDate, maxDate })
     if (!isClose) return;
     if (!showTime) {
@@ -76,14 +99,14 @@ export default class DateRangePanel extends Component {
   }
 
   prevYear() {
-    const {date} = this.state
+    const { date } = this.state
     this.setState({
       date: prevYear(date),
     })
   }
 
   nextYear() {
-    const {date} = this.state
+    const { date } = this.state
     this.setState({
       date: nextYear(date),
     })
@@ -116,8 +139,8 @@ export default class DateRangePanel extends Component {
   }
 
   //todo: wired way to do sth like this? try to come up with a better option
-  handleChangeRange({endDate}: {endDate: ?Date}) {
-    const {rangeState, minDate} = this.state
+  handleChangeRange({ endDate }: { endDate: ?Date }) {
+    const { rangeState, minDate } = this.state
     if (endDate <= minDate) endDate = null
 
     rangeState.endDate = endDate
@@ -131,8 +154,8 @@ export default class DateRangePanel extends Component {
   }
 
   render() {
-    const {shortcuts, showTime, disabledDate, firstDayOfWeek} = this.props
-    const {date, rangeState, minDate, maxDate} = this.state
+    const { shortcuts, showTime, disabledDate, firstDayOfWeek } = this.props
+    const { date, rangeState, minDate, maxDate } = this.state
     const rightDate = this.rightDate
 
 
@@ -148,7 +171,7 @@ export default class DateRangePanel extends Component {
           'has-sidebar': shortcuts,
           'has-time': showTime
         })}
-        >
+      >
         <div className="el-picker-panel__body-wrapper">
           {
             Array.isArray(shortcuts) && (
@@ -192,7 +215,7 @@ export default class DateRangePanel extends Component {
                 onChangeRange={this.handleChangeRange.bind(this)}
                 onPick={this.handleRangePick.bind(this)}
                 firstDayOfWeek={firstDayOfWeek}
-                />
+              />
             </div>
             <div className="el-picker-panel__content el-date-range-picker__content is-right">
               <div className="el-date-range-picker__header">
@@ -217,7 +240,7 @@ export default class DateRangePanel extends Component {
                 onChangeRange={this.handleChangeRange.bind(this)}
                 onPick={this.handleRangePick.bind(this)}
                 firstDayOfWeek={firstDayOfWeek}
-                />
+              />
             </div>
           </div>
         </div>
@@ -228,30 +251,6 @@ export default class DateRangePanel extends Component {
 }
 
 
-DateRangePanel.propTypes = {
-  // user picked date value
-  /*
-  value: null | [Date, null | false]
-  */
-  value: PropTypes.any,
-  // ([value1, value2]|null, isKeepPanel)=>()
-  onPick: PropTypes.func.isRequired,
-  showTime: PropTypes.bool,
-  // Array[{text: String, onClick: (picker)=>()}]
-  shortcuts: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      // ()=>()
-      onClick: PropTypes.func.isRequired
-    })
-  ),
-  // (Date)=>bool, if true, disabled
-  disabledDate: PropTypes.func,
-  firstDayOfWeek: PropTypes.range(0, 6),
-  //()=>HtmlElement
-  getPopperRefElement: PropTypes.func,
-  popperMixinOption: PropTypes.object
-}
 
 DateRangePanel.defaultProps = {
 

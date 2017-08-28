@@ -1,12 +1,12 @@
 //@flow
 import React from 'react';
 
-import { PropTypes, Component } from '../../../libs';
+import { PropTypes } from '../../../libs';
 import { limitRange, parseDate } from '../utils';
 import TimeSpinner from '../basic/TimeSpinner';
-import { PopperReactMixin } from '../../../libs/utils';
 import Locale from '../../locale';
 import type {TimeRangePanelProps } from '../Types';
+import { PopperBase } from './PopperBase'
 
 const MIN_TIME = parseDate('00:00:00', 'HH:mm:ss');
 const MAX_TIME = parseDate('23:59:59', 'HH:mm:ss');
@@ -50,12 +50,11 @@ const mapPropsToState = props => {
   return state;
 };
 
-export default class TimeRangePanel extends Component {
+export default class TimeRangePanel extends PopperBase {
   state: any;
 
   static get propTypes() {
     return Object.assign(
-      {},
       {
         pickerWidth: PropTypes.number,
         currentDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
@@ -71,11 +70,7 @@ export default class TimeRangePanel extends Component {
         onCancel: PropTypes.func.isRequired,
         // (start, end)=>(), index range indicate which field [hours, minutes, seconds] changes
         onSelectRangeChange: TimeSpinner.propTypes.onSelectRangeChange,
-        //()=>HtmlElement
-        getPopperRefElement: PropTypes.func,
-        popperMixinOption: PropTypes.object
-      }
-    );
+      }, PopperBase.propTypes);
   }
 
   static get defaultProps() {
@@ -93,19 +88,6 @@ export default class TimeRangePanel extends Component {
         width: 0
       },
       mapPropsToState(props)
-    );
-
-    PopperReactMixin.call(
-      this,
-      () => this.refs.root,
-      props.getPopperRefElement,
-      Object.assign(
-        {
-          boundariesPadding: 0,
-          gpuAcceleration: false
-        },
-        props.popperMixinOption
-      )
     );
   }
 
