@@ -1,20 +1,34 @@
 //@flow
 import React from 'react';
 
-import { PropTypes, Component } from '../../../libs';
-import { PopperReactMixin } from '../../../libs/utils'
+import { PropTypes } from '../../../libs';
 import { scrollIntoView } from '../../../libs/utils/dom';
 
 import { Scrollbar } from '../../scrollbar'
 import type {TimeSelectPanelProps } from '../Types';
+import { PopperBase } from './PopperBase'
 
-export default class TimeSelectPanel extends Component {
+export default class TimeSelectPanel extends PopperBase {
+
+  static get propTypes() {
+    return Object.assign({
+      start: PropTypes.string,
+      end: PropTypes.string,
+      step: PropTypes.string,
+      minTime: PropTypes.string,
+      maxTime: PropTypes.string,
+      value: PropTypes.string,
+      onPicked: PropTypes.func,
+      //(string)=>date
+      dateParser: PropTypes.func.isRequired,
+      //()=>HtmlElement
+      getPopperRefElement: PropTypes.func,
+      popperMixinOption: PropTypes.object
+    }, PopperBase.propTypes)
+  }
+
   constructor(props: TimeSelectPanelProps) {
     super(props);
-    PopperReactMixin.call(this, () => this.refs.root, this.props.getPopperRefElement, Object.assign({
-      boundariesPadding: 0,
-      gpuAcceleration: false
-    }, props.popperMixinOption));
   }
 
   handleClick(item: any) {
@@ -89,22 +103,6 @@ TimeSelectPanel.items = ({ start, end, step, minTime, maxTime }) => {
   }
   return result;
 }
-
-
-TimeSelectPanel.propTypes = {
-  start: PropTypes.string,
-  end: PropTypes.string,
-  step: PropTypes.string,
-  minTime: PropTypes.string,
-  maxTime: PropTypes.string,
-  value: PropTypes.string,
-  onPicked: PropTypes.func,
-  //(string)=>date
-  dateParser: PropTypes.func.isRequired,
-  //()=>HtmlElement
-  getPopperRefElement: PropTypes.func,
-  popperMixinOption: PropTypes.object
-};
 
 TimeSelectPanel.defaultProps = {
   start: '09:00',
