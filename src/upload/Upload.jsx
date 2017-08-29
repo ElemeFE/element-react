@@ -57,17 +57,18 @@ export default class Upload extends Component {
   }
 
   getFile(file: RawFile): ?_File {
-    const { fileList } = this.state;
-    const target = fileList.find(item => item.uid === file.uid);
-    if (target) {
-      return target;
+    if (file) {
+      return this.state.fileList.find(item => item.uid === file.uid);
     }
+
     return null;
   }
 
   handleStart(file: RawFile): void {
     let { tempIndex, fileList } = this.state;
+
     file.uid = Date.now() + tempIndex++;
+
     let _file: _File = {
       status: 'ready',
       name: file.name,
@@ -76,12 +77,13 @@ export default class Upload extends Component {
       uid: file.uid,
       raw: file
     };
+
     try {
       _file.url = URL.createObjectURL(file);
     } catch (err) {
-      console.error(err);
       return;
     }
+
     fileList.push(_file);
     this.setState({
       fileList,
@@ -201,14 +203,14 @@ export default class Upload extends Component {
       data,
       accept,
       listType,
-      onStart: file => this.handleStart(file),
-      onProgress: (e, file) => this.handleProgress(e, file),
-      onSuccess: (res, file) => this.handleSuccess(res, file),
-      onError: (error, res, file) => this.handleError(error, file),
-      onPreview: file => this.handlePreview(file),
-      onRemove: file => this.handleRemove(file),
-      ref: 'upload-inner',
-      showCover: this.showCover()
+      onStart: this.handleStart.bind(this),
+      onProgress: this.handleProgress.bind(this),
+      onSuccess: this.handleSuccess.bind(this),
+      onError: this.handleError.bind(this),
+      onPreview: this.handlePreview.bind(this),
+      onRemove: this.handleRemove.bind(this),
+      showCover: this.showCover(),
+      ref: 'upload-inner'
     };
     const trigger = this.props.trigger || this.props.children;
     const uploadComponent = typeof FormData !== 'undefined'

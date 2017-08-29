@@ -289,7 +289,7 @@ submitUpload() {
 | onPreview | hook function when clicking the uploaded files | function(file) | — | — |
 | onRemove | hook function when files are removed | function(file, fileList) | — | — |
 | onSuccess | hook function when uploaded successfully | function(response, file, fileList) | — | — |
-| onError | hook function when some errors occurs | function(err, response, file) | — | — |
+| onError | hook function when some errors occurs | function(err, file, fileList) | — | — |
 | onProgress | hook function when some progress occurs | function(event, file, fileList) | — | — |
 | onChange | hook function when file status change | function(file, fileList) | — | — |
 | beforeUpload | hook function before uploading with the file to be uploaded as its parameter. If `false` or a `Promise` is returned, uploading will be aborted | function(file) | — | — |
