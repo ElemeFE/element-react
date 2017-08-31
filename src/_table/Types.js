@@ -16,36 +16,24 @@ export type Column = {
   filterMethod: ()=>void,
   filters: Array<Object>,
   expandPannel: (any)=>any,
-  render: ()=>void,
-  renderHeader: () => void
+  render: ()=>void
 };
 
-export type TableStoreProps = {
-  data: Array<Object>,
+export type TableProps = {
   columns: Array<Column>,
-  style: Object,
-  height: string | number,
-  maxHeight: string | number,
+  data: Array<Object>,
+  height: number,
+  maxHeight: number,
   stripe: boolean,
   border: boolean,
   fit: boolean,
-  showHeader: boolean,
+  rowClassName: ()=>void,
+  style: Object,
   highlightCurrentRow: boolean,
-  currentRowKey: string | number,
-  rowClassName: ((row: Object, index: number) => string) | string,
-  rowStyle: ((row: Object, index: number) => Object) | Object,
-  rowKey: ((row: Object) => string | number) | string,
-  emptyText: string,
-  defaultExpandAll: boolean,
-  expandRowKeys: Array<number | string>,
-  defaultSort: {
-    prop: string,
-    order?: 'ascending' | 'descending',
-  },
-  toolTipEffect: 'dark' | 'light',
-  showSummary: boolean,
   sumText: string,
-  summaryMethod: ({ column: Array<Column>, data: Array<Object> }) => any,
+  emptyText: string,
+  showSummary: boolean,
+  getSummaries: ()=>void,
 
   //Event
   onCurrentChange: ()=>void,
@@ -53,30 +41,35 @@ export type TableStoreProps = {
   onSelectChange: ()=>void
 };
 
-export type TableStoreState = {
-
-};
-
-export type TableLayoutProps = TableStoreProps & { store: TableStoreState };
-
-export type TableLayoutState = {
-
-};
-
-export type TableProps = TableLayoutProps & { layout: TableLayoutState };
-
 export type TableState = {
+  columns: Array<Column>,
+  _columns: Array<Object>,
+  fixedLeftColumns: Array<Object>,
+  fixedRightColumns: Array<Object>,
+  data: Array<Object>,
+  sortList: null | Array<Object>,
+  filterList: null | Array<Object>,
 
+  bodyWidth: '' | number,
+  bodyHeight: '' | number,
+  headerHeight: '' | number,
+  realTableHeaderHeight: '' | number,
+  realTableHeight: '' | number,
+  realTableWidth: '' | number,
+  resizeProxyVisible: boolean,
+
+  scrollY: boolean,
+  scrollX: boolean
 };
 
-// export type DefaultTableProps = {
-//   columns: Array<Column>,
-//   data: Array<Object>,
-//   stripe: boolean,
-//   border: boolean,
-//   fit: boolean,
-//   highlightCurrentRow: boolean
-// };
+export type DefaultTableProps = {
+  columns: Array<Column>,
+  data: Array<Object>,
+  stripe: boolean,
+  border: boolean,
+  fit: boolean,
+  highlightCurrentRow: boolean
+};
 
 
 export type TableHeaderProps = {
