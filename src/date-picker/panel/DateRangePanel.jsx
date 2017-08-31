@@ -125,17 +125,7 @@ export default class DateRangePanel extends PopperBase {
   }
 
   get rightDate(): Date {
-    const newDate = new Date(this.state.date);
-    const month = newDate.getMonth();
-    newDate.setDate(1);
-
-    if (month === 11) {
-      newDate.setFullYear(newDate.getFullYear() + 1);
-      newDate.setMonth(0);
-    } else {
-      newDate.setMonth(month + 1);
-    }
-    return newDate;
+    return nextMonth(this.state.date)
   }
 
   //todo: wired way to do sth like this? try to come up with a better option
@@ -161,7 +151,7 @@ export default class DateRangePanel extends PopperBase {
 
     const t = Locale.t
     const leftLabel = `${date.getFullYear()} ${t('el.datepicker.year')} ` + t(`el.datepicker.month${date.getMonth() + 1}`)
-    const rightLabel = `${date.getFullYear()} ${t('el.datepicker.year')} ` + t(`el.datepicker.month${rightDate.getMonth() + 1}`);
+    const rightLabel = `${rightDate.getFullYear()} ${t('el.datepicker.year')} ` + t(`el.datepicker.month${rightDate.getMonth() + 1}`);
 
 
     return (
