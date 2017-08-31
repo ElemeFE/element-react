@@ -131,22 +131,22 @@ export const prevMonth = function (src) {
 };
 
 export const nextMonth = function (src) {
-  const year = src.getFullYear();
-  const month = src.getMonth();
-  const date = src.getDate();
+  let clone = new Date(src.getTime())
+  const year = clone.getFullYear();
+  const month = clone.getMonth();
+  const date = clone.getDate();
 
   const newYear = month === 11 ? year + 1 : year;
   const newMonth = month === 11 ? 0 : month + 1;
 
   const newMonthDayCount = getDayCountOfMonth(newYear, newMonth);
   if (newMonthDayCount < date) {
-    src.setDate(newMonthDayCount);
+    clone.setDate(newMonthDayCount);
   }
 
-  src.setMonth(newMonth);
-  src.setFullYear(newYear);
-
-  return new Date(src.getTime());
+  clone.setMonth(newMonth);
+  clone.setFullYear(newYear);
+  return clone;
 };
 
 export const getRangeHours = function (ranges) {
