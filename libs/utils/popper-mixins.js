@@ -1,19 +1,19 @@
 import PopperJS from './popper';
-import {require_condition} from './assert'
+import { require_condition } from './assert'
 
 const mixinPrototype = {
-    //---------- start: public methods
-    /**
-     * @param {HTMLElement} popupElement - The reference element used to position the popper.
-     * @param {HTMLElement} refElement - The HTML element used as popper, or a configuration used to generate the popper.
-     * @param {object} popperOptions, PopperJS options
-     */
+  //---------- start: public methods
+  /**
+   * @param {HTMLElement} popupElement - The reference element used to position the popper.
+   * @param {HTMLElement} refElement - The HTML element used as popper, or a configuration used to generate the popper.
+   * @param {object} popperOptions, PopperJS options
+   */
   createPopper(popupElement, refElement, popperOptions) {
     require_condition(popupElement && refElement)
 
-    const {visibleArrow, placement, zIndex, offset, width, ...others} = this._popper_config
-    popperOptions = {...popperOptions, ...others}
-    
+    const { visibleArrow, placement, zIndex, offset, width, ...others } = this._popper_config
+    popperOptions = { ...popperOptions, ...others }
+
     if (!/^(top|bottom|left|right)(-start|-end)?$/g.test(placement)) {
       return;
     }
@@ -34,7 +34,7 @@ const mixinPrototype = {
     if (!popperOptions.offset) {
       popperOptions.offset = offset;
     }
-    
+
     this._poperJS = new PopperJS(reference, popper, popperOptions);
 
     this._poperJS.onCreate(() => {
@@ -45,7 +45,7 @@ const mixinPrototype = {
     });
   },
 
-  destroyPopper () {
+  destroyPopper() {
     if (this._poperJS && this._popper_state.isCreated) {
       this._poperJS.destroy();
       this._poperJS = null;
@@ -137,7 +137,6 @@ const PopperReactMixinMethods = {
   }
 }
 
-let register = new Set()
 /**
  * this Mixin provide utility method to hook reactjs component lifecycle
  * 
@@ -148,11 +147,8 @@ export function PopperReactMixin(getPopperRootDom, getRefDom, config) {
   require_condition(typeof getPopperRootDom === 'function', '`getPopperRootDom` func is required!')
   require_condition(typeof getRefDom === 'function', '`getRefDom` func is required!')
 
-  if (!register.has(this.constructor)){
-    this.constructor.prototype = Object.assign(this.constructor.prototype, mixinPrototype)
-    register.add(this.constructor)
-  }
   PopperMixin.call(this, config)
+  Object.keys(mixinPrototype).forEach(k=>this[k]=mixinPrototype[k])
   PopperReactMixinMethods.hookReactLifeCycle.call(this, getPopperRootDom, getRefDom)
 
   return this

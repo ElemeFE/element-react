@@ -112,6 +112,8 @@ export default class DateRangePanel extends PopperBase {
     })
   }
 
+
+
   prevMonth() {
     this.setState({
       date: prevMonth(this.state.date)
