@@ -1,8 +1,9 @@
 // @flow
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
-import { getRowIdentity } from "./utils";
+import { getRowIdentity, getValueByPath } from "./utils";
 import {toDate} from "../date-picker/utils/index";
+
 
 export default class TableBody extends Component {
   isColumnHidden(index) {
@@ -63,8 +64,8 @@ export default class TableBody extends Component {
         }}
       >
         <colgroup>
-          {store.columns.map((column) => (
-            <col style={{ width: column.realWidth || column.width }} />
+          {store.columns.map((column, index) => (
+            <col style={{ width: column.realWidth || column.width }} key={index} />
           ))}
         </colgroup>
         <tbody>
@@ -81,11 +82,12 @@ export default class TableBody extends Component {
           >
             {store.columns.map((column, index) => (
               <td
+                key={index}
                 className={this.className(column.className || '', {
                   'is-hidden': columnsHidden[index]
                 })}
               >
-
+                {getValueByPath(row, column.property)}
               </td>
             ))}
           </tr>

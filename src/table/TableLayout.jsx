@@ -15,6 +15,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
 
     constructor(props) {
       super(props);
+      this.state = {};
     }
 
     getChildContext() {

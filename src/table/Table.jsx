@@ -30,6 +30,7 @@ class Table extends Component<TableProps, TableState> {
 
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   get bodyWrapperStyle() {
@@ -90,7 +91,7 @@ class Table extends Component<TableProps, TableState> {
       }
 
       style = {
-        'max-height': maxHeight + 'px'
+        maxHeight: maxHeight + 'px'
       };
     }
 
@@ -141,7 +142,7 @@ class Table extends Component<TableProps, TableState> {
             rowClassName={props.rowClassName}
             rowStyle={props.rowStyle}
             highlight={props.highlightCurrentRow}
-            style={{ width: this.getBodyWidth(layout) }}
+            style={{ width: this.bodyWidth }}
           />
           {(!props.data || !props.data.length) && (
             <div
@@ -159,6 +160,8 @@ class Table extends Component<TableProps, TableState> {
             ref={this.bindRef('footerWrapper')}
           >
             <TableFooter
+              store={store}
+              layout={layout}
               border={props.border}
               sumText={props.sumText}
               summaryMethod={props.summaryMethod}
@@ -178,6 +181,8 @@ class Table extends Component<TableProps, TableState> {
             {props.showHeader && (
               <div className="el-table__fixed-header-wrapper" ref={this.bindRef('fixedHeaderWrapper')}>
                 <TableHeader
+                  store={store}
+                  layout={layout}
                   fixed="left"
                   border={props.border}
                   style={{ width: layout.fixedWidth ? layout.fixedWidth + 'px' : '' }}
@@ -192,6 +197,8 @@ class Table extends Component<TableProps, TableState> {
               ref={this.bindRef('fixedBodyWrapper')}
             >
               <TableBody
+                store={store}
+                layout={layout}
                 fixed="left"
                 hightlight={props.highlightCurrentRow}
                 rowClassName={props.rowClassName}
@@ -202,6 +209,8 @@ class Table extends Component<TableProps, TableState> {
             {props.showSummary && (
               <div className="el-table__fixed-footer-wrapper" ref={this.bindRef('fixedFooterWrapper')}>
                 <TableFooter
+                  store={store}
+                  layout={layout}
                   fixed="left"
                   border={props.border}
                   sumText={props.sumText}
@@ -224,6 +233,8 @@ class Table extends Component<TableProps, TableState> {
             {props.showHeader && (
               <div className="el-table__fixed-header-wrapper" ref={this.bindRef('rightFixedHeaderWrapper')}>
                 <TableHeader
+                  store={store}
+                  layout={layout}
                   fixed="right"
                   border={props.border}
                   style={{ width: layout.rightFixedWidth ? layout.rightFixedWidth + 'px' : '' }}
@@ -238,6 +249,8 @@ class Table extends Component<TableProps, TableState> {
               }, this.fixedBodyHeight)}
             >
               <TableBody
+                store={store}
+                layout={layout}
                 fixed="right"
                 hightlight={props.highlightCurrentRow}
                 rowClassName={props.rowClassName}
@@ -252,6 +265,8 @@ class Table extends Component<TableProps, TableState> {
                 style={{ visibility: props.data && props.data.length ? 'visible' : 'hidden' }}
               >
                 <TableFooter
+                  store={store}
+                  layout={layout}
                   fixed="right"
                   border={props.border}
                   sumText={props.sumText}
@@ -274,4 +289,4 @@ class Table extends Component<TableProps, TableState> {
   }
 }
 
-export default TableLayoutHOC(TableLayoutHOC(Table));
+export default TableStoreHOC(TableLayoutHOC(Table));

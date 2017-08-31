@@ -26,11 +26,27 @@ export const getScrollBarWidth = () => {
   return widthNoScroll - widthWithScroll;
 };
 
+export function getValueByPath(data, path) {
+  if (typeof path !== 'string') return null;
+  return path.split('.').reduce((pre, cur) => pre[cur], data);
+}
+
 export function getRowIdentity(row, rowKey) {
   if (!row) throw new Error('row is required when get row identity');
   if (typeof rowKey === 'string') {
-    return rowKey.split('.').reduce((pre, cur) => pre[cur], row);
+    return getValueByPath(row, rowKey);
   } else if (typeof rowKey === 'function') {
-    return rowKey.call(null, row);
+    return rowKey(row);
   }
+}
+
+export function flattenColumns(columns) {
+  const result = [];
+  columns.forEach((column) => {
+    result.push(column);
+    if (column.subColumns) {
+      result.push(...flattenColumns(column.subColumns));
+    }
+  });
+  return result;
 }

@@ -65,29 +65,31 @@ export default class TableHeader extends Component {
 
     return (
       <table
-        classname="el-table__header"
+        className="el-table__header"
         style={{
           border: '0',
           borderCollapse: 'collapse'
         }}
       >
         <colgroup>
-          {store.columns.map((column) => (
+          {store.columns.map((column, index) => (
             <col
               style={{
                 width: column.realWidth || column.width,
               }}
+              key={index}
             />
           ))}
         </colgroup>
         <thead>
           {columnRows.map((columns, rowIndex) => (
-            <tr>
+            <tr key={rowIndex}>
               {columns.map((column, cellIndex) => (
                 <th
-                  colspan={column.colSpan}
-                  rowspan={column.rowSpan}
+                  colSpan={column.colSpan}
+                  rowSpan={column.rowSpan}
                   className={this.className()}
+                  key={cellIndex}
                 >
                   <div className="">
                     {column.renderHeader ? column.renderHeader() : column.label}
