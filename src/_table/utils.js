@@ -25,12 +25,3 @@ export const getScrollBarWidth = () => {
 
   return widthNoScroll - widthWithScroll;
 };
-
-export function getRowIdentity(row, rowKey) {
-  if (!row) throw new Error('row is required when get row identity');
-  if (typeof rowKey === 'string') {
-    return rowKey.split('.').reduce((pre, cur) => pre[cur], row);
-  } else if (typeof rowKey === 'function') {
-    return rowKey.call(null, row);
-  }
-}
