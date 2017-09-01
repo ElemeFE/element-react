@@ -15,6 +15,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<Table
   return class TableStore extends Component<TableStoreProps, TableStoreState> {
     static defaultProps = {
       showHeader: true,
+      fit: true,
     };
 
     static childContextTypes = {
@@ -27,7 +28,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<Table
       this.state = {
         rowKey: props.rowKey,
         defaultExpandAll: props.defaultExpandAll,
-        _columns: null, // transformed origin columns props
+        _columns: null, // transformed columns props
         fixedColumns: null, // left fixed columns from _columns
         rightFixedColumns: null, // right fixed columns from _columns
         originColumns: null, // _columns sorted by 'fixed'

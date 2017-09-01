@@ -104,12 +104,15 @@ class Table extends Component<TableProps, TableState> {
 
   render() {
     const { store, layout, ...props } = this.props;
-    const { isHidden } = this.state;
+    const { isHidden, resizeProxyVisible } = this.state;
 
     return (
       <div
-        style={props.style}
-        className={this.className('el-table', {
+        style={this.style({
+          height: props.height,
+          maxHeight: props.maxHeight,
+        })}
+        className={this.classNames('el-table', {
           'el-table--fit': props.fit,
           'el-table--striped': props.stripe,
           'el-table--border': props.border,
@@ -118,6 +121,7 @@ class Table extends Component<TableProps, TableState> {
           'el-table--enable-row-hover': !store.isComplex,
           'el-table--enable-row-transition': (store.data || []).length && (store.data || []).length < 100
         })}
+        ref={this.bindRef('el')}
       >
         {props.showHeader && (
           <div className="el-table__header-wrapper" ref={this.bindRef('headerWrapper')}>
@@ -170,7 +174,7 @@ class Table extends Component<TableProps, TableState> {
             />
           </div>
         )}
-        {store.fixedColumns.length && (
+        {!!store.fixedColumns.length && (
           <div
             style={Object.assign({}, this.fixedHeight, {
               width: layout.fixedWidth ? layout.fixedWidth + 'px' : ''
@@ -221,7 +225,7 @@ class Table extends Component<TableProps, TableState> {
             )}
           </div>
         )}
-        {store.rightFixedColumns.length && (
+        {!!store.rightFixedColumns.length && (
           <div
             className="el-table__fixed-right"
             ref={this.bindRef('rightFixedWrapper')}
@@ -277,13 +281,13 @@ class Table extends Component<TableProps, TableState> {
             )}
           </div>
         )}
-        {store.rightFixedColumns.length && (
+        {!!store.rightFixedColumns.length && (
           <div
             className="el-table__fixed-right-patch"
             style={{ width: layout.scrollY ? layout.gutterWidth + 'px' : '0', height: layout.headerHeight + 'px' }}
           />
         )}
-        <div className="el-table__column-resize-proxy" ref={this.bindRef('resizeProxy')} />
+        {resizeProxyVisible && <div className="el-table__column-resize-proxy" ref={this.bindRef('resizeProxy')} />}
       </div>
     )
   }

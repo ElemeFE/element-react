@@ -1,6 +1,13 @@
+import * as React from 'react';
 import Checkbox from '../checkbox';
 import Tag from '../tag';
 import { getValueByPath } from "./utils";
+
+function defaultRender(text) {
+  return (
+    <div className="cell">{text}</div>
+  );
+}
 
 const defaults = {
   default: {
@@ -40,7 +47,8 @@ export default function normalizeColumns(columns) {
       _column.label = column.label;
       _column.subColumns = normalizeColumns(column.subColumns);
     } else {
-      let width = column.width;
+      let { width, minWidth } = column;
+
       if (width !== undefined) {
         width = parseInt(width, 10);
         if (isNaN(width)) {
@@ -48,12 +56,13 @@ export default function normalizeColumns(columns) {
         }
       }
 
-      let minWidth = column.minWidth;
       if (minWidth !== undefined) {
         minWidth = parseInt(minWidth, 10);
         if (isNaN(minWidth)) {
           minWidth = 80;
         }
+      } else {
+        minWidth = 80;
       }
 
       _column = Object.assign({}, column, {
@@ -61,7 +70,7 @@ export default function normalizeColumns(columns) {
         minWidth,
         realWidth: width || minWidth,
         property: column.prop || column.property,
-        // render: column.render || getValueByPath,
+        render: column.render || defaultRender,
         align: column.align ? 'is-' + column.align : null,
         headerAlign: column.headerAlign ? 'is-' + column.headerAlign : column.align ? 'is-' + column.align : null,
       }, defaults[column.type]);
