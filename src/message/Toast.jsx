@@ -75,7 +75,7 @@ export default class Toast extends Component {
 
 Toast.propTypes = {
   type: PropTypes.oneOf(['success', 'warning', 'info', 'error']),
-  message: PropTypes.string.isRequired,
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   duration: PropTypes.number,
   showClose: PropTypes.bool,
   customClass: PropTypes.string,

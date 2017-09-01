@@ -94,7 +94,7 @@ export default class Notification extends Component {
 Notification.propTypes = {
   type: PropTypes.oneOf(['success', 'warning', 'info', 'error']),
   title: PropTypes.string,
-  message: PropTypes.string,
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   duration: PropTypes.number,
   iconClass: PropTypes.string,
   onClick: PropTypes.func,
