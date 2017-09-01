@@ -1,10 +1,10 @@
 // @flow
 let scrollBarWidth;
 
-export const getScrollBarWidth = () => {
+export function getScrollBarWidth() {
   if (scrollBarWidth !== undefined) return scrollBarWidth;
   const outer = document.createElement('div');
-  var body:any = document.body || outer;
+  const body:any = document.body || outer;
 
   outer.style.visibility = 'hidden';
   outer.style.width = '100px';
@@ -43,9 +43,10 @@ export function getRowIdentity(row, rowKey) {
 export function flattenColumns(columns) {
   const result = [];
   columns.forEach((column) => {
-    result.push(column);
     if (column.subColumns) {
       result.push(...flattenColumns(column.subColumns));
+    } else {
+      result.push(column);
     }
   });
   return result;

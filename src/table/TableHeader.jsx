@@ -75,7 +75,7 @@ export default class TableHeader extends Component {
           {store.columns.map((column, index) => (
             <col
               style={{
-                width: column.realWidth || column.width,
+                width: column.realWidth,
               }}
               key={index}
             />
@@ -91,7 +91,7 @@ export default class TableHeader extends Component {
                   className={this.className()}
                   key={cellIndex}
                 >
-                  <div className="">
+                  <div className={this.className('cell')}>
                     {column.renderHeader ? column.renderHeader() : column.label}
                   </div>
                 </th>

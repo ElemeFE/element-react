@@ -65,29 +65,29 @@ export default class TableBody extends Component {
       >
         <colgroup>
           {store.columns.map((column, index) => (
-            <col style={{ width: column.realWidth || column.width }} key={index} />
+            <col style={{ width: column.realWidth }} key={index} />
           ))}
         </colgroup>
         <tbody>
-        {store.data.map((row, index) => (
+        {store.data.map((row, rowIndex) => (
           <tr
-            key={props.rowKey ? this.getKeyOfRow(row, index) : index}
-            style={props.rowStyle ? this.getRowStyle(row, index) : null}
+            key={props.rowKey ? this.getKeyOfRow(row, rowIndex) : rowIndex}
+            style={props.rowStyle ? this.getRowStyle(row, rowIndex) : null}
             className={this.className('el-table__row', {
-              'el-table__row--striped': props.stripe && index % 2 === 1
+              'el-table__row--striped': props.stripe && rowIndex % 2 === 1
             }, typeof props.rowClassName === 'string'
               ? props.rowClassName
               : typeof props.rowClassName === 'function'
-              && props.rowClassName(row, index))}
+              && props.rowClassName(row, rowIndex))}
           >
-            {store.columns.map((column, index) => (
+            {store.columns.map((column, cellIndex) => (
               <td
-                key={index}
+                key={cellIndex}
                 className={this.className(column.className || '', {
-                  'is-hidden': columnsHidden[index]
+                  'is-hidden': columnsHidden[cellIndex]
                 })}
               >
-                {getValueByPath(row, column.property)}
+                {column.render(getValueByPath(row, column.property), row, rowIndex)}
               </td>
             ))}
           </tr>
