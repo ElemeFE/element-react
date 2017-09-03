@@ -58,10 +58,10 @@ export default class TableBody extends Component {
     return (
       <table
         className="el-table__body"
-        style={{
+        style={this.style({
           borderCollapse: 'collapse',
           border: 0
-        }}
+        })}
       >
         <colgroup>
           {store.columns.map((column, index) => (
@@ -90,6 +90,9 @@ export default class TableBody extends Component {
                 {column.render(getValueByPath(row, column.property), row, rowIndex)}
               </td>
             ))}
+            {!props.fixed && layout.scrollY && layout.gutterWidth && (
+              <td className="gutter" />
+            )}
           </tr>
         ))}
         </tbody>

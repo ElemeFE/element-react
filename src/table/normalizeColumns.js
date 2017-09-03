@@ -44,6 +44,7 @@ export default function normalizeColumns(columns) {
   return columns.map((column) => {
     let _column = {};
     if (column.subColumns) {
+      // renderHeader
       _column.label = column.label;
       _column.subColumns = normalizeColumns(column.subColumns);
     } else {

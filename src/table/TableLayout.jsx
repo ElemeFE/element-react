@@ -6,7 +6,6 @@ import type {
   TableProps,
   TableLayoutState,
 } from './Types';
-import th from "../locale/lang/th";
 
 import {flattenColumns, getScrollBarWidth} from "./utils";
 
@@ -21,12 +20,15 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
       this.state = {
         // fit: props.fit,
         // show
+        height: props.height || props.maxHeight,
         gutterWidth: getScrollBarWidth(),
         tableHeight: null,
         headerHeight: null,
         bodyHeight: null,
         footerHeight: null,
-        fixedBodyHeight: null
+        fixedBodyHeight: null,
+        scrollX: null,
+        scrollY: null,
       };
     }
 
@@ -35,6 +37,17 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
 
       this.update();
       this.updateHeight();
+      this.updateScrollY();
+    }
+
+    componentWillReceiveProps(nextProps) {
+      const preHeight = this.props.height || this.props.maxHeight;
+      const nextHeight = nextProps.height || nextProps.maxHeight;
+      if (preHeight !== nextHeight) {
+        this.setState({
+          height: nextHeight
+        });
+      }
     }
 
     componentDidUpdate(preProps) {
@@ -58,7 +71,6 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
       // mutate TableStore's state(columns), thinking to avoid(move columns from store to layout)
       const flexColumns = columns.filter(column => typeof column.width !== 'number');
       if (flexColumns.length && fit) {
-        // console.log(columns,bodyWidth, gutterWidth);
         if (bodyMinWidth < bodyWidth - gutterWidth) { // no scroll bar
           scrollX = false;
 
@@ -82,6 +94,9 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
           }
         } else { // have horizontal scroll bar
           scrollX = true;
+          flexColumns.forEach((column) => {
+            column.realWidth = column.minWidth;
+          });
         }
 
         bodyWidth = Math.max(bodyMinWidth, bodyWidth);
@@ -98,26 +113,26 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
         rightFixedWidth = rightFixedColumns.reduce((pre, col) => pre + col.realWidth, 0);
       }
 
-      this.setState({
+      this.setState(Object.assign(this.state, {
         scrollX,
         bodyWidth,
         fixedWidth,
         rightFixedWidth
-      });
+      }));
     }
 
     updateHeight() {
-      const { data, height, showHeader } = this.props;
-      const { scrollX, gutterWidth } = this.state;
+      const { data, showHeader } = this.props;
+      const { height, scrollX, gutterWidth } = this.state;
       const tableHeight = this.el.clientHeight;
       const noData = !data || !data.length;
       const { headerWrapper, footerWrapper } = this.table;
 
       const footerHeight = footerWrapper ? footerWrapper.offsetHeight : 0;
 
-      let headerHeight;
-      let bodyHeight;
-      let fixedBodyHeight;
+      let headerHeight = 0;
+      let bodyHeight = null;
+      let fixedBodyHeight = null;
       if (!showHeader) {
         headerHeight = 0;
         if (height && (!isNaN(height) || typeof height === 'string')) {
@@ -132,16 +147,34 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
         fixedBodyHeight = scrollX ? tableHeight - (noData ? 0 : gutterWidth) : tableHeight;
       }
 
-      this.setState({
+      this.setState(Object.assign(this.state, {
         tableHeight,
         headerHeight,
         bodyHeight,
         footerHeight,
         fixedBodyHeight
-      });
+      }));
+    }
+
+    // has Y scroll bar or not
+    updateScrollY() {
+      // 更新高度前无法确定是否有滚动条
+      const { bodyWrapper } = this.table;
+      const { bodyHeight } = this.state;
+      if (!bodyHeight) return;
+
+      const body = bodyWrapper.querySelector('.el-table__body');
+      const scrollY = body.offsetHeight > bodyHeight;
+      console.log(scrollY)
+
+      this.setState(Object.assign(this.state, {
+        scrollY
+      }));
     }
 
     render() {
+      console.log(this.state);
+
       return (
         <WrapedComponent
           ref={(table) => { this.table = table; }}

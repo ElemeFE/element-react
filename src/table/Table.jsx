@@ -12,41 +12,39 @@ import type {
   TableState,
 } from './Types';
 
-class Table extends Component<TableProps, TableState> {
-  static defaultProps = {
-    columns: [],
-    data: [],
-    stripe: false,
-    border: false,
-    fit: true,
-    showSummary: false,
-    highlightCurrentRow: false
-  };
+let tableIdSeed = 1;
 
+class Table extends Component<TableProps, TableState> {
   static contextTypes = {
     store: PropTypes.object,
     layout: PropTypes.object,
   };
 
+
   constructor(props) {
     super(props);
     this.state = {};
+
+    // this.tableId = `el-table_${tableIdSeed++}_`;
+    this.tableId = tableIdSeed++;
   }
 
-  get bodyWrapperStyle() {
+  componentWillReceiveProps(next) {
+    // this.tableId === 'el-table_1_' && console.log(next.layout);
+  }
+
+  get bodyWrapperHeight() {
     const { layout, ...props } = this.props;
-    let style;
+    const style = {};
 
     if (props.height) {
-      style = {
-        height: layout.bodyHeight ? layout.bodyHeight + 'px' : ''
-      };
+      style.height = layout.bodyHeight ? layout.bodyHeight : '';
     } else if (props.maxHeight) {
-      style = {
-        'maxHeight': (props.showHeader
+      if (layout.headerHeight !== null) { // 非首次渲染
+        style.maxHeight = props.showHeader
           ? props.maxHeight - layout.headerHeight - layout.footerHeight
-          : props.maxHeight - layout.footerHeight) + 'px'
-      };
+          : props.maxHeight - layout.footerHeight
+      }
     }
 
     return style;
@@ -55,7 +53,7 @@ class Table extends Component<TableProps, TableState> {
   get bodyWidth() {
     const { layout } = this.props;
     const { bodyWidth, scrollY, gutterWidth } = layout;
-    return bodyWidth ? bodyWidth - (scrollY ? gutterWidth : 0) + 'px' : '';
+    return bodyWidth ? bodyWidth - (scrollY ? gutterWidth : 0) : '';
   }
 
   get fixedHeight() {
@@ -64,11 +62,11 @@ class Table extends Component<TableProps, TableState> {
 
     if (props.maxHeight) {
       style = {
-        bottom: (layout.scrollX && props.data.length) ? layout.gutterWidth + 'px' : ''
+        bottom: (layout.scrollX && props.data.length) ? layout.gutterWidth : ''
       };
     } else {
       style = {
-        height: layout.viewportHeight ? layout.viewportHeight + 'px' : ''
+        height: layout.viewportHeight ? layout.viewportHeight : ''
       };
     }
 
@@ -130,12 +128,12 @@ class Table extends Component<TableProps, TableState> {
               layout={layout}
               border={props.border}
               defaultSort={props.defaultSort}
-              style={{ width: !!layout.bodyWidth && layout.bodyWidth + 'px' }}
+              style={{ width: layout.bodyWidth || '' }}
             />
           </div>
         )}
         <div
-          style={this.bodyWrapperStyle}
+          style={this.bodyWrapperHeight}
           className="el-table__body-wrapper"
           ref={this.bindRef('bodyWrapper')}
         >
@@ -177,7 +175,7 @@ class Table extends Component<TableProps, TableState> {
         {!!store.fixedColumns.length && (
           <div
             style={Object.assign({}, this.fixedHeight, {
-              width: layout.fixedWidth ? layout.fixedWidth + 'px' : ''
+              width: layout.fixedWidth ? layout.fixedWidth + 'px' : null
             })}
             className="el-table__fixed"
             ref={this.bindRef('fixedWrapper')}
@@ -189,13 +187,13 @@ class Table extends Component<TableProps, TableState> {
                   layout={layout}
                   fixed="left"
                   border={props.border}
-                  style={{ width: layout.fixedWidth ? layout.fixedWidth + 'px' : '' }}
+                  style={{ width: layout.fixedWidth ? layout.fixedWidth + 'px' : null }}
                 />
               </div>
             )}
             <div
               style={Object.assign({}, this.fixedBodyHeight, {
-                top: layout.headerHeight + 'px'
+                top: layout.headerHeight ? layout.headerHeight + 'px' : null
               })}
               className="el-table__fixed-body-wrapper"
               ref={this.bindRef('fixedBodyWrapper')}
@@ -231,7 +229,7 @@ class Table extends Component<TableProps, TableState> {
             ref={this.bindRef('rightFixedWrapper')}
             style={Object.assign({}, {
               width: layout.rightFixedWidth ? layout.rightFixedWidth + 'px' : '',
-              right: layout.scrollY ? (border ? layout.gutterWidth : (layout.gutterWidth || 1)) + 'px' : ''
+              right: layout.scrollY ? (props.border ? layout.gutterWidth : (layout.gutterWidth || 1)) + 'px' : ''
             }, this.fixedHeight)}
           >
             {props.showHeader && (
