@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
-import th from "../locale/lang/th";
 
 function getAllColumns(columns) {
   const result = [];
@@ -59,17 +58,44 @@ function convertToRows(originColumns) {
 }
 
 export default class TableHeader extends Component {
+  isCellHidden(index, columns) {
+    const { fixed } = this.props;
+    if (fixed === true || fixed === 'left') {
+      return index >= this.leftFixedCount;
+    } else if (fixed === 'right') {
+      let before = 0;
+      for (let i = 0; i < index; i++) {
+        before += columns[i].colSpan;
+      }
+      return before < this.columnsCount - this.rightFixedCount;
+    } else {
+      return (index < this.leftFixedCount) || (index >= this.columnsCount - this.rightFixedCount);
+    }
+  }
+
+  get columnsCount() {
+    return this.props.store.columns.length;
+  }
+
+  get leftFixedCount() {
+    return this.props.store.fixedColumns.length;
+  }
+
+  get rightFixedCount() {
+    return this.props.store.rightFixedColumns.length;
+  }
+
   render() {
-    const { store, layout, ...props } = this.props;
+    const { store, layout, fixed } = this.props;
     const columnRows = convertToRows(store.originColumns);
 
     return (
       <table
         className="el-table__header"
-        style={{
+        style={this.style({
           border: '0',
           borderCollapse: 'collapse'
-        }}
+        })}
       >
         <colgroup>
           {store.columns.map((column, index) => (
@@ -80,6 +106,11 @@ export default class TableHeader extends Component {
               key={index}
             />
           ))}
+          {!fixed && (
+            <col
+              style={{ width: layout.scrollY ? layout.gutterWidth : 0 }}
+            />
+          )}
         </colgroup>
         <thead>
           {columnRows.map((columns, rowIndex) => (
@@ -88,7 +119,16 @@ export default class TableHeader extends Component {
                 <th
                   colSpan={column.colSpan}
                   rowSpan={column.rowSpan}
-                  className={this.className()}
+                  className={this.className(
+                    column.order,
+                    column.headerAlign,
+                    column.className,
+                    column.labelClassName,
+                    {
+                      'is-hidden': rowIndex === 0 && this.isCellHidden(cellIndex, columns),
+                      'is-leaf': !column.subColumns
+                    }
+                  )}
                   key={cellIndex}
                 >
                   <div className={this.className('cell')}>
@@ -96,10 +136,10 @@ export default class TableHeader extends Component {
                   </div>
                 </th>
               ))}
-              {!props.fixed && !!layout.gutterWidth && (
+              {!fixed && (
                 <th
                   className="gutter"
-                  style={{ width: layout.scrollY ? layout.gutterWidth + 'px' : '' }}
+                  style={{ width: layout.scrollY ? layout.gutterWidth : 0 }}
                 />
               )}
             </tr>
