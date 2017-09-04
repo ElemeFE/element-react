@@ -93,8 +93,8 @@ export default class TableHeader extends Component {
       <table
         className="el-table__header"
         style={this.style({
-          border: '0',
-          borderCollapse: 'collapse'
+          borderSpacing: 0,
+          border: 0
         })}
       >
         <colgroup>
