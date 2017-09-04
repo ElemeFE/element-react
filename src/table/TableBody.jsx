@@ -59,7 +59,7 @@ export default class TableBody extends Component {
       <table
         className="el-table__body"
         style={this.style({
-          borderCollapse: 'collapse',
+          borderSpacing: 0,
           border: 0
         })}
       >

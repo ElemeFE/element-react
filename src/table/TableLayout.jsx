@@ -90,6 +90,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
               column.realWidth = column.minWidth + flexWidth;
             });
 
+            // console.log(totalFlexWidth - widthWithoutFirst === flexColumns[0].minWidth * flexWidthPerPixel);
             flexColumns[0].realWidth = flexColumns[0].minWidth + totalFlexWidth - widthWithoutFirst;
           }
         } else { // have horizontal scroll bar
@@ -158,14 +159,12 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
 
     // has Y scroll bar or not
     updateScrollY() {
-      // 更新高度前无法确定是否有滚动条
       const { bodyWrapper } = this.table;
       const { bodyHeight } = this.state;
       if (!bodyHeight) return;
 
       const body = bodyWrapper.querySelector('.el-table__body');
       const scrollY = body.offsetHeight > bodyHeight;
-      console.log(scrollY)
 
       this.setState(Object.assign(this.state, {
         scrollY
@@ -173,8 +172,6 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
     }
 
     render() {
-      console.log(this.state);
-
       return (
         <WrapedComponent
           ref={(table) => { this.table = table; }}
