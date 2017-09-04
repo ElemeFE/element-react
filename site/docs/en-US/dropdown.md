@@ -4,7 +4,7 @@ Toggleable menu for displaying lists of links and actions.
 ### Basic usage
 Hover on the dropdown menu to unfold it for more actions.
 
-:::demo The triggering element is rendered by the default `slot`, and the dropdown part is rendered by the `slot` named `dropdown`. By default, dropdown list shows when you hover on the triggering element without having to click it.
+:::demo By default, dropdown list shows when you hover on the triggering element without having to click it.
 
 ```js
 render() {
