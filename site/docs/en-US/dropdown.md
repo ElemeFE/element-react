@@ -33,7 +33,7 @@ render() {
 
 Use the button to trigger the dropdown list.
 
-:::demo Use `split-button` to split the triggering element into a button group with the left button being a normal button and right one the actual triggering target. If you wanna insert a separator line between item three and item four, just add a class `divider` to item four.
+:::demo Use `splitButton` to split the triggering element into a button group with the left button being a normal button and right one the actual triggering target. If you wanna insert a separator line between item three and item four, just add a class `divider` to item four.
 ```js
 render() {
   return (
@@ -178,8 +178,8 @@ render() {
 ### Dropdown Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
-| type          | menu button type, refer to `Button` Component, only works when `split-button` is true  | string  |          —             |    —     |
-| size          | menu button size, refer to `Button` Component, only works when `split-button` is true  | string  |          —             |    —     |
+| type          | menu button type, refer to `Button` Component, only works when `splitButton` is true  | string  |          —             |    —     |
+| size          | menu button size, refer to `Button` Component, only works when `splitButton` is true  | string  |          —             |    —     |
 | splitButton | whether a button group is displayed | boolean         |     —       | false   |
 | size          | component size, refer to `Button` component     | string          | large, small, mini  |  —  |
 | menuAlign    | horizontal alignment     | string          | start/end  | end |
@@ -189,7 +189,7 @@ render() {
 ### Dropdown Events
 | Event Name | Description | Parameters |
 |---------- |-------- |---------- |
-| onClick | if `split-button` is `true`, triggers when left button is clicked | — |
+| onClick | if `splitButton` is `true`, triggers when left button is clicked | — |
 | onCommand | triggers when a dropdown item is clicked | the command dispatched from the dropdown item |
 | onVisibleChange | triggers when the dropdown appears/disappears | true when it appears, and false otherwise |
 
