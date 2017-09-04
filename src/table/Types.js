@@ -1,38 +1,46 @@
 // @flow
-export type Column = {
-  label: string,
-  prop: string,
-  property: string,
-  type: string,
-  minWidth: number,
-  width: number,
-  align: string,
-  sortable: boolean,
-  sortMethod: ()=>void,
+type Column = {
+  type?: string,
+  columnKey?: string,
+  label?: string,
+  prop?: string,
+  property?: string,
+  width?: number,
+  minWidth?: number,
+  fixed?: true | 'left' | 'right',
+  render?: ()=>void,
+  renderHeader?: () => void,
+  sortable: boolean | 'custom',
+  sortMethod?: ()=>void,
   resizable: boolean,
-  formatter: ()=>void,
-  selectable: boolean,
-  fixed: boolean | string,
-  filterMethod: ()=>void,
-  filters: Array<Object>,
-  expandPannel: (any)=>any,
-  render: ()=>void,
-  renderHeader: () => void
+  formatter?: ()=>void,
+  showOverflowTooltip: boolean,
+  align: 'left' | 'center' | 'right',
+  headerAlign: 'left' | 'center' | 'right',
+  className?: string,
+  labelClassName?: string,
+  selectable?: boolean,
+  reserveSelection: boolean,
+  filters?: Array<{ text: any, value: any }>,
+  filterPlacement?: string,
+  filterMultiple: boolean,
+  filterMethod?: (value: any, row: Object) => boolean,
+  subColumns?: Array<Column>
 };
 
-export type TableStoreProps = {
-  data: Array<Object>,
-  columns: Array<Column>,
-  style: Object,
-  height: string | number,
-  maxHeight: string | number,
+export type TableProps = {
+  data?: Array<Object>,
+  columns?: Array<Column>,
+  style?: Object,
+  height?: string | number,
+  maxHeight?: string | number,
   stripe: boolean,
   border: boolean,
   fit: boolean,
   showHeader: boolean,
-  highlightCurrentRow: boolean,
-  currentRowKey: string | number,
-  rowClassName: ((row: Object, index: number) => string) | string,
+  highlightCurrentRow?: boolean,
+  currentRowKey?: string | number,
+  rowClassName?: ((row: Object, index: number) => string) | string,
   rowStyle: ((row: Object, index: number) => Object) | Object,
   rowKey: ((row: Object) => string | number) | string,
   emptyText: string,
@@ -42,7 +50,7 @@ export type TableStoreProps = {
     prop: string,
     order?: 'ascending' | 'descending',
   },
-  toolTipEffect: 'dark' | 'light',
+  tooltipEffect: 'dark' | 'light',
   showSummary: boolean,
   sumText: string,
   summaryMethod: ({ column: Array<Column>, data: Array<Object> }) => any,
@@ -53,17 +61,34 @@ export type TableStoreProps = {
   onSelectChange: ()=>void
 };
 
-export type TableStoreState = {
-
+type _Column = Column & {
+  realWidth: number
 };
 
-export type TableLayoutProps = TableStoreProps & { store: TableStoreState };
+export type TableStoreState = {
+  rowKey: string | () => string,
+  defaultExpandAll: boolean,
+  _columns: Array<_Column>,
+  fixedColumns: Array<_Column>,
+  rightFixedColumns: Array<_Column>,
+  originColumns: Array<_Column>,
+  columns: Array<_Column>,
+  isComplex: boolean,
+};
 
 export type TableLayoutState = {
-
+  height?: string | number,
+  gutterWidth: number,
+  tableHeight?: number,
+  headerHeight?: number,
+  bodyHeight?: number,
+  footerHeight?: number,
+  fixedBodyHeight?: number,
+  scrollX?: boolean,
+  scrollY?: boolean,
 };
 
-export type TableProps = TableLayoutProps & { layout: TableLayoutState };
+// export type TableProps = TableLayoutProps & { layout: TableLayoutState };
 
 export type TableState = {
 

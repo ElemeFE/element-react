@@ -9,12 +9,14 @@ import TableFooter from './TableFooter';
 
 import type {
   TableProps,
+  TableStoreState,
+  TableLayoutState,
   TableState,
 } from './Types';
 
 let tableIdSeed = 1;
 
-class Table extends Component<TableProps, TableState> {
+class Table extends Component<TableProps & { store: TableStoreState } & { layout: TableLayoutState }, TableState> {
   static contextTypes = {
     store: PropTypes.object,
     layout: PropTypes.object,
@@ -168,14 +170,14 @@ class Table extends Component<TableProps, TableState> {
               sumText={props.sumText}
               summaryMethod={props.summaryMethod}
               defaultSort={props.defaultSort}
-              style={{ width: !!layout.bodyWidth && layout.bodyWidth + 'px' }}
+              style={{ width: !!layout.bodyWidth ? layout.bodyWidth + 'px' : '' }}
             />
           </div>
         )}
         {!!store.fixedColumns.length && (
           <div
             style={Object.assign({}, this.fixedHeight, {
-              width: layout.fixedWidth ? layout.fixedWidth + 'px' : null
+              width: layout.fixedWidth ? layout.fixedWidth + 'px' : ''
             })}
             className="el-table__fixed"
             ref={this.bindRef('fixedWrapper')}
@@ -187,13 +189,13 @@ class Table extends Component<TableProps, TableState> {
                   layout={layout}
                   fixed="left"
                   border={props.border}
-                  style={{ width: layout.fixedWidth ? layout.fixedWidth + 'px' : null }}
+                  style={{ width: layout.fixedWidth ? layout.fixedWidth + 'px' : '' }}
                 />
               </div>
             )}
             <div
               style={Object.assign({}, this.fixedBodyHeight, {
-                top: layout.headerHeight ? layout.headerHeight + 'px' : null
+                top: layout.headerHeight ? layout.headerHeight + 'px' : ''
               })}
               className="el-table__fixed-body-wrapper"
               ref={this.bindRef('fixedBodyWrapper')}
@@ -217,7 +219,7 @@ class Table extends Component<TableProps, TableState> {
                   border={props.border}
                   sumText={props.sumText}
                   summaryMethod={props.summaryMethod}
-                  style={{ width: !!layout.fixedWidth && layout.fixedWidth + 'px' }}
+                  style={{ width: !!layout.fixedWidth ? layout.fixedWidth + 'px' : '' }}
                 />
               </div>
             )}

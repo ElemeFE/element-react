@@ -3,16 +3,15 @@ import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import type {
-  TableStoreProps,
+  TableProps,
   TableStoreState,
-  TableLayoutProps,
 } from './Types';
 import normalizeColumns from './normalizeColumns';
 import { flattenColumns } from "./utils";
 
 
-export default function TableStoreHOC(WrapedComponent: React.ComponentType<TableLayoutProps>): React.ComponentType<TableStoreProps> {
-  return class TableStore extends Component<TableStoreProps, TableStoreState> {
+export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>): React.ComponentType<any> {
+  return class TableStore extends Component<TableProps, TableStoreState> {
     static defaultProps = {
       showHeader: true,
       fit: true,

@@ -58,7 +58,7 @@ function convertToRows(originColumns) {
 }
 
 export default class TableHeader extends Component {
-  isCellHidden(index, columns) {
+  isCellHidden(index: number, columns: Array<Object>): boolean {
     const { fixed } = this.props;
     if (fixed === true || fixed === 'left') {
       return index >= this.leftFixedCount;
@@ -73,15 +73,15 @@ export default class TableHeader extends Component {
     }
   }
 
-  get columnsCount() {
+  get columnsCount(): number {
     return this.props.store.columns.length;
   }
 
-  get leftFixedCount() {
+  get leftFixedCount(): number {
     return this.props.store.fixedColumns.length;
   }
 
-  get rightFixedCount() {
+  get rightFixedCount(): number {
     return this.props.store.rightFixedColumns.length;
   }
 
