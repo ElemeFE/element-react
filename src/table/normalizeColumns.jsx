@@ -3,9 +3,9 @@ import Checkbox from '../checkbox';
 import Tag from '../tag';
 import { getValueByPath } from "./utils";
 
-function defaultRender(text) {
+function defaultRender(row, column) {
   return (
-    <div className="cell">{text}</div>
+    <div className="cell">{getValueByPath(row, column.property)}</div>
   );
 }
 

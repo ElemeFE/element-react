@@ -4,13 +4,14 @@ import { Component, PropTypes } from '../../libs';
 
 import type {
   TableProps,
+  TableStoreState,
   TableLayoutState,
 } from './Types';
 
 import {flattenColumns, getScrollBarWidth} from "./utils";
 
-export default function TableLayoutHOC(WrapedComponent: React.ComponentType<TableProps & { layout: TableState }>): React.ComponentType<TableProps & { layout: TableState }> {
-  return class TableLayout extends Component {
+export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>): React.ComponentType<any> {
+  return class TableLayout extends Component<TableProps & { store: TableStoreState }, TableLayoutState> {
     static childContextTypes = {
       store: PropTypes.object,
     };
@@ -58,6 +59,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
       layout: this;
     }
 
+    // horizontal direction layout
     update() {
       const { store: { columns, fixedColumns, rightFixedColumns }, fit } = this.props;
       const { gutterWidth } = this.state;
@@ -122,6 +124,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
       }));
     }
 
+    // vertical direction layout
     updateHeight() {
       const { data, showHeader } = this.props;
       const { height, scrollX, gutterWidth } = this.state;
@@ -157,7 +160,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<Tabl
       }));
     }
 
-    // has Y scroll bar or not
+    // judge if has scroll-Y bar
     updateScrollY() {
       const { bodyWrapper } = this.table;
       const { bodyHeight } = this.state;

@@ -6,7 +6,7 @@ import {toDate} from "../date-picker/utils/index";
 
 
 export default class TableBody extends Component {
-  isColumnHidden(index) {
+  isColumnHidden(index: number): boolean {
     const { store, layout, ...props } = this.props;
     if (props.fixed === true || props.fixed === 'left') {
       return index >= this.leftFixedCount;
@@ -17,7 +17,7 @@ export default class TableBody extends Component {
     }
   }
 
-  getRowStyle(row, index) {
+  getRowStyle(row: Object, index: number): Object {
     const { rowStyle } = this.props;
     if (typeof rowStyle === 'function') {
       return rowStyle.call(null, row, index);
@@ -26,7 +26,7 @@ export default class TableBody extends Component {
     return rowStyle;
   }
 
-  getKeyOfRow(row, index) {
+  getKeyOfRow(row: Object, index: number): number | string {
     const { rowKey } = this.props;
     if (rowKey) {
       return getRowIdentity(row, rowKey);
@@ -40,15 +40,15 @@ export default class TableBody extends Component {
   //
   // }
 
-  get columnsCount() {
+  get columnsCount(): number {
     return this.props.store.columns.length;
   }
 
-  get leftFixedCount() {
+  get leftFixedCount(): number {
     return this.props.store.fixedColumns.length;
   }
 
-  get rightFixedCount() {
+  get rightFixedCount(): number {
     return this.props.store.rightFixedColumns.length;
   }
 
@@ -87,7 +87,7 @@ export default class TableBody extends Component {
                   'is-hidden': columnsHidden[cellIndex]
                 })}
               >
-                {column.render(getValueByPath(row, column.property), row, rowIndex)}
+                {column.render(row, column, rowIndex)}
               </td>
             ))}
             {!props.fixed && layout.scrollY && layout.gutterWidth && (
