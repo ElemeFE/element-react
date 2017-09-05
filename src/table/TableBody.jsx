@@ -4,8 +4,20 @@ import { Component, PropTypes } from '../../libs';
 import { getRowIdentity, getValueByPath } from "./utils";
 import {toDate} from "../date-picker/utils/index";
 
+import { TableBodyProps } from "./Types";
 
-export default class TableBody extends Component {
+export default class TableBody extends Component<TableBodyProps> {
+  constructor(props) {
+    super(props);
+    ['handleMouseEnter'].forEach((fn) => {
+      this[fn] = this[fn].bind(this);
+    });
+  }
+
+  handleMouseEnter(index) {
+    this.context.store.setHoverRow(index);
+  }
+
   isColumnHidden(index: number): boolean {
     const { store, layout, ...props } = this.props;
     if (props.fixed === true || props.fixed === 'left') {
@@ -58,6 +70,8 @@ export default class TableBody extends Component {
     return (
       <table
         className="el-table__body"
+        cellPadding={0}
+        cellSpacing={0}
         style={this.style({
           borderSpacing: 0,
           border: 0
@@ -83,11 +97,11 @@ export default class TableBody extends Component {
             {store.columns.map((column, cellIndex) => (
               <td
                 key={cellIndex}
-                className={this.className(column.className || '', {
+                className={this.className(column.className || '', column.align, {
                   'is-hidden': columnsHidden[cellIndex]
                 })}
               >
-                {column.render(row, column, rowIndex)}
+                <div className="cell">{column.render(row, column, rowIndex)}</div>
               </td>
             ))}
             {!props.fixed && layout.scrollY && layout.gutterWidth && (

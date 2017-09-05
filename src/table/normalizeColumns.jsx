@@ -4,9 +4,7 @@ import Tag from '../tag';
 import { getValueByPath } from "./utils";
 
 function defaultRender(row, column) {
-  return (
-    <div className="cell">{getValueByPath(row, column.property)}</div>
-  );
+  return getValueByPath(row, column.property);
 }
 
 const defaults = {
