@@ -21,6 +21,10 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       store: PropTypes.object,
     };
 
+    getChildContext() {
+      store: this;
+    }
+
     constructor(props) {
       super(props);
 
@@ -44,10 +48,6 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
 
     componentWillReceiveProps(nextProps) {
 
-    }
-
-    getChildContext() {
-      store: this;
     }
 
     updateColumns(columns) {
@@ -75,6 +75,10 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
         _data,
         data: _data,
       });
+    }
+
+    setHoverRow(index) {
+      console.log(index);
     }
 
     render() {

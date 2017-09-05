@@ -84,6 +84,7 @@ export type TableLayoutState = {
   bodyHeight?: number,
   footerHeight?: number,
   fixedBodyHeight?: number,
+  viewportHeight?: number,
   scrollX?: boolean,
   scrollY?: boolean,
 };
@@ -105,12 +106,10 @@ export type TableState = {
 
 
 export type TableHeaderProps = {
-  columns: Array<Column>,
-  fixed: string,
-  border: string,
-  style: Object,
-  isScrollY: boolean,
-  flattenColumns: Object
+  store: TableStoreState,
+  layout: TableLayoutState,
+  border: boolean,
+  fixed?: true | 'left' | 'right'
 };
 
 export type TableHeaderState = {
@@ -123,14 +122,11 @@ export type TableHeaderState = {
 };
 
 export type TableBodyProps = {
-  columns: Array<Column>,
-  data: Array<Object>,
-  rowClassName: ()=>void,
-  highlightCurrentRow: boolean,
-  style: Object,
-  fixed: string,
-  flattenColumns: Object
-};
+  store: TableStoreState,
+  layout: TableLayoutState,
+  border: boolean,
+  fixed?: true | 'left' | 'right'
+}
 
 export type TableBodyState = {
   highlightRows: Array<Object>,

@@ -92,6 +92,8 @@ export default class TableHeader extends Component {
     return (
       <table
         className="el-table__header"
+        cellPadding={0}
+        cellSpacing={0}
         style={this.style({
           borderSpacing: 0,
           border: 0
