@@ -14,13 +14,17 @@ export default class TableBody extends Component<TableBodyProps> {
 
   constructor(props) {
     super(props);
-    ['handleMouseEnter'].forEach((fn) => {
+    ['handleMouseLeave'].forEach((fn) => {
       this[fn] = this[fn].bind(this);
     });
   }
 
   handleMouseEnter(index) {
     this.context.store.setHoverRow(index);
+  }
+
+  handleMouseLeave() {
+    this.context.store.setHoverRow(null);
   }
 
   isColumnHidden(index: number): boolean {
@@ -117,11 +121,14 @@ export default class TableBody extends Component<TableBodyProps> {
               key={rowKey}
               style={this.getRowStyle(row, rowIndex)}
               className={this.className('el-table__row', {
-                'el-table__row--striped': props.stripe && rowIndex % 2 === 1
+                'el-table__row--striped': props.stripe && rowIndex % 2 === 1,
+                'hover-row': store.hoverRow === rowIndex
               }, typeof props.rowClassName === 'string'
                 ? props.rowClassName
                 : typeof props.rowClassName === 'function'
                 && props.rowClassName(row, rowIndex))}
+              onMouseEnter={this.handleMouseEnter.bind(this, rowIndex)}
+              onMouseLeave={this.handleMouseLeave}
             >
               {store.columns.map((column, cellIndex) => (
                 <td

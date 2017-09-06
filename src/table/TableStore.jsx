@@ -41,6 +41,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
         columns: null, // contain only leaf column
         isComplex: null, // has fixed column
         expandingRows: [], // expanding rows
+        hoverRow: null,
       };
     }
 
@@ -99,22 +100,37 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       this.setState({
         _data,
         data: _data,
+        hoverRow: null,
+        expandingRows: [],
       });
     }
 
     setHoverRow(index) {
-      console.log(index);
+      // todo optimize
+      // clearTimeout(this.clearHoverTimer);
+      // if (index === null) {
+      //   this.clearHoverTimer = setTimeout(() => {
+      //     this.setState({
+      //       hoverRow: index
+      //     });
+      //   }, 300);
+      //   return;
+      // }
+      this.setState({
+        hoverRow: index
+      });
     }
 
     toggleRowExpanded(row, rowKey) {
       const { expand, expandRowKeys } = this.props;
       const { expandingRows } = this.state;
-      const rowIndex = expandingRows.indexOf(expandRowKeys ? rowKey : row);
       if (expandRowKeys) { // controlled expanding status
-        expand && expand(row, rowIndex === -1);
+        const isRowExpanding = expandRowKeys.includes(rowKey);
+        expand && expand(row, !isRowExpanding);
         return;
       }
 
+      const rowIndex = expandingRows.indexOf(row);
       if (rowIndex > -1) {
         expandingRows.splice(rowIndex, 1);
       } else {
@@ -133,7 +149,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       const { expandingRows } = this.state;
 
       if (expandRowKeys) {
-        return expandingRows.includes(rowKey);
+        return expandRowKeys.includes(rowKey);
       }
       return expandingRows.includes(row);
     }
