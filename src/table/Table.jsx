@@ -88,7 +88,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
   get fixedHeight(): ?Object {
     const { layout, ...props } = this.props;
     return {
-      bottom: (layout.scrollX && props.data.length) ? layout.gutterWidth : ''
+      bottom: (layout.scrollX && props.data.length) ? layout.gutterWidth - 1 : ''
     };
   }
 

@@ -40,10 +40,10 @@ const forced = {};
 
 export default function normalizeColumns(columns) {
   return columns.map((column) => {
-    let _column = {};
+    let _column;
     if (column.subColumns) {
       // renderHeader
-      _column.label = column.label;
+      _column = Object.assign({}, columns);
       _column.subColumns = normalizeColumns(column.subColumns);
     } else {
       let { width, minWidth } = column;
