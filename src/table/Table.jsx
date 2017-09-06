@@ -18,8 +18,8 @@ let tableIdSeed = 1;
 
 class Table extends Component<TableProps & { store: TableStoreState } & { layout: TableLayoutState }, TableState> {
   static contextTypes = {
-    store: PropTypes.object,
-    layout: PropTypes.object,
+    store: PropTypes.any,
+    layout: PropTypes.any,
   };
 
   static getChildContext() {
@@ -86,9 +86,9 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
   }
 
   get fixedHeight(): ?Object {
-    const { layout, ...props } = this.props;
+    const { layout } = this.props;
     return {
-      bottom: (layout.scrollX && props.data.length) ? layout.gutterWidth - 1 : ''
+      bottom: layout.scrollX ? layout.gutterWidth - 1 : 0
     };
   }
 
@@ -121,7 +121,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
           height: props.height,
           maxHeight: props.maxHeight,
         })}
-        className={this.classNames('el-table', {
+        className={this.className('el-table', {
           'el-table--fit': props.fit,
           'el-table--striped': props.stripe,
           'el-table--border': props.border,
@@ -156,6 +156,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
             rowClassName={props.rowClassName}
             rowStyle={props.rowStyle}
             highlight={props.highlightCurrentRow}
+            renderExpanded={props.renderExpanded}
             style={{ width: this.bodyWidth }}
           />
           {(!props.data || !props.data.length) && (
@@ -217,6 +218,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                 hightlight={props.highlightCurrentRow}
                 rowClassName={props.rowClassName}
                 rowStyle={props.rowStyle}
+                renderExpanded={props.renderExpanded}
                 style={{ width: layout.fixedWidth || '' }}
               />
             </div>
@@ -269,6 +271,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                 hightlight={props.highlightCurrentRow}
                 rowClassName={props.rowClassName}
                 rowStyle={props.rowStyle}
+                renderExpanded={props.renderExpanded}
                 style={{ width: layout.rightFixedWidth || '' }}
               />
             </div>

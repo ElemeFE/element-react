@@ -13,7 +13,7 @@ import {flattenColumns, getScrollBarWidth} from "./utils";
 export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>): React.ComponentType<any> {
   return class TableLayout extends Component<TableProps & { store: TableStoreState }, TableLayoutState> {
     static childContextTypes = {
-      store: PropTypes.object,
+      layout: PropTypes.any,
     };
 
     constructor(props) {
@@ -37,10 +37,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
     componentDidMount() {
       this.el = this.table.el;
 
-      this.update();
-      this.updateHeight();
-      // requestAnimationFrame(() => { this.updateScrollY() })
-      this.updateScrollY();
+      this.doLayout();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -54,11 +51,26 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
     }
 
     componentDidUpdate(preProps) {
-
+      const columnsChanged = this.props.columns !== preProps.columns;
+      const heightChanged = this.props.height !== preProps.height || this.props.maxHeight !== preProps.maxHeight;
+      if (columnsChanged) {
+        this.doLayout();
+      } else if (heightChanged) {
+        this.updateHeight();
+        this.updateScrollY();
+      }
     }
 
     getChildContext() {
-      layout: this;
+      return {
+        layout: this
+      };
+    }
+
+    doLayout() {
+      this.update();
+      this.updateHeight();
+      this.updateScrollY();
     }
 
     // horizontal direction layout

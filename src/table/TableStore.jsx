@@ -19,11 +19,13 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
     };
 
     static childContextTypes = {
-      store: PropTypes.object,
+      store: PropTypes.any,
     };
 
     getChildContext() {
-      store: this;
+      return {
+        store: this,
+      }
     }
 
     constructor(props) {
@@ -38,6 +40,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
         originColumns: null, // _columns sorted by 'fixed'
         columns: null, // contain only leaf column
         isComplex: null, // has fixed column
+        expandingRows: [], // expanding rows
       };
     }
 
@@ -48,8 +51,29 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
     }
 
     componentWillReceiveProps(nextProps) {
+      if (this.props.columns !== nextProps.columns) {
+        this.updateColumns(nextProps.columns);
+      }
 
+      if (this.props.data !== nextProps.data) {
+        this.setData(nextProps.data);
+      }
     }
+
+    // shouldComponentUpdate(nextProps) {
+    //   const propsKeys = Object.keys(this.props);
+    //   const nextPropsKeys = Object.keys(nextProps);
+    //
+    //   if (propsKeys.length !== nextPropsKeys.length) {
+    //     return true;
+    //   }
+    //   for (const key of propsKeys) {
+    //     if (this.props[key] !== nextProps[key]) {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // }
 
     updateColumns(columns) {
       const _columns = normalizeColumns(columns);
@@ -80,6 +104,38 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
 
     setHoverRow(index) {
       console.log(index);
+    }
+
+    toggleRowExpanded(row, rowKey) {
+      const { expand, expandRowKeys } = this.props;
+      const { expandingRows } = this.state;
+      const rowIndex = expandingRows.indexOf(expandRowKeys ? rowKey : row);
+      if (expandRowKeys) { // controlled expanding status
+        expand && expand(row, rowIndex === -1);
+        return;
+      }
+
+      if (rowIndex > -1) {
+        expandingRows.splice(rowIndex, 1);
+      } else {
+        expandingRows.push(row);
+      }
+
+      this.setState({
+        expandingRows
+      }, () => {
+        expand && expand(row, rowIndex === -1);
+      });
+    }
+
+    isRowExpanding(row, rowKey) {
+      const { expandRowKeys } = this.props;
+      const { expandingRows } = this.state;
+
+      if (expandRowKeys) {
+        return expandingRows.includes(rowKey);
+      }
+      return expandingRows.includes(row);
     }
 
     render() {
