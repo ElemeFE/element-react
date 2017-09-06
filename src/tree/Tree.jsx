@@ -138,6 +138,7 @@ export default class Tree extends Component {
 
     return (
       <div
+        style={this.style()}
         className={this.className('el-tree', {
           'el-tree--highlight-current': highlightCurrent
         })}
