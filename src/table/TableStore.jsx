@@ -15,6 +15,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
     static defaultProps = {
       showHeader: true,
       fit: true,
+      emptyText: '暂无数据',
     };
 
     static childContextTypes = {
@@ -52,7 +53,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
 
     updateColumns(columns) {
       const _columns = normalizeColumns(columns);
-      if (_columns[0].type === 'selection' && !_columns[0].fixed) {
+      if (_columns[0].type === 'selection' && !_columns[0].fixed) { // 首列为多选列强制固定
         _columns[0].fixed = true;
       }
       const fixedColumns = _columns.filter(column => column.fixed === true || column.fixed === 'left');
