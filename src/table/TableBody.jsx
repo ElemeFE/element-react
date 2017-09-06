@@ -7,6 +7,11 @@ import {toDate} from "../date-picker/utils/index";
 import { TableBodyProps } from "./Types";
 
 export default class TableBody extends Component<TableBodyProps> {
+  static contextTypes = {
+    store: PropTypes.any,
+    layout: PropTypes.any,
+  };
+
   constructor(props) {
     super(props);
     ['handleMouseEnter'].forEach((fn) => {
@@ -64,6 +69,28 @@ export default class TableBody extends Component<TableBodyProps> {
     return this.props.store.rightFixedColumns.length;
   }
 
+  handleExpandClick(row, rowKey) {
+    this.context.store.toggleRowExpanded(row, rowKey);
+  }
+
+  renderCell(row, column, index, rowKey) {
+    const { type } = column;
+    if (type === 'expand') {
+      return (
+        <div
+          className={this.classNames('el-table__expand-icon ', {
+            'el-table__expand-icon--expanded': this.context.store.isRowExpanding(row, rowKey)
+          })}
+          onClick={this.handleExpandClick.bind(this, row, rowKey)}
+        >
+          <i className="el-icon el-icon-arrow-right" />
+        </div>
+      )
+    }
+
+    return column.render(row, column, index);
+  }
+
   render() {
     const { store, layout, ...props } = this.props;
     const columnsHidden = store.columns.map((column, index) => this.isColumnHidden(index));
@@ -83,32 +110,44 @@ export default class TableBody extends Component<TableBodyProps> {
           ))}
         </colgroup>
         <tbody>
-        {store.data.map((row, rowIndex) => (
-          <tr
-            key={props.rowKey ? this.getKeyOfRow(row, rowIndex) : rowIndex}
-            style={props.rowStyle ? this.getRowStyle(row, rowIndex) : null}
-            className={this.className('el-table__row', {
-              'el-table__row--striped': props.stripe && rowIndex % 2 === 1
-            }, typeof props.rowClassName === 'string'
-              ? props.rowClassName
-              : typeof props.rowClassName === 'function'
-              && props.rowClassName(row, rowIndex))}
-          >
-            {store.columns.map((column, cellIndex) => (
+        {store.data.map((row, rowIndex) => {
+          const rowKey = this.getKeyOfRow(row, rowIndex);
+          return [(
+            <tr
+              key={rowKey}
+              style={this.getRowStyle(row, rowIndex)}
+              className={this.className('el-table__row', {
+                'el-table__row--striped': props.stripe && rowIndex % 2 === 1
+              }, typeof props.rowClassName === 'string'
+                ? props.rowClassName
+                : typeof props.rowClassName === 'function'
+                && props.rowClassName(row, rowIndex))}
+            >
+              {store.columns.map((column, cellIndex) => (
+                <td
+                  key={cellIndex}
+                  className={this.className(column.className || '', column.align, {
+                    'is-hidden': columnsHidden[cellIndex]
+                  })}
+                >
+                  <div className="cell">{this.renderCell(row, column, rowIndex, rowKey)}</div>
+                </td>
+              ))}
+              {!props.fixed && layout.scrollY && layout.gutterWidth && (
+                <td className="gutter" />
+              )}
+            </tr>
+          ), this.context.store.isRowExpanding(row, rowKey) && (
+            <tr>
               <td
-                key={cellIndex}
-                className={this.className(column.className || '', column.align, {
-                  'is-hidden': columnsHidden[cellIndex]
-                })}
+                colSpan={store.columns.length}
+                className="el-table__expanded-cell"
               >
-                <div className="cell">{column.render(row, column, rowIndex)}</div>
+                {props.renderExpanded(row, rowIndex)}
               </td>
-            ))}
-            {!props.fixed && layout.scrollY && layout.gutterWidth && (
-              <td className="gutter" />
-            )}
-          </tr>
-        ))}
+            </tr>
+          )];
+        })}
         </tbody>
       </table>
     );
