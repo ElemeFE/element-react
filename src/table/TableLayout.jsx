@@ -169,7 +169,6 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
 
       const body = bodyWrapper.querySelector('.el-table__body');
       const scrollY = body.offsetHeight > fixedBodyHeight;
-      console.log(fixedBodyHeight);
 
       this.setState(Object.assign(this.state, {
         scrollY

@@ -66,7 +66,8 @@ type _Column = Column & {
 };
 
 export type TableStoreState = {
-  rowKey: string | () => string,
+  _data: Array<Object>,
+  data: Array<Object>,
   defaultExpandAll: boolean,
   _columns: Array<_Column>,
   fixedColumns: Array<_Column>,

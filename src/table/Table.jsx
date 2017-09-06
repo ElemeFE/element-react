@@ -35,7 +35,9 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
     // this.tableId = `el-table_${tableIdSeed++}_`;
     this.tableId = tableIdSeed++;
 
-    this.syncScroll = this.syncScroll.bind(this);
+    ['syncScroll'].forEach((fn) => {
+      this[fn] = this[fn].bind(this);
+    });
   }
 
   componentDidMount() {
