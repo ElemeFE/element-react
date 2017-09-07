@@ -1,5 +1,7 @@
 // @flow
-type Column = {
+import * as React from 'react';
+
+export type Column = {
   type?: string,
   columnKey?: string,
   label?: string,
@@ -8,7 +10,7 @@ type Column = {
   width?: number,
   minWidth?: number,
   fixed?: true | 'left' | 'right',
-  render?: ()=>void,
+  render?: (row: Object, column: _Column, index: number) => React.Node,
   renderHeader?: () => void,
   sortable: boolean | 'custom',
   sortMethod?: ()=>void,
@@ -61,8 +63,9 @@ export type TableProps = {
   onSelectChange: ()=>void
 };
 
-type _Column = Column & {
-  realWidth: number
+export type _Column = Column & {
+  realWidth: number,
+  render: (row: Object, column: _Column, index: number) => React.Element<any>
 };
 
 export type TableStoreState = {

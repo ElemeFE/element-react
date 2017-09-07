@@ -5,6 +5,7 @@ import { Component, PropTypes } from '../../libs';
 import type {
   TableProps,
   TableStoreState,
+  Column,
 } from './Types';
 import normalizeColumns from './normalizeColumns';
 import { flattenColumns } from "./utils";
@@ -22,7 +23,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       store: PropTypes.any,
     };
 
-    getChildContext() {
+    getChildContext(): Object {
       return {
         store: this,
       }
@@ -98,17 +99,18 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       });
     }
 
-    setData(_data) {
+    setData(_data: Array<Object>) {
       // todo more
       this.setState({
         _data,
         data: _data,
         hoverRow: null,
         expandingRows: [],
+        currentRow: null,
       });
     }
 
-    setHoverRow(index) {
+    setHoverRow(index: number) {
       if (!this.state.isComplex) return;
       // todo optimize
       // clearTimeout(this.clearHoverTimer);
@@ -125,7 +127,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       });
     }
 
-    toggleRowExpanded(row, rowKey) {
+    toggleRowExpanded(row: Object, rowKey: string | number) {
       const { expand, expandRowKeys } = this.props;
       const { expandingRows } = this.state;
       if (expandRowKeys) { // controlled expanding status
@@ -148,7 +150,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       });
     }
 
-    isRowExpanding(row, rowKey) {
+    isRowExpanding(row: Object, rowKey: string | number) {
       const { expandRowKeys } = this.props;
       const { expandingRows } = this.state;
 
@@ -158,7 +160,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       return expandingRows.includes(row);
     }
 
-    setCurrentRow(row) {
+    setCurrentRow(row: Object) {
       const { highlightCurrentRow, currentRowKey } = this.props;
       if (!highlightCurrentRow || currentRowKey) return;
 
@@ -167,7 +169,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       });
     }
 
-    render() {
+    render()  {
       const renderExpanded = (this.props.columns.find(column => column.type === 'expand') || {}).expandPannel;
       return (
         <WrapedComponent
