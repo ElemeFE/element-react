@@ -158,6 +158,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       return (
         <WrapedComponent
           {...this.props}
+          renderExpanded={this.props.columns.find(column => column.type === 'expand').expandPannel}
           store={this.state}
         />
       )

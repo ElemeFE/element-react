@@ -150,7 +150,7 @@ export default class TableBody extends Component<TableBodyProps> {
                 colSpan={store.columns.length}
                 className="el-table__expanded-cell"
               >
-                {props.renderExpanded(row, rowIndex)}
+                {typeof props.renderExpanded === 'function' && props.renderExpanded(row, rowIndex)}
               </td>
             </tr>
           )];
