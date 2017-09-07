@@ -81,7 +81,7 @@ export default function normalizeColumns(columns) {
         render: column.render || defaultRender,
         align: column.align ? 'is-' + column.align : null,
         headerAlign: column.headerAlign ? 'is-' + column.headerAlign : column.align ? 'is-' + column.align : null,
-      }, defaults[column.type], forced[column.type]);
+      }, defaults[column.type || 'default'], forced[column.type || 'default']);
     }
 
     return _column;
