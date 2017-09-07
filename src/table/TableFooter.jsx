@@ -83,7 +83,7 @@ export default class TableFooter extends Component<TableFooterProps> {
               </td>
             ))}
             {!fixed && (
-              <th
+              <td
                 className="gutter"
                 style={{ width: layout.scrollY ? layout.gutterWidth : 0 }}
               />
