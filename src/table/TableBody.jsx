@@ -2,7 +2,10 @@
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 import { getRowIdentity, getValueByPath } from "./utils";
-import {toDate} from "../date-picker/utils/index";
+// import {toDate} from "../date-picker/utils/index";
+
+import Checkbox from '../checkbox';
+import Tag from '../tag';
 
 import type {_Column, TableBodyProps} from "./Types";
 
@@ -93,6 +96,20 @@ export default class TableBody extends Component<TableBodyProps> {
         >
           <i className="el-icon el-icon-arrow-right" />
         </div>
+      )
+    }
+
+    if (type === 'index') {
+      return <div>{index + 1}</div>;
+    }
+
+    if (type === 'selection') {
+      const isSelected = this.context.store.isRowSelected(row, rowKey);
+      return (
+        <Checkbox
+          checked={isSelected}
+          onChange={() => { this.context.store.toggleRowSelection(row, !isSelected); }}
+        />
       )
     }
 

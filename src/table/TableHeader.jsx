@@ -1,6 +1,8 @@
 // @flow
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
+import Checkbox from '../checkbox';
+import Tag from '../tag';
 
 function getAllColumns(columns) {
   const result = [];
@@ -58,6 +60,11 @@ function convertToRows(originColumns) {
 }
 
 export default class TableHeader extends Component {
+  static contextTypes = {
+    store: PropTypes.any,
+    layout: PropTypes.any
+  };
+
   isCellHidden(index: number, columns: Array<Object>): boolean {
     const { fixed } = this.props;
     if (fixed === true || fixed === 'left') {
@@ -83,6 +90,28 @@ export default class TableHeader extends Component {
 
   get rightFixedCount(): number {
     return this.props.store.rightFixedColumns.length;
+  }
+
+  renderHeader(column: _Column) {
+    const { type } = column;
+    if (type === 'expand') {
+      return '';
+    }
+
+    if (type === 'index') {
+      return column.label || '#';
+    }
+
+    if (type === 'selection') {
+      return (
+        <Checkbox
+          checked={this.context.store.isAllSelected}
+          onChange={this.context.store.toggleAllSelection}
+        />
+      );
+    }
+
+    return column.renderHeader ? column.renderHeader(column) : column.label
   }
 
   render() {
@@ -134,7 +163,7 @@ export default class TableHeader extends Component {
                   key={cellIndex}
                 >
                   <div className={this.className('cell')}>
-                    {column.renderHeader ? column.renderHeader(column) : column.label}
+                    {this.renderHeader(column)}
                   </div>
                 </th>
               ))}
