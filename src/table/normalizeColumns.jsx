@@ -40,6 +40,10 @@ const forced = {
   },
   index: {
     sortable: false
+  },
+  selection: {
+    sortable: false,
+    resizable: false
   }
 };
 
@@ -81,7 +85,7 @@ export default function normalizeColumns(columns) {
         render: column.render || defaultRender,
         align: column.align ? 'is-' + column.align : null,
         headerAlign: column.headerAlign ? 'is-' + column.headerAlign : column.align ? 'is-' + column.align : null,
-      }, defaults[column.type || 'default'], forced[column.type || 'default']);
+      }, defaults[column.type || 'default'], forced[column.type]);
     }
 
     return _column;

@@ -122,15 +122,17 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
     updateColumns(columns) {
       const _columns = normalizeColumns(columns);
       let selectable = false;
-      if (_columns[0].type === 'selection') {
-        selectable = true;
-        if (!_columns[0].fixed) { // 首列为多选列强制固定
-          _columns[0].fixed = true;
-        }
-      }
+
       const fixedColumns = _columns.filter(column => column.fixed === true || column.fixed === 'left');
       const rightFixedColumns = _columns.filter(column => column.fixed === 'right');
       const originColumns = [].concat(fixedColumns, _columns.filter(column => !column.fixed), rightFixedColumns);
+
+      if (_columns[0] && _columns[0].type === 'selection') {
+        selectable = true;
+        if (fixedColumns.length && !_columns[0].fixed) {
+          _columns[0].fixed = true;
+        }
+      }
 
       this.setState({
         _columns,
