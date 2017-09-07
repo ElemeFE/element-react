@@ -54,7 +54,6 @@ export function getValueByPath(data: Object, path: string): any {
 }
 
 export function getRowIdentity(row, rowKey) {
-  if (!row) throw new Error('row is required when get row identity');
   if (typeof rowKey === 'string') {
     return getValueByPath(row, rowKey);
   } else if (typeof rowKey === 'function') {
