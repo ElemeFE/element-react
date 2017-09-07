@@ -43,9 +43,13 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
 
     static defaultProps = {
       showHeader: true,
+      stripe: false,
       fit: true,
       emptyText: '暂无数据',
       defaultExpandAll: false,
+      highlightCurrentRow: false,
+      showSummary: false,
+      sumText: '合计',
     };
 
     static childContextTypes = {
@@ -73,7 +77,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
         rowKey: props.rowKey,
         defaultExpandAll: props.defaultExpandAll,
         currentRow: null,
-        selectable: null,
+        // selectable: null,
         selectedRows: null,
       };
       [

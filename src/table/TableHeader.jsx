@@ -4,6 +4,10 @@ import { Component, PropTypes } from '../../libs';
 import Checkbox from '../checkbox';
 import Tag from '../tag';
 
+import type {
+  TableHeaderProps
+} from './Types';
+
 function getAllColumns(columns) {
   const result = [];
   columns.forEach((column) => {
@@ -59,7 +63,7 @@ function convertToRows(originColumns) {
   return rows;
 }
 
-export default class TableHeader extends Component {
+export default class TableHeader extends Component<TableHeaderProps> {
   static contextTypes = {
     store: PropTypes.any,
     layout: PropTypes.any
@@ -92,7 +96,7 @@ export default class TableHeader extends Component {
     return this.props.store.rightFixedColumns.length;
   }
 
-  renderHeader(column: _Column) {
+  renderHeader(column: _Column): React.Element {
     const { type } = column;
     if (type === 'expand') {
       return '';
@@ -111,7 +115,7 @@ export default class TableHeader extends Component {
       );
     }
 
-    return column.renderHeader ? column.renderHeader(column) : column.label
+    return column.renderHeader ? column.renderHeader(column) : column.label;
   }
 
   render() {
@@ -162,7 +166,7 @@ export default class TableHeader extends Component {
                   )}
                   key={cellIndex}
                 >
-                  <div className={this.className('cell')}>
+                  <div className="cell">
                     {this.renderHeader(column)}
                   </div>
                 </th>

@@ -109,13 +109,17 @@ export type TableState = {
 //   highlightCurrentRow: boolean
 // };
 
+export type compositiveTableProps = TableProps & { store: TableStoreState } & { layout: TableLayoutState };
 
-export type TableHeaderProps = {
-  store: TableStoreState,
-  layout: TableLayoutState,
-  border: boolean,
-  fixed?: true | 'left' | 'right'
-};
+export type TableHeaderProps = compositiveTableProps & { fixed: true | 'left' | 'right' };
+export type TableBodyProps = TableHeaderProps;
+export type TableFooterProps = TableHeaderProps;
+
+// export type TableHeaderProps = {
+//   store: TableStoreState,
+//   layout: TableLayoutState,
+//   fixed?: true | 'left' | 'right'
+// };
 
 export type TableHeaderState = {
   allChecked: boolean,
@@ -126,12 +130,11 @@ export type TableHeaderState = {
   filterParams: Object
 };
 
-export type TableBodyProps = {
-  store: TableStoreState,
-  layout: TableLayoutState,
-  border: boolean,
-  fixed?: true | 'left' | 'right'
-}
+// export type TableBodyProps = {
+//   store: TableStoreState,
+//   layout: TableLayoutState,
+//   fixed?: true | 'left' | 'right'
+// }
 
 export type TableBodyState = {
   highlightRows: Array<Object>,
@@ -159,12 +162,12 @@ export type TableFooterState = {
   dataList: Array<mixed>
 };
 
-export type TableFooterProps = {
-  leafColumns: Array<Object>,
-  sumText: string,
-  data: Array<Object>,
-  getSummaries: (any, any) => mixed
-};
+// export type TableFooterProps = {
+//   leafColumns: Array<Object>,
+//   sumText: string,
+//   data: Array<Object>,
+//   getSummaries: (any, any) => mixed
+// };
 
 export type FilterProps = {
   defaultCondi: null | Array<Object>,
