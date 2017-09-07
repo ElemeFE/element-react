@@ -13,10 +13,39 @@ import { flattenColumns } from "./utils";
 
 export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>): React.ComponentType<any> {
   return class TableStore extends Component<TableProps, TableStoreState> {
+    // static propTypes = {
+    //   data: PropTypes,
+    //   columns?: Array<Column>,
+    //   style?: Object,
+    //   height?: string | number,
+    //   maxHeight?: string | number,
+    //   stripe: boolean,
+    //   border: boolean,
+    //   fit: boolean,
+    //   showHeader: boolean,
+    //   highlightCurrentRow?: boolean,
+    //   currentRowKey?: string | number,
+    //   rowClassName?: ((row: Object, index: number) => string) | string,
+    //   rowStyle: ((row: Object, index: number) => Object) | Object,
+    //   rowKey: ((row: Object) => string | number) | string,
+    //   emptyText: string,
+    //   defaultExpandAll: boolean,
+    //   expandRowKeys: Array<number | string>,
+    //   defaultSort: {
+    //     prop: string,
+    //     order?: 'ascending' | 'descending',
+    //   },
+    //   tooltipEffect: 'dark' | 'light',
+    //   showSummary: boolean,
+    //   sumText: string,
+    //   summaryMethod: ({ column: Array<Column>, data: Array<Object> }) => any,
+    // };
+
     static defaultProps = {
       showHeader: true,
       fit: true,
       emptyText: '暂无数据',
+      defaultExpandAll: false,
     };
 
     static childContextTypes = {
@@ -44,13 +73,23 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
         rowKey: props.rowKey,
         defaultExpandAll: props.defaultExpandAll,
         currentRow: null,
+        selectable: null,
+        selectedRows: null,
       };
+      [
+        'toggleRowSelection',
+        'toggleAllSelection',
+        'clearSelection',
+        'setCurrentRow',
+      ].forEach((fn) => {
+        this[fn] = this[fn].bind(this);
+      });
     }
 
     componentWillMount() {
-      const { columns, data } = this.props;
+      const { columns, data, defaultExpandALl } = this.props;
       this.updateColumns(columns);
-      this.setData(data);
+      this.setData(data, defaultExpandALl);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -60,7 +99,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       }
 
       if (data !== nextProps.data) {
-        this.setData(nextProps.data);
+        this.setData(nextProps.data, nextProps.defaultExpandALl);
       }
 
     }
@@ -82,8 +121,12 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
 
     updateColumns(columns) {
       const _columns = normalizeColumns(columns);
-      if (_columns[0].type === 'selection' && !_columns[0].fixed) { // 首列为多选列强制固定
-        _columns[0].fixed = true;
+      let selectable = false;
+      if (_columns[0].type === 'selection') {
+        selectable = true;
+        if (!_columns[0].fixed) { // 首列为多选列强制固定
+          _columns[0].fixed = true;
+        }
       }
       const fixedColumns = _columns.filter(column => column.fixed === true || column.fixed === 'left');
       const rightFixedColumns = _columns.filter(column => column.fixed === 'right');
@@ -95,18 +138,23 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
         rightFixedColumns,
         originColumns,
         columns: flattenColumns(_columns),
-        isComplex: fixedColumns.length > 0 || rightFixedColumns.length > 0
+        isComplex: fixedColumns.length > 0 || rightFixedColumns.length > 0,
+        selectable
       });
     }
 
-    setData(_data: Array<Object>) {
+    setData(_data: Array<Object>, defaultExpandAll: boolean) {
       // todo more
+      if (defaultExpandAll) {
+
+      }
       this.setState({
         _data,
         data: _data,
         hoverRow: null,
-        expandingRows: [],
         currentRow: null,
+        selectedRows: [],
+        expandingRows: defaultExpandAll ? _data.slice() : [],
       });
     }
 
@@ -129,13 +177,14 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
 
     toggleRowExpanded(row: Object, rowKey: string | number) {
       const { expand, expandRowKeys } = this.props;
-      const { expandingRows } = this.state;
+      let { expandingRows } = this.state;
       if (expandRowKeys) { // controlled expanding status
         const isRowExpanding = expandRowKeys.includes(rowKey);
         expand && expand(row, !isRowExpanding);
         return;
       }
 
+      expandingRows = expandingRows.slice();
       const rowIndex = expandingRows.indexOf(row);
       if (rowIndex > -1) {
         expandingRows.splice(rowIndex, 1);
@@ -167,6 +216,70 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       this.setState({
         currentRow: row
       });
+    }
+
+    toggleRowSelection(row, isSelected) {
+      const { currentRowKey } = this.props;
+      // const { selectable } = this.state;
+
+      if (Array.isArray(currentRowKey)) return;
+
+      const selectedRows = this.state.selectedRows.slice();
+      if (isSelected) {
+        selectedRows.push(row);
+      } else {
+        const rowIndex = selectedRows.indexOf(row);
+        selectedRows.splice(rowIndex, 1);
+      }
+
+      this.setState({
+        selectedRows
+      });
+    }
+
+    toggleAllSelection() {
+      const { currentRowKey } = this.props;
+      if (Array.isArray(currentRowKey)) return;
+
+      let selectedRows = this.state.selectedRows.slice();
+      if (this.isAllSelected) {
+        selectedRows = [];
+      } else {
+        selectedRows = this.state.data.slice();
+      }
+
+      this.setState({
+        selectedRows,
+      })
+    }
+
+    clearSelection() {
+      const { currentRowKey } = this.props;
+      if (Array.isArray(currentRowKey)) return;
+
+      this.setState({
+        selectedRows: [],
+      });
+    }
+
+    isRowSelected(row: Object, rowKey: string | number): boolean {
+      const { currentRowKey } = this.props;
+      const { selectedRows } = this.state;
+
+      if (Array.isArray(currentRowKey)) {
+        return currentRowKey.includes(rowKey);
+      }
+      return selectedRows.includes(row);
+    }
+
+    get isAllSelected(): boolean {
+      const { currentRowKey } = this.props;
+      const { selectedRows, data } = this.state;
+
+      if (Array.isArray(currentRowKey)) {
+        return currentRowKey.length === data.length;
+      }
+      return selectedRows.length === data.length;
     }
 
     render()  {

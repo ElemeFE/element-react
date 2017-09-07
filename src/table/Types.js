@@ -41,7 +41,7 @@ export type TableProps = {
   fit: boolean,
   showHeader: boolean,
   highlightCurrentRow?: boolean,
-  currentRowKey?: string | number,
+  currentRowKey?: string | number | Array<string | number>,
   rowClassName?: ((row: Object, index: number) => string) | string,
   rowStyle: ((row: Object, index: number) => Object) | Object,
   rowKey: ((row: Object) => string | number) | string,
@@ -65,7 +65,8 @@ export type TableProps = {
 
 export type _Column = Column & {
   realWidth: number,
-  render: (row: Object, column: _Column, index: number) => React.Element<any>
+  render: (row: Object, column: _Column, index: number) => React.Element<any>,
+  renderHeader: (column: _Column) => React.Element<any>,
 };
 
 export type TableStoreState = {
