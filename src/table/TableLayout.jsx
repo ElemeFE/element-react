@@ -161,7 +161,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
         bodyHeight,
         footerHeight,
         fixedBodyHeight,
-        viewportHeight
+        viewportHeight // no useful
       }));
     }
 

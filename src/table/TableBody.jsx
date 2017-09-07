@@ -156,7 +156,7 @@ export default class TableBody extends Component<TableBodyProps> {
               {store.columns.map((column, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={this.className(column.className || '', column.align, {
+                  className={this.classNames(column.className || '', column.align, {
                     'is-hidden': columnsHidden[cellIndex]
                   })}
                 >
