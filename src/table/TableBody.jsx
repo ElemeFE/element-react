@@ -4,7 +4,7 @@ import { Component, PropTypes } from '../../libs';
 import { getRowIdentity, getValueByPath } from "./utils";
 import {toDate} from "../date-picker/utils/index";
 
-import { TableBodyProps } from "./Types";
+import type {_Column, TableBodyProps} from "./Types";
 
 export default class TableBody extends Component<TableBodyProps> {
   static contextTypes = {
@@ -19,7 +19,7 @@ export default class TableBody extends Component<TableBodyProps> {
     });
   }
 
-  handleMouseEnter(index) {
+  handleMouseEnter(index: number) {
     this.context.store.setHoverRow(index);
   }
 
@@ -73,15 +73,15 @@ export default class TableBody extends Component<TableBodyProps> {
     return this.props.store.rightFixedColumns.length;
   }
 
-  handleExpandClick(row, rowKey) {
+  handleExpandClick(row: Object, rowKey: string | number) {
     this.context.store.toggleRowExpanded(row, rowKey);
   }
 
-  handleClick(row) {
+  handleClick(row: Object) {
     this.context.store.setCurrentRow(row);
   }
 
-  renderCell(row, column, index, rowKey) {
+  renderCell(row: Object, column: _Column, index: number, rowKey: string | number): React.Element<any> {
     const { type } = column;
     if (type === 'expand') {
       return (

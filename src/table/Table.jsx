@@ -109,7 +109,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
     return style;
   }
 
-  bindRef(key) {
+  bindRef(key: string) {
     return (node) => { this[key] = node; }
   }
 
