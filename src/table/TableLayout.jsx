@@ -51,11 +51,14 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
     }
 
     componentDidUpdate(preProps) {
-      const columnsChanged = this.props.columns !== preProps.columns;
-      const heightChanged = this.props.height !== preProps.height || this.props.maxHeight !== preProps.maxHeight;
+      const { columns, height, maxHeight, data, expandRowKeys, store } = this.props;
+      const columnsChanged = columns !== preProps.columns;
+      const heightChanged = height !== preProps.height || maxHeight !== preProps.maxHeight;
+      const dataChanged = data !== preProps.data;
+      const rowExpandChanged = store.expandingRows !== preProps.store.expandingRows || expandRowKeys !== preProps.expandRowKeys;
       if (columnsChanged) {
         this.doLayout();
-      } else if (heightChanged) {
+      } else if (heightChanged || dataChanged || rowExpandChanged) {
         this.updateHeight();
         this.updateScrollY();
       }
