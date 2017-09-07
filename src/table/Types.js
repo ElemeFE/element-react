@@ -68,13 +68,13 @@ type _Column = Column & {
 export type TableStoreState = {
   _data: Array<Object>,
   data: Array<Object>,
-  defaultExpandAll: boolean,
   _columns: Array<_Column>,
   fixedColumns: Array<_Column>,
   rightFixedColumns: Array<_Column>,
   originColumns: Array<_Column>,
   columns: Array<_Column>,
   isComplex: boolean,
+  defaultExpandAll: boolean,
 };
 
 export type TableLayoutState = {

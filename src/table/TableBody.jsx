@@ -77,6 +77,10 @@ export default class TableBody extends Component<TableBodyProps> {
     this.context.store.toggleRowExpanded(row, rowKey);
   }
 
+  handleClick(row) {
+    this.context.store.setCurrentRow(row);
+  }
+
   renderCell(row, column, index, rowKey) {
     const { type } = column;
     if (type === 'expand') {
@@ -122,13 +126,15 @@ export default class TableBody extends Component<TableBodyProps> {
               style={this.getRowStyle(row, rowIndex)}
               className={this.className('el-table__row', {
                 'el-table__row--striped': props.stripe && rowIndex % 2 === 1,
-                'hover-row': store.hoverRow === rowIndex
+                'hover-row': store.hoverRow === rowIndex,
+                'current-row': props.highlightCurrentRow && (props.currentRowKey === rowKey || store.currentRow === row)
               }, typeof props.rowClassName === 'string'
                 ? props.rowClassName
                 : typeof props.rowClassName === 'function'
                 && props.rowClassName(row, rowIndex))}
               onMouseEnter={this.handleMouseEnter.bind(this, rowIndex)}
               onMouseLeave={this.handleMouseLeave}
+              onClick={this.handleClick.bind(this, row)}
             >
               {store.columns.map((column, cellIndex) => (
                 <td

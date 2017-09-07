@@ -32,8 +32,6 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       super(props);
 
       this.state = {
-        rowKey: props.rowKey,
-        defaultExpandAll: props.defaultExpandAll,
         _columns: null, // transformed columns props
         fixedColumns: null, // left fixed columns from _columns
         rightFixedColumns: null, // right fixed columns from _columns
@@ -42,6 +40,9 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
         isComplex: null, // has fixed column
         expandingRows: [], // expanding rows
         hoverRow: null,
+        rowKey: props.rowKey,
+        defaultExpandAll: props.defaultExpandAll,
+        currentRow: null,
       };
     }
 
@@ -52,13 +53,15 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
     }
 
     componentWillReceiveProps(nextProps) {
-      if (this.props.columns !== nextProps.columns) {
+      const { columns, data, highlightCurrentRow, currentRowKey } = this.props;
+      if (columns !== nextProps.columns) {
         this.updateColumns(nextProps.columns);
       }
 
-      if (this.props.data !== nextProps.data) {
+      if (data !== nextProps.data) {
         this.setData(nextProps.data);
       }
+
     }
 
     // shouldComponentUpdate(nextProps) {
@@ -106,6 +109,7 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
     }
 
     setHoverRow(index) {
+      if (!this.state.isComplex) return;
       // todo optimize
       // clearTimeout(this.clearHoverTimer);
       // if (index === null) {
@@ -154,11 +158,21 @@ export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>)
       return expandingRows.includes(row);
     }
 
+    setCurrentRow(row) {
+      const { highlightCurrentRow, currentRowKey } = this.props;
+      if (!highlightCurrentRow || currentRowKey) return;
+
+      this.setState({
+        currentRow: row
+      });
+    }
+
     render() {
+      const renderExpanded = (this.props.columns.find(column => column.type === 'expand') || {}).expandPannel;
       return (
         <WrapedComponent
           {...this.props}
-          renderExpanded={this.props.columns.find(column => column.type === 'expand').expandPannel}
+          renderExpanded={renderExpanded}
           store={this.state}
         />
       )

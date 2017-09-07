@@ -154,11 +154,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
           <TableBody
             store={store}
             layout={layout}
-            stripe={props.stripe}
-            rowClassName={props.rowClassName}
-            rowStyle={props.rowStyle}
-            highlight={props.highlightCurrentRow}
-            renderExpanded={props.renderExpanded}
+            {...props}
             style={{ width: this.bodyWidth }}
           />
           {(!props.data || !props.data.length) && (
