@@ -139,8 +139,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
             <TableHeader
               store={store}
               layout={layout}
-              border={props.border}
-              defaultSort={props.defaultSort}
+              {...props}
               style={{ width: layout.bodyWidth || '' }}
             />
           </div>
@@ -175,10 +174,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
             <TableFooter
               store={store}
               layout={layout}
-              border={props.border}
-              sumText={props.sumText}
-              summaryMethod={props.summaryMethod}
-              defaultSort={props.defaultSort}
+              {...props}
               style={{ width: layout.bodyWidth || '' }}
             />
           </div>
@@ -197,7 +193,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                   store={store}
                   layout={layout}
                   fixed="left"
-                  border={props.border}
+                  {...props}
                   style={{ width: layout.fixedWidth || '' }}
                 />
               </div>
@@ -213,10 +209,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                 store={store}
                 layout={layout}
                 fixed="left"
-                hightlight={props.highlightCurrentRow}
-                rowClassName={props.rowClassName}
-                rowStyle={props.rowStyle}
-                renderExpanded={props.renderExpanded}
+                {...props}
                 style={{ width: layout.fixedWidth || '' }}
               />
             </div>
@@ -226,9 +219,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                   store={store}
                   layout={layout}
                   fixed="left"
-                  border={props.border}
-                  sumText={props.sumText}
-                  summaryMethod={props.summaryMethod}
+                  {...props}
                   style={{ width: !!layout.fixedWidth || '' }}
                 />
               </div>
@@ -250,7 +241,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                   store={store}
                   layout={layout}
                   fixed="right"
-                  border={props.border}
+                  {...props}
                   style={{ width: layout.rightFixedWidth || '' }}
                 />
               </div>
@@ -266,10 +257,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                 store={store}
                 layout={layout}
                 fixed="right"
-                hightlight={props.highlightCurrentRow}
-                rowClassName={props.rowClassName}
-                rowStyle={props.rowStyle}
-                renderExpanded={props.renderExpanded}
+                {...props}
                 style={{ width: layout.rightFixedWidth || '' }}
               />
             </div>
@@ -283,9 +271,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                   store={store}
                   layout={layout}
                   fixed="right"
-                  border={props.border}
-                  sumText={props.sumText}
-                  summaryMethod={props.summaryMethod}
+                  {...props}
                   style={{ width: layout.rightFixedWidth || '' }}
                 />
               </div>

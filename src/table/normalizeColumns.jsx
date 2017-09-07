@@ -40,6 +40,15 @@ const forced = {
     sortable: false,
     resizable: false,
     className: 'el-table__expand-column'
+  },
+  index: {
+    renderHeader(column) {
+      return column.label || '#';
+    },
+    render(row, column, index) {
+      return <div>{index + 1}</div>
+    },
+    sortable: false
   }
 };
 

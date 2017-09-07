@@ -134,7 +134,7 @@ export default class TableHeader extends Component {
                   key={cellIndex}
                 >
                   <div className={this.className('cell')}>
-                    {column.renderHeader ? column.renderHeader() : column.label}
+                    {column.renderHeader ? column.renderHeader(column) : column.label}
                   </div>
                 </th>
               ))}
