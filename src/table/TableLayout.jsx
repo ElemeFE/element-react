@@ -8,7 +8,7 @@ import type {
   TableLayoutState,
 } from './Types';
 
-import {flattenColumns, getScrollBarWidth} from "./utils";
+import { flattenColumns, getScrollBarWidth, getValueByPath } from "./utils";
 
 export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>): React.ComponentType<any> {
   return class TableLayout extends Component<TableProps & { store: TableStoreState }, TableLayoutState> {
@@ -56,17 +56,50 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
     }
 
     componentDidUpdate(preProps) {
-      const { columns, height, maxHeight, data, expandRowKeys, store } = this.props;
-      const columnsChanged = columns !== preProps.columns;
-      const heightChanged = height !== preProps.height || maxHeight !== preProps.maxHeight;
-      const dataChanged = data !== preProps.data;
-      const rowExpandChanged = store.expandingRows !== preProps.store.expandingRows || expandRowKeys !== preProps.expandRowKeys;
-      if (columnsChanged) {
+      // const { columns, height, maxHeight, data, expandRowKeys, store, showSummary, summaryMethod, sumText } = this.props;
+      //
+      // const columnsChanged = columns !== preProps.columns;
+      // const heightChanged = height !== preProps.height || maxHeight !== preProps.maxHeight;
+      // const dataChanged = data !== preProps.data;
+      // const rowExpandChanged = store.expandingRows !== preProps.store.expandingRows || expandRowKeys !== preProps.expandRowKeys;
+      // const summaryChanged = showSummary !== preProps.showSummary || summaryMethod !== preProps.summaryMethod || sumText !== preProps.sumText;
+      // if (columnsChanged) {
+      //   this.doLayout();
+      // } else if (
+      //   heightChanged
+      //   || dataChanged
+      //   || rowExpandChanged
+      //   || summaryChanged
+      // ) {
+      //   this.updateHeight();
+      //   this.updateScrollY();
+      // }
+
+      if (this.isPropChanged('columns', preProps)) {
         this.doLayout();
-      } else if (heightChanged || dataChanged || rowExpandChanged) {
+        return;
+      }
+
+      const shouldUpdateHeight = [
+        'height',
+        'maxHeight',
+        'data',
+        'store.expandingRows',
+        'expandRowKeys',
+        'showSummary',
+        'summaryMethod',
+        'sumText',
+      ].some(key => this.isPropChanged(key, preProps));
+      if (shouldUpdateHeight) {
         this.updateHeight();
         this.updateScrollY();
       }
+    }
+
+    isPropChanged(key, preProps) {
+      const prop = getValueByPath(this.props, key);
+      const preProp = getValueByPath(preProps, key);
+      return prop !== preProp;
     }
 
     getChildContext() {
