@@ -37,11 +37,6 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
       this.el = this.table.el;
 
       this.doLayout();
-      // const { headerWrapper, footerWrapper } = this.table;
-      // requestAnimationFrame(() => {
-      //   console.log(footerWrapper.offsetHeight);
-      //
-      // })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -89,7 +84,6 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
     }
 
     doLayout() {
-      // 宽度影响高度，高度决定是否有scrollY
       this.setState(this.caculateWidth(), () => {
         this.updateHeight();
         this.updateScrollY();
