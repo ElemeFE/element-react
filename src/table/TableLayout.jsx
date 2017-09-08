@@ -38,6 +38,11 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
       this.el = this.table.el;
 
       this.doLayout();
+      // const { headerWrapper, footerWrapper } = this.table;
+      // requestAnimationFrame(() => {
+      //   console.log(footerWrapper.offsetHeight);
+      //
+      // })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -71,13 +76,15 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
     }
 
     doLayout() {
-      this.update();
-      this.updateHeight();
-      this.updateScrollY();
+      // 宽度影响高度，高度决定是否有scrollY
+      this.setState(this.caculateWidth(), () => {
+        this.updateHeight();
+        this.updateScrollY();
+      });
     }
 
     // horizontal direction layout
-    update() {
+    caculateWidth() {
       const { store: { columns, fixedColumns, rightFixedColumns }, fit } = this.props;
       const { gutterWidth } = this.state;
       const bodyMinWidth = columns.reduce((pre, col) => pre + (col.width || col.minWidth), 0);
@@ -132,12 +139,20 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
         rightFixedWidth = rightFixedColumns.reduce((pre, col) => pre + col.realWidth, 0);
       }
 
-      this.setState(Object.assign(this.state, {
+      return {
         scrollX,
         bodyWidth,
         fixedWidth,
         rightFixedWidth
-      }));
+      };
+      // return new Promise((resolve) => {
+      //   this.setState(Object.assign(this.state, {
+      //     scrollX,
+      //     bodyWidth,
+      //     fixedWidth,
+      //     rightFixedWidth
+      //   }), resolve);
+      // });
     }
 
     // vertical direction layout
@@ -154,6 +169,15 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
       const bodyHeight = tableHeight - headerHeight- footerHeight + (footerWrapper ? 1 : 0);
       const fixedBodyHeight = bodyHeight - (scrollX ? gutterWidth : 0);
       const viewportHeight = tableHeight - (scrollX && !noData ? gutterWidth : 0);
+
+      // return {
+      //   tableHeight,
+      //   headerHeight,
+      //   bodyHeight,
+      //   footerHeight,
+      //   fixedBodyHeight,
+      //   viewportHeight // no useful
+      // };
 
       this.setState(Object.assign(this.state, {
         tableHeight,
@@ -173,6 +197,9 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
       const body = bodyWrapper.querySelector('.el-table__body');
       const scrollY = body.offsetHeight > fixedBodyHeight;
 
+      // return {
+      //   scrollY
+      // };
       this.setState(Object.assign(this.state, {
         scrollY
       }));
