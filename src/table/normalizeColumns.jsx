@@ -56,7 +56,7 @@ export default function normalizeColumns(columns) {
     let _column;
     if (column.subColumns) {
       // renderHeader
-      _column = Object.assign({}, columns);
+      _column = Object.assign({}, column);
       _column.subColumns = normalizeColumns(column.subColumns);
     } else {
       let { width, minWidth } = column;
