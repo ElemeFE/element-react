@@ -81,7 +81,7 @@ export type TableStoreState = {
   defaultExpandAll: boolean,
 };
 
-export type TableLayoutProps = TableStoreProps & { store: TableStoreState };
+export type TableLayoutProps = TableStoreProps & { store: TableStoreState, renderExpanded?: (row: Object, rowIndex: number) => React.Element };
 
 export type TableLayoutState = {
   height?: string | number,
@@ -96,23 +96,13 @@ export type TableLayoutState = {
   scrollY?: boolean,
 };
 
-export type TableProps = TableStoreProps & { layout: TableLayoutState };
+export type TableProps = TableLayoutProps & { layout: TableLayoutState };
 
-export type TableState = {
-
-};
-
-export type compositiveTableProps = TableStoreProps & { store: TableStoreState } & { layout: TableLayoutState };
+export type TableState = {};
 
 export type TableHeaderProps = TableProps & { fixed: true | 'left' | 'right' };
 export type TableBodyProps = TableHeaderProps;
 export type TableFooterProps = TableHeaderProps;
-
-// export type TableHeaderProps = {
-//   store: TableStoreState,
-//   layout: TableLayoutState,
-//   fixed?: true | 'left' | 'right'
-// };
 
 export type TableHeaderState = {
   allChecked: boolean,
@@ -122,45 +112,6 @@ export type TableHeaderState = {
   sortPropertyName: string,
   filterParams: Object
 };
-
-// export type TableBodyProps = {
-//   store: TableStoreState,
-//   layout: TableLayoutState,
-//   fixed?: true | 'left' | 'right'
-// }
-
-export type TableBodyState = {
-  highlightRows: Array<Object>,
-  selected: Array<Object>
-};
-
-export type TableBodyItemProps = {
-  columns: Array<Column>,
-  itemData: Object,
-  fixed: string,
-  onSelected: (boolean, any)=>void,
-  selected: boolean,
-  isHiglight: boolean,
-  rowIndex: number,
-  rowClassName: (any, any)=>string,
-  leafColumns: Array<Object>
-};
-
-export type TableBodyItemState = {
-  hover: boolean,
-  expand: boolean
-};
-
-export type TableFooterState = {
-  dataList: Array<mixed>
-};
-
-// export type TableFooterProps = {
-//   leafColumns: Array<Object>,
-//   sumText: string,
-//   data: Array<Object>,
-//   getSummaries: (any, any) => mixed
-// };
 
 export type FilterProps = {
   defaultCondi: null | Array<Object>,
