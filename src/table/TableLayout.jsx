@@ -157,52 +157,44 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
 
     // vertical direction layout
     updateHeight() {
-      const { data } = this.props;
-      const { scrollX, gutterWidth } = this.state;
-      // const hasHeight = height && (!isNaN(height) || typeof height === 'string');
-      const noData = !data || !data.length;
-      const { headerWrapper, footerWrapper } = this.table;
+      this.setState((state) => {
+        const { data } = this.props;
+        const { scrollX, gutterWidth } = state;
 
-      const tableHeight = this.el.clientHeight;
-      const headerHeight = headerWrapper ? headerWrapper.offsetHeight : 0;
-      const footerHeight = footerWrapper ? footerWrapper.offsetHeight : 0;
-      const bodyHeight = tableHeight - headerHeight- footerHeight + (footerWrapper ? 1 : 0);
-      const fixedBodyHeight = bodyHeight - (scrollX ? gutterWidth : 0);
-      const viewportHeight = tableHeight - (scrollX && !noData ? gutterWidth : 0);
+        const noData = !data || !data.length;
+        const { headerWrapper, footerWrapper } = this.table;
 
-      // return {
-      //   tableHeight,
-      //   headerHeight,
-      //   bodyHeight,
-      //   footerHeight,
-      //   fixedBodyHeight,
-      //   viewportHeight // no useful
-      // };
+        const tableHeight = this.el.clientHeight;
+        const headerHeight = headerWrapper ? headerWrapper.offsetHeight : 0;
+        const footerHeight = footerWrapper ? footerWrapper.offsetHeight : 0;
+        const bodyHeight = tableHeight - headerHeight- footerHeight + (footerWrapper ? 1 : 0);
+        const fixedBodyHeight = bodyHeight - (scrollX ? gutterWidth : 0);
+        const viewportHeight = tableHeight - (scrollX && !noData ? gutterWidth : 0);
 
-      this.setState(Object.assign(this.state, {
-        tableHeight,
-        headerHeight,
-        bodyHeight,
-        footerHeight,
-        fixedBodyHeight,
-        viewportHeight // no useful
-      }));
+        return {
+          tableHeight,
+          headerHeight,
+          bodyHeight,
+          footerHeight,
+          fixedBodyHeight,
+          viewportHeight // no useful
+        };
+      });
     }
 
     // judge if has scroll-Y bar
     updateScrollY() {
-      const { bodyWrapper } = this.table;
-      const { fixedBodyHeight } = this.state;
+      this.setState((state) => {
+        const { bodyWrapper } = this.table;
+        const { fixedBodyHeight } = state;
 
-      const body = bodyWrapper.querySelector('.el-table__body');
-      const scrollY = body.offsetHeight > fixedBodyHeight;
+        const body = bodyWrapper.querySelector('.el-table__body');
+        const scrollY = body.offsetHeight > fixedBodyHeight;
 
-      // return {
-      //   scrollY
-      // };
-      this.setState(Object.assign(this.state, {
-        scrollY
-      }));
+        return {
+          scrollY
+        };
+      });
     }
 
     render() {
