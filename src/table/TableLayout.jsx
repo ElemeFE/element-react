@@ -3,15 +3,14 @@ import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import type {
-  TableProps,
-  TableStoreState,
+  TableLayoutProps,
   TableLayoutState,
 } from './Types';
 
 import { flattenColumns, getScrollBarWidth, getValueByPath } from "./utils";
 
 export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>): React.ComponentType<any> {
-  return class TableLayout extends Component<TableProps & { store: TableStoreState }, TableLayoutState> {
+  return class TableLayout extends Component<TableLayoutProps, TableLayoutState> {
     static childContextTypes = {
       layout: PropTypes.any,
     };
@@ -56,25 +55,6 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
     }
 
     componentDidUpdate(preProps) {
-      // const { columns, height, maxHeight, data, expandRowKeys, store, showSummary, summaryMethod, sumText } = this.props;
-      //
-      // const columnsChanged = columns !== preProps.columns;
-      // const heightChanged = height !== preProps.height || maxHeight !== preProps.maxHeight;
-      // const dataChanged = data !== preProps.data;
-      // const rowExpandChanged = store.expandingRows !== preProps.store.expandingRows || expandRowKeys !== preProps.expandRowKeys;
-      // const summaryChanged = showSummary !== preProps.showSummary || summaryMethod !== preProps.summaryMethod || sumText !== preProps.sumText;
-      // if (columnsChanged) {
-      //   this.doLayout();
-      // } else if (
-      //   heightChanged
-      //   || dataChanged
-      //   || rowExpandChanged
-      //   || summaryChanged
-      // ) {
-      //   this.updateHeight();
-      //   this.updateScrollY();
-      // }
-
       if (this.isPropChanged('columns', preProps)) {
         this.doLayout();
         return;
@@ -96,7 +76,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
       }
     }
 
-    isPropChanged(key, preProps) {
+    isPropChanged(key: string, preProps) {
       const prop = getValueByPath(this.props, key);
       const preProp = getValueByPath(preProps, key);
       return prop !== preProp;
@@ -117,7 +97,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
     }
 
     // horizontal direction layout
-    caculateWidth() {
+    caculateWidth(): Object {
       const { store: { columns, fixedColumns, rightFixedColumns }, fit } = this.props;
       const { gutterWidth } = this.state;
       const bodyMinWidth = columns.reduce((pre, col) => pre + (col.width || col.minWidth), 0);
@@ -178,14 +158,6 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
         fixedWidth,
         rightFixedWidth
       };
-      // return new Promise((resolve) => {
-      //   this.setState(Object.assign(this.state, {
-      //     scrollX,
-      //     bodyWidth,
-      //     fixedWidth,
-      //     rightFixedWidth
-      //   }), resolve);
-      // });
     }
 
     // vertical direction layout

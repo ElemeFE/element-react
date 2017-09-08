@@ -30,7 +30,13 @@ export type Column = {
   subColumns?: Array<Column>
 };
 
-export type TableProps = {
+export type _Column = Column & {
+  realWidth: number,
+  render: (row: Object, column: _Column, index: number) => React.Element<any>,
+  renderHeader: (column: _Column) => React.Element<any>,
+};
+
+export type TableStoreProps = {
   data?: Array<Object>,
   columns?: Array<Column>,
   style?: Object,
@@ -63,12 +69,6 @@ export type TableProps = {
   onSelectChange: ()=>void
 };
 
-export type _Column = Column & {
-  realWidth: number,
-  render: (row: Object, column: _Column, index: number) => React.Element<any>,
-  renderHeader: (column: _Column) => React.Element<any>,
-};
-
 export type TableStoreState = {
   _data: Array<Object>,
   data: Array<Object>,
@@ -80,6 +80,8 @@ export type TableStoreState = {
   isComplex: boolean,
   defaultExpandAll: boolean,
 };
+
+export type TableLayoutProps = TableStoreProps & { store: TableStoreState };
 
 export type TableLayoutState = {
   height?: string | number,
@@ -94,24 +96,15 @@ export type TableLayoutState = {
   scrollY?: boolean,
 };
 
-// export type TableProps = TableLayoutProps & { layout: TableLayoutState };
+export type TableProps = TableStoreProps & { layout: TableLayoutState };
 
 export type TableState = {
 
 };
 
-// export type DefaultTableProps = {
-//   columns: Array<Column>,
-//   data: Array<Object>,
-//   stripe: boolean,
-//   border: boolean,
-//   fit: boolean,
-//   highlightCurrentRow: boolean
-// };
+export type compositiveTableProps = TableStoreProps & { store: TableStoreState } & { layout: TableLayoutState };
 
-export type compositiveTableProps = TableProps & { store: TableStoreState } & { layout: TableLayoutState };
-
-export type TableHeaderProps = compositiveTableProps & { fixed: true | 'left' | 'right' };
+export type TableHeaderProps = TableProps & { fixed: true | 'left' | 'right' };
 export type TableBodyProps = TableHeaderProps;
 export type TableFooterProps = TableHeaderProps;
 

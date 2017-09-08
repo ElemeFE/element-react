@@ -9,14 +9,12 @@ import TableFooter from './TableFooter';
 
 import type {
   TableProps,
-  TableStoreState,
-  TableLayoutState,
   TableState,
 } from './Types';
 
 let tableIdSeed = 1;
 
-class Table extends Component<TableProps & { store: TableStoreState } & { layout: TableLayoutState }, TableState> {
+class Table extends Component<TableProps, TableState> {
   static contextTypes = {
     store: PropTypes.any,
     layout: PropTypes.any,
@@ -137,9 +135,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
         {props.showHeader && (
           <div className="el-table__header-wrapper" ref={this.bindRef('headerWrapper')}>
             <TableHeader
-              store={store}
-              layout={layout}
-              {...props}
+              {...this.props}
               style={{ width: layout.bodyWidth || '' }}
             />
           </div>
@@ -151,9 +147,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
           onScroll={this.syncScroll}
         >
           <TableBody
-            store={store}
-            layout={layout}
-            {...props}
+            {...this.props}
             style={{ width: this.bodyWidth }}
           />
           {(!props.data || !props.data.length) && (
@@ -172,9 +166,7 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
             ref={this.bindRef('footerWrapper')}
           >
             <TableFooter
-              store={store}
-              layout={layout}
-              {...props}
+              {...this.props}
               style={{ width: layout.bodyWidth || '' }}
             />
           </div>
@@ -190,10 +182,8 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
             {props.showHeader && (
               <div className="el-table__fixed-header-wrapper" ref={this.bindRef('fixedHeaderWrapper')}>
                 <TableHeader
-                  store={store}
-                  layout={layout}
                   fixed="left"
-                  {...props}
+                  {...this.props}
                   style={{ width: layout.fixedWidth || '' }}
                 />
               </div>
@@ -206,20 +196,16 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
               ref={this.bindRef('fixedBodyWrapper')}
             >
               <TableBody
-                store={store}
-                layout={layout}
                 fixed="left"
-                {...props}
+                {...this.props}
                 style={{ width: layout.fixedWidth || '' }}
               />
             </div>
             {props.showSummary && (
               <div className="el-table__fixed-footer-wrapper" ref={this.bindRef('fixedFooterWrapper')}>
                 <TableFooter
-                  store={store}
-                  layout={layout}
                   fixed="left"
-                  {...props}
+                  {...this.props}
                   style={{ width: layout.fixedWidth || '' }}
                 />
               </div>
@@ -238,10 +224,8 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
             {props.showHeader && (
               <div className="el-table__fixed-header-wrapper" ref={this.bindRef('rightFixedHeaderWrapper')}>
                 <TableHeader
-                  store={store}
-                  layout={layout}
                   fixed="right"
-                  {...props}
+                  {...this.props}
                   style={{ width: layout.rightFixedWidth || '' }}
                 />
               </div>
@@ -254,10 +238,8 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
               }, this.fixedBodyHeight)}
             >
               <TableBody
-                store={store}
-                layout={layout}
                 fixed="right"
-                {...props}
+                {...this.props}
                 style={{ width: layout.rightFixedWidth || '' }}
               />
             </div>
@@ -268,10 +250,8 @@ class Table extends Component<TableProps & { store: TableStoreState } & { layout
                 style={{ visibility: props.data && props.data.length ? 'visible' : 'hidden' }}
               >
                 <TableFooter
-                  store={store}
-                  layout={layout}
                   fixed="right"
-                  {...props}
+                  {...this.props}
                   style={{ width: layout.rightFixedWidth || '' }}
                 />
               </div>
