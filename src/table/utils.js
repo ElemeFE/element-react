@@ -50,7 +50,7 @@ export function getScrollBarWidth(): number {
 
 export function getValueByPath(data: Object, path: string): any {
   if (typeof path !== 'string') return null;
-  return path.split('.').reduce((pre, cur) => pre[cur], data);
+  return path.split('.').reduce((pre, cur) => (pre || {})[cur], data);
 }
 
 export function getRowIdentity(row, rowKey) {
