@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import type {
-  TableProps,
+  TableStoreProps,
   TableStoreState,
   Column,
 } from './Types';
@@ -11,8 +11,8 @@ import normalizeColumns from './normalizeColumns';
 import { flattenColumns } from "./utils";
 
 
-export default function TableStoreHOC(WrapedComponent: React.ComponentType<any>): React.ComponentType<any> {
-  return class TableStore extends Component<TableProps, TableStoreState> {
+export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any>*/)/*: React.ComponentType<any>*/ {
+  return class TableStore extends Component<TableStoreProps, TableStoreState> {
     // static propTypes = {
     //   data: PropTypes,
     //   columns?: Array<Column>,
