@@ -29,7 +29,10 @@ function convertToRows(originColumns) {
       if (maxLevel < column.level) {
         maxLevel = column.level;
       }
+    } else {
+      column.level = 1;
     }
+
     if (column.subColumns) {
       let colSpan = 0;
       column.subColumns.forEach((subColumn) => {
@@ -43,7 +46,6 @@ function convertToRows(originColumns) {
   }
 
   originColumns.forEach((column) => {
-    column.level = 1;
     traverse(column);
   });
 
