@@ -128,9 +128,10 @@ export default class TableHeader extends Component<TableHeaderProps> {
       }
       const columnRect = columnEl.getBoundingClientRect();
       const minLeft = columnRect.left - tableLeft + 30;
+      columnEl.classList.add('noclick');
 
       const startMouseLeft = event.clientX;
-      const startLeft = columnRect.right - tableLeft - 2;
+      const startLeft = columnRect.right - tableLeft;
       const startColumnLeft = columnRect.left - tableLeft;
 
       resizeProxy.style.visibility = 'visible';
@@ -148,8 +149,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
 
       const handleMouseUp = () => {
         if (this.dragging) {
-          // const { startColumnLeft, startLeft } = this.dragState;
-          const finalLeft = parseInt(resizeProxy.style.left, 10) - 2;
+          const finalLeft = parseInt(resizeProxy.style.left, 10);
           const columnWidth = finalLeft - startColumnLeft;
           column.width = column.realWidth = columnWidth;
 
@@ -160,6 +160,11 @@ export default class TableHeader extends Component<TableHeaderProps> {
           resizeProxy.style.visibility = 'hidden';
           document.removeEventListener('mousemove', handleMouseMove);
           document.removeEventListener('mouseup', handleMouseUp);
+          document.onselectstart = null;
+          document.ondragstart = null;
+          setTimeout(() => {
+            columnEl.classList.remove('noclick');
+          });
 
           this.context.layout.doLayout();
         }
