@@ -20,9 +20,13 @@ class Table extends Component<TableProps, TableState> {
     layout: PropTypes.any,
   };
 
-  static getChildContext() {
+  static childContextTypes = {
+    table: PropTypes.any
+  };
+
+  getChildContext() {
     return {
-      // syncScroll: this.syncScroll
+      table: this
     }
   }
 
@@ -264,7 +268,7 @@ class Table extends Component<TableProps, TableState> {
             style={{ width: layout.scrollY ? layout.gutterWidth : '0', height: layout.headerHeight }}
           />
         )}
-        {resizeProxyVisible && <div className="el-table__column-resize-proxy" ref={this.bindRef('resizeProxy')} />}
+        <div className="el-table__column-resize-proxy" ref={this.bindRef('resizeProxy')} style={{ visibility: 'hidden' }} />
       </div>
     )
   }

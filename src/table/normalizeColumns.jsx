@@ -47,9 +47,7 @@ const forced = {
   }
 };
 
-// function getDefaultColumn() {
-//
-// }
+
 
 export default function normalizeColumns(columns) {
   return columns.map((column) => {
@@ -77,7 +75,14 @@ export default function normalizeColumns(columns) {
         minWidth = 80;
       }
 
-      _column = Object.assign({}, column, {
+      _column = Object.assign({
+        sortable: false,
+        resizable: true,
+        showOverflowTooltip: false,
+        align: 'left',
+        reserveSelection: false,
+        filterMultiple: true
+      }, column, {
         width,
         minWidth,
         realWidth: width || minWidth,

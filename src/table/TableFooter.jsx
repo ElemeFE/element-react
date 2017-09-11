@@ -24,6 +24,18 @@ export default class TableFooter extends Component<TableFooterProps> {
     }
   }
 
+  get columnsCount(): number {
+    return this.props.store.columns.length;
+  }
+
+  get leftFixedCount(): number {
+    return this.props.store.fixedColumns.length;
+  }
+
+  get rightFixedCount(): number {
+    return this.props.store.rightFixedColumns.length;
+  }
+
   render() {
     const { store, layout, fixed, summaryMethod } = this.props;
     const { _data } = store;

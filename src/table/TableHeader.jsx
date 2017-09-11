@@ -68,8 +68,107 @@ function convertToRows(originColumns) {
 export default class TableHeader extends Component<TableHeaderProps> {
   static contextTypes = {
     store: PropTypes.any,
-    layout: PropTypes.any
+    layout: PropTypes.any,
+    table: PropTypes.any,
   };
+
+  // constructor(props) {
+  //   super(props);
+  //
+  //   this.state = {
+  //     dragging: null,
+  //   };
+  // }
+
+  get columnsCount(): number {
+    return this.props.store.columns.length;
+  }
+
+  get leftFixedCount(): number {
+    return this.props.store.fixedColumns.length;
+  }
+
+  get rightFixedCount(): number {
+    return this.props.store.rightFixedColumns.length;
+  }
+
+  handleMouseMove(column, event) {
+    if (column.subColumns && column.subColumns.length) return;
+    if (!column.resizable) return;
+
+    if (!this.dragging && this.props.border) {
+      let target = event.target;
+      while (target && target.tagName !== 'TH') {
+        target = target.parentNode;
+      }
+
+      const rect = target.getBoundingClientRect();
+      const bodyStyle = document.body.style;
+      if (rect.width > 12 && rect.right - event.pageX < 8) {
+        bodyStyle.cursor = 'col-resize';
+        this.draggingColumn = column;
+      } else {
+        bodyStyle.cursor = '';
+        this.draggingColumn = null;
+      }
+    }
+  }
+
+  handleMouseDown(column, event) {
+    if (this.draggingColumn) {
+      this.dragging = true;
+
+      const { table } = this.context;
+
+      const { el: tableEl, resizeProxy } = table;
+      const tableLeft = tableEl.getBoundingClientRect().left;
+      let columnEl = event.target;
+      while (columnEl && columnEl.tagName !== 'TH') {
+        columnEl = columnEl.parentNode;
+      }
+      const columnRect = columnEl.getBoundingClientRect();
+      const minLeft = columnRect.left - tableLeft + 30;
+
+      const startMouseLeft = event.clientX;
+      const startLeft = columnRect.right - tableLeft - 2;
+      const startColumnLeft = columnRect.left - tableLeft;
+
+      resizeProxy.style.visibility = 'visible';
+      resizeProxy.style.left = startLeft + 'px';
+
+      document.onselectstart = () => false;
+      document.ondragstart = () => false;
+
+      const handleMouseMove = (event) => {
+        const deltaLeft = event.clientX - startMouseLeft;
+        const proxyLeft = startLeft + deltaLeft;
+
+        resizeProxy.style.left = Math.max(minLeft, proxyLeft) + 'px';
+      };
+
+      const handleMouseUp = () => {
+        if (this.dragging) {
+          // const { startColumnLeft, startLeft } = this.dragState;
+          const finalLeft = parseInt(resizeProxy.style.left, 10) - 2;
+          const columnWidth = finalLeft - startColumnLeft;
+          column.width = column.realWidth = columnWidth;
+
+          this.dragging = false;
+          this.draggingColumn = null;
+
+          document.body.style.cursor = '';
+          resizeProxy.style.visibility = 'hidden';
+          document.removeEventListener('mousemove', handleMouseMove);
+          document.removeEventListener('mouseup', handleMouseUp);
+
+          this.context.layout.doLayout();
+        }
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+  }
 
   isCellHidden(index: number, columns: Array<Object>): boolean {
     const { fixed } = this.props;
@@ -84,18 +183,6 @@ export default class TableHeader extends Component<TableHeaderProps> {
     } else {
       return (index < this.leftFixedCount) || (index >= this.columnsCount - this.rightFixedCount);
     }
-  }
-
-  get columnsCount(): number {
-    return this.props.store.columns.length;
-  }
-
-  get leftFixedCount(): number {
-    return this.props.store.fixedColumns.length;
-  }
-
-  get rightFixedCount(): number {
-    return this.props.store.rightFixedColumns.length;
   }
 
   renderHeader(column: _Column): React.Element {
@@ -163,9 +250,12 @@ export default class TableHeader extends Component<TableHeaderProps> {
                     column.labelClassName,
                     {
                       'is-hidden': rowIndex === 0 && this.isCellHidden(cellIndex, columns),
-                      'is-leaf': !column.subColumns
+                      'is-leaf': !column.subColumns,
+                      'is-sortable': column.sortable,
                     }
                   )}
+                  onMouseMove={this.handleMouseMove.bind(this, column)}
+                  onMouseDown={this.handleMouseDown.bind(this, column)}
                   key={cellIndex}
                 >
                   <div className="cell">

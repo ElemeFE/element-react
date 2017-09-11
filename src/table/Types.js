@@ -10,7 +10,7 @@ export type Column = {
   width?: number,
   minWidth?: number,
   fixed?: true | 'left' | 'right',
-  render?: (row: Object, column: _Column, index: number) => React.Node,
+  render?: (row: Object, column: _Column, index: number) => React.Element,
   renderHeader?: () => void,
   sortable: boolean | 'custom',
   sortMethod?: ()=>void,
@@ -103,15 +103,6 @@ export type TableState = {};
 export type TableHeaderProps = TableProps & { fixed: true | 'left' | 'right' };
 export type TableBodyProps = TableHeaderProps;
 export type TableFooterProps = TableHeaderProps;
-
-export type TableHeaderState = {
-  allChecked: boolean,
-  dragging: boolean,
-  dragState: Object,
-  sortStatus: number,
-  sortPropertyName: string,
-  filterParams: Object
-};
 
 export type FilterProps = {
   defaultCondi: null | Array<Object>,

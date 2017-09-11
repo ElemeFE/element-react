@@ -23,6 +23,7 @@ export default class TableBody extends Component<TableBodyProps> {
   }
 
   handleMouseEnter(index: number) {
+    // to improve performance can operate dom directly escape react
     this.context.store.setHoverRow(index);
   }
 
