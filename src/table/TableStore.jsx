@@ -8,7 +8,7 @@ import type {
   Column,
 } from './Types';
 import normalizeColumns from './normalizeColumns';
-import { flattenColumns } from "./utils";
+import { flattenColumns, getValueByPath } from "./utils";
 
 
 export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any>*/)/*: React.ComponentType<any>*/ {
@@ -42,6 +42,7 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
     // };
 
     static defaultProps = {
+      data: [],
       showHeader: true,
       stripe: false,
       fit: true,
@@ -79,6 +80,8 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
         currentRow: null,
         // selectable: null,
         selectedRows: null,
+        sortOrder: null,
+        sortColumn: null,
       };
       [
         'toggleRowSelection',
@@ -91,9 +94,9 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
     }
 
     componentWillMount() {
-      const { columns, data, defaultExpandALl } = this.props;
-      this.updateColumns(columns);
-      this.setData(data, defaultExpandALl);
+      // const { columns, data, defaultExpandALl } = this.props;
+      this.updateColumns(this.props);
+      this.setData(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -106,6 +109,16 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
         this.setData(nextProps.data, nextProps.defaultExpandALl);
       }
 
+    }
+
+    get isAllSelected(): boolean {
+      const { currentRowKey } = this.props;
+      const { selectedRows, data } = this.state;
+
+      if (Array.isArray(currentRowKey)) {
+        return currentRowKey.length === data.length;
+      }
+      return selectedRows.length === data.length;
     }
 
     // shouldComponentUpdate(nextProps) {
@@ -123,7 +136,8 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
     //   return false;
     // }
 
-    updateColumns(columns) {
+    updateColumns(props) {
+      const { columns } = props;
       const _columns = normalizeColumns(columns);
       let selectable = false;
 
@@ -138,7 +152,7 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
         }
       }
 
-      this.setState({
+      this.setState(Object.assign(this.state || {}, {
         _columns,
         fixedColumns,
         rightFixedColumns,
@@ -146,22 +160,26 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
         columns: flattenColumns(_columns),
         isComplex: fixedColumns.length > 0 || rightFixedColumns.length > 0,
         selectable
-      });
+      }));
     }
 
-    setData(_data: Array<Object>, defaultExpandAll: boolean) {
+    setData(props) {
       // todo more
-      if (defaultExpandAll) {
-
-      }
-      this.setState({
-        _data,
-        data: _data,
+      const { data, defaultExpandAll, defaultSort} = props;
+      this.setState(Object.assign(this.state, {
+        data,
         hoverRow: null,
         currentRow: null,
         selectedRows: [],
-        expandingRows: defaultExpandAll ? _data.slice() : [],
-      });
+        expandingRows: defaultExpandAll ? data.slice() : [],
+      }));
+
+      if (defaultSort) {
+        const { prop, order = 'ascending' } = defaultSort;
+        const { data, columns } = this.state;
+        const sortColumn = columns.find(column => column.property === prop);
+        this.changeSortCondition(sortColumn, order, data.slice());
+      }
     }
 
     setHoverRow(index: number) {
@@ -278,14 +296,33 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
       return selectedRows.includes(row);
     }
 
-    get isAllSelected(): boolean {
-      const { currentRowKey } = this.props;
-      const { selectedRows, data } = this.state;
-
-      if (Array.isArray(currentRowKey)) {
-        return currentRowKey.length === data.length;
+    changeSortCondition(column, order, data) {
+      if (!data) {
+        data = this.state.data.slice();
       }
-      return selectedRows.length === data.length;
+
+      const { sortMethod, property } = column;
+      let sortedData;
+      if (!order) {
+        sortedData = this.props.data.slice();
+      } else {
+        const flag = order === 'ascending' ? 1 : -1;
+        if (sortMethod) {
+          sortedData = data.sort((a, b) => sortMethod(a, b) ? flag : -flag);
+        } else {
+          sortedData = data.sort((a, b) => {
+            const aVal = getValueByPath(a, property);
+            const bVal = getValueByPath(b, property);
+            return aVal === bVal ? 0 : aVal > bVal ? flag : -flag;
+          });
+        }
+      }
+
+      this.setState({
+        sortColumn: column,
+        sortOrder: order,
+        data: sortedData,
+      });
     }
 
     render()  {

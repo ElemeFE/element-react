@@ -175,6 +175,40 @@ export default class TableHeader extends Component<TableHeaderProps> {
     }
   }
 
+  handleHeaderClick(column, event) {
+    if (column.sortable && !column.filters) {
+      this.handleSortClick(column, null, event);
+    } else if (column.filters && !column.sortable) {
+      this.handleFilterClick(column, event);
+    }
+  }
+
+  handleSortClick(column, givenOrder, event) {
+    event && event.stopPropagation();
+    let target = event.target;
+    while (target && target.tagName !== 'TH') {
+      target = target.parentNode;
+    }
+    if (target.classList.contains('noclick')) return;
+
+    let order;
+    if (givenOrder) {
+      order = givenOrder;
+    } else {
+      const { sortColumn, sortOrder } = this.props.store;
+      if (column === sortColumn) {
+        if (!sortOrder) {
+          order = 'ascending';
+        } else {
+          order = sortOrder === 'ascending' ? 'descending' : null;
+        }
+      } else {
+        order = 'ascending';
+      }
+    }
+    this.context.store.changeSortCondition(column, order);
+  }
+
   isCellHidden(index: number, columns: Array<Object>): boolean {
     const { fixed } = this.props;
     if (fixed === true || fixed === 'left') {
@@ -261,10 +295,26 @@ export default class TableHeader extends Component<TableHeaderProps> {
                   )}
                   onMouseMove={this.handleMouseMove.bind(this, column)}
                   onMouseDown={this.handleMouseDown.bind(this, column)}
+                  onClick={this.handleHeaderClick.bind(this, column)}
                   key={cellIndex}
                 >
                   <div className="cell">
                     {this.renderHeader(column)}
+                    {column.sortable && (
+                      <span
+                        className="caret-wrapper"
+                        onClick={this.handleSortClick.bind(this, column, null)}
+                      >
+                        <i
+                          className="sort-caret ascending"
+                          onClick={this.handleSortClick.bind(this, column, 'ascending')}
+                        />
+                        <i
+                          className="sort-caret descending"
+                          onClick={this.handleSortClick.bind(this, column, 'descending')}
+                        />
+                      </span>
+                    )}
                   </div>
                 </th>
               ))}

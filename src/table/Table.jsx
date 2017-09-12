@@ -117,7 +117,7 @@ class Table extends Component<TableProps, TableState> {
 
   render() {
     const { store, layout, ...props } = this.props;
-    const { isHidden, resizeProxyVisible } = this.state;
+    const { isHidden } = this.state;
 
     return (
       <div
