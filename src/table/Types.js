@@ -21,7 +21,7 @@ export type Column = {
   headerAlign: 'left' | 'center' | 'right',
   className?: string,
   labelClassName?: string,
-  selectable?: boolean,
+  selectable?: (row: Object, index: number) => boolean,
   reserveSelection: boolean,
   filters?: Array<{ text: any, value: any }>,
   filterPlacement?: string,
@@ -37,31 +37,32 @@ export type _Column = Column & {
 };
 
 export type TableStoreProps = {
+  style?: Object,
+  className?: string,
   data?: Array<Object>,
   columns?: Array<Column>,
-  style?: Object,
   height?: string | number,
   maxHeight?: string | number,
   stripe: boolean,
   border: boolean,
   fit: boolean,
   showHeader: boolean,
-  highlightCurrentRow?: boolean,
+  highlightCurrentRow: boolean,
   currentRowKey?: string | number | Array<string | number>,
   rowClassName?: ((row: Object, index: number) => string) | string,
   rowStyle: ((row: Object, index: number) => Object) | Object,
   rowKey: ((row: Object) => string | number) | string,
   emptyText: string,
   defaultExpandAll: boolean,
-  expandRowKeys: Array<number | string>,
-  defaultSort: {
+  expandRowKeys?: Array<number | string>,
+  defaultSort?: {
     prop: string,
     order?: 'ascending' | 'descending',
   },
-  tooltipEffect: 'dark' | 'light',
+  tooltipEffect?: 'dark' | 'light',
   showSummary: boolean,
   sumText: string,
-  summaryMethod: ({ column: Array<Column>, data: Array<Object> }) => any,
+  summaryMethod?: ({ column: Array<Column>, data: Array<Object> }) => any,
 
   //Event
   onCurrentChange: ()=>void,

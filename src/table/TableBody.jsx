@@ -86,7 +86,7 @@ export default class TableBody extends Component<TableBodyProps> {
   }
 
   renderCell(row: Object, column: _Column, index: number, rowKey: string | number): React.Element<any> {
-    const { type } = column;
+    const { type/*, formatter*/ } = column;
     if (type === 'expand') {
       return (
         <div
