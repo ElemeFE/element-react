@@ -298,7 +298,7 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
 
     changeSortCondition(column, order, data) {
       if (!data) {
-        data = this.state.data.slice();
+        data = this.props.data.slice();
       }
 
       const { sortMethod, property } = column;
