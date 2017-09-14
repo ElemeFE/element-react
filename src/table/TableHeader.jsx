@@ -283,7 +283,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
                   colSpan={column.colSpan}
                   rowSpan={column.rowSpan}
                   className={this.className(
-                    column.order,
+                    store.sortColumn === column && store.sortOrder,
                     column.headerAlign,
                     column.className,
                     column.labelClassName,
