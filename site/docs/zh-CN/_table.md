@@ -1412,7 +1412,7 @@ render() {
         columns={this.state.columns}
         data={this.state.data}
         sumText='总价'
-        getSummaries={(columns, data)=>{
+        summaryMethod={(columns, data)=>{
           const dataList = [];
           for(var i=0; i < columns.length; i++){
             let total = 0;
