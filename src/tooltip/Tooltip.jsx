@@ -51,7 +51,7 @@ export default class Tooltip extends Component {
           arrow.setAttribute('x-arrow', '');
         }
 
-        this.popperJS = new Popper(reference, popper, { placement });
+        this.popperJS = new Popper(reference, popper, { placement, gpuAcceleration: false });
       }
     } else {
       if (this.popperJS) {
