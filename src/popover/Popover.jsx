@@ -81,7 +81,8 @@ export default class Popover extends Component {
         }
 
         this.popperJS = new Popper(this.reference, this.refs.popper, {
-          placement: this.props.placement
+          placement: this.props.placement,
+          gpuAcceleration: false
         });
       }
     } else {

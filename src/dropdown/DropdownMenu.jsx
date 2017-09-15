@@ -30,7 +30,8 @@ export default class DropdownMenu extends Component {
         const parent: any = ReactDOM.findDOMNode(this.parent());
 
         this.popperJS = new Popper(parent, this.refs.popper, {
-          placement: this.placement()
+          placement: this.placement(),
+          gpuAcceleration: false
         });
       }
     } else {

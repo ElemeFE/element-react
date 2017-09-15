@@ -68,7 +68,7 @@ export default class InputNumber extends Component {
 
       this.timeout = setTimeout(() => {
         this.onBlur();
-      }, 300);
+      }, 750);
     });
   }
 
