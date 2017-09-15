@@ -1,20 +1,19 @@
 import PopperJS from './popper';
-import {require_condition} from './assert'
+import { require_condition } from './assert'
 
-const MixinMethods = {
-    //---------- start: public methods
-    /**
-     * @param {HTMLElement} popupElement - The reference element used to position the popper.
-     * @param {HTMLElement} refElement - The HTML element used as popper, or a configuration used to generate the popper.
-     * @param {object} popperOptions, PopperJS options
-     */
+const mixinPrototype = {
+  //---------- start: public methods
+  /**
+   * @param {HTMLElement} popupElement - The reference element used to position the popper.
+   * @param {HTMLElement} refElement - The HTML element used as popper, or a configuration used to generate the popper.
+   * @param {object} popperOptions, PopperJS options
+   */
   createPopper(popupElement, refElement, popperOptions) {
     require_condition(popupElement && refElement)
-    if (!popperOptions) {
-      popperOptions = {}
-    }
 
-    const {visibleArrow, placement, zIndex, offset} = this._popper_config
+    const { visibleArrow, placement, zIndex, offset, width, ...others } = this._popper_config
+    popperOptions = { ...popperOptions, ...others }
+
     if (!/^(top|bottom|left|right)(-start|-end)?$/g.test(placement)) {
       return;
     }
@@ -42,10 +41,11 @@ const MixinMethods = {
       this._resetTransformOrigin();
       this._popper_state.isCreated = true
       this._poperJS._popper.style.zIndex = zIndex
+      this._poperJS._popper.style.width = width !== null ? `${width}px` : reference.getBoundingClientRect().width + 'px'
     });
   },
 
-  destroyPopper () {
+  destroyPopper() {
     if (this._poperJS && this._popper_state.isCreated) {
       this._poperJS.destroy();
       this._poperJS = null;
@@ -83,6 +83,7 @@ const MixinMethods = {
 }
 
 /**
+ * @param {args} @see PopperMixin
  * @param {object} config
     * @param {String} [placement=button] - Placement of the popper accepted values: top(-start, -end), right(-start, -end), bottom(-start, -right), left(-start, -end)
     * @param {Number} [offset=0] - Amount of pixels the popper will be shifted (can be negative).
@@ -92,18 +93,16 @@ const MixinMethods = {
 export function PopperMixin(config) {
   this._popper_config = Object.assign(
     {}, {
-      zIndex: 100,
+      width: null,
+      zIndex: 1050,
       offset: 0,
       placement: 'bottom',
       boundariesPadding: 5,
       visibleArrow: false,
     }, config)
   this._popper_state = {}
-
-  for (const m in MixinMethods){
-    this[m] = MixinMethods[m]
-  }
 }
+PopperMixin.prototype = mixinPrototype
 
 
 const PopperReactMixinMethods = {
@@ -140,23 +139,17 @@ const PopperReactMixinMethods = {
 
 /**
  * this Mixin provide utility method to hook reactjs component lifecycle
- *
- * @param getPopperRootDom: ()=>HTMLElement, return your popper root HTMLElement when componentDidMout is called
- * @param {args} @see PopperMixin
+ * 
+ * @param getPopperRootDom: ()=>HTMLElement, return your popper root HTMLElement when componentDidMount is called
+ * @param getRefDom: ()=>HTMLElement, ref node, the node that popper aligns its pop-up to, see the popperjs doc for more information 
  */
-export function PopperReactMixin(getPopperRootDom, getRefDom, ...args) {
+export function PopperReactMixin(getPopperRootDom, getRefDom, config) {
   require_condition(typeof getPopperRootDom === 'function', '`getPopperRootDom` func is required!')
   require_condition(typeof getRefDom === 'function', '`getRefDom` func is required!')
 
-  PopperMixin.apply(this, args)
-
-  for (const m in PopperReactMixinMethods) {
-    this[m] = PopperReactMixinMethods[m]
-  }
-
-  this.hookReactLifeCycle(getPopperRootDom, getRefDom)
+  PopperMixin.call(this, config)
+  Object.keys(mixinPrototype).forEach(k=>this[k]=mixinPrototype[k])
+  PopperReactMixinMethods.hookReactLifeCycle.call(this, getPopperRootDom, getRefDom)
 
   return this
 }
-
-PopperReactMixin.prototype = PopperMixin.prototype

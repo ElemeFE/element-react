@@ -21,6 +21,15 @@ export default class RadioGroup extends Component {
       <div ref="RadioGroup" style={this.style()} className={this.className('el-radio-group')}>
         {
           React.Children.map(this.props.children, element => {
+            if (!element) {
+              return null;
+            }
+
+            const { elementType } = element.type;
+            if (elementType !== 'Radio' && elementType !== 'RadioButton') {
+              return null;
+            }
+
             return React.cloneElement(element, Object.assign({}, element.props, {
               onChange: this.onChange.bind(this),
               model: this.props.value,

@@ -1,12 +1,12 @@
 //@flow
 import React from 'react';
 
-import { PropTypes, Component } from '../../../libs';
+import { PropTypes } from '../../../libs';
 import { limitRange } from '../utils'
 import TimeSpinner from '../basic/TimeSpinner'
-import { PopperReactMixin } from '../../../libs/utils'
 import Locale from '../../locale'
-import type {TimePanelProps, TimeTypes} from '../Types';
+import type {TimePanelProps} from '../Types';
+import { PopperBase } from './PopperBase'
 
 const mapPropsToState = (props) => {
   const state: any = {
@@ -17,7 +17,7 @@ const mapPropsToState = (props) => {
   return state
 }
 
-export default class TimePanel extends Component {
+export default class TimePanel extends PopperBase {
 
   static get propTypes() {
     return Object.assign({},
@@ -37,10 +37,7 @@ export default class TimePanel extends Component {
         // cancel btn is clicked
         //()=>()
         onCancel: PropTypes.func.isRequired,
-        //()=>HtmlElement
-        getPopperRefElement: PropTypes.func,//todo: make this dry
-        popperMixinOption: PropTypes.object
-      })
+      }, PopperBase.propTypes)
   }
 
   static get defaultProps() {
@@ -51,14 +48,7 @@ export default class TimePanel extends Component {
 
   constructor(props: TimePanelProps) {
     super(props)
-
     this.state = mapPropsToState(props)
-    //todo: make this dry
-    PopperReactMixin.call(this, () => this.refs.root, props.getPopperRefElement, Object.assign({
-      boundariesPadding: 0,
-      gpuAcceleration: false
-    }, props.popperMixinOption));
-
   }
 
   componentWillReceiveProps(nextProps: any) {
@@ -67,7 +57,7 @@ export default class TimePanel extends Component {
 
   // type: string,  one of [hours, minutes, seconds]
   // date: {type: number}
-  handleChange(date: {TimeTypes: number}) {
+  handleChange(date: {string: number}) {
     const {currentDate} = this.state
 
     if (date.hours !== undefined) {
@@ -90,7 +80,7 @@ export default class TimePanel extends Component {
     const {currentDate} = this.state
     const {onPicked, selectableRange} = this.props
 
-    const date = new Date(limitRange(currentDate, selectableRange));
+    const date = new Date(limitRange(currentDate, selectableRange, 'HH:mm:ss'));
     onPicked(date, isKeepPannelOpen)
   }
 

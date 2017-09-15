@@ -126,7 +126,7 @@ import { Message } from 'element-react';
 ### Options
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| message | 消息文字 | string | — | — |
+| message | 消息文字 | string/ReactElement | — | — |
 | type | 主题 | string | success/warning/info/error | info |
 | iconClass | 自定义图标的类名，会覆盖 `type` | string | — | — |
 | customClass | 自定义类名 | string | — | — |

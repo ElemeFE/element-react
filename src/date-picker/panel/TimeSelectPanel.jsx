@@ -1,22 +1,38 @@
 //@flow
 import React from 'react';
 
-import { PropTypes, Component } from '../../../libs';
-import { PopperReactMixin } from '../../../libs/utils'
-import {Scrollbar} from '../../scrollbar'
-import type {TimeSelectPanelProps, TimeTypes} from '../Types';
+import { PropTypes } from '../../../libs';
+import { scrollIntoView } from '../../../libs/utils/dom';
 
-export default class TimeSelectPanel extends Component {
+import { Scrollbar } from '../../scrollbar'
+import type {TimeSelectPanelProps } from '../Types';
+import { PopperBase } from './PopperBase'
+
+export default class TimeSelectPanel extends PopperBase {
+
+  static get propTypes() {
+    return Object.assign({
+      start: PropTypes.string,
+      end: PropTypes.string,
+      step: PropTypes.string,
+      minTime: PropTypes.string,
+      maxTime: PropTypes.string,
+      value: PropTypes.string,
+      onPicked: PropTypes.func,
+      //(string)=>date
+      dateParser: PropTypes.func.isRequired,
+      //()=>HtmlElement
+      getPopperRefElement: PropTypes.func,
+      popperMixinOption: PropTypes.object
+    }, PopperBase.propTypes)
+  }
+
   constructor(props: TimeSelectPanelProps) {
     super(props);
-    PopperReactMixin.call(this, () => this.refs.root, this.props.getPopperRefElement, Object.assign({
-      boundariesPadding: 0,
-      gpuAcceleration: false
-    }, props.popperMixinOption));
   }
 
   handleClick(item: any) {
-    const {onPicked, dateParser} = this.props
+    const { onPicked, dateParser } = this.props
     if (!item.disabled) {
       onPicked(dateParser(item.value));
     }
@@ -26,8 +42,24 @@ export default class TimeSelectPanel extends Component {
     return TimeSelectPanel.items(this.props)
   }
 
+  scrollToOption(className: string = 'selected') {
+    const menu = this.refs.root.querySelector('.el-picker-panel__content');
+    scrollIntoView(menu, menu.getElementsByClassName(className)[0]);
+  }
+
+  componentDidMount() {
+    this.scrollToOption()
+  }
+
+  componentWillReceiveProps(nextProps: any) {
+    clearTimeout(this._timer)
+    if (nextProps.value !== this.props.value) {
+      this._timer = setTimeout(() => this.scrollToOption(), 0)
+    }
+  }
+
   render() {
-    const {value} = this.props
+    const { value } = this.props
 
     return (
       <div
@@ -51,12 +83,12 @@ export default class TimeSelectPanel extends Component {
   }
 }
 
-TimeSelectPanel.isValid = (value, {start, end, step, minTime, maxTime}) => {
+TimeSelectPanel.isValid = (value, { start, end, step, minTime, maxTime }) => {
   const items = TimeSelectPanel.items({ start, end, step, minTime, maxTime })
   return !!items.filter(e => !e.disabled).find(e => e.value === value)
 }
 
-TimeSelectPanel.items = ({start, end, step, minTime, maxTime}) => {
+TimeSelectPanel.items = ({ start, end, step, minTime, maxTime }) => {
   const result = [];
 
   if (start && end && step) {
@@ -64,30 +96,13 @@ TimeSelectPanel.items = ({start, end, step, minTime, maxTime}) => {
     while (compareTime(current, end) <= 0) {
       result.push({
         value: current,
-        disabled: compareTime(current, minTime || '00:00') <= 0 || compareTime(current, maxTime || '100:100') >= 0
-
+        disabled: compareTime(current, minTime || '-1:-1') <= 0 || compareTime(current, maxTime || '100:100') >= 0
       });
       current = nextTime(current, step);
     }
   }
   return result;
 }
-
-
-TimeSelectPanel.propTypes = {
-  start: PropTypes.string,
-  end: PropTypes.string,
-  step: PropTypes.string,
-  minTime: PropTypes.string,
-  maxTime: PropTypes.string,
-  value: PropTypes.string,
-  onPicked: PropTypes.func,
-  //(string)=>date
-  dateParser: PropTypes.func.isRequired,
-  //()=>HtmlElement
-  getPopperRefElement: PropTypes.func,
-  popperMixinOption: PropTypes.object
-};
 
 TimeSelectPanel.defaultProps = {
   start: '09:00',
@@ -100,7 +115,7 @@ TimeSelectPanel.defaultProps = {
 
 
 const parseTime = function (time) {
-  const values = ('' || time).split(':');
+  const values = (time || '').split(':');
   if (values.length >= 2) {
     const hours = parseInt(values[0], 10);
     const minutes = parseInt(values[1], 10);

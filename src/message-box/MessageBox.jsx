@@ -193,7 +193,7 @@ MessageBox.propTypes = {
   modal: PropTypes.oneOf(['alert', 'confirm', 'prompt']),
   type: PropTypes.oneOf(['success', 'warning', 'info', 'error']),
   title: PropTypes.string,
-  message: PropTypes.string,
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   showInput: PropTypes.bool,
   showClose: PropTypes.bool,
   showCancelButton: PropTypes.bool,

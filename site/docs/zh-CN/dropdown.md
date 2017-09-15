@@ -6,7 +6,7 @@
 
 移动到下拉菜单上，展开更多操作。
 
-:::demo 通过组件`slot`来设置下拉触发的元素以及需要通过具名`slot`为`dropdown` 来设置下拉菜单。默认情况下，下拉按钮只要`hover`即可，无需点击也会显示下拉菜单。
+:::demo 显示下拉菜单，默认情况下，下拉按钮只要`hover`即可，无需点击。
 
 ```js
 render() {
@@ -34,7 +34,7 @@ render() {
 
 可使用按钮触发下拉菜单。
 
-:::demo 设置`split-button`属性来让触发下拉元素呈现为按钮组，左边是功能按钮，右边是触发下拉菜单的按钮，设置为`true`即可。
+:::demo 设置`splitButton`属性来让触发下拉元素呈现为按钮组，左边是功能按钮，右边是触发下拉菜单的按钮，设置为`true`即可。
 
 ```js
 render() {
@@ -178,8 +178,8 @@ render() {
 ### Dropdown Attributes
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
-| type          | 菜单按钮类型，同 Button 组件(只在`split-button`为 true 的情况下有效)   | string  |          —             |    —     |
-| size          | 菜单按钮尺寸，同 Button 组件(只在`split-button`为 true 的情况下有效)     | string          | — | — |
+| type          | 菜单按钮类型，同 Button 组件(只在`splitButton`为 true 的情况下有效)   | string  |          —             |    —     |
+| size          | 菜单按钮尺寸，同 Button 组件(只在`splitButton`为 true 的情况下有效)     | string          | — | — |
 | splitButton  | 下拉触发元素呈现为按钮组    | boolean  |    —  |  false |
 | menuAlign    | 菜单水平对齐方向     | string          | start, end  | end |
 | trigger       | 触发下拉的行为     | string          | hover, click  | hover |
@@ -189,7 +189,7 @@ render() {
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
 | onClick  | `splitButton` 为 true 时，点击左侧按钮的回调 | — |
-| onCommand  | 点击菜单项触发的事件回调 | dropdown-item 的指令 |
+| onCommand  | 点击菜单项触发的事件回调 | Dropdown.Item 的指令 |
 | onVisibleChange | 下拉框出现/隐藏时触发 | 出现则为 true，隐藏则为 false |
 
 ### Dropdown Menu Item Attributes

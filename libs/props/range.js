@@ -1,6 +1,6 @@
 import { createPropType } from '../utils';
 
-module.exports = (min, max) => {
+export default function(min, max) {
   return createPropType((props, propName, componentName) => {
     const value = props[propName];
 

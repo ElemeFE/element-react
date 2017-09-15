@@ -6,6 +6,7 @@ export const DEFAULT_FORMATS = {
   month: 'yyyy-MM',
   year: 'yyyy',
   datetime: 'yyyy-MM-dd HH:mm:ss',
+  week: 'yyyywWW',
   time: 'HH:mm:ss',
   timerange: 'HH:mm:ss',
   timeselect: 'HH:mm',
@@ -31,19 +32,19 @@ export const DATE_FORMATTER = function (value, format) {
 export const DATE_PARSER = function (text, format) {
   return parseDate(text, format);
 };
-export const RANGE_FORMATTER = function (value, format) {
+export const RANGE_FORMATTER = function (value, format, separator = RANGE_SEPARATOR) {
   if (Array.isArray(value) && value.length === 2) {
     const start = value[0];
     const end = value[1];
 
     if (start && end) {
-      return formatDate(start, format) + RANGE_SEPARATOR + formatDate(end, format);
+      return formatDate(start, format) + separator + formatDate(end, format);
     }
   }
   return '';
 };
-export const RANGE_PARSER = function (text, format) {
-  const array = text.split(RANGE_SEPARATOR);
+export const RANGE_PARSER = function (text, format, separator = RANGE_SEPARATOR) {
+  const array = text.split(separator);
   if (array.length === 2) {
     const range1 = array[0];
     const range2 = array[1];
@@ -169,6 +170,9 @@ export const TYPE_VALUE_RESOLVER_MAP = {
 
 export const PLACEMENT_MAP = {
   left: 'bottom-start',
+  // in git version 8de9d2ce, this been changed to 
+  // center: 'bottom',
+  // due to it's close relation to popper, I dont have enought confidence to update it right now
   center: 'bottom-center',
   right: 'bottom-end'
 };

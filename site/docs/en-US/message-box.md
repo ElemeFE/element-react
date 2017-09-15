@@ -125,7 +125,7 @@ The corresponding methods are: `MessageBox`, `MessageBox.alert`, `MessageBox.con
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | title | title of the MessageBox | string | — | — |
-| message | content of the MessageBox | string | — | — |
+| message | content of the MessageBox | string/ReactElement | — | — |
 | type | message type, used for icon display | string | success/info/warning/error | — |
 | customClass | custom class name for MessageBox | string | — | — |
 | callback | MessageBox closing callback if you don't prefer Promise | function(action), where action can be 'confirm' or 'cancel', and `instance` is the MessageBox instance. You can access to that instance's attributes and methods | — | — |

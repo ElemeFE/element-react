@@ -5,7 +5,7 @@ import debounce from 'throttle-debounce/debounce';
 import { PropTypes, Component } from '../../../libs';
 import { getRangeHours } from '../utils';
 import { Scrollbar } from '../../scrollbar';
-import type {TimeSpinnerProps, TimeTypes} from '../Types';
+import type {TimeSpinnerProps, TimeTypes } from '../Types';
 
 
 function withIndex(arr) {
@@ -38,6 +38,11 @@ function propsToState(props: TimeSpinnerProps) {
 }
 
 const SCROLL_AJUST_VALUE = 85;
+const calcScrollTop = value => Math.max(
+  0,
+  (value - 2.5) * 32 + SCROLL_AJUST_VALUE
+)
+
 export default class TimeSpinner extends Component {
   state: any;
 
@@ -128,24 +133,15 @@ export default class TimeSpinner extends Component {
     this.props.onChange(changed);
   }
 
-  _ajustScrollTop({ hours, minutes, seconds }: {hours: ?number, minutes: ?number, seconds: ?number}) {
+  _ajustScrollTop({ hours, minutes, seconds }: { hours: ?number, minutes: ?number, seconds: ?number }) {
     if (hours != null) {
-      this.refs.hours.refs.wrap.scrollTop = Math.max(
-        0,
-        (hours - 2.5) * 32 + SCROLL_AJUST_VALUE
-      );
+      this.refs.hours.refs.wrap.scrollTop = calcScrollTop(hours)
     }
     if (minutes != null) {
-      this.refs.minutes.refs.wrap.scrollTop = Math.max(
-        0,
-        (minutes - 2.5) * 32 + SCROLL_AJUST_VALUE
-      );
+      this.refs.minutes.refs.wrap.scrollTop = calcScrollTop(minutes)
     }
     if (seconds != null) {
-      this.refs.seconds.refs.wrap.scrollTop = Math.max(
-        0,
-        (seconds - 2.5) * 32 + SCROLL_AJUST_VALUE
-      );
+      this.refs.seconds.refs.wrap.scrollTop = calcScrollTop(seconds)
     }
   }
 

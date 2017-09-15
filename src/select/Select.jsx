@@ -130,6 +130,10 @@ class Select extends Component {
     }
 
     if (state.visible != this.state.visible) {
+      if (this.props.onVisibleChange) {
+        this.props.onVisibleChange(state.visible);
+      }
+
       this.onVisibleChange(state.visible);
     }
 
@@ -202,7 +206,7 @@ class Select extends Component {
        })[0];
 
        if (selected) {
-         this.state.selectedLabel = selected.props.label;
+         this.state.selectedLabel = selected.props.label || selected.props.value;
        }
     }
   }
@@ -236,8 +240,12 @@ class Select extends Component {
           bottomOverflowBeforeHidden = element.getBoundingClientRect().bottom - this.popper.getBoundingClientRect().bottom;
         }
 
-        if (selected && selected.props.value) {
-          selectedLabel = selected.currentLabel();
+        if (selected && selected.props) {
+          if (selected.props.value) {
+            selectedLabel = selected.currentLabel();
+          }
+        } else if (filterable) {
+          selectedLabel = '';
         }
 
         this.setState({ bottomOverflowBeforeHidden, selectedLabel });
@@ -286,7 +294,7 @@ class Select extends Component {
 
   onValueChange(val: mixed) {
     const { multiple } = this.props;
-    
+
     let {
       options,
       valueChangeBySelected,
@@ -335,6 +343,7 @@ class Select extends Component {
   }
 
   onSelectedChange(val: any, bubble: boolean = true) {
+    const { form } = this.context;
     const { multiple, filterable, onChange } = this.props;
     let { query, hoverIndex, inputLength, selectedInit, currentPlaceholder, cachedPlaceHolder, valueChangeBySelected } = this.state;
 
@@ -351,7 +360,10 @@ class Select extends Component {
 
       valueChangeBySelected = true;
 
-      bubble && onChange && onChange(val.map(item => item.props.value), val);
+      if (bubble) {
+        onChange && onChange(val.map(item => item.props.value), val);
+        form && form.onFieldChange();
+      }
 
       // this.dispatch('form-item', 'el.form.change', val);
 
@@ -375,7 +387,10 @@ class Select extends Component {
         });
       }
 
-      bubble && onChange && onChange(val.props.value, val);
+      if (bubble) {
+        onChange && onChange(val.props.value, val);
+        form && form.onFieldChange();
+      }
     }
   }
 
@@ -674,26 +689,39 @@ class Select extends Component {
   deleteSelected(e: Object) {
     e.stopPropagation();
 
-    this.setState({
-      selected: {},
-      selectedLabel: '',
-      visible: false
-    });
+    if (this.state.selectedLabel != '') {
+      this.setState({
+        selected: {},
+        selectedLabel: '',
+        visible: false
+      });
 
-    if (this.props.onChange) {
-      this.props.onChange('');
+      this.context.form && this.context.form.onFieldChange();
+
+      if (this.props.onChange) {
+        this.props.onChange('');
+      }
+
+      if (this.props.onClear) {
+        this.props.onClear();
+      }
     }
   }
 
   deleteTag(tag: any) {
-    let selected = this.state.selected.slice(0);
-    let index = selected.indexOf(tag);
+    const index = this.state.selected.indexOf(tag);
 
-    if (index > -1) {
+    if (index > -1 && !this.props.disabled) {
+      const selected = this.state.selected.slice(0);
+
       selected.splice(index, 1);
-    }
 
-    this.setState({ selected });
+      this.setState({ selected }, () => {
+        if (this.props.onRemoveTag) {
+          this.props.onRemoveTag(tag.props.value);
+        }
+      });
+    }
   }
 
   handleIconClick(event) {
@@ -717,26 +745,28 @@ class Select extends Component {
     this.state.optionsCount++;
     this.state.filteredOptionsCount++;
 
-    this.setState(this.state);
+    this.forceUpdate();
+    this.handleValueChange();
   }
 
   onOptionDestroy(option: any) {
     this.state.optionsCount--;
     this.state.filteredOptionsCount--;
 
-    let index = this.state.options.indexOf(option);
+    const index = this.state.options.indexOf(option);
 
     if (index > -1) {
       this.state.options.splice(index, 1);
     }
 
-    this.setState(this.state, () => {
-      this.state.options.forEach(el => {
-        if (el != option) {
-          el.resetIndex();
-        }
-      });
+    this.state.options.forEach(el => {
+      if (el != option) {
+        el.resetIndex();
+      }
     });
+
+    this.forceUpdate();
+    this.handleValueChange();
   }
 
   onOptionClick(option: any) {
@@ -814,7 +844,7 @@ class Select extends Component {
                       type="primary"
                       key={el.props.value}
                       hit={el.hitState}
-                      closable={true}
+                      closable={!disabled}
                       closeTransition={true}
                       onClose={this.deleteTag.bind(this, el)}
                     >
@@ -938,6 +968,10 @@ Select.childContextTypes = {
   component: PropTypes.any
 };
 
+Select.contextTypes = {
+  form: PropTypes.any
+};
+
 Select.propTypes = {
   value: PropTypes.any,
   size: PropTypes.string,
@@ -950,7 +984,10 @@ Select.propTypes = {
   filterMethod: PropTypes.func,
   multiple: PropTypes.bool,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onVisibleChange: PropTypes.func,
+  onRemoveTag: PropTypes.func,
+  onClear: PropTypes.func
 }
 
 export default ClickOutside(Select);

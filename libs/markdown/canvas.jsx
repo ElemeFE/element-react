@@ -60,7 +60,11 @@ export default class Canvas extends React.Component {
       new Function(...args).apply(null, argv)
 
       this.source[2] = value
-    }).catch(console.log)
+    }).catch((err) => {
+      if (process.env.NODE_ENV !== 'production') {
+        throw err;
+      }
+    })
   }
 
   render() {

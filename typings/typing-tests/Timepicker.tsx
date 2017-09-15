@@ -28,6 +28,7 @@ class Component extends React.Component<{}, {}> {
 
         <TimeRangePicker
           onChange={this.onChange}
+          rangeSeparator="@"
           placeholder="选择时间"
           value={[this.state.value, this.state.value]}
         />

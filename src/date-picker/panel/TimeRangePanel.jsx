@@ -1,17 +1,17 @@
 //@flow
 import React from 'react';
 
-import { PropTypes, Component } from '../../../libs';
+import { PropTypes } from '../../../libs';
 import { limitRange, parseDate } from '../utils';
 import TimeSpinner from '../basic/TimeSpinner';
-import { PopperReactMixin } from '../../../libs/utils';
 import Locale from '../../locale';
-import type {TimeRangePanelProps, TimeTypes} from '../Types';
+import type {TimeRangePanelProps } from '../Types';
+import { PopperBase } from './PopperBase'
 
 const MIN_TIME = parseDate('00:00:00', 'HH:mm:ss');
 const MAX_TIME = parseDate('23:59:59', 'HH:mm:ss');
 
-const isDisabled = function(minTime, maxTime) {
+const isDisabled = function (minTime, maxTime) {
   const minValue = minTime.getHours() * 3600 +
     minTime.getMinutes() * 60 +
     minTime.getSeconds();
@@ -22,7 +22,7 @@ const isDisabled = function(minTime, maxTime) {
   return minValue > maxValue;
 };
 
-const calcTime = function(time) {
+const calcTime = function (time) {
   time = Array.isArray(time) ? time : [time];
   const minTime = time[0] || new Date();
   const date = new Date();
@@ -50,12 +50,11 @@ const mapPropsToState = props => {
   return state;
 };
 
-export default class TimeRangePanel extends Component {
+export default class TimeRangePanel extends PopperBase {
   state: any;
 
   static get propTypes() {
     return Object.assign(
-      {},
       {
         pickerWidth: PropTypes.number,
         currentDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
@@ -71,11 +70,7 @@ export default class TimeRangePanel extends Component {
         onCancel: PropTypes.func.isRequired,
         // (start, end)=>(), index range indicate which field [hours, minutes, seconds] changes
         onSelectRangeChange: TimeSpinner.propTypes.onSelectRangeChange,
-        //()=>HtmlElement
-        getPopperRefElement: PropTypes.func,
-        popperMixinOption: PropTypes.object
-      }
-    );
+      }, PopperBase.propTypes);
   }
 
   static get defaultProps() {
@@ -94,28 +89,15 @@ export default class TimeRangePanel extends Component {
       },
       mapPropsToState(props)
     );
-
-    PopperReactMixin.call(
-      this,
-      () => this.refs.root,
-      props.getPopperRefElement,
-      Object.assign(
-        {
-          boundariesPadding: 0,
-          gpuAcceleration: false
-        },
-        props.popperMixinOption
-      )
-    );
   }
 
   componentWillReceiveProps(nextProps: any) {
     this.setState(mapPropsToState(nextProps));
   }
 
-  // type: string,  one of [hours, minutes, seconds]
+  // type = hours | minutes | seconds
   // date: {type: number}
-  handleChange(date: {TimeTypes: ?number}, field: string) {
+  handleChange(date: { string: ?number }, field: string) {
     const ndate = this.state[field];
 
     if (date.hours !== undefined) {
@@ -135,18 +117,15 @@ export default class TimeRangePanel extends Component {
     };
 
     const { minTime, maxTime } = this.state;
-    if (minTime > maxTime) {
-      this.setState(state);
-    } else {
-      state.minSelectableRange = [[MIN_TIME, maxTime]];
-      state.maxSelectableRange = [[minTime, MAX_TIME]];
+    state.minSelectableRange = [[MIN_TIME, maxTime]];
+    state.maxSelectableRange = [[minTime, MAX_TIME]];
 
-      state.minTime = limitRange(minTime, state.minSelectableRange);
-      state.maxTime = limitRange(maxTime, state.maxSelectableRange);
+    state.minTime = limitRange(minTime, state.minSelectableRange);
+    state.maxTime = limitRange(maxTime, state.maxSelectableRange);
 
-      this.setState(state);
-      this.handleConfirm(true);
-    }
+    this.setState(state);
+    this.handleConfirm(true);
+
   }
 
   handleConfirm(isKeepPannelOpen: boolean = false) {

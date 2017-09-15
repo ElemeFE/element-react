@@ -1,13 +1,14 @@
 //@flow
 import React from 'react'
 
-import { PropTypes, Component } from '../../../libs';
+import { PropTypes } from '../../../libs';
 import Locale from '../../locale'
 
 import { SELECTION_MODES, deconstructDate } from '../utils'
 import { DateTable, MonthTable, YearTable } from '../basic'
-import { PopperReactMixin } from '../../../libs/utils'
-import type {DatePanelProps} from '../Types';
+import type {DatePanelProps } from '../Types';
+import { PopperBase } from './PopperBase'
+
 
 const PICKER_VIEWS = {
   YEAR: 'year',
@@ -19,8 +20,35 @@ const PICKER_VIEWS = {
 handle todos:
   handle timepicker inside this picker
 */
-export default class DatePanel extends Component {
+export default class DatePanel extends PopperBase {
   state: any
+
+  static get propTypes() {
+
+    return Object.assign({
+      // user picked date value
+      // value: Date | null
+      value: PropTypes.instanceOf(Date),
+      // todo:
+      onPick: PropTypes.func.isRequired,
+      showTime: PropTypes.bool,
+      showWeekNumber: PropTypes.bool,
+      format: PropTypes.string,
+      // Array[{text: String, onClick: (picker)=>()}]
+      shortcuts: PropTypes.arrayOf(
+        PropTypes.shape({
+          text: PropTypes.string.isRequired,
+          // ()=>()
+          onClick: PropTypes.func.isRequired
+        })
+      ),
+      selectionMode: PropTypes.oneOf(Object.keys(SELECTION_MODES).map(e => SELECTION_MODES[e])),
+      // (Date)=>bool, if true, disabled
+      disabledDate: PropTypes.func,
+      firstDayOfWeek: PropTypes.range(0, 6),
+
+    }, PopperBase.propTypes)
+  }
 
   constructor(props: DatePanelProps) {
     super(props)
@@ -41,15 +69,11 @@ export default class DatePanel extends Component {
     if (props.value) {
       this.state.date = new Date(props.value)
     }
-
-    PopperReactMixin.call(this, () => this.refs.root, props.getPopperRefElement, Object.assign({
-      boundariesPadding: 0,
-      gpuAcceleration: false
-    }, props.popperMixinOption));
   }
 
   componentWillReceiveProps(nextProps: any) {
-    this.setState({ date: nextProps.value })
+    let date = nextProps.value || new Date()
+    this.setState({ date })
   }
 
   resetDate() {
@@ -66,8 +90,8 @@ export default class DatePanel extends Component {
 
   prevMonth() {
     this.updateState(() => {
-      const {date} = this.state
-      const {month, year} = deconstructDate(date)
+      const { date } = this.state
+      const { month, year } = deconstructDate(date)
 
       if (month == 0) {
         date.setFullYear(year - 1)
@@ -80,8 +104,8 @@ export default class DatePanel extends Component {
 
   nextMonth() {
     this.updateState(() => {
-      const {date} = this.state
-      const {month, year} = deconstructDate(date)
+      const { date } = this.state
+      const { month, year } = deconstructDate(date)
 
       if (month == 11) {
         date.setFullYear(year + 1)
@@ -94,8 +118,8 @@ export default class DatePanel extends Component {
 
   nextYear() {
     this.updateState(() => {
-      const {date, currentView} = this.state
-      const {year} = deconstructDate(date)
+      const { date, currentView } = this.state
+      const { year } = deconstructDate(date)
 
       if (currentView === 'year') {
         date.setFullYear(year + 10)
@@ -112,8 +136,8 @@ export default class DatePanel extends Component {
 
   prevYear() {
     this.updateState(() => {
-      const {date, currentView} = this.state
-      const {year} = deconstructDate(date)
+      const { date, currentView } = this.state
+      const { year } = deconstructDate(date)
 
       if (currentView === 'year') {
         date.setFullYear(year - 10)
@@ -129,27 +153,27 @@ export default class DatePanel extends Component {
 
   //todo:
   // handleTimePick(picker, visible, first) {
-    // if (picker) {
-    //   let oldDate = new Date(this.date.getTime());
-    //   let hour = picker.getHours();
-    //   let minute = picker.getMinutes();
-    //   let second = picker.getSeconds();
-    //   oldDate.setHours(hour);
-    //   oldDate.setMinutes(minute);
-    //   oldDate.setSeconds(second);
-    //   this.date = new Date(oldDate.getTime());
-    // }
+  // if (picker) {
+  //   let oldDate = new Date(this.date.getTime());
+  //   let hour = picker.getHours();
+  //   let minute = picker.getMinutes();
+  //   let second = picker.getSeconds();
+  //   oldDate.setHours(hour);
+  //   oldDate.setMinutes(minute);
+  //   oldDate.setSeconds(second);
+  //   this.date = new Date(oldDate.getTime());
+  // }
 
-    // if (!first) {
-    //   this.timePickerVisible = visible;
-    // }
+  // if (!first) {
+  //   this.timePickerVisible = visible;
+  // }
   // }
 
   handleMonthPick(month: number) {
     this.updateState(state => {
-      const {date} = state
-      const {selectionMode} = this.props
-      const {year} = deconstructDate(date)
+      const { date } = state
+      const { selectionMode } = this.props
+      const { year } = deconstructDate(date)
 
       if (selectionMode !== SELECTION_MODES.MONTH) {
         date.setMonth(month);
@@ -165,8 +189,8 @@ export default class DatePanel extends Component {
 
   handleDatePick(value: any) {
     this.updateState(state => {
-      const {date} = state
-      const {selectionMode, showTime, onPick} = this.props
+      const { date } = state
+      const { selectionMode, showTime, onPick } = this.props
       const pdate = value.date
       if (selectionMode === SELECTION_MODES.DAY) {
         if (!showTime) {
@@ -182,8 +206,8 @@ export default class DatePanel extends Component {
 
   handleYearPick(year: any, close: boolean = true) {
     this.updateState(state => {
-      const {onPick, selectionMode} = this.props
-      const {date} = state
+      const { onPick, selectionMode } = this.props
+      const { date } = state
 
       if (!close) {
         date.setFullYear(year)
@@ -209,12 +233,12 @@ export default class DatePanel extends Component {
   }
 
   yearLabel() {
-    const {currentView, date} = this.state
-    const {year} = deconstructDate(date)
+    const { currentView, date } = this.state
+    const { year } = deconstructDate(date)
     const yearTranslation = Locale.t('el.datepicker.year');
     if (currentView === 'year') {
       const startYear = Math.floor(year / 10) * 10;
-      if (yearTranslation){
+      if (yearTranslation) {
         return startYear + ' ' + yearTranslation + '-' + (startYear + 9) + ' ' + yearTranslation;
       }
       return startYear + ' - ' + (startYear + 9);
@@ -224,9 +248,9 @@ export default class DatePanel extends Component {
 
   // end: ------ public methods
   _pickerContent() {
-    const {value, selectionMode, disabledDate, showWeekNumber} = this.props
-    const {date} = this.state
-    const {currentView} = this.state
+    const { value, selectionMode, disabledDate, showWeekNumber } = this.props
+    const { date } = this.state
+    const { currentView } = this.state
     let result = null
 
     switch (currentView) {
@@ -238,7 +262,7 @@ export default class DatePanel extends Component {
           selectionMode={selectionMode}
           disabledDate={disabledDate}
           showWeekNumber={showWeekNumber}
-          />)
+        />)
 
         break;
       case PICKER_VIEWS.YEAR:
@@ -248,7 +272,7 @@ export default class DatePanel extends Component {
           date={date}
           onPick={this.handleYearPick.bind(this)}
           disabledDate={disabledDate}
-          />)
+        />)
         break;
       case PICKER_VIEWS.MONTH:
         result = (<MonthTable
@@ -256,7 +280,7 @@ export default class DatePanel extends Component {
           date={date}
           onPick={this.handleMonthPick.bind(this)}
           disabledDate={disabledDate}
-          />)
+        />)
         break;
       default:
         throw new Error('invalid currentView value')
@@ -266,19 +290,19 @@ export default class DatePanel extends Component {
   }
 
   render() {
-    const {showTime, shortcuts} = this.props
-    const {currentView, date} = this.state
-    const {month} = deconstructDate(date)
+    const { showTime, shortcuts } = this.props
+    const { currentView, date } = this.state
+    const { month } = deconstructDate(date)
     const t = Locale.t
 
-    //todo: handle v-*
     return (
       <div
         ref="root"
         className={this.classNames('el-picker-panel el-date-picker', {
           'has-sidebar': shortcuts,
           'has-time': showTime
-        })}>
+        })}
+      >
 
         <div className="el-picker-panel__body-wrapper">
           {
@@ -316,7 +340,7 @@ export default class DatePanel extends Component {
                       onFocus={() => {
                         //todo:
                         // timePickerVisible = !timePickerVisible
-                      } }
+                      }}
                       placeholder={t('el.datepicker.selectTime')}
                       type="text"
                       className="el-date-picker__editor" />
@@ -365,7 +389,7 @@ export default class DatePanel extends Component {
                             active: currentView === 'month'
                           })
                         }
-                        >{t(`el.datepicker.month${month + 1}`)}</span>
+                      >{t(`el.datepicker.month${month + 1}`)}</span>
                     )
                   }
                   <button
@@ -409,31 +433,6 @@ export default class DatePanel extends Component {
       </div>
     );
   }
-}
-
-DatePanel.propTypes = {
-  // user picked date value
-  value: PropTypes.instanceOf(Date),
-  // todo:
-  onPick: PropTypes.func.isRequired,
-  showTime: PropTypes.bool,
-  showWeekNumber: PropTypes.bool,
-  format: PropTypes.string,
-  // Array[{text: String, onClick: (picker)=>()}]
-  shortcuts: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      // ()=>()
-      onClick: PropTypes.func.isRequired
-    })
-  ),
-  selectionMode: PropTypes.oneOf(Object.keys(SELECTION_MODES).map(e => SELECTION_MODES[e])),
-  // (Date)=>bool, if true, disabled
-  disabledDate: PropTypes.func,
-
-  //()=>HtmlElement
-  getPopperRefElement: PropTypes.func,
-  popperMixinOption: PropTypes.object
 }
 
 DatePanel.defaultProps = {

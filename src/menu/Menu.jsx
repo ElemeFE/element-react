@@ -38,7 +38,7 @@ export default class Menu extends Component {
   }
 
   componentWillReceiveProps(props: Object) {
-    if (props.defaultActive != this.props.defaultActive) {
+    if (props.defaultActive != this.props.defaultActive || props.defaultActive != this.state.activeIndex) {
       this.defaultActiveChanged(props.defaultActive);
     }
 

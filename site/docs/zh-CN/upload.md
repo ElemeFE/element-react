@@ -289,7 +289,7 @@ submitUpload() {
 | onPreview | 可选参数, 点击已上传的文件链接时的钩子, 可以通过 file.response 拿到服务端返回数据 | function(file) | — | — |
 | onRemove | 可选参数, 文件列表移除文件时的钩子 | function(file, fileList) | — | — |
 | onSuccess | 可选参数, 文件上传成功时的钩子 | function(response, file, fileList) | — | — |
-| onError | 可选参数, 文件上传失败时的钩子 | function(err, response, file) | — | — |
+| onError | 可选参数, 文件上传失败时的钩子 | function(err, file, fileList) | — | — |
 | onProgress | 可选参数, 文件上传时的钩子 | function(event, file, fileList) | — | — |
 | onChange | 可选参数, 文件状态改变时的钩子，上传成功或者失败时都会被调用 | function(file, fileList) | — | — |
 | beforeUpload | 可选参数, 上传文件之前的钩子，参数为上传的文件，若返回 false 或者 Promise 则停止上传。 | function(file) | — | — |

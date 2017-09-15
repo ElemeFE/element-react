@@ -125,7 +125,7 @@ In this case you should call `Message(options)`. We have also registered methods
 ### Options
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| message | message text | string | — | — |
+| message | message text | string/ReactElement | — | — |
 | type | message type | string | success/warning/info/error | info |
 | iconClass | custom icon's class, overrides `type` | string | — | — |
 | customClass | custom class name for Message | string | — | — |

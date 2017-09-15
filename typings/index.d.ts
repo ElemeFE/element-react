@@ -156,8 +156,8 @@ declare namespace ElementReact {
   interface ColProps extends ElementReactLibs.ComponentProps<{}> {
     span: number | string
     offset?: number | string
-    pull?: number
-    push?: number
+    pull?: number | string
+    push?: number | string
     // the next props are not on https://eleme.github.io/element-react/#/zh-CN/layout
     xs?: number | string | Object
     sm?: number | string | Object
@@ -475,6 +475,7 @@ declare namespace ElementReact {
   }
   interface SubMenuProps extends ElementReactLibs.ComponentProps<{}> {
     index: menuIndex
+    title?: React.ReactElement<any> | string
   }
   interface MenuItemProps extends ElementReactLibs.ComponentProps<{}> {
     index: menuIndex
@@ -673,7 +674,7 @@ declare namespace ElementReact {
   class FormItem extends ElementReactLibs.Component<FormItemProps, {}> { }
   export class Form extends ElementReactLibs.Component<FormProps, {}> {
     static Item: typeof FormItem
-    validate(cb?: () => void): void
+    validate(cb?: (valid: boolean) => void): void
     validateField(prop: string, cb?: () => void): void
     resetFields(): void
   }
@@ -709,7 +710,8 @@ declare namespace ElementReact {
   interface TagProps extends ElementReactLibs.ComponentProps<{}> {
     closable?: boolean
     type?: 'primary' | 'gray' | 'success' | 'warning' | 'danger'
-    hit?: boolean
+    hit?: boolean,
+    color?: string,
     closeTransition?: boolean
     onClose?(): void
   }
@@ -793,7 +795,7 @@ declare namespace ElementReact {
     total?: number
     pageCount?: number
     currentPage?: number
-    layout?: 'sizes' | 'prev' | 'pager' | 'next' | 'jumper' | '->' | 'total'
+    layout?: string,
     pageSizes?: number[]
     onCurrentChange?(currentPage?: number): void
     onSizeChange?(size?: number): void
@@ -840,6 +842,7 @@ declare namespace ElementReact {
   interface TimeRangePickerProps extends ElementReactLibs.DatePickerBaseProps {
     selectableRange?: string | string[]
     value?: ElementReactLibs.dateType[]
+    rangeSeparator?: string
   }
   export class TimeRangePicker extends ElementReactLibs.DatePickerBaseComponet<TimeRangePickerProps, {}> { }
 
@@ -852,6 +855,7 @@ declare namespace ElementReact {
   // DateRangePicker
   interface DateRangePickerProps extends ElementReactLibs.DatePanelProps {
     value?: ElementReactLibs.dateType[]
+    rangeSeparator?: string,
   }
   export class DateRangePicker extends ElementReactLibs.DatePickerBaseComponet<DateRangePickerProps, {}> { }
 
@@ -960,6 +964,7 @@ declare namespace ElementReact {
 
 declare namespace ElementReactLibs {
   type dateType = Date | string
+  type SelectionMode = 'year' | 'month' | 'week' | 'day'
   interface ComponentProps<T> {
     className?: string
     style?: React.CSSProperties
@@ -988,8 +993,9 @@ declare namespace ElementReactLibs {
     showWeekNumber?: boolean
     format?: string
     shortcuts?: any[]
-    selectionMode?: 'year' | 'month' | 'week' | 'day'
-    disabledDate?(date?: Date): boolean
+    selectionMode?: SelectionMode
+    disabledDate?(date?: Date, type?: SelectionMode): boolean
+    firstDayOfWeek?: number
     getPopperRefElement?: any
     popperMixinOption?: any
   }
