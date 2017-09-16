@@ -194,7 +194,7 @@ class Table extends Component<TableProps, TableState> {
             )}
             <div
               style={Object.assign({}, this.fixedBodyHeight, {
-                top: layout.headerHeight || ''
+                top: layout.headerHeight || 0
               })}
               className="el-table__fixed-body-wrapper"
               ref={this.bindRef('fixedBodyWrapper')}
