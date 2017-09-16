@@ -164,7 +164,7 @@ export default class TableBody extends Component<TableBodyProps> {
                   <div className="cell">{this.renderCell(row, column, rowIndex, rowKey)}</div>
                 </td>
               ))}
-              {!props.fixed && layout.scrollY && layout.gutterWidth && (
+              {!props.fixed && layout.scrollY && !!layout.gutterWidth && (
                 <td className="gutter" />
               )}
             </tr>

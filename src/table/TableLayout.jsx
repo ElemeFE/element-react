@@ -9,7 +9,7 @@ import type {
 
 import { flattenColumns, getScrollBarWidth, getValueByPath } from "./utils";
 
-export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>): React.ComponentType<any> {
+export default function TableLayoutHOC(WrappedComponent: React.ComponentType<any>): React.ComponentType<any> {
   return class TableLayout extends Component<TableLayoutProps, TableLayoutState> {
     static childContextTypes = {
       layout: PropTypes.any,
@@ -198,7 +198,7 @@ export default function TableLayoutHOC(WrapedComponent: React.ComponentType<any>
 
     render() {
       return (
-        <WrapedComponent
+        <WrappedComponent
           ref={(table) => { this.table = table; }}
           {...this.props}
           layout={this.state}

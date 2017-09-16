@@ -11,7 +11,7 @@ import normalizeColumns from './normalizeColumns';
 import { flattenColumns, getValueByPath } from "./utils";
 
 
-export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any>*/)/*: React.ComponentType<any>*/ {
+export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<any>*/)/*: React.ComponentType<any>*/ {
   return class TableStore extends Component<TableStoreProps, TableStoreState> {
     // static propTypes = {
     //   data: PropTypes,
@@ -223,7 +223,7 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
       });
     }
 
-    isRowExpanding(row: Object, rowKey: string | number) {
+    isRowExpanding(row: Object, rowKey: string | number): boolean {
       const { expandRowKeys } = this.props;
       const { expandingRows } = this.state;
 
@@ -328,7 +328,7 @@ export default function TableStoreHOC(WrapedComponent/*: React.ComponentType<any
     render()  {
       const renderExpanded = (this.props.columns.find(column => column.type === 'expand') || {}).expandPannel;
       return (
-        <WrapedComponent
+        <WrappedComponent
           {...this.props}
           renderExpanded={renderExpanded}
           store={this.state}
