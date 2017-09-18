@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { Button, Tooltip } from '../../../src';
 import renderer from 'react-test-renderer';
 
@@ -57,7 +57,7 @@ test('Basic Usage', () => {
 });
 
 test('Theme', () => {
-  const tooltip1 = mount(
+  const tooltip1 = shallow(
     <Tooltip content="Top center" placement="top">
       <Button>Dark</Button>
     </Tooltip>
@@ -92,13 +92,17 @@ test('Advanced usage', () => {
     disabled: false
   };
 
-  const tooltip = mount(
+  const tooltip = shallow(
     <Tooltip disabled={ state.disabled } content="click to close tooltip function" placement="bottom" effect="light">
       <Button onClick={ e => {state.disabled = true}}>{`click to ${state.disabled ? 'active' : 'close' } tooltip function`}</Button>
     </Tooltip>
   );
 
   expect(state.disabled).toBe(false);
-  tooltip.find('button').simulate('click');
+  expect(tooltip).toMatchSnapshot();
+
+  tooltip.find('Button').simulate('click');
+
   expect(state.disabled).toBe(true);
+  expect(tooltip).toMatchSnapshot();
 });
