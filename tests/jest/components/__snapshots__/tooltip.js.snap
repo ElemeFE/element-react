@@ -1,0 +1,1138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Advanced usage 1`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <div
+    className="el-tooltip"
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    style={Object {}}
+>
+    <div
+        className="el-tooltip__rel"
+    >
+        <div>
+            <Button
+                disabled={false}
+                loading={false}
+                nativeType="button"
+                onClick={[Function]}
+                plain={false}
+                type="default"
+            >
+                click to close tooltip function
+            </Button>
+        </div>
+    </div>
+    <Transition
+        duration={300}
+        name="fade-in-linear"
+    >
+        <View
+            component="span"
+            show={false}
+        >
+            <div
+                className="el-tooltip__popper is-light"
+            >
+                <div>
+                    click to close tooltip function
+                </div>
+                <div
+                    className="popper__arrow"
+                />
+            </div>
+        </View>
+    </Transition>
+</div>,
+  "nodes": Array [
+    <div
+      className="el-tooltip"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+>
+      <div
+            className="el-tooltip__rel"
+      >
+            <div>
+                  <Button
+                        disabled={false}
+                        loading={false}
+                        nativeType="button"
+                        onClick={[Function]}
+                        plain={false}
+                        type="default"
+                  >
+                        click to close tooltip function
+                  </Button>
+            </div>
+      </div>
+      <Transition
+            duration={300}
+            name="fade-in-linear"
+      >
+            <View
+                  component="span"
+                  show={false}
+            >
+                  <div
+                        className="el-tooltip__popper is-light"
+                  >
+                        <div>
+                              click to close tooltip function
+                        </div>
+                        <div
+                              className="popper__arrow"
+                        />
+                  </div>
+            </View>
+      </Transition>
+</div>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_instance":  {
+      "_calledComponentWillUnmount": false,
+      "_compositeType": 0,
+      "_context": Object {},
+      "_currentElement": <Tooltip
+        content="click to close tooltip function"
+        disabled={false}
+        effect="light"
+        manual={false}
+        openDelay={0}
+        placement="bottom"
+        transition="fade-in-linear"
+        visibleArrow={true}
+>
+        <Button
+                disabled={false}
+                loading={false}
+                nativeType="button"
+                onClick={[Function]}
+                plain={false}
+                type="default"
+        >
+                click to close tooltip function
+        </Button>
+</Tooltip>,
+      "_debugID": 263,
+      "_hostContainerInfo": null,
+      "_hostParent": null,
+      "_instance": Tooltip {
+        "_reactInternalInstance": [Circular],
+        "context": Object {},
+        "props": Object {
+          "children": <Button
+            disabled={false}
+            loading={false}
+            nativeType="button"
+            onClick={[Function]}
+            plain={false}
+            type="default"
+>
+            click to close tooltip function
+</Button>,
+          "content": "click to close tooltip function",
+          "disabled": false,
+          "effect": "light",
+          "manual": false,
+          "openDelay": 0,
+          "placement": "bottom",
+          "transition": "fade-in-linear",
+          "visibleArrow": true,
+        },
+        "refs": Object {},
+        "state": Object {
+          "showPopper": false,
+        },
+        "updater": Object {
+          "enqueueCallback": [Function],
+          "enqueueCallbackInternal": [Function],
+          "enqueueElementInternal": [Function],
+          "enqueueForceUpdate": [Function],
+          "enqueueReplaceState": [Function],
+          "enqueueSetState": [Function],
+          "isMounted": [Function],
+          "validateCallback": [Function],
+        },
+      },
+      "_mountOrder": 2,
+      "_pendingCallbacks": null,
+      "_pendingElement": null,
+      "_pendingForceUpdate": false,
+      "_pendingReplaceState": false,
+      "_pendingStateQueue": null,
+      "_renderedComponent": NoopInternalComponent {
+        "_currentElement": <div
+          className="el-tooltip"
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          style={Object {}}
+>
+          <div
+                    className="el-tooltip__rel"
+          >
+                    <div>
+                              <Button
+                                        disabled={false}
+                                        loading={false}
+                                        nativeType="button"
+                                        onClick={[Function]}
+                                        plain={false}
+                                        type="default"
+                              >
+                                        click to close tooltip function
+                              </Button>
+                    </div>
+          </div>
+          <Transition
+                    duration={300}
+                    name="fade-in-linear"
+          >
+                    <View
+                              component="span"
+                              show={false}
+                    >
+                              <div
+                                        className="el-tooltip__popper is-light"
+                              >
+                                        <div>
+                                                  click to close tooltip function
+                                        </div>
+                                        <div
+                                                  className="popper__arrow"
+                                        />
+                              </div>
+                    </View>
+          </Transition>
+</div>,
+        "_debugID": 264,
+        "_renderedOutput": <div
+          className="el-tooltip"
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          style={Object {}}
+>
+          <div
+                    className="el-tooltip__rel"
+          >
+                    <div>
+                              <Button
+                                        disabled={false}
+                                        loading={false}
+                                        nativeType="button"
+                                        onClick={[Function]}
+                                        plain={false}
+                                        type="default"
+                              >
+                                        click to close tooltip function
+                              </Button>
+                    </div>
+          </div>
+          <Transition
+                    duration={300}
+                    name="fade-in-linear"
+          >
+                    <View
+                              component="span"
+                              show={false}
+                    >
+                              <div
+                                        className="el-tooltip__popper is-light"
+                              >
+                                        <div>
+                                                  click to close tooltip function
+                                        </div>
+                                        <div
+                                                  className="popper__arrow"
+                                        />
+                              </div>
+                    </View>
+          </Transition>
+</div>,
+      },
+      "_renderedNodeType": 0,
+      "_rootNodeID": 0,
+      "_topLevelWrapper": null,
+      "_updateBatchNumber": null,
+      "_warnedAboutRefsInRender": false,
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <Tooltip
+    content="click to close tooltip function"
+    disabled={false}
+    effect="light"
+    manual={false}
+    openDelay={0}
+    placement="bottom"
+    transition="fade-in-linear"
+    visibleArrow={true}
+>
+    <Button
+        disabled={false}
+        loading={false}
+        nativeType="button"
+        onClick={[Function]}
+        plain={false}
+        type="default"
+    >
+        click to close tooltip function
+    </Button>
+</Tooltip>,
+}
+`;
+
+exports[`Advanced usage 2`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <div
+    className="el-tooltip"
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    style={Object {}}
+>
+    <div
+        className="el-tooltip__rel"
+    >
+        <div>
+            <Button
+                disabled={false}
+                loading={false}
+                nativeType="button"
+                onClick={[Function]}
+                plain={false}
+                type="default"
+            >
+                click to close tooltip function
+            </Button>
+        </div>
+    </div>
+    <Transition
+        duration={300}
+        name="fade-in-linear"
+    >
+        <View
+            component="span"
+            show={false}
+        >
+            <div
+                className="el-tooltip__popper is-light"
+            >
+                <div>
+                    click to close tooltip function
+                </div>
+                <div
+                    className="popper__arrow"
+                />
+            </div>
+        </View>
+    </Transition>
+</div>,
+  "nodes": Array [
+    <div
+      className="el-tooltip"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+>
+      <div
+            className="el-tooltip__rel"
+      >
+            <div>
+                  <Button
+                        disabled={false}
+                        loading={false}
+                        nativeType="button"
+                        onClick={[Function]}
+                        plain={false}
+                        type="default"
+                  >
+                        click to close tooltip function
+                  </Button>
+            </div>
+      </div>
+      <Transition
+            duration={300}
+            name="fade-in-linear"
+      >
+            <View
+                  component="span"
+                  show={false}
+            >
+                  <div
+                        className="el-tooltip__popper is-light"
+                  >
+                        <div>
+                              click to close tooltip function
+                        </div>
+                        <div
+                              className="popper__arrow"
+                        />
+                  </div>
+            </View>
+      </Transition>
+</div>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_instance":  {
+      "_calledComponentWillUnmount": false,
+      "_compositeType": 0,
+      "_context": Object {},
+      "_currentElement": <Tooltip
+        content="click to close tooltip function"
+        disabled={false}
+        effect="light"
+        manual={false}
+        openDelay={0}
+        placement="bottom"
+        transition="fade-in-linear"
+        visibleArrow={true}
+>
+        <Button
+                disabled={false}
+                loading={false}
+                nativeType="button"
+                onClick={[Function]}
+                plain={false}
+                type="default"
+        >
+                click to close tooltip function
+        </Button>
+</Tooltip>,
+      "_debugID": 263,
+      "_hostContainerInfo": null,
+      "_hostParent": null,
+      "_instance": Tooltip {
+        "_reactInternalInstance": [Circular],
+        "context": Object {},
+        "props": Object {
+          "children": <Button
+            disabled={false}
+            loading={false}
+            nativeType="button"
+            onClick={[Function]}
+            plain={false}
+            type="default"
+>
+            click to close tooltip function
+</Button>,
+          "content": "click to close tooltip function",
+          "disabled": false,
+          "effect": "light",
+          "manual": false,
+          "openDelay": 0,
+          "placement": "bottom",
+          "transition": "fade-in-linear",
+          "visibleArrow": true,
+        },
+        "refs": Object {},
+        "state": Object {
+          "showPopper": false,
+        },
+        "updater": Object {
+          "enqueueCallback": [Function],
+          "enqueueCallbackInternal": [Function],
+          "enqueueElementInternal": [Function],
+          "enqueueForceUpdate": [Function],
+          "enqueueReplaceState": [Function],
+          "enqueueSetState": [Function],
+          "isMounted": [Function],
+          "validateCallback": [Function],
+        },
+      },
+      "_mountOrder": 2,
+      "_pendingCallbacks": null,
+      "_pendingElement": null,
+      "_pendingForceUpdate": false,
+      "_pendingReplaceState": false,
+      "_pendingStateQueue": null,
+      "_renderedComponent": NoopInternalComponent {
+        "_currentElement": <div
+          className="el-tooltip"
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          style={Object {}}
+>
+          <div
+                    className="el-tooltip__rel"
+          >
+                    <div>
+                              <Button
+                                        disabled={false}
+                                        loading={false}
+                                        nativeType="button"
+                                        onClick={[Function]}
+                                        plain={false}
+                                        type="default"
+                              >
+                                        click to close tooltip function
+                              </Button>
+                    </div>
+          </div>
+          <Transition
+                    duration={300}
+                    name="fade-in-linear"
+          >
+                    <View
+                              component="span"
+                              show={false}
+                    >
+                              <div
+                                        className="el-tooltip__popper is-light"
+                              >
+                                        <div>
+                                                  click to close tooltip function
+                                        </div>
+                                        <div
+                                                  className="popper__arrow"
+                                        />
+                              </div>
+                    </View>
+          </Transition>
+</div>,
+        "_debugID": 264,
+        "_renderedOutput": <div
+          className="el-tooltip"
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          style={Object {}}
+>
+          <div
+                    className="el-tooltip__rel"
+          >
+                    <div>
+                              <Button
+                                        disabled={false}
+                                        loading={false}
+                                        nativeType="button"
+                                        onClick={[Function]}
+                                        plain={false}
+                                        type="default"
+                              >
+                                        click to close tooltip function
+                              </Button>
+                    </div>
+          </div>
+          <Transition
+                    duration={300}
+                    name="fade-in-linear"
+          >
+                    <View
+                              component="span"
+                              show={false}
+                    >
+                              <div
+                                        className="el-tooltip__popper is-light"
+                              >
+                                        <div>
+                                                  click to close tooltip function
+                                        </div>
+                                        <div
+                                                  className="popper__arrow"
+                                        />
+                              </div>
+                    </View>
+          </Transition>
+</div>,
+      },
+      "_renderedNodeType": 0,
+      "_rootNodeID": 0,
+      "_topLevelWrapper": null,
+      "_updateBatchNumber": null,
+      "_warnedAboutRefsInRender": false,
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <Tooltip
+    content="click to close tooltip function"
+    disabled={false}
+    effect="light"
+    manual={false}
+    openDelay={0}
+    placement="bottom"
+    transition="fade-in-linear"
+    visibleArrow={true}
+>
+    <Button
+        disabled={false}
+        loading={false}
+        nativeType="button"
+        onClick={[Function]}
+        plain={false}
+        type="default"
+    >
+        click to close tooltip function
+    </Button>
+</Tooltip>,
+}
+`;
+
+exports[`Basic Usage 1`] = `
+<div
+  className="box"
+>
+  <div
+    className="top"
+  >
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              top-start
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Top Left prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              top
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Top Center prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              top-end
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Top Right prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+  </div>
+  <div
+    className="left"
+  >
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              left-start
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Left Top prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              left
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Left Center prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              left-end
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Left Bottom prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+  </div>
+  <div
+    className="right"
+  >
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              right-start
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Right Top prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              right
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Right Center prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              right-end
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Right Bottom prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+  </div>
+  <div
+    className="bottom"
+  >
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              bottom-start
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Bottom Left prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              bottom
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Bottom Center prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              bottom-end
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Bottom Right prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+  </div>
+</div>
+`;
