@@ -37,13 +37,12 @@ export default class TableFooter extends Component<TableFooterProps> {
   }
 
   render() {
-    const { store, layout, fixed, summaryMethod } = this.props;
-    const { _data } = store;
-    const sums = summaryMethod ? summaryMethod(store.columns, _data) : store.columns.map((column, index) => {
+    const { store, layout, fixed, summaryMethod, sumText } = this.props;
+    const sums = summaryMethod ? summaryMethod(store.columns, store.data) : store.columns.map((column, index) => {
       if (index === 0) {
-        return this.props.sumText;
+        return sumText;
       }
-      const result = _data.reduce((pre, data) => pre + parseFloat(getValueByPath(data, column.property)), 0);
+      const result = store.data.reduce((pre, data) => pre + parseFloat(getValueByPath(data, column.property)), 0);
       return isNaN(result) ? '' : result;
     });
 

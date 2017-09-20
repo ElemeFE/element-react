@@ -2,7 +2,9 @@
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Checkbox from '../checkbox';
-import Tag from '../tag';
+import Popover from '../popover';
+// import Tag from '../tag';
+import FilterPannel from './FilterPannel';
 
 import type {
   TableHeaderProps
@@ -209,6 +211,15 @@ export default class TableHeader extends Component<TableHeaderProps> {
     this.context.store.changeSortCondition(column, order);
   }
 
+  handleFilterClick(column, event) {
+    event && event.stopPropagation();
+    this.context.store.toggleFilterOpened(column);
+  }
+
+  changeFilteredValue(column, value) {
+    this.context.store.changeFilteredValue(column, value);
+  }
+
   isCellHidden(index: number, columns: Array<Object>): boolean {
     const { fixed } = this.props;
     if (fixed === true || fixed === 'left') {
@@ -314,6 +325,21 @@ export default class TableHeader extends Component<TableHeaderProps> {
                           onClick={this.handleSortClick.bind(this, column, 'descending')}
                         />
                       </span>
+                    )}
+                    {column.filterable && (
+                      <FilterPannel
+                        visible={column.filterOpened}
+                        multiple={column.filterMultiple}
+                        filteredValue={column.filteredValue}
+                        onFiltersChange={this.changeFilteredValue.bind(this, column)}
+                      >
+                        <span
+                          className="el-table__column-filter-trigger"
+                          onClick={this.handleFilterClick.bind(this, column)}
+                        >
+                          <i className={this.classNames('el-icon-arrow-down', { 'el-icon-arrow-up': column.filterOpened })} />
+                        </span>
+                      </FilterPannel>
                     )}
                   </div>
                 </th>

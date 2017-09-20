@@ -11,6 +11,22 @@ import normalizeColumns from './normalizeColumns';
 import { flattenColumns, getValueByPath } from "./utils";
 
 
+function filterData(data, columns) {
+  const sortedData = columns.reduce((preData, column) => {
+    const { sortable, filterMultiple, filteredValue, filterMethod } = column;
+    if (sortable) {
+      if (filterMultiple) {
+        return preData.filter(_data => Array.isArray(filteredValue) && filteredValue.length ? filteredValue.some(value => filterMethod(value, _data)) : true)
+      }
+      return preData.filter(_data => filterMethod(filteredValue, _data));
+    }
+    return preData;
+  }, data);
+
+  return sortedData;
+}
+
+
 export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<any>*/)/*: React.ComponentType<any>*/ {
   return class TableStore extends Component<TableStoreProps, TableStoreState> {
     // static propTypes = {
@@ -96,7 +112,7 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
     componentWillMount() {
       // const { columns, data, defaultExpandALl } = this.props;
       this.updateColumns(this.props);
-      this.setData(this.props);
+      this.updateData(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -106,7 +122,7 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
       }
 
       if (data !== nextProps.data) {
-        this.setData(nextProps.data, nextProps.defaultExpandALl);
+        this.updateData(nextProps);
       }
 
     }
@@ -163,11 +179,15 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
       }));
     }
 
-    setData(props) {
+    updateData(props) {
       // todo more
       const { data, defaultExpandAll, defaultSort} = props;
+      const filteredData = filterData(data.slice(), this.state.columns);
+
+      // do filter when data changed, clear hover, select and expanding status
       this.setState(Object.assign(this.state, {
-        data,
+        data: filteredData,
+        filteredData,
         hoverRow: null,
         currentRow: null,
         selectedRows: [],
@@ -176,9 +196,9 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
 
       if (defaultSort) {
         const { prop, order = 'ascending' } = defaultSort;
-        const { data, columns } = this.state;
+        const { columns } = this.state;
         const sortColumn = columns.find(column => column.property === prop);
-        this.changeSortCondition(sortColumn, order, data.slice());
+        this.changeSortCondition(sortColumn, order);
       }
     }
 
@@ -296,15 +316,15 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
       return selectedRows.includes(row);
     }
 
-    changeSortCondition(column, order, data) {
-      if (!data) {
-        data = this.props.data.slice();
-      }
+    changeSortCondition(column, order) {
+      if (!column) ({ sortColumn: column, sortOrder: order } = this.state);
+
+      const data = this.state.filteredData.slice();
 
       const { sortMethod, property } = column;
       let sortedData;
       if (!order) {
-        sortedData = this.props.data.slice();
+        sortedData = data;
       } else {
         const flag = order === 'ascending' ? 1 : -1;
         if (sortMethod) {
@@ -323,6 +343,20 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
         sortOrder: order,
         data: sortedData,
       });
+    }
+
+    toggleFilterOpened(column) {
+      column.filterOpened = !column.filterOpened;
+      this.forceUpdate();
+    }
+
+    changeFilteredValue(column, value) {
+      column.filteredValue = value;
+      const filteredData = filterData(this.props.data.slice(), this.state.columns);
+      this.setState(Object.assign(this.state, {
+        filteredData
+      }));
+      this.changeSortCondition();
     }
 
     render()  {
