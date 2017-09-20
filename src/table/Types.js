@@ -27,6 +27,7 @@ export type Column = {
   filterPlacement?: string,
   filterMultiple: boolean,
   filterMethod?: (value: any, row: Object) => boolean,
+  filteredValue?: Array<any>,
   subColumns?: Array<Column>
 };
 
@@ -71,7 +72,7 @@ export type TableStoreProps = {
 };
 
 export type TableStoreState = {
-  _data: Array<Object>,
+  sortedData: Array<Object>,
   data: Array<Object>,
   _columns: Array<_Column>,
   fixedColumns: Array<_Column>,
@@ -105,24 +106,37 @@ export type TableHeaderProps = TableProps & { fixed: true | 'left' | 'right' };
 export type TableBodyProps = TableHeaderProps;
 export type TableFooterProps = TableHeaderProps;
 
+// export type FilterProps = {
+//   defaultCondi: null | Array<Object>,
+//   filters: Array<Object>,
+//   onFilter: (any)=>void,
+//   onClose: ()=>void,
+//   visible: boolean,
+//   position: Object,
+//   popper: any,
+//   ower: Object
+// };
+//
+// export type FilterState = {
+//   visible: boolean,
+//   defaultStyle: Object,
+//   checked: Array<Object>
+// };
+//
+// export type FilterDefaultProps = {
+//   filters: Array<Object>,
+//   onFilter: ()=>void
+// }
+
 export type FilterProps = {
-  defaultCondi: null | Array<Object>,
-  filters: Array<Object>,
-  onFilter: (any)=>void,
-  onClose: ()=>void,
   visible: boolean,
-  position: Object,
-  popper: any,
-  ower: Object
-};
+  multiple: boolean,
+  placement: string,
+  filters: Array<Object>,
+  filteredValue: Array<any>,
+  onFilterChange: (value: any) => void
+}
 
 export type FilterState = {
-  visible: boolean,
-  defaultStyle: Object,
-  checked: Array<Object>
-};
-
-export type FilterDefaultProps = {
-  filters: Array<Object>,
-  onFilter: ()=>void
+  filteredValue: Array<any>,
 }

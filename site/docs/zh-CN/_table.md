@@ -1280,6 +1280,9 @@ constructor(props) {
         prop: 'tag',
         width: 100,
         filters: [{text: '家', value: '家'}, {text: '公司', value: '公司'}],
+        filterMethod(value, row) {
+                  return row.tag === value;
+                },
         render: (data, column)=>{
           if(data['tag'] == '家'){
             return <Tag type="primary">{data['tag']}</Tag>

@@ -101,7 +101,7 @@ export default function TableLayoutHOC(WrappedComponent: React.ComponentType<any
       let fixedWidth;
       let rightFixedWidth;
 
-      // mutate TableStore's state(columns), thinking to avoid(move columns from store to layout)
+      // mutate props (TableStore's state[columns])
       const flexColumns = columns.filter(column => typeof column.width !== 'number');
       if (flexColumns.length && fit) {
         if (bodyMinWidth < bodyWidth - gutterWidth) { // no scroll bar

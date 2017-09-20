@@ -90,6 +90,9 @@ export default function normalizeColumns(columns) {
         render: column.render || defaultRender,
         align: column.align ? 'is-' + column.align : null,
         headerAlign: column.headerAlign ? 'is-' + column.headerAlign : column.align ? 'is-' + column.align : null,
+        filterable: column.filters && column.filterMethod,
+        filterOpened: false,
+        filteredValue: column.filteredValue || [],
       }, defaults[column.type || 'default'], forced[column.type]);
     }
 
