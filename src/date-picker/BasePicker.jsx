@@ -237,7 +237,7 @@ export default class BasePicker extends Component {
       return
     }
     if (this.domRoot.contains(evt.target)) return
-    if (this.pickerProxy && this.pickerProxy.getMountNode().contains(evt.target)) return
+    if (this.pickerProxy && this.pickerProxy.contains(evt)) return
     if (this.isDateValid(value)) {
       this.setState({ pickerVisible: false })
       this.props.onChange(value)
