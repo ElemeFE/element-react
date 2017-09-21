@@ -204,20 +204,15 @@ export default class DatePanel extends PopperBase {
   }
 
 
-  handleYearPick(year: any, close: boolean = true) {
+  handleYearPick(year: any) {
     this.updateState(state => {
       const { onPick, selectionMode } = this.props
       const { date } = state
-
-      if (!close) {
-        date.setFullYear(year)
+      date.setFullYear(year)
+      if (selectionMode === SELECTION_MODES.YEAR) {
+        onPick(new Date(year, 0))
       } else {
-        date.setFullYear(year)
-        if (selectionMode === SELECTION_MODES.YEAR) {
-          onPick(new Date(year, 0))
-        } else {
-          state.currentView = PICKER_VIEWS.MONTH
-        }
+        state.currentView = PICKER_VIEWS.MONTH
       }
     })
   }
