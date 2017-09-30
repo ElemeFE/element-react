@@ -92,8 +92,8 @@ export default class Dialog extends Component {
     return (
       <View show={ visible }>
         <div
-          style={this.style({ zIndex: 1013 })}
-          className={this.className('el-dialog__wrapper')}
+          style={{ zIndex: 1013 }}
+          className={this.classNames('el-dialog__wrapper')}
           onClick={ e => this.handleWrapperClick(e) }
           ref="wrap"
           tabIndex={ -1 }
@@ -101,8 +101,8 @@ export default class Dialog extends Component {
         >
           <div
             ref="dialog"
-            className={ this.classNames("el-dialog", `el-dialog--${ size }`, customClass) }
-            style={ size === 'full' ?  {} : { 'marginBottom': '50px', 'top': top }}
+            style={this.style(size === 'full' ?  {} : { 'marginBottom': '50px', 'top': top })}
+            className={ this.className("el-dialog", `el-dialog--${ size }`, customClass) }
           >
             <div className="el-dialog__header">
               <span className="el-dialog__title">{ title }</span>
