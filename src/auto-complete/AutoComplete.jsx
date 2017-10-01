@@ -25,6 +25,7 @@ type Props = {
   triggerOnFocus: boolean,
   fetchSuggestions: Function,
   onSelect: Function,
+  onChange: Function,
   onIconClick: Function,
   icon: Element | string,
   append: Element,
@@ -93,6 +94,10 @@ class AutoComplete extends Component {
 
     if (!this.props.triggerOnFocus && !value) {
       this.setState({ suggestions: [] }); return;
+    }
+
+    if (this.props.onChange) {
+      this.props.onChange(value);
     }
 
     this.getData(value);
