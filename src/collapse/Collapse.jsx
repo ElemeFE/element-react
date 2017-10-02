@@ -22,6 +22,10 @@ export default class Collapse extends Component {
     };
   }
 
+  componentWillReceiveProps (nextProps: Object) {
+    this.setActiveNames(nextProps.value)
+  }
+
   setActiveNames(activeNames: string | Array<string>): void {
     activeNames = [].concat(activeNames);
     this.setState({ activeNames }, () => this.props.onChange(activeNames));
