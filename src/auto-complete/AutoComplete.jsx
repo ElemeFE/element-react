@@ -30,6 +30,8 @@ type Props = {
   icon: Element | string,
   append: Element,
   prepend: Element,
+  onFocus: Function,
+  onBlur: Function
 }
 
 type AutoCompleteDefaultProps = {
@@ -103,9 +105,9 @@ class AutoComplete extends Component {
     this.getData(value);
   }
 
-  handleFocus(): void {
+  handleFocus(e): void {
     this.setState({ isFocus: true });
-
+    if (this.props.onFocus) this.props.onFocus(e);
     if (this.props.triggerOnFocus) {
       this.getData(this.state.inputValue);
     }
@@ -207,6 +209,7 @@ class AutoComplete extends Component {
           onIconClick={onIconClick}
           onChange={this.handleChange.bind(this)}
           onFocus={this.handleFocus.bind(this)}
+          onBlur={this.props.onBlur}
           onKeyDown={this.onKeyDown.bind(this)}
         />
         <Suggestions

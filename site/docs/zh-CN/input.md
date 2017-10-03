@@ -220,6 +220,8 @@ render() {
         <AutoComplete
           placeholder="请输入内容"
           value={this.state.value1}
+          onFocus={e=>console.log(e, 'onFocus')}
+          onBlur={e=>console.log(e, 'onblur')}
           fetchSuggestions={this.querySearch.bind(this)}
           onSelect={this.handleSelect.bind(this)}
         ></AutoComplete>
