@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react';
-import { Component, PropTypes, Transition } from '../../libs';
+import { Component, PropTypes, Transition, View } from '../../libs';
 import { loadStyleString } from '../../libs/utils/dom';
 
 export default class CollapseItem extends Component {
@@ -48,11 +48,13 @@ export default class CollapseItem extends Component {
           {title}
         </div>
         <Transition name="collapse">
-          <div className="el-collapse-item__wrap" style={{ display: isActive ? 'block' : 'none' }}>
-            <div className="el-collapse-item__content">
-              {this.props.children}
+          <View show={isActive}>
+            <div className="el-collapse-item__wrap">
+              <div className="el-collapse-item__content">
+                {this.props.children}
+              </div>
             </div>
-          </div>
+          </View>
         </Transition>
       </div>
     );
