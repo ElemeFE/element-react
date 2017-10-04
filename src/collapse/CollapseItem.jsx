@@ -48,12 +48,11 @@ export default class CollapseItem extends Component {
           {title}
         </div>
         <Transition name="collapse">
-          {isActive &&
-            <div className="el-collapse-item__wrap">
-              <div className="el-collapse-item__content">
-                {this.props.children}
-              </div>
-            </div>}
+          <div className="el-collapse-item__wrap" style={{ display: isActive ? 'block' : 'none' }}>
+            <div className="el-collapse-item__content">
+              {this.props.children}
+            </div>
+          </div>
         </Transition>
       </div>
     );
