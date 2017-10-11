@@ -2,208 +2,207 @@
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
+import Table from './Table';
 import type {
   TableLayoutProps,
   TableLayoutState,
 } from './Types';
 
-import { flattenColumns, getScrollBarWidth, getValueByPath } from "./utils";
+import { getScrollBarWidth, getValueByPath } from "./utils";
 
-export default function TableLayoutHOC(WrappedComponent: React.ComponentType<any>): React.ComponentType<any> {
-  return class TableLayout extends Component<TableLayoutProps, TableLayoutState> {
-    static childContextTypes = {
-      layout: PropTypes.any,
+export default class TableLayout extends Component<TableLayoutProps, TableLayoutState> {
+  static childContextTypes = {
+    layout: PropTypes.any,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      // fit: props.fit,
+      // show
+      height: props.height || props.maxHeight || null, // Table's height or maxHeight prop
+      gutterWidth: getScrollBarWidth(), // scrollBar width
+      tableHeight: null, // Table's real height
+      headerHeight: null, // header's height of Table
+      bodyHeight: null, // body's height of Table
+      footerHeight: null, // footer's height of Table
+      fixedBodyHeight: null, // fixed body's height of Table
+      viewportHeight: null, // Table's real height without y scroll bar height
+      scrollX: null, // has x scroll bar
+      scrollY: null, // has y scroll bar
     };
+  }
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        // fit: props.fit,
-        // show
-        height: props.height || props.maxHeight || null, // Table's height or maxHeight prop
-        gutterWidth: getScrollBarWidth(), // scrollBar width
-        tableHeight: null, // Table's real height
-        headerHeight: null, // header's height of Table
-        bodyHeight: null, // body's height of Table
-        footerHeight: null, // footer's height of Table
-        fixedBodyHeight: null, // fixed body's height of Table
-        viewportHeight: null, // Table's real height without y scroll bar height
-        scrollX: null, // has x scroll bar
-        scrollY: null, // has y scroll bar
-      };
+  componentDidMount() {
+    this.el = this.table.el;
+
+    this.doLayout();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const preHeight = this.props.height || this.props.maxHeight;
+    const nextHeight = nextProps.height || nextProps.maxHeight;
+    if (preHeight !== nextHeight) {
+      this.setState({
+        height: nextHeight
+      });
     }
+  }
 
-    componentDidMount() {
-      this.el = this.table.el;
-
+  componentDidUpdate(preProps) {
+    if (this.isPropChanged('columns', preProps)) {
       this.doLayout();
+      return;
     }
 
-    componentWillReceiveProps(nextProps) {
-      const preHeight = this.props.height || this.props.maxHeight;
-      const nextHeight = nextProps.height || nextProps.maxHeight;
-      if (preHeight !== nextHeight) {
-        this.setState({
-          height: nextHeight
+    const shouldUpdateHeight = [
+      'height',
+      'maxHeight',
+      'data',
+      'store.expandingRows',
+      'expandRowKeys',
+      'showSummary',
+      'summaryMethod',
+      'sumText',
+    ].some(key => this.isPropChanged(key, preProps));
+    if (shouldUpdateHeight) {
+      this.updateHeight();
+      this.updateScrollY();
+    }
+  }
+
+  isPropChanged(key: string, preProps) {
+    const prop = getValueByPath(this.props, key);
+    const preProp = getValueByPath(preProps, key);
+    return prop !== preProp;
+  }
+
+  getChildContext() {
+    return {
+      layout: this
+    };
+  }
+
+  doLayout() {
+    this.setState(this.caculateWidth(), () => {
+      this.updateHeight();
+      this.updateScrollY();
+    });
+  }
+
+  // horizontal direction layout
+  caculateWidth(): Object {
+    const { store: { columns, fixedColumns, rightFixedColumns }, fit } = this.props;
+    const { gutterWidth } = this.state;
+    const bodyMinWidth = columns.reduce((pre, col) => pre + (col.width || col.minWidth), 0);
+
+    let bodyWidth = this.table.el.clientWidth;
+    let scrollX;
+    let fixedWidth;
+    let rightFixedWidth;
+
+    // mutate props (TableStore's state[columns])
+    const flexColumns = columns.filter(column => typeof column.width !== 'number');
+    if (flexColumns.length && fit) {
+      if (bodyMinWidth < bodyWidth - gutterWidth) { // no scroll bar
+        scrollX = false;
+
+        const totalFlexWidth = bodyWidth - gutterWidth - bodyMinWidth;
+        if (flexColumns.length === 1) {
+          flexColumns[0].realWidth = flexColumns[0].minWidth + totalFlexWidth;
+        } else {
+          const allColumnsWidth = flexColumns.reduce((pre, col) => pre + col.minWidth, 0);
+          const flexWidthPerPixel = totalFlexWidth / allColumnsWidth;
+
+          let widthWithoutFirst = 0;
+
+          flexColumns.forEach((column, index) => {
+            if (index === 0) return;
+            const flexWidth = Math.floor(column.minWidth * flexWidthPerPixel);
+            widthWithoutFirst += flexWidth;
+            column.realWidth = column.minWidth + flexWidth;
+          });
+
+          flexColumns[0].realWidth = flexColumns[0].minWidth + totalFlexWidth - widthWithoutFirst;
+        }
+      } else { // have horizontal scroll bar
+        scrollX = true;
+        flexColumns.forEach((column) => {
+          column.realWidth = column.minWidth;
         });
       }
+
+      bodyWidth = Math.max(bodyMinWidth, bodyWidth);
+    } else {
+      scrollX = bodyMinWidth > bodyWidth;
+      bodyWidth = bodyMinWidth;
     }
 
-    componentDidUpdate(preProps) {
-      if (this.isPropChanged('columns', preProps)) {
-        this.doLayout();
-        return;
-      }
-
-      const shouldUpdateHeight = [
-        'height',
-        'maxHeight',
-        'data',
-        'store.expandingRows',
-        'expandRowKeys',
-        'showSummary',
-        'summaryMethod',
-        'sumText',
-      ].some(key => this.isPropChanged(key, preProps));
-      if (shouldUpdateHeight) {
-        this.updateHeight();
-        this.updateScrollY();
-      }
+    if (fixedColumns.length) {
+      fixedWidth = fixedColumns.reduce((pre, col) => pre + col.realWidth, 0);
     }
 
-    isPropChanged(key: string, preProps) {
-      const prop = getValueByPath(this.props, key);
-      const preProp = getValueByPath(preProps, key);
-      return prop !== preProp;
+    if (rightFixedColumns.length) {
+      rightFixedWidth = rightFixedColumns.reduce((pre, col) => pre + col.realWidth, 0);
     }
 
-    getChildContext() {
-      return {
-        layout: this
-      };
-    }
+    return {
+      scrollX,
+      bodyWidth,
+      fixedWidth,
+      rightFixedWidth
+    };
+  }
 
-    doLayout() {
-      this.setState(this.caculateWidth(), () => {
-        this.updateHeight();
-        this.updateScrollY();
-      });
-    }
+  // vertical direction layout
+  updateHeight() {
+    this.setState((state) => {
+      const { data } = this.props;
+      const { scrollX, gutterWidth } = state;
 
-    // horizontal direction layout
-    caculateWidth(): Object {
-      const { store: { columns, fixedColumns, rightFixedColumns }, fit } = this.props;
-      const { gutterWidth } = this.state;
-      const bodyMinWidth = columns.reduce((pre, col) => pre + (col.width || col.minWidth), 0);
+      const noData = !data || !data.length;
+      const { headerWrapper, footerWrapper } = this.table;
 
-      let bodyWidth = this.table.el.clientWidth;
-      let scrollX;
-      let fixedWidth;
-      let rightFixedWidth;
-
-      // mutate props (TableStore's state[columns])
-      const flexColumns = columns.filter(column => typeof column.width !== 'number');
-      if (flexColumns.length && fit) {
-        if (bodyMinWidth < bodyWidth - gutterWidth) { // no scroll bar
-          scrollX = false;
-
-          const totalFlexWidth = bodyWidth - gutterWidth - bodyMinWidth;
-          if (flexColumns.length === 1) {
-            flexColumns[0].realWidth = flexColumns[0].minWidth + totalFlexWidth;
-          } else {
-            const allColumnsWidth = flexColumns.reduce((pre, col) => pre + col.minWidth, 0);
-            const flexWidthPerPixel = totalFlexWidth / allColumnsWidth;
-
-            let widthWithoutFirst = 0;
-
-            flexColumns.forEach((column, index) => {
-              if (index === 0) return;
-              const flexWidth = Math.floor(column.minWidth * flexWidthPerPixel);
-              widthWithoutFirst += flexWidth;
-              column.realWidth = column.minWidth + flexWidth;
-            });
-
-            flexColumns[0].realWidth = flexColumns[0].minWidth + totalFlexWidth - widthWithoutFirst;
-          }
-        } else { // have horizontal scroll bar
-          scrollX = true;
-          flexColumns.forEach((column) => {
-            column.realWidth = column.minWidth;
-          });
-        }
-
-        bodyWidth = Math.max(bodyMinWidth, bodyWidth);
-      } else {
-        scrollX = bodyMinWidth > bodyWidth;
-        bodyWidth = bodyMinWidth;
-      }
-
-      if (fixedColumns.length) {
-        fixedWidth = fixedColumns.reduce((pre, col) => pre + col.realWidth, 0);
-      }
-
-      if (rightFixedColumns.length) {
-        rightFixedWidth = rightFixedColumns.reduce((pre, col) => pre + col.realWidth, 0);
-      }
+      const tableHeight = this.el.clientHeight;
+      const headerHeight = headerWrapper ? headerWrapper.offsetHeight : 0;
+      const footerHeight = footerWrapper ? footerWrapper.offsetHeight : 0;
+      const bodyHeight = tableHeight - headerHeight- footerHeight + (footerWrapper ? 1 : 0);
+      const fixedBodyHeight = bodyHeight - (scrollX ? gutterWidth : 0);
+      const viewportHeight = tableHeight - (scrollX && !noData ? gutterWidth : 0);
 
       return {
-        scrollX,
-        bodyWidth,
-        fixedWidth,
-        rightFixedWidth
+        tableHeight,
+        headerHeight,
+        bodyHeight,
+        footerHeight,
+        fixedBodyHeight,
+        viewportHeight // no useful
       };
-    }
+    });
+  }
 
-    // vertical direction layout
-    updateHeight() {
-      this.setState((state) => {
-        const { data } = this.props;
-        const { scrollX, gutterWidth } = state;
+  // judge if has scroll-Y bar
+  updateScrollY() {
+    this.setState((state) => {
+      const { bodyWrapper } = this.table;
+      const { fixedBodyHeight } = state;
 
-        const noData = !data || !data.length;
-        const { headerWrapper, footerWrapper } = this.table;
+      const body = bodyWrapper.querySelector('.el-table__body');
+      const scrollY = body.offsetHeight > fixedBodyHeight;
 
-        const tableHeight = this.el.clientHeight;
-        const headerHeight = headerWrapper ? headerWrapper.offsetHeight : 0;
-        const footerHeight = footerWrapper ? footerWrapper.offsetHeight : 0;
-        const bodyHeight = tableHeight - headerHeight- footerHeight + (footerWrapper ? 1 : 0);
-        const fixedBodyHeight = bodyHeight - (scrollX ? gutterWidth : 0);
-        const viewportHeight = tableHeight - (scrollX && !noData ? gutterWidth : 0);
+      return {
+        scrollY
+      };
+    });
+  }
 
-        return {
-          tableHeight,
-          headerHeight,
-          bodyHeight,
-          footerHeight,
-          fixedBodyHeight,
-          viewportHeight // no useful
-        };
-      });
-    }
-
-    // judge if has scroll-Y bar
-    updateScrollY() {
-      this.setState((state) => {
-        const { bodyWrapper } = this.table;
-        const { fixedBodyHeight } = state;
-
-        const body = bodyWrapper.querySelector('.el-table__body');
-        const scrollY = body.offsetHeight > fixedBodyHeight;
-
-        return {
-          scrollY
-        };
-      });
-    }
-
-    render() {
-      return (
-        <WrappedComponent
-          ref={(table) => { this.table = table; }}
-          {...this.props}
-          layout={this.state}
-        />
-      )
-    }
+  render() {
+    return (
+      <Table
+        ref={(table) => { this.table = table; }}
+        {...this.props}
+        layout={this.state}
+      />
+    )
   }
 }
