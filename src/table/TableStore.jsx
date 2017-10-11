@@ -253,16 +253,19 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
     }
 
     setCurrentRow(row: Object) {
-      const { highlightCurrentRow, currentRowKey } = this.props;
+      const { highlightCurrentRow, currentRowKey, onCurrentChange } = this.props;
       if (!highlightCurrentRow || currentRowKey) return;
 
+      const { currentRow: oldRow } = this.state;
       this.setState({
         currentRow: row
+      }, () => {
+        onCurrentChange && onCurrentChange(row, oldRow);
       });
     }
 
     toggleRowSelection(row, isSelected) {
-      const { currentRowKey } = this.props;
+      const { currentRowKey, onSelect, onSelectChange } = this.props;
       // const { selectable } = this.state;
 
       if (Array.isArray(currentRowKey)) return;
@@ -277,11 +280,14 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
 
       this.setState({
         selectedRows
+      }, () => {
+        onSelect && onSelect(selectedRows, row);
+        onSelectChange && onSelectChange(selectedRows);
       });
     }
 
     toggleAllSelection() {
-      const { currentRowKey } = this.props;
+      const { currentRowKey, onSelectAll, onSelectChange } = this.props;
       if (Array.isArray(currentRowKey)) return;
 
       let selectedRows = this.state.selectedRows.slice();
@@ -293,6 +299,9 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
 
       this.setState({
         selectedRows,
+      }, () => {
+        onSelectAll && this.isAllSelected && onSelectAll(selectedRows);
+        onSelectChange && onSelectChange(selectedRows);
       })
     }
 
