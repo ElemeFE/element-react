@@ -20,6 +20,8 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
 
     this.container = getPopupContainer();
     this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.transitionEndHandler = this.transitionEndHandler.bind(this);
+
     this.state = {
       filteredValue: props.filteredValue,
     }
@@ -31,7 +33,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
       this.poperIns = new Popper(this.refer, this.container);
     });
 
-    document.addEventListener('click', this.handleClickOutside)
+    document.addEventListener('click', this.handleClickOutside);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,41 +45,29 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   componentDidUpdate(preProps) {
     this.renderPortal(this.renderContent(), this.container);
 
+    const { poper } = this;
     if (!preProps.visible && this.props.visible) {
-      const transitionEndHandler = () => {
-        this.poper.classList.remove('el-zoom-in-top-enter-active', 'el-zoom-in-top-enter-to');
-        this.poper.removeEventListener('transitionend', transitionEndHandler);
-      };
-      this.poper.addEventListener('transitionend', transitionEndHandler);
-
       requestAnimationFrame(() => {
-        this.poper.classList.remove('el-zoom-in-top-leave-active', 'el-zoom-in-top-leave-to');
-        this.poper.classList.add('el-zoom-in-top-enter');
-        this.poper.style.display = '';
+        poper.classList.remove('el-zoom-in-top-leave-active', 'el-zoom-in-top-leave-to');
+        poper.classList.add('el-zoom-in-top-enter');
+        poper.style.display = '';
         requestAnimationFrame(() => {
           this.poperIns.update();
-          this.poper.classList.remove('el-zoom-in-top-enter');
-          this.poper.classList.add('el-zoom-in-top-enter-active');
-          this.poper.classList.add('el-zoom-in-top-enter-to');
+          poper.classList.remove('el-zoom-in-top-enter');
+          poper.classList.add('el-zoom-in-top-enter-active');
+          poper.classList.add('el-zoom-in-top-enter-to');
         })
       })
     }
 
     if (preProps.visible && !this.props.visible) {
-      const transitionEndHandler = () => {
-        this.poper.classList.remove('el-zoom-in-top-leave-active', 'el-zoom-in-top-leave-to');
-        this.poper.style.display = 'none';
-        this.poper.removeEventListener('transitionend', transitionEndHandler);
-      };
-      this.poper.addEventListener('transitionend', transitionEndHandler);
-
       requestAnimationFrame(() => {
-        this.poper.classList.remove('el-zoom-in-top-enter-active', 'el-zoom-in-top-enter-to');
-        this.poper.classList.add('el-zoom-in-top-leave');
-        this.poper.classList.add('el-zoom-in-top-leave-active');
+        poper.classList.remove('el-zoom-in-top-enter-active', 'el-zoom-in-top-enter-to');
+        poper.classList.add('el-zoom-in-top-leave');
+        poper.classList.add('el-zoom-in-top-leave-active');
         requestAnimationFrame(() => {
-          this.poper.classList.remove('el-zoom-in-top-leave');
-          this.poper.classList.add('el-zoom-in-top-leave-to');
+          poper.classList.remove('el-zoom-in-top-leave');
+          poper.classList.add('el-zoom-in-top-leave-to');
         })
       })
     }
@@ -103,6 +93,16 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   handleClickOutside() {
     if (this.props.visible) {
       this.props.toggleFilter();
+    }
+  }
+
+  transitionEndHandler() {
+    const { poper } = this;
+    if (poper.classList.contains('el-zoom-in-top-enter-to')) {
+      poper.classList.remove('el-zoom-in-top-enter-active', 'el-zoom-in-top-enter-to');
+    } else if (poper.classList.contains('el-zoom-in-top-leave-to')) {
+      poper.classList.remove('el-zoom-in-top-leave-active', 'el-zoom-in-top-leave-to');
+      poper.style.display = 'none';
     }
   }
 
@@ -164,6 +164,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
         style={!this.isMounted && { display: 'none' }} // 仅首次渲染设置display属性
         ref={(dom) => { this.poper = dom; }}
         onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }}  // 防止触发document click事件回调
+        onTransitionEnd={this.transitionEndHandler}
       >
         {content}
       </div>
