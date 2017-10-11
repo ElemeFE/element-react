@@ -12,7 +12,7 @@ import type {
   TableState,
 } from './Types';
 
-let tableIdSeed = 1;
+// let tableIdSeed = 1;
 
 class Table extends Component<TableProps, TableState> {
   static contextTypes = {
@@ -24,48 +24,16 @@ class Table extends Component<TableProps, TableState> {
     table: PropTypes.any
   };
 
-  getChildContext() {
-    return {
-      table: this
-    }
-  }
-
   constructor(props) {
     super(props);
     this.state = {};
 
     // this.tableId = `el-table_${tableIdSeed++}_`;
-    this.tableId = tableIdSeed++;
+    // this.tableId = tableIdSeed++;
 
     ['syncScroll'].forEach((fn) => {
       this[fn] = this[fn].bind(this);
     });
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillReceiveProps(next) {
-    // this.tableId === 'el-table_1_' && console.log(next.layout);
-  }
-
-
-  syncScroll() {
-    const { headerWrapper, footerWrapper, bodyWrapper, fixedBodyWrapper, rightFixedBodyWrapper } = this;
-    if (headerWrapper) {
-      headerWrapper.scrollLeft = bodyWrapper.scrollLeft;
-    }
-    if (footerWrapper) {
-      footerWrapper.scrollLeft = bodyWrapper.scrollLeft;
-    }
-
-    if (fixedBodyWrapper) {
-      fixedBodyWrapper.scrollTop = bodyWrapper.scrollTop;
-    }
-    if (rightFixedBodyWrapper) {
-      rightFixedBodyWrapper.scrollTop = bodyWrapper.scrollTop;
-    }
   }
 
   get bodyWrapperHeight() {
@@ -109,6 +77,29 @@ class Table extends Component<TableProps, TableState> {
     }
 
     return style;
+  }
+
+  getChildContext() {
+    return {
+      table: this
+    }
+  }
+
+  syncScroll() {
+    const { headerWrapper, footerWrapper, bodyWrapper, fixedBodyWrapper, rightFixedBodyWrapper } = this;
+    if (headerWrapper) {
+      headerWrapper.scrollLeft = bodyWrapper.scrollLeft;
+    }
+    if (footerWrapper) {
+      footerWrapper.scrollLeft = bodyWrapper.scrollLeft;
+    }
+
+    if (fixedBodyWrapper) {
+      fixedBodyWrapper.scrollTop = bodyWrapper.scrollTop;
+    }
+    if (rightFixedBodyWrapper) {
+      rightFixedBodyWrapper.scrollTop = bodyWrapper.scrollTop;
+    }
   }
 
   bindRef(key: string) {

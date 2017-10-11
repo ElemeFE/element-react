@@ -12,18 +12,17 @@ import { flattenColumns, getValueByPath } from "./utils";
 
 
 function filterData(data, columns) {
-  const sortedData = columns.reduce((preData, column) => {
-    const { sortable, filterMultiple, filteredValue, filterMethod } = column;
-    if (sortable) {
-      if (filterMultiple) {
-        return preData.filter(_data => Array.isArray(filteredValue) && filteredValue.length ? filteredValue.some(value => filterMethod(value, _data)) : true)
+  return columns.reduce((preData, column) => {
+    const { filterable, filterMultiple, filteredValue, filterMethod } = column;
+    if (filterable) {
+      if (filterMultiple && Array.isArray(filteredValue) && filteredValue.length) {
+        return preData.filter(_data => filteredValue.some(value => filterMethod(value, _data)))
+      } else if (filteredValue) {
+        return preData.filter(_data => filterMethod(filteredValue, _data));
       }
-      return preData.filter(_data => filterMethod(filteredValue, _data));
     }
     return preData;
   }, data);
-
-  return sortedData;
 }
 
 
@@ -320,6 +319,13 @@ export default function TableStoreHOC(WrappedComponent/*: React.ComponentType<an
       if (!column) ({ sortColumn: column, sortOrder: order } = this.state);
 
       const data = this.state.filteredData.slice();
+
+      if (!column) {
+        this.setState({
+          data
+        });
+        return;
+      }
 
       const { sortMethod, property } = column;
       let sortedData;

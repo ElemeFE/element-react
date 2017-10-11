@@ -92,7 +92,7 @@ export default function normalizeColumns(columns) {
         headerAlign: column.headerAlign ? 'is-' + column.headerAlign : column.align ? 'is-' + column.align : null,
         filterable: column.filters && column.filterMethod,
         filterOpened: false,
-        filteredValue: column.filteredValue || [],
+        filteredValue: column.filteredValue || null,
       }, defaults[column.type || 'default'], forced[column.type]);
     }
 

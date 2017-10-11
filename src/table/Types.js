@@ -131,10 +131,10 @@ export type TableFooterProps = TableHeaderProps;
 export type FilterProps = {
   visible: boolean,
   multiple: boolean,
-  placement: string,
   filters: Array<Object>,
   filteredValue: Array<any>,
-  onFilterChange: (value: any) => void
+  onFilterChange: (value: any) => void,
+  toggleFilter: () => void
 }
 
 export type FilterState = {
