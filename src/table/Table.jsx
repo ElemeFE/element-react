@@ -1,8 +1,6 @@
 // @flow
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
-import TableStoreHOC from './TableStore';
-import TableLayoutHOC from './TableLayout';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
@@ -14,7 +12,7 @@ import type {
 
 // let tableIdSeed = 1;
 
-class Table extends Component<TableProps, TableState> {
+export default class Table extends Component<TableProps, TableState> {
   static contextTypes = {
     store: PropTypes.any,
     layout: PropTypes.any,
@@ -264,5 +262,3 @@ class Table extends Component<TableProps, TableState> {
     )
   }
 }
-
-export default TableStoreHOC(TableLayoutHOC(Table));
