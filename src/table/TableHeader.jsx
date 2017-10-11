@@ -78,7 +78,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
   constructor(props) {
     super(props);
 
-    ['handleHeaderClick', 'handleFilterClick'].forEach((fn) => {
+    ['handleHeaderClick', 'handleFilterClick', 'handleSortClick'].forEach((fn) => {
       this[fn] = throttle(300, this[fn])
     })
   }
@@ -181,7 +181,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
   handleHeaderClick(column, event) {
     if (event) {
       event.stopPropagation();
-      event.nativeEvent.stopImmediatePropagation();
+      event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
     }
 
     if (column.sortable && !column.filters) {
@@ -194,7 +194,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
   handleSortClick(column, givenOrder, event) {
     if (event) {
       event.stopPropagation();
-      event.nativeEvent.stopImmediatePropagation();
+      event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
     }
 
     let target = event.target;
@@ -224,7 +224,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
   handleFilterClick(column, event) {
     if (event) {
       event.stopPropagation();
-      event.nativeEvent.stopImmediatePropagation();
+      event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
     }
     this.context.store.toggleFilterOpened(column);
   }
