@@ -1,4 +1,3 @@
-// @flow
-import Table from './Table';
+import Table from './TableStore';
 
 export default Table;
