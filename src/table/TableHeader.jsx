@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import throttle from 'throttle-debounce/throttle';
 import { Component, PropTypes } from '../../libs';
 import Checkbox from '../checkbox';
 import Popover from '../popover';
@@ -74,13 +75,13 @@ export default class TableHeader extends Component<TableHeaderProps> {
     table: PropTypes.any,
   };
 
-  // constructor(props) {
-  //   super(props);
-  //
-  //   this.state = {
-  //     dragging: null,
-  //   };
-  // }
+  constructor(props) {
+    super(props);
+
+    ['handleHeaderClick', 'handleFilterClick'].forEach((fn) => {
+      this[fn] = throttle(300, this[fn])
+    })
+  }
 
   get columnsCount(): number {
     return this.props.store.columns.length;
@@ -95,8 +96,8 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleMouseMove(column, event) {
-    if (column.subColumns && column.subColumns.length) return;
     if (!column.resizable) return;
+    if (column.subColumns && column.subColumns.length) return;
 
     if (!this.dragging && this.props.border) {
       let target = event.target;
@@ -178,6 +179,11 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleHeaderClick(column, event) {
+    if (event) {
+      event.stopPropagation();
+      event.nativeEvent.stopImmediatePropagation();
+    }
+
     if (column.sortable && !column.filters) {
       this.handleSortClick(column, null, event);
     } else if (column.filters && !column.sortable) {
@@ -186,7 +192,11 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleSortClick(column, givenOrder, event) {
-    event && event.stopPropagation();
+    if (event) {
+      event.stopPropagation();
+      event.nativeEvent.stopImmediatePropagation();
+    }
+
     let target = event.target;
     while (target && target.tagName !== 'TH') {
       target = target.parentNode;
@@ -212,7 +222,10 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleFilterClick(column, event) {
-    event && event.stopPropagation();
+    if (event) {
+      event.stopPropagation();
+      event.nativeEvent.stopImmediatePropagation();
+    }
     this.context.store.toggleFilterOpened(column);
   }
 
@@ -330,8 +343,10 @@ export default class TableHeader extends Component<TableHeaderProps> {
                       <FilterPannel
                         visible={column.filterOpened}
                         multiple={column.filterMultiple}
+                        filters={column.filters}
                         filteredValue={column.filteredValue}
-                        onFiltersChange={this.changeFilteredValue.bind(this, column)}
+                        onFilterChange={this.changeFilteredValue.bind(this, column)}
+                        toggleFilter={this.handleFilterClick.bind(this, column)}
                       >
                         <span
                           className="el-table__column-filter-trigger"
