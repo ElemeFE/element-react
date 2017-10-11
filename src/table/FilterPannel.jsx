@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Component, PropTypes, Transition } from '../../libs';
+import { Component } from '../../libs';
 import Popper from '../../libs/utils/popper';
 import Checkbox from '../checkbox';
 
@@ -163,7 +163,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
         className={'el-table-filter'}
         style={!this.isMounted && { display: 'none' }} // 仅首次渲染设置display属性
         ref={(dom) => { this.poper = dom; }}
-        onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }}
+        onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }}  // 防止触发document click事件回调
       >
         {content}
       </div>
