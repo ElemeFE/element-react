@@ -1,6 +1,4 @@
 // @flow
-import * as React from 'react';
-
 export type strOrNum = string | number;
 
 export type Column = {
@@ -138,27 +136,6 @@ export type TableHeaderProps = TableProps & { fixed: true | 'left' | 'right' };
 export type TableBodyProps = TableHeaderProps;
 export type TableFooterProps = TableHeaderProps;
 
-// export type FilterProps = {
-//   defaultCondi: null | Array<Object>,
-//   filters: Array<Object>,
-//   onFilter: (any)=>void,
-//   onClose: ()=>void,
-//   visible: boolean,
-//   position: Object,
-//   popper: any,
-//   ower: Object
-// };
-//
-// export type FilterState = {
-//   visible: boolean,
-//   defaultStyle: Object,
-//   checked: Array<Object>
-// };
-//
-// export type FilterDefaultProps = {
-//   filters: Array<Object>,
-//   onFilter: ()=>void
-// }
 
 export type FilterProps = {
   visible: boolean,
