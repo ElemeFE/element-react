@@ -92,17 +92,17 @@ test('Advanced usage', () => {
     disabled: false
   };
 
-  const tooltip = shallow(
+  const tooltip = mount(
     <Tooltip disabled={ state.disabled } content="click to close tooltip function" placement="bottom" effect="light">
       <Button onClick={ e => {state.disabled = true}}>{`click to ${state.disabled ? 'active' : 'close' } tooltip function`}</Button>
     </Tooltip>
   );
 
   expect(state.disabled).toBe(false);
-  expect(tooltip).toMatchSnapshot();
+  expect(tooltip.toString()).toMatchSnapshot();
 
   tooltip.find('Button').simulate('click');
 
   expect(state.disabled).toBe(true);
-  expect(tooltip).toMatchSnapshot();
+  expect(tooltip.toString()).toMatchSnapshot();
 });
