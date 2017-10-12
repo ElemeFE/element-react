@@ -1,27 +1,52 @@
 // @flow
-let scrollBarWidth;
+import type { _Column } from "./Types";
 
-export const getScrollBarWidth = () => {
+const _document = (document: any);
+
+let scrollBarWidth: ?number;
+
+export function getScrollBarWidth(): ?number {
   if (scrollBarWidth !== undefined) return scrollBarWidth;
-  const outer = document.createElement('div');
-  var body:any = document.body || outer;
+  const dom = _document.createElement('div');
+  const body = _document.body || dom;
 
-  outer.style.visibility = 'hidden';
-  outer.style.width = '100px';
-  outer.style.position = 'absolute';
-  outer.style.top = '-9999px';
-  body.appendChild(outer);
+  dom.style.visibility = 'hidden';
+  dom.style.width = '100px';
+  dom.style.position = 'absolute';
+  dom.style.top = '-9999px';
+  dom.style.overflow = 'scroll';
 
-  const widthNoScroll = outer.offsetWidth;
-  outer.style.overflow = 'scroll';
+  body.appendChild(dom);
 
-  const inner = document.createElement('div');
-  inner.style.width = '100%';
-  outer.appendChild(inner);
+  const totalWidth = dom.offsetWidth;
+  const widthWithoutScroll = dom.clientWidth;
 
-  const widthWithScroll = inner.offsetWidth;
-  const outerParent = outer.parentNode || body;
-  outerParent.removeChild(outer);
+  body.removeChild(dom);
 
-  return widthNoScroll - widthWithScroll;
-};
+  return totalWidth - widthWithoutScroll;
+}
+
+export function getValueByPath(data: Object, path: ?string): any {
+  if (typeof path !== 'string') return null;
+  return path.split('.').reduce((pre, cur) => (pre || {})[cur], data);
+}
+
+export function getRowIdentity(row: Object, rowKey: any): any {
+  if (typeof rowKey === 'string') {
+    return getValueByPath(row, rowKey);
+  } else if (typeof rowKey === 'function') {
+    return rowKey(row);
+  }
+}
+
+export function flattenColumns(columns: Array<_Column>): Array<_Column> {
+  const result = [];
+  columns.forEach((column) => {
+    if (column.subColumns) {
+      result.push(...flattenColumns(column.subColumns));
+    } else {
+      result.push(column);
+    }
+  });
+  return result;
+}
