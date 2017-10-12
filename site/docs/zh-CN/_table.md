@@ -443,10 +443,9 @@ render() {
       columns={this.state.columns}
       data={this.state.data}
       border={true}
-      height={255}
     />
   )
-}    
+}
 ```
 :::
 
@@ -1281,6 +1280,9 @@ constructor(props) {
         prop: 'tag',
         width: 100,
         filters: [{text: '家', value: '家'}, {text: '公司', value: '公司'}],
+        filterMethod(value, row) {
+                  return row.tag === value;
+                },
         render: (data, column)=>{
           if(data['tag'] == '家'){
             return <Tag type="primary">{data['tag']}</Tag>
@@ -1413,13 +1415,13 @@ render() {
         columns={this.state.columns}
         data={this.state.data}
         sumText='总价'
-        getSummaries={(columns, data)=>{
+        summaryMethod={(columns, data)=>{
           const dataList = [];
           for(var i=0; i < columns.length; i++){
             let total = 0;
             for(let j=0; j < data.length; j++){
               let value = data[j][columns[i]['property']];
-            
+
               if(isNaN(value)){
                 total = 'N/A'
                 break;
