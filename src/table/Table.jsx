@@ -22,7 +22,7 @@ export default class Table extends Component<TableProps, TableState> {
     table: PropTypes.any
   };
 
-  constructor(props) {
+  constructor(props: TableProps) {
     super(props);
     this.state = {};
 
@@ -34,7 +34,7 @@ export default class Table extends Component<TableProps, TableState> {
     });
   }
 
-  get bodyWrapperHeight() {
+  get bodyWrapperHeight(): Object {
     const { layout, height, maxHeight } = this.props;
     const style = {};
 
@@ -49,20 +49,20 @@ export default class Table extends Component<TableProps, TableState> {
     return style;
   }
 
-  get bodyWidth() {
+  get bodyWidth(): number | '' {
     const { layout } = this.props;
     const { bodyWidth, scrollY, gutterWidth } = layout;
     return bodyWidth ? bodyWidth - (scrollY ? gutterWidth : 0) : '';
   }
 
-  get fixedHeight(): ?Object {
+  get fixedHeight(): Object {
     const { layout } = this.props;
     return {
       bottom: layout.scrollX ? layout.gutterWidth - 1 : 0
     };
   }
 
-  get fixedBodyHeight() {
+  get fixedBodyHeight(): Object {
     const { layout, ...props } = this.props;
     const style = {};
 
@@ -77,7 +77,7 @@ export default class Table extends Component<TableProps, TableState> {
     return style;
   }
 
-  getChildContext() {
+  getChildContext(): Object {
     return {
       table: this
     }
@@ -101,7 +101,7 @@ export default class Table extends Component<TableProps, TableState> {
   }
 
   bindRef(key: string) {
-    return (node) => { this[key] = node; }
+    return (node: Object) => { this[key] = node; }
   }
 
   render() {
