@@ -1,9 +1,14 @@
-let scrollBarWidth;
+// @flow
+import type { _Column } from "./Types";
 
-export function getScrollBarWidth(): number {
+const _document = (document: any);
+
+let scrollBarWidth: ?number;
+
+export function getScrollBarWidth(): ?number {
   if (scrollBarWidth !== undefined) return scrollBarWidth;
-  const dom = document.createElement('div');
-  const body = document.body || dom;
+  const dom = _document.createElement('div');
+  const body = _document.body || dom;
 
   dom.style.visibility = 'hidden';
   dom.style.width = '100px';
@@ -21,12 +26,12 @@ export function getScrollBarWidth(): number {
   return totalWidth - widthWithoutScroll;
 }
 
-export function getValueByPath(data: Object, path: string): any {
+export function getValueByPath(data: Object, path: ?string): any {
   if (typeof path !== 'string') return null;
   return path.split('.').reduce((pre, cur) => (pre || {})[cur], data);
 }
 
-export function getRowIdentity(row, rowKey) {
+export function getRowIdentity(row: Object, rowKey: any): any {
   if (typeof rowKey === 'string') {
     return getValueByPath(row, rowKey);
   } else if (typeof rowKey === 'function') {
@@ -34,7 +39,7 @@ export function getRowIdentity(row, rowKey) {
   }
 }
 
-export function flattenColumns(columns) {
+export function flattenColumns(columns: Array<_Column>): Array<_Column> {
   const result = [];
   columns.forEach((column) => {
     if (column.subColumns) {
