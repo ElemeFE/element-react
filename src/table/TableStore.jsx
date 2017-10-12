@@ -7,6 +7,7 @@ import type {
   TableStoreProps,
   TableStoreState,
   Column,
+  _Column
 } from './Types';
 import normalizeColumns from './normalizeColumns';
 import { flattenColumns, getValueByPath } from "./utils";
@@ -78,7 +79,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     }
   }
 
-  constructor(props) {
+  constructor(props: TableStoreProps) {
     super(props);
 
     this.state = {
@@ -114,10 +115,10 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     this.updateData(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: TableStoreProps) {
     const { columns, data, highlightCurrentRow, currentRowKey } = this.props;
     if (columns !== nextProps.columns) {
-      this.updateColumns(nextProps.columns);
+      this.updateColumns(nextProps);
     }
 
     if (data !== nextProps.data) {
@@ -151,7 +152,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   //   return false;
   // }
 
-  updateColumns(props) {
+  updateColumns(props: TableStoreProps) {
     const { columns } = props;
     const _columns = normalizeColumns(columns);
     let selectable = false;
@@ -178,9 +179,9 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     }));
   }
 
-  updateData(props) {
+  updateData(props: TableStoreProps) {
     // todo more
-    const { data, defaultExpandAll, defaultSort} = props;
+    const { data = [], defaultExpandAll, defaultSort } = props;
     const filteredData = filterData(data.slice(), this.state.columns);
 
     // do filter when data changed, clear hover, select and expanding status
@@ -264,7 +265,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     });
   }
 
-  toggleRowSelection(row, isSelected) {
+  toggleRowSelection(row: Object, isSelected: boolean) {
     const { currentRowKey, onSelect, onSelectChange } = this.props;
     // const { selectable } = this.state;
 
@@ -324,7 +325,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     return selectedRows.includes(row);
   }
 
-  changeSortCondition(column, order) {
+  changeSortCondition(column?: _Column, order?: string) {
     if (!column) ({ sortColumn: column, sortOrder: order } = this.state);
 
     const data = this.state.filteredData.slice();
@@ -360,12 +361,12 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     });
   }
 
-  toggleFilterOpened(column) {
+  toggleFilterOpened(column: _Column) {
     column.filterOpened = !column.filterOpened;
     this.forceUpdate();
   }
 
-  changeFilteredValue(column, value) {
+  changeFilteredValue(column: _Column, value: string | number) {
     column.filteredValue = value;
     const filteredData = filterData(this.props.data.slice(), this.state.columns);
     this.setState(Object.assign(this.state, {

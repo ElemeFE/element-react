@@ -15,7 +15,7 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
     layout: PropTypes.any,
   };
 
-  constructor(props) {
+  constructor(props: TableLayoutProps) {
     super(props);
     this.state = {
       // fit: props.fit,
@@ -36,10 +36,10 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
   componentDidMount() {
     this.el = this.table.el;
 
-    this.doLayout();
+    this.scheduleLayout();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: TableLayoutProps) {
     const preHeight = this.props.height || this.props.maxHeight;
     const nextHeight = nextProps.height || nextProps.maxHeight;
     if (preHeight !== nextHeight) {
@@ -49,9 +49,9 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
     }
   }
 
-  componentDidUpdate(preProps) {
+  componentDidUpdate(preProps: TableLayoutProps) {
     if (this.isPropChanged('columns', preProps)) {
-      this.doLayout();
+      this.scheduleLayout();
       return;
     }
 
@@ -71,7 +71,7 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
     }
   }
 
-  isPropChanged(key: string, preProps) {
+  isPropChanged(key: string, preProps: TableLayoutProps): boolean {
     const prop = getValueByPath(this.props, key);
     const preProp = getValueByPath(preProps, key);
     return prop !== preProp;
@@ -83,7 +83,7 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
     };
   }
 
-  doLayout() {
+  scheduleLayout() {
     this.setState(this.caculateWidth(), () => {
       this.updateHeight();
       this.updateScrollY();

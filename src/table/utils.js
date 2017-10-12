@@ -1,10 +1,9 @@
-
 let scrollBarWidth;
 
 export function getScrollBarWidth(): number {
   if (scrollBarWidth !== undefined) return scrollBarWidth;
   const dom = document.createElement('div');
-  const body:any = document.body || dom;
+  const body = document.body || dom;
 
   dom.style.visibility = 'hidden';
   dom.style.width = '100px';
@@ -21,32 +20,6 @@ export function getScrollBarWidth(): number {
 
   return totalWidth - widthWithoutScroll;
 }
-
-// export function _getScrollBarWidth() {
-//   if (scrollBarWidth !== undefined) return scrollBarWidth;
-//
-//   const outer = document.createElement('div');
-//   outer.className = 'el-scrollbar__wrap';
-//   outer.style.visibility = 'hidden';
-//   outer.style.width = '100px';
-//   outer.style.position = 'absolute';
-//   outer.style.top = '-9999px';
-//   document.body.appendChild(outer);
-//
-//   const widthNoScroll = outer.offsetWidth;
-//   outer.style.overflow = 'scroll';
-//
-//   const inner = document.createElement('div');
-//   inner.style.width = '100%';
-//   outer.appendChild(inner);
-//
-//   const widthWithScroll = inner.offsetWidth;
-//   outer.parentNode.removeChild(outer);
-//   scrollBarWidth = widthNoScroll - widthWithScroll;
-//
-//   return scrollBarWidth;
-// };
-
 
 export function getValueByPath(data: Object, path: string): any {
   if (typeof path !== 'string') return null;

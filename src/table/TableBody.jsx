@@ -15,7 +15,7 @@ export default class TableBody extends Component<TableBodyProps> {
     layout: PropTypes.any,
   };
 
-  constructor(props) {
+  constructor(props: TableBodyProps) {
     super(props);
     ['handleMouseLeave'].forEach((fn) => {
       this[fn] = this[fn].bind(this);
