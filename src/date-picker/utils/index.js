@@ -84,8 +84,17 @@ export const getStartDateOfMonth = function (year, month, offsetWeek = 0) {
   return result;
 };
 
+/**
+ * 
+ * @export
+ * @param {any} day , first day of current month, 0 - 6
+ * @param {number} [offsetWeek=0, 0-6, 0 sunday, 6 saturday] 
+ * @returns 
+ */
 export function getOffsetToWeekOrigin(day, offsetWeek = 0) {
-  return day >= offsetWeek ? day - offsetWeek : 7 + day - offsetWeek;
+  let offset = day >= offsetWeek ? day - offsetWeek : 7 + day - offsetWeek;
+  offset = offset === 0 ? 7 : offset // if the two days collide, we force 7 days padding
+  return offset
 }
 
 export const getWeekNumber = function (src) {

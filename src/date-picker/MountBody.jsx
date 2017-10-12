@@ -14,8 +14,11 @@ export class MountBody extends Component {
     document.body.removeChild(this.tnode)
   }
 
-  getMountNode(){
-    return this.tnode 
+  contains(evt){
+    let parent = this.tnode.childNodes[0]
+    let rect = parent.getBoundingClientRect()
+    let isContain = (evt.clientX >= rect.left && evt.clientX <= rect.right) && (evt.clientY >= rect.top && evt.clientY <= rect.bottom )
+    return isContain
   }
 
   render(){

@@ -71,7 +71,6 @@ export default class DateTable extends Component {
     const dateCountOfMonth = getDayCountOfMonth(ndate.getFullYear(), ndate.getMonth());
     // dates count in december is always 31, so offset year is not neccessary
     const dateCountOfLastMonth = getDayCountOfMonth(ndate.getFullYear(), (ndate.getMonth() === 0 ? 11 : ndate.getMonth() - 1));
-
     const offsetDaysToWeekOrigin = getOffsetToWeekOrigin(day, firstDayOfWeek);
 
     //tableRows: [ [], [], [], [], [], [] ]
@@ -83,7 +82,7 @@ export default class DateTable extends Component {
     const now = clearHours(new Date());
 
 
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 6; i++) { // rows
       const row = rows[i];
       /*
       cell: {
@@ -103,7 +102,7 @@ export default class DateTable extends Component {
         }
       }
 
-      for (var j = 0; j < 7; j++) {
+      for (var j = 0; j < 7; j++) {  // columns
         let cell: any = row[showWeekNumber ? j + 1 : j];
         if (!cell) {
           row[showWeekNumber ? j + 1 : j]  = { row: i, column: j, type: 'normal', inRange: false, start: false, end: false };
@@ -124,7 +123,7 @@ export default class DateTable extends Component {
         }
 
         if (i === 0) {//handle first row of date, this row only contains all or some pre-month dates
-          if (j >= (offsetDaysToWeekOrigin === 0 ? 7 : offsetDaysToWeekOrigin)) {
+          if (j >= offsetDaysToWeekOrigin) {
             cell.text = count++;
             if (count === 2) {
               firstDayPosition = i * 7 + j;

@@ -28,7 +28,7 @@ export default class YearTable extends Component {
     if (target.tagName === 'A') {
       if (hasClass(target.parentNode, 'disabled')) return;
       const year = target.textContent || target.innerText;
-      this.props.onPick(parseInt(year))
+      this.props.onPick(+year)
     }
   }
 

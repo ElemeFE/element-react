@@ -6,7 +6,7 @@ import { Component, PropTypes } from '../../libs';
 import calcTextareaHeight from './calcTextareaHeight'
 
 type State = {
-  textareaStyle: null | { height: string }
+  textareaStyle: { resize: string, height?: string }
 }
 
 export default class Input extends Component {
@@ -23,7 +23,7 @@ export default class Input extends Component {
     super(props);
 
     this.state = {
-      textareaStyle: null
+      textareaStyle: { resize: props.resize }
     };
   }
 
@@ -60,7 +60,6 @@ export default class Input extends Component {
     if (onChange) {
       onChange(e.target.value);
     }
-
     this.resizeTextarea();
   }
 
@@ -89,9 +88,10 @@ export default class Input extends Component {
 
     const minRows = autosize.minRows;
     const maxRows = autosize.maxRows;
+    const textareaCalcStyle = calcTextareaHeight(this.refs.textarea, minRows, maxRows);
 
     this.setState({
-      textareaStyle: calcTextareaHeight(this.refs.textarea, minRows, maxRows)
+      textareaStyle: Object.assign({}, this.state.textareaStyle, textareaCalcStyle)
     });
   }
 
@@ -116,6 +116,7 @@ export default class Input extends Component {
       delete otherProps.defaultValue;
     }
 
+    delete otherProps.resize;
     delete otherProps.style;
     delete otherProps.autosize;
     delete otherProps.onIconClick;
@@ -178,6 +179,7 @@ Input.propTypes = {
   // type === 'textarea'
   autosize: PropTypes.oneOfType([ PropTypes.bool, PropTypes.object ]),
   rows: PropTypes.number,
+  resize: PropTypes.oneOf(['none', 'both', 'horizontal', 'vertical']),
 
   // event
   onFocus: PropTypes.func,
