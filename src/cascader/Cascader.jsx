@@ -394,7 +394,8 @@ Cascader.defaultProps = {
     label: 'label',
     value: 'value',
     disabled: 'disabled'
-  }
+  },
+  beforeFilter: () => (() => {})
 }
 
 export default ClickOutside(Cascader);
