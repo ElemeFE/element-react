@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import throttle from 'throttle-debounce/throttle';
 import { Component, PropTypes } from '../../libs';
 
 import Table from './Table';
@@ -31,12 +32,17 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
       scrollX: null, // has x scroll bar
       scrollY: null, // has y scroll bar
     };
+
+    this.windowResizeListener = throttle(50, () => {
+      this.scheduleLayout();
+    });
   }
 
   componentDidMount() {
     this.el = this.table.el;
 
     this.scheduleLayout();
+    window.addEventListener('resize', this.windowResizeListener);
   }
 
   componentWillReceiveProps(nextProps: TableLayoutProps) {
@@ -50,7 +56,11 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
   }
 
   componentDidUpdate(preProps: TableLayoutProps) {
-    if (this.isPropChanged('columns', preProps)) {
+    if (
+      this.isPropChanged('columns', preProps)
+      || this.isPropChanged('style', preProps)
+      || this.isPropChanged('className', preProps)
+    ) {
       this.scheduleLayout();
       return;
     }
@@ -69,6 +79,10 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
       this.updateHeight();
       this.updateScrollY();
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.windowResizeListener);
   }
 
   isPropChanged(key: string, preProps: TableLayoutProps): boolean {
