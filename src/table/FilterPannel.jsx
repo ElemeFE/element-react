@@ -161,9 +161,9 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     return (
       <div
         className={'el-table-filter'}
-        style={!this.isMounted && { display: 'none' }} // 仅首次渲染设置display属性
+        style={!this.isMounted && { display: 'none' }} // set display: 'none' only first render
         ref={(dom) => { this.poper = dom; }}
-        onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }}  // 防止触发document click事件回调
+        onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }}  // prevent document click event
         onTransitionEnd={this.transitionEndHandler}
       >
         {content}
