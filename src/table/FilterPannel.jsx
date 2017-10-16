@@ -86,8 +86,8 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   }
 
   changeFilteredValue(value)  {
+    this.props.onFilterChange(value);
     this.props.toggleFilter();
-    this.props.onFilterChange(value)
   }
 
   handleClickOutside() {
@@ -118,7 +118,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     if (multiple) {
       content = [(
         <div className="el-table-filter__content" key="content">
-          <Checkbox.Group value={filteredValue} onChange={this.handleFiltersChange.bind(this)} className="el-table-filter__checkbox-group">
+          <Checkbox.Group value={filteredValue || []} onChange={this.handleFiltersChange.bind(this)} className="el-table-filter__checkbox-group">
             {filters && filters.map(filter => (
               <Checkbox value={filter.value} label={filter.text} key={filter.value} />
             ))}
@@ -148,7 +148,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
           {filters && filters.map(filter => (
             <li
               key={filter.value}
-              className={this.classNames('el-table-filter__list-item', { 'is-active': filteredValue === filter.value })}
+              className={this.classNames('el-table-filter__list-item', { 'is-active': filter.value === filteredValue })}
               onClick={this.changeFilteredValue.bind(this, filter.value)}
             >
               {filter.text}
