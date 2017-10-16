@@ -180,11 +180,6 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleHeaderClick(column: _Column, event: SyntheticEvent) {
-    if (event) {
-      event.stopPropagation();
-      event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
-    }
-
     if (column.sortable && !column.filters) {
       this.handleSortClick(column, null, event);
     } else if (column.filters && !column.sortable) {
@@ -193,10 +188,10 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleSortClick(column: _Column, givenOrder: ?string, event: SyntheticEvent) {
-    if (event) {
-      event.stopPropagation();
-      event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
-    }
+    if (!event || !event.target) return;
+
+    event.stopPropagation();
+    event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
 
     let target: Object = event.target;
     while (target && target.tagName !== 'TH') {
@@ -223,10 +218,11 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleFilterClick(column: _Column, event: SyntheticEvent) {
-    if (event) {
+    if (event && event.target) {
       event.stopPropagation();
       event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
     }
+
     this.context.store.toggleFilterOpened(column);
   }
 
