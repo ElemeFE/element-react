@@ -10,7 +10,7 @@ import type {
   _Column
 } from './Types';
 import normalizeColumns from './normalizeColumns';
-import { flattenColumns, getValueByPath } from "./utils";
+import { flattenColumns, getValueByPath, getColumns } from "./utils";
 
 
 function filterData(data, columns) {
@@ -31,7 +31,7 @@ function filterData(data, columns) {
 export default class TableStore extends Component<TableStoreProps, TableStoreState> {
   static propTypes = {
     style: PropTypes.object,
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+    columns: PropTypes.arrayOf(PropTypes.object),
     data: PropTypes.arrayOf(PropTypes.object),
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -111,14 +111,16 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
 
   componentWillMount() {
     // const { columns, data, defaultExpandALl } = this.props;
-    this.updateColumns(this.props);
+    this.updateColumns(getColumns(this.props));
     this.updateData(this.props);
   }
 
   componentWillReceiveProps(nextProps: TableStoreProps) {
-    const { columns, data, highlightCurrentRow, currentRowKey } = this.props;
-    if (columns !== nextProps.columns) {
-      this.updateColumns(nextProps);
+    const { data } = this.props;
+    const nextColumns = getColumns(nextProps);
+
+    if (getColumns(this.props) !== nextColumns) {
+      this.updateColumns(nextColumns);
     }
 
     if (data !== nextProps.data) {
@@ -152,8 +154,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   //   return false;
   // }
 
-  updateColumns(props: TableStoreProps) {
-    const { columns } = props;
+  updateColumns(columns: Array<Column>) {
     const _columns = normalizeColumns(columns);
     let selectable = false;
 
@@ -376,7 +377,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   render()  {
-    const renderExpanded = (this.props.columns.find(column => column.type === 'expand') || {}).expandPannel;
+    const renderExpanded = (this.state.columns.find(column => column.type === 'expand') || {}).expandPannel;
     return (
       <TableLayout
         {...this.props}
