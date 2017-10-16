@@ -15,8 +15,6 @@ export type Column = {
   sortable: boolean | 'custom',
   sortMethod?: (a: Object, b: Object) => boolean,
   resizable: boolean,
-  formatter?: ()=>void,
-  showOverflowTooltip: boolean,
   align: 'left' | 'center' | 'right',
   headerAlign: 'left' | 'center' | 'right',
   className?: string,
@@ -96,9 +94,9 @@ export type TableStoreProps = {
   summaryMethod?: ({ column: Array<Column>, data: Array<Object> }) => any,
 
   //Event
-  onCurrentChange: ()=>void,
-  onSelectAll: ()=>void,
-  onSelectChange: ()=>void
+  onCurrentChange: (row: Object, oldRow: Object) => void,
+  onSelectAll: (selection: Array<Object>) => void,
+  onSelectChange: (selection: Array<Object>) => void
 };
 
 export type TableStoreState = {

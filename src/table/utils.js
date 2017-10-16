@@ -1,4 +1,5 @@
 // @flow
+import * as React from 'react';
 import type { _Column } from "./Types";
 
 const _document = (document: any);
@@ -49,4 +50,24 @@ export function flattenColumns(columns: Array<_Column>): Array<_Column> {
     }
   });
   return result;
+}
+
+function convertChildrenToColumns(children: Array<Object> | Object) {
+  return React.Children.map(children, (child) => {
+    if (child.type.typeName !== 'TableColumn') {
+      console.warn(`Table component's children must be TableColumn, but received ${child.type}`);
+      return {};
+    }
+
+    const column = Object.assign({}, child.props);
+    if (column.children) {
+      column.subColumns = convertChildrenToColumns(column.children);
+      delete column.children;
+    }
+    return column;
+  })
+}
+
+export function getColumns(props: Object) {
+  return props.children ? convertChildrenToColumns(props.children) : props.columns;
 }
