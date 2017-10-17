@@ -80,7 +80,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     super(props);
 
     ['handleHeaderClick', 'handleFilterClick', 'handleSortClick'].forEach((fn) => {
-      this[fn] = throttle(300, this[fn])
+      this[fn] = throttle(300, true, this[fn])
     })
   }
 
@@ -188,10 +188,8 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleSortClick(column: _Column, givenOrder: ?string, event: SyntheticEvent) {
-    if (!event || !event.target) return;
-
     event.stopPropagation();
-    event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
+    event.nativeEvent.stopImmediatePropagation();
 
     let target: Object = event.target;
     while (target && target.tagName !== 'TH') {
@@ -218,10 +216,8 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleFilterClick(column: _Column, event: SyntheticEvent) {
-    if (event && event.target) {
-      event.stopPropagation();
-      event.nativeEvent && event.nativeEvent.stopImmediatePropagation();
-    }
+    event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
 
     this.context.store.toggleFilterOpened(column);
   }
