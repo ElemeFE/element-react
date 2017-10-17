@@ -216,8 +216,10 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   handleFilterClick(column: _Column, event: SyntheticEvent) {
-    event.stopPropagation();
-    event.nativeEvent.stopImmediatePropagation();
+    if (event) {
+      event.stopPropagation();
+      event.nativeEvent.stopImmediatePropagation();
+    }
 
     this.context.store.toggleFilterOpened(column);
   }
