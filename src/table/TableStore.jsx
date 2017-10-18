@@ -95,7 +95,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       rowKey: props.rowKey,
       defaultExpandAll: props.defaultExpandAll,
       currentRow: null,
-      // selectable: null,
+      selectable: null,
       selectedRows: null,
       sortOrder: null,
       sortColumn: null,
@@ -132,12 +132,17 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
 
   get isAllSelected(): boolean {
     const { currentRowKey } = this.props;
-    const { selectedRows, data } = this.state;
+    const { selectedRows, data, selectable } = this.state;
+    const selectableData = selectable ? data.filter((row, index) => selectable(row, index)) : data;
+
+    if (!selectableData.length) {
+      return false;
+    }
 
     if (Array.isArray(currentRowKey)) {
-      return currentRowKey.length === data.length;
+      return currentRowKey.length === selectableData.length;
     }
-    return selectedRows.length === data.length;
+    return selectedRows.length === selectableData.length;
   }
 
   // shouldComponentUpdate(nextProps) {
@@ -157,14 +162,14 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
 
   updateColumns(columns: Array<Column>) {
     const _columns = normalizeColumns(columns, tableIDSeed++);
-    let selectable = false;
 
     const fixedColumns = _columns.filter(column => column.fixed === true || column.fixed === 'left');
     const rightFixedColumns = _columns.filter(column => column.fixed === 'right');
     const originColumns = [].concat(fixedColumns, _columns.filter(column => !column.fixed), rightFixedColumns);
 
+    let selectable;
     if (_columns[0] && _columns[0].type === 'selection') {
-      selectable = true;
+      selectable = _columns[0].selectable;
       if (fixedColumns.length && !_columns[0].fixed) {
         _columns[0].fixed = true;
       }
@@ -182,7 +187,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   updateData(props: TableStoreProps) {
-    // todo more
     const { data = [], defaultExpandAll, defaultSort, reserveSelection } = props;
     const filteredData = filterData(data.slice(), this.state.columns);
 
@@ -207,16 +211,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
 
   setHoverRow(index: number) {
     if (!this.state.isComplex) return;
-    // todo optimize
-    // clearTimeout(this.clearHoverTimer);
-    // if (index === null) {
-    //   this.clearHoverTimer = setTimeout(() => {
-    //     this.setState({
-    //       hoverRow: index
-    //     });
-    //   }, 300);
-    //   return;
-    // }
     this.setState({
       hoverRow: index
     });
@@ -270,7 +264,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
 
   toggleRowSelection(row: Object, isSelected: boolean) {
     const { currentRowKey } = this.props;
-    // const { selectable } = this.state;
 
     if (Array.isArray(currentRowKey)) return;
 
@@ -294,11 +287,12 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     const { currentRowKey } = this.props;
     if (Array.isArray(currentRowKey)) return;
 
-    let selectedRows = this.state.selectedRows.slice();
+    let { data, selectedRows, selectable } = this.state;
+
     if (this.isAllSelected) {
       selectedRows = [];
     } else {
-      selectedRows = this.state.data.slice();
+      selectedRows = selectable ? data.filter((data, index) => selectable(data, index)) : data.slice();
     }
 
     this.setState({
