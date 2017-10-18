@@ -151,10 +151,11 @@ export default class TableHeader extends Component<TableHeaderProps> {
         resizeProxy.style.left = Math.max(minLeft, proxyLeft) + 'px';
       };
 
-      const handleMouseUp = () => {
+      const handleMouseUp = (event: MouseEvent) => {
         if (this.dragging) {
           const finalLeft = parseInt(resizeProxy.style.left, 10);
           const columnWidth = finalLeft - startColumnLeft;
+          const oldWidth = column.realWidth;
           column.width = column.realWidth = columnWidth;
 
           this.dragging = false;
@@ -171,6 +172,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
           });
 
           this.context.layout.scheduleLayout();
+          this.dispatchEvent('onHeaderDragEnd', columnWidth, oldWidth, column, event);
         }
       };
 
@@ -184,6 +186,8 @@ export default class TableHeader extends Component<TableHeaderProps> {
       this.handleSortClick(column, null, event);
     } else if (column.filters && !column.sortable) {
       this.handleFilterClick(column, event);
+    } else {
+      this.dispatchEvent('onHeaderClick', column, event)
     }
   }
 
@@ -213,6 +217,8 @@ export default class TableHeader extends Component<TableHeaderProps> {
       }
     }
     this.context.store.changeSortCondition(column, order);
+
+    this.dispatchEvent('onHeaderClick', column, event)
   }
 
   handleFilterClick(column: _Column, event: SyntheticEvent) {
@@ -222,6 +228,13 @@ export default class TableHeader extends Component<TableHeaderProps> {
     }
 
     this.context.store.toggleFilterOpened(column);
+
+    event && this.dispatchEvent('onHeaderClick', column, event)
+  }
+
+  dispatchEvent(name: string, ...args: Array<any>) {
+    const fn = this.props[name];
+    fn && fn(...args);
   }
 
   changeFilteredValue(column: _Column, value: any) {
@@ -306,6 +319,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
                     column.headerAlign,
                     column.className,
                     column.labelClassName,
+                    column.columnKey,
                     {
                       'is-hidden': rowIndex === 0 && this.isCellHidden(cellIndex, columns),
                       'is-leaf': !column.subColumns,
@@ -340,6 +354,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
                         multiple={column.filterMultiple}
                         filters={column.filters}
                         filteredValue={column.filteredValue}
+                        placement={column.filterPlacement}
                         onFilterChange={this.changeFilteredValue.bind(this, column)}
                         toggleFilter={this.handleFilterClick.bind(this, column)}
                       >

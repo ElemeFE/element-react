@@ -12,6 +12,7 @@ import type {
 import normalizeColumns from './normalizeColumns';
 import { flattenColumns, getValueByPath, getColumns } from "./utils";
 
+let tableIDSeed = 1;
 
 function filterData(data, columns) {
   return columns.reduce((preData, column) => {
@@ -88,8 +89,8 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       rightFixedColumns: null, // right fixed columns from _columns
       originColumns: null, // _columns sorted by 'fixed'
       columns: null, // contain only leaf column
-      isComplex: null, // has fixed column
-      expandingRows: [], // expanding rows
+      isComplex: null, // some column is fixed
+      expandingRows: [],
       hoverRow: null,
       rowKey: props.rowKey,
       defaultExpandAll: props.defaultExpandAll,
@@ -155,7 +156,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   // }
 
   updateColumns(columns: Array<Column>) {
-    const _columns = normalizeColumns(columns);
+    const _columns = normalizeColumns(columns, tableIDSeed++);
     let selectable = false;
 
     const fixedColumns = _columns.filter(column => column.fixed === true || column.fixed === 'left');
@@ -199,7 +200,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       const { prop, order = 'ascending' } = defaultSort;
       const { columns } = this.state;
       const sortColumn = columns.find(column => column.property === prop);
-      this.changeSortCondition(sortColumn, order);
+      this.changeSortCondition(sortColumn, order, false);
     }
   }
 
@@ -221,11 +222,11 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   toggleRowExpanded(row: Object, rowKey: string | number) {
-    const { expand, expandRowKeys } = this.props;
+    const { expandRowKeys } = this.props;
     let { expandingRows } = this.state;
     if (expandRowKeys) { // controlled expanding status
       const isRowExpanding = expandRowKeys.includes(rowKey);
-      expand && expand(row, !isRowExpanding);
+      this.dispatchEvent('onExpand', row, !isRowExpanding);
       return;
     }
 
@@ -240,7 +241,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     this.setState({
       expandingRows
     }, () => {
-      expand && expand(row, rowIndex === -1);
+      this.dispatchEvent('onExpand', row, rowIndex === -1);
     });
   }
 
@@ -255,19 +256,19 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   setCurrentRow(row: Object) {
-    const { highlightCurrentRow, currentRowKey, onCurrentChange } = this.props;
+    const { highlightCurrentRow, currentRowKey } = this.props;
     if (!highlightCurrentRow || currentRowKey) return;
 
     const { currentRow: oldRow } = this.state;
     this.setState({
       currentRow: row
     }, () => {
-      onCurrentChange && onCurrentChange(row, oldRow);
+      this.dispatchEvent('onCurrentChange', row, oldRow)
     });
   }
 
   toggleRowSelection(row: Object, isSelected: boolean) {
-    const { currentRowKey, onSelect, onSelectChange } = this.props;
+    const { currentRowKey } = this.props;
     // const { selectable } = this.state;
 
     if (Array.isArray(currentRowKey)) return;
@@ -283,13 +284,13 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     this.setState({
       selectedRows
     }, () => {
-      onSelect && onSelect(selectedRows, row);
-      onSelectChange && onSelectChange(selectedRows);
+      this.dispatchEvent('onSelect', selectedRows, row)
+      this.dispatchEvent('onSelectChange', selectedRows)
     });
   }
 
   toggleAllSelection() {
-    const { currentRowKey, onSelectAll, onSelectChange } = this.props;
+    const { currentRowKey } = this.props;
     if (Array.isArray(currentRowKey)) return;
 
     let selectedRows = this.state.selectedRows.slice();
@@ -302,8 +303,8 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     this.setState({
       selectedRows,
     }, () => {
-      onSelectAll && this.isAllSelected && onSelectAll(selectedRows);
-      onSelectChange && onSelectChange(selectedRows);
+      this.dispatchEvent('onSelectAll', selectedRows)
+      this.dispatchEvent('onSelectChange', selectedRows)
     })
   }
 
@@ -326,8 +327,8 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     return selectedRows.includes(row);
   }
 
-  changeSortCondition(column?: _Column, order?: string) {
-    if (!column) ({ sortColumn: column, sortOrder: order } = this.state);
+  changeSortCondition(column?: ?_Column, order?: ?string, shouldDispatchEvent?: boolean = true) {
+    if (!column) ({ sortColumn: column, sortOrder: order } = this.state)
 
     const data = this.state.filteredData.slice();
 
@@ -359,6 +360,8 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       sortColumn: column,
       sortOrder: order,
       data: sortedData,
+    }, () => {
+      shouldDispatchEvent && this.dispatchEvent('onSortChange', column && order ? { column, prop: column.property, order } : { column: null, prop: null, order: null })
     });
   }
 
@@ -372,8 +375,15 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     const filteredData = filterData(this.props.data.slice(), this.state.columns);
     this.setState(Object.assign(this.state, {
       filteredData
-    }));
-    this.changeSortCondition();
+    }), () => {
+      this.dispatchEvent('onFilterChange', { [column.columnKey]: value })
+    });
+    this.changeSortCondition(null, null, false);
+  }
+
+  dispatchEvent(name: string, ...args: Array<any>) {
+    const fn = this.props[name];
+    fn && fn(...args);
   }
 
   render()  {

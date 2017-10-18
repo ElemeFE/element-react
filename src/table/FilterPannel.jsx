@@ -30,7 +30,9 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   componentDidMount() {
     this.renderPortal(this.renderContent(), this.container);
     setTimeout(() => {
-      this.poperIns = new Popper(this.refer, this.container);
+      this.poperIns = new Popper(this.refer, this.container, {
+        placement: this.props.placement
+      });
     });
 
     document.addEventListener('click', this.handleClickOutside);
