@@ -30,8 +30,9 @@ export type Column = {
 };
 
 export type _Column = {
+  id: string,
   type?: string,
-  columnKey?: string,
+  columnKey: string,
   label?: string,
   prop?: string,
   property?: string,
@@ -92,11 +93,6 @@ export type TableStoreProps = {
   showSummary: boolean,
   sumText: string,
   summaryMethod?: ({ column: Array<Column>, data: Array<Object> }) => any,
-
-  //Event
-  onCurrentChange: (row: Object, oldRow: Object) => void,
-  onSelectAll: (selection: Array<Object>) => void,
-  onSelectChange: (selection: Array<Object>) => void
 };
 
 export type TableStoreState = {
@@ -140,6 +136,7 @@ export type FilterProps = {
   multiple: boolean,
   filters: Array<Object>,
   filteredValue: Array<any>,
+  filerPlacement?: string,
   onFilterChange: (value: any) => void,
   toggleFilter: () => void
 }

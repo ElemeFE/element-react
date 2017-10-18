@@ -1,9 +1,12 @@
 import * as React from 'react';
-import Checkbox from '../checkbox';
-import Tag from '../tag';
 import { getValueByPath } from "./utils";
 
-function defaultRender(row, column) {
+import type {
+  Column,
+  _Column,
+} from "./Types";
+
+function defaultRender(row: Object, column: _Column) {
   return getValueByPath(row, column.property);
 }
 
@@ -47,15 +50,15 @@ const forced = {
   }
 };
 
+let columnIDSeed = 1;
 
-
-export default function normalizeColumns(columns) {
+export default function normalizeColumns(columns: Array<Column>, tableIDSeed: number): Array<_Column> {
   return columns.map((column) => {
     let _column;
     if (column.subColumns) {
       // renderHeader
       _column = Object.assign({}, column);
-      _column.subColumns = normalizeColumns(column.subColumns);
+      _column.subColumns = normalizeColumns(column.subColumns, tableIDSeed);
     } else {
       let { width, minWidth } = column;
 
@@ -75,7 +78,10 @@ export default function normalizeColumns(columns) {
         minWidth = 80;
       }
 
+      const id = `el-table_${tableIDSeed}_column_${columnIDSeed++}`;
+
       _column = Object.assign({
+        id,
         sortable: false,
         resizable: true,
         showOverflowTooltip: false,
@@ -83,6 +89,7 @@ export default function normalizeColumns(columns) {
         reserveSelection: false,
         filterMultiple: true
       }, column, {
+        columnKey: column.columnKey || id,
         width,
         minWidth,
         realWidth: width || minWidth,
@@ -93,6 +100,7 @@ export default function normalizeColumns(columns) {
         filterable: column.filters && column.filterMethod,
         filterOpened: false,
         filteredValue: column.filteredValue || null,
+        filterPlacement: column.filterPlacement || 'bottom',
       }, defaults[column.type || 'default'], forced[column.type]);
     }
 

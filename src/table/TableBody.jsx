@@ -23,12 +23,38 @@ export default class TableBody extends Component<TableBodyProps> {
   }
 
   handleMouseEnter(index: number) {
-    // to improve performance can operate dom directly escape react
     this.context.store.setHoverRow(index);
   }
 
   handleMouseLeave() {
     this.context.store.setHoverRow(null);
+  }
+
+  handleCellMouseEnter(row: Object, column: _Column, event: SyntheticEvent) {
+    this.dispatchEvent('onCellMouseEnter', row, column, event.currentTarget, event)
+  }
+
+  handleCellMouseLeave(row: Object, column: _Column, event: SyntheticEvent) {
+    this.dispatchEvent('onCellMouseLeave', row, column, event.currentTarget, event)
+  }
+
+  handleCellClick(row: Object, column: _Column, event: SyntheticEvent) {
+    this.dispatchEvent('onCellClick', row, column, event.currentTarget, event)
+    this.dispatchEvent('onRowClick', row, event, column);
+  }
+
+  handleCellDbClick(row: Object, column: _Column, event: SyntheticEvent) {
+    this.dispatchEvent('onCellDbClick', row, column, event.currentTarget, event)
+    this.dispatchEvent('onRowDbClick', row, column)
+  }
+
+  handleRowContextMenu(row: Object, event: SyntheticEvent) {
+    this.dispatchEvent('onRowContextMenu', row, event)
+  }
+
+  dispatchEvent(name: string, ...args: Array<any>) {
+    const fn = this.props[name];
+    fn && fn(...args);
   }
 
   isColumnHidden(index: number): boolean {
@@ -153,13 +179,18 @@ export default class TableBody extends Component<TableBodyProps> {
               onMouseEnter={this.handleMouseEnter.bind(this, rowIndex)}
               onMouseLeave={this.handleMouseLeave}
               onClick={this.handleClick.bind(this, row)}
+              onContextMenu={this.handleRowContextMenu.bind(this, row)}
             >
               {store.columns.map((column, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={this.classNames(column.className || '', column.align, {
+                  className={this.classNames(column.className, column.align, column.columnKey, {
                     'is-hidden': columnsHidden[cellIndex]
                   })}
+                  onMouseEnter={this.handleCellMouseEnter.bind(this, row, column)}
+                  onMouseLeave={this.handleCellMouseLeave.bind(this, row, column)}
+                  onClick={this.handleCellClick.bind(this, row, column)}
+                  onDoubleClick={this.handleCellDbClick.bind(this, row, column)}
                 >
                   <div className="cell">{this.renderCell(row, column, rowIndex, rowKey)}</div>
                 </td>

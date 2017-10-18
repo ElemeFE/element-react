@@ -82,6 +82,7 @@ export default class TableFooter extends Component<TableFooterProps> {
                   column.headerAlign,
                   column.className,
                   column.labelClassName,
+                  column.columnKey,
                   {
                     'is-hidden': this.isCellHidden(index, store.columns),
                     'is-leaf': !column.subColumns
