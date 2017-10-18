@@ -112,7 +112,7 @@ export default class TableBody extends Component<TableBodyProps> {
   }
 
   renderCell(row: Object, column: _Column, index: number, rowKey: string | number): React.Element<any> {
-    const { type/*, formatter*/ } = column;
+    const { type, selectable } = column;
     if (type === 'expand') {
       return (
         <div
@@ -135,6 +135,7 @@ export default class TableBody extends Component<TableBodyProps> {
       return (
         <Checkbox
           checked={isSelected}
+          disabled={selectable && !selectable(row, index)}
           onChange={() => { this.context.store.toggleRowSelection(row, !isSelected); }}
         />
       )
