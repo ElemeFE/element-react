@@ -251,7 +251,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     return expandingRows.includes(row);
   }
 
-  setCurrentRow(row: Object) {
+  setCurrentRow(row: ?Object = null) {
     const { highlightCurrentRow, currentRowKey } = this.props;
     if (!highlightCurrentRow || currentRowKey) return;
 
@@ -263,17 +263,22 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     });
   }
 
-  toggleRowSelection(row: Object, isSelected: boolean) {
+  toggleRowSelection(row: Object, isSelected?: boolean) {
     const { currentRowKey } = this.props;
 
     if (Array.isArray(currentRowKey)) return;
 
     const selectedRows = this.state.selectedRows.slice();
-    if (isSelected) {
-      selectedRows.push(row);
+    const rowIndex = selectedRows.indexOf(row);
+
+    if (isSelected !== undefined) {
+      if (isSelected) {
+        rowIndex === -1 && selectedRows.push(row);
+      } else {
+        rowIndex !== -1 && selectedRows.splice(rowIndex, 1);
+      }
     } else {
-      const rowIndex = selectedRows.indexOf(row);
-      selectedRows.splice(rowIndex, 1);
+      rowIndex === -1 ? selectedRows.push(row) : selectedRows.splice(rowIndex, 1)
     }
 
     this.setState({
@@ -323,7 +328,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     return selectedRows.includes(row);
   }
 
-  changeSortCondition(column?: ?_Column, order?: ?string, shouldDispatchEvent?: boolean = true) {
+  changeSortCondition(column: ?_Column, order: ?string, shouldDispatchEvent?: boolean = true) {
     if (!column) ({ sortColumn: column, sortOrder: order } = this.state)
 
     const data = this.state.filteredData.slice();
