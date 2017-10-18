@@ -69,5 +69,5 @@ function convertChildrenToColumns(children: Array<Object> | Object) {
 }
 
 export function getColumns(props: Object) {
-  return props.children ? convertChildrenToColumns(props.children) : props.columns;
+  return props.children ? convertChildrenToColumns(props.children) : props.columns || [];
 }

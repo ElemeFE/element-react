@@ -187,8 +187,9 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   updateData(props: TableStoreProps) {
-    const { data = [], defaultExpandAll, defaultSort, reserveSelection } = props;
-    const filteredData = filterData(data.slice(), this.state.columns);
+    const { data = [], defaultExpandAll, defaultSort } = props;
+    const { columns } = this.state;
+    const filteredData = filterData(data.slice(), columns);
 
     // do filter when data changed, clear hover, select and expanding status
     this.setState(Object.assign(this.state, {
@@ -197,7 +198,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       hoverRow: null,
       currentRow: null,
       expandingRows: defaultExpandAll ? data.slice() : [],
-    }, !reserveSelection && {
+    }, !columns[0].reserveSelection && {
       selectedRows: [],
     }));
 

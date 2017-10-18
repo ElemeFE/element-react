@@ -18,20 +18,17 @@ const defaults = {
     width: 48,
     minWidth: 48,
     realWidth: 48,
-    order: '',
-    className: 'el-table-column--selection'
+    className: 'el-table-column--selection',
   },
   expand: {
     width: 48,
     minWidth: 48,
     realWidth: 48,
-    order: ''
   },
   index: {
     width: 48,
     minWidth: 48,
     realWidth: 48,
-    order: ''
   }
 };
 
@@ -86,7 +83,6 @@ export default function normalizeColumns(columns: Array<Column>, tableIDSeed: nu
         resizable: true,
         showOverflowTooltip: false,
         align: 'left',
-        reserveSelection: false,
         filterMultiple: true
       }, column, {
         columnKey: column.columnKey || id,
