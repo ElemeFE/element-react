@@ -10,7 +10,7 @@ import type {
   _Column
 } from './Types';
 import normalizeColumns from './normalizeColumns';
-import { flattenColumns, getValueByPath, getColumns } from "./utils";
+import { getLeafColumns, getValueByPath, getColumns, convertToRows } from "./utils";
 
 let tableIDSeed = 1;
 
@@ -84,12 +84,11 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     super(props);
 
     this.state = {
-      _columns: null, // transformed columns props
-      fixedColumns: null, // left fixed columns from _columns
-      rightFixedColumns: null, // right fixed columns from _columns
-      originColumns: null, // _columns sorted by 'fixed'
+      fixedColumns: null, // left fixed columns in _columns
+      rightFixedColumns: null, // right fixed columns in _columns
+      columnRows: null, // columns to render header
       columns: null, // contain only leaf column
-      isComplex: null, // some column is fixed
+      isComplex: null, // whether some column is fixed
       expandingRows: [],
       hoverRow: null,
       rowKey: props.rowKey,
@@ -111,7 +110,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   componentWillMount() {
-    // const { columns, data, defaultExpandALl } = this.props;
     this.updateColumns(getColumns(this.props));
     this.updateData(this.props);
   }
@@ -161,26 +159,27 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   // }
 
   updateColumns(columns: Array<Column>) {
-    const _columns = normalizeColumns(columns, tableIDSeed++);
+    let _columns = normalizeColumns(columns, tableIDSeed++);
 
     const fixedColumns = _columns.filter(column => column.fixed === true || column.fixed === 'left');
     const rightFixedColumns = _columns.filter(column => column.fixed === 'right');
-    const originColumns = [].concat(fixedColumns, _columns.filter(column => !column.fixed), rightFixedColumns);
 
     let selectable;
     if (_columns[0] && _columns[0].type === 'selection') {
       selectable = _columns[0].selectable;
       if (fixedColumns.length && !_columns[0].fixed) {
         _columns[0].fixed = true;
+        fixedColumns.unshift(_columns[0]);
       }
     }
 
+    _columns = [].concat(fixedColumns, _columns.filter(column => !column.fixed), rightFixedColumns);
+
     this.setState(Object.assign(this.state || {}, {
-      _columns,
       fixedColumns,
       rightFixedColumns,
-      originColumns,
-      columns: flattenColumns(_columns),
+      columnRows: convertToRows(_columns),
+      columns: getLeafColumns(_columns),
       isComplex: fixedColumns.length > 0 || rightFixedColumns.length > 0,
       selectable
     }));

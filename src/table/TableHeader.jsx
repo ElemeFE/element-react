@@ -12,63 +12,6 @@ import type {
 
 const _document = (document: any);
 
-function getAllColumns(columns: Array<_Column>): Array<_Column> {
-  const result = [];
-  columns.forEach((column) => {
-    result.push(column);
-    if (column.subColumns) {
-      result.push(...getAllColumns(column.subColumns));
-    }
-  });
-  return result;
-}
-
-
-function convertToRows(originColumns: Array<_Column>): Array<Array<_Column>> {
-  let maxLevel = 1;
-  
-  function traverse(column: _Column, parent: ?_Column) {
-    if (parent) {
-      column.level = parent.level + 1;
-      if (maxLevel < column.level) {
-        maxLevel = column.level;
-      }
-    } else {
-      column.level = 1;
-    }
-
-    if (column.subColumns) {
-      let colSpan = 0;
-      column.subColumns.forEach((subColumn) => {
-        traverse(subColumn, column);
-        colSpan += subColumn.colSpan;
-      });
-      column.colSpan = colSpan;
-    } else {
-      column.colSpan = 1;
-    }
-  }
-
-  originColumns.forEach((column) => {
-    traverse(column);
-  });
-
-  const rows = new Array(maxLevel).fill([]);
-
-  const allColumns = getAllColumns(originColumns);
-
-  allColumns.forEach((column) => {
-    if (!column.subColumns) {
-      column.rowSpan = maxLevel - column.level + 1;
-    } else {
-      column.rowSpan = 1;
-    }
-    rows[column.level - 1].push(column);
-  });
-
-  return rows;
-}
-
 export default class TableHeader extends Component<TableHeaderProps> {
   static contextTypes = {
     store: PropTypes.any,
@@ -280,7 +223,6 @@ export default class TableHeader extends Component<TableHeaderProps> {
 
   render() {
     const { store, layout, fixed } = this.props;
-    const columnRows = convertToRows(store.originColumns);
 
     return (
       <table
@@ -308,7 +250,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
           )}
         </colgroup>
         <thead>
-          {columnRows.map((columns, rowIndex) => (
+          {store.columnRows.map((columns, rowIndex) => (
             <tr key={rowIndex}>
               {columns.map((column, cellIndex) => (
                 <th

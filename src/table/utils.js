@@ -40,11 +40,11 @@ export function getRowIdentity(row: Object, rowKey: any): any {
   }
 }
 
-export function flattenColumns(columns: Array<_Column>): Array<_Column> {
+export function getLeafColumns(columns: Array<_Column>): Array<_Column> {
   const result = [];
   columns.forEach((column) => {
     if (column.subColumns) {
-      result.push(...flattenColumns(column.subColumns));
+      result.push(...getLeafColumns(column.subColumns));
     } else {
       result.push(column);
     }
@@ -70,4 +70,56 @@ function convertChildrenToColumns(children: Array<Object> | Object) {
 
 export function getColumns(props: Object) {
   return props.children ? convertChildrenToColumns(props.children) : props.columns || [];
+}
+
+export function convertToRows(columns: Array<_Column>): Array<Array<_Column>> {
+  let maxLevel = 1;
+
+  function traverse(column: _Column, parent: ?_Column) {
+    if (parent) {
+      column.level = parent.level + 1;
+      if (maxLevel < column.level) {
+        maxLevel = column.level;
+      }
+    } else {
+      column.level = 1;
+    }
+
+    if (column.subColumns) {
+      let colSpan = 0;
+      column.subColumns.forEach((subColumn) => {
+        traverse(subColumn, column);
+        colSpan += subColumn.colSpan;
+      });
+      column.colSpan = colSpan;
+    } else {
+      column.colSpan = 1;
+    }
+  }
+
+  columns.forEach((column) => {
+    traverse(column);
+  });
+
+  const rows = [];
+  for (let i = 0; i < maxLevel; i++) {
+    rows.push([]);
+  }
+
+  const allColumns = [];
+  const queue = columns.slice();
+  for (let i = 0; queue[i]; i++) {
+    allColumns.push(queue[i]);
+    if (queue[i].subColumns) queue.push(...queue[i].subColumns);
+  }
+
+  allColumns.forEach((column) => {
+    if (!column.subColumns) {
+      column.rowSpan = maxLevel - column.level + 1;
+    } else {
+      column.rowSpan = 1;
+    }
+    rows[column.level - 1].push(column);
+  });
+  return rows;
 }
