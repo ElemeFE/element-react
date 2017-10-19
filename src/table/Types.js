@@ -98,10 +98,9 @@ export type TableStoreProps = {
 export type TableStoreState = {
   sortedData: Array<Object>,
   data: Array<Object>,
-  _columns: Array<_Column>,
   fixedColumns: Array<_Column>,
   rightFixedColumns: Array<_Column>,
-  originColumns: Array<_Column>,
+  columnRows: Array<Array<_Column>>,
   columns: Array<_Column>,
   isComplex: boolean,
   defaultExpandAll: boolean,
