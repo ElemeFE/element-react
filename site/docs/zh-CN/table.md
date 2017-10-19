@@ -198,7 +198,7 @@ render() {
 
 可将表格内容 highlight 显示，方便区分「成功、信息、警告、危险」等内容。
 
-:::demo 可以通过指定 Table 组件的 rowClassName 属性来为 Table 中的某一行添加 class，表明该行处于某种状态。
+:::demo 可以通过指定 Table 组件的 `rowClassName` 属性来为 Table 中的某一行添加 class，表明该行处于某种状态。
 ```js
 constructor(props) {
   super(props);
@@ -278,7 +278,7 @@ render() {
 
 纵向内容过多时，可选择固定表头。
 
-:::demo 只要在`el-table`元素中定义了`height`属性，即可实现固定表头的表格，而不需要额外的代码。
+:::demo 只要在`Table`元素中定义了`height`属性，即可实现固定表头的表格，而不需要额外的代码。
 ```js
 constructor(props) {
   super(props);
@@ -354,7 +354,7 @@ render() {
 
 横向内容过多时，可选择固定列。
 
-:::demo 固定列需要使用`fixed`属性，它接受 Boolean 值或者`left` `right`，表示左边固定还是右边固定。
+:::demo 固定列需要使用`fixed`属性，它接受 `Boolean` 值或者`left` `right`，表示左边固定还是右边固定。
 ```js
 constructor(props) {
   super(props);
@@ -560,7 +560,7 @@ render() {
 
 当数据量动态变化时，可以为 Table 设置一个最大高度。
 
-:::demo 当数据量动态变化时，可以为 Table 设置一个最大高度。
+:::demo 当数据量动态变化时，可以为 `Table` 设置一个最大高度 `maxHeight`。
 ```js
 constructor(props) {
   super(props);
@@ -599,8 +599,8 @@ constructor(props) {
         label: "操作",
         width: 120,
         fixed: 'right',
-        render: ()=>{
-          return <span><Button type="text" size="small">移除</Button></span>
+        render: (row, column, index)=>{
+          return <span><Button type="text" size="small" onClick={this.deleteRow.bind(this, index)}>移除</Button></span>
         }
       }
     ],
@@ -657,6 +657,14 @@ constructor(props) {
   }
 }
 
+deleteRow(index) {
+  const { data } = this.state;
+  data.splice(index, 1);
+  this.setState({
+    data: [...data]
+  })
+}
+
 render() {
   return (
     <Table
@@ -704,7 +712,7 @@ constructor(props) {
                 width: 160
               },
               {
-                label: "地址",
+                label: "城市",
                 prop: "address",
                 width: 400
               },
@@ -771,6 +779,7 @@ constructor(props) {
   }
 }
 
+
 render() {
   return (
     <Table
@@ -788,7 +797,7 @@ render() {
 
 自定义列的显示内容，可组合其他组件使用
 
-:::demo 实现多选非常简单: 手动添加一个`el-table-column`，设`type`属性为`selection`
+:::demo 通过设置列的`render`属性，可以自定义渲染内容
 ```js
 constructor(props) {
   super(props);
@@ -904,7 +913,7 @@ render() {
 
 当行内容过多并且不想显示横向滚动条时，可以使用 Table 展开行功能。
 
-:::demo 实现多选非常简单: 手动添加一个`el-table-column`，设`type`属性为`selection`
+:::demo 通过设置 type="expand" 和 `expandPannel` 可以开启展开行功能, `expandPannel` 的返回值会被渲染为展开行的内容
 ```js
 constructor(props) {
   super(props);
@@ -943,38 +952,38 @@ constructor(props) {
       }
     ],
     data: [{
-          id: '12987122',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987123',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987125',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }]
+      id: '12987122',
+      name: '好滋好味鸡蛋仔',
+      category: '江浙小吃、小吃零食',
+      desc: '荷兰优质淡奶，奶香浓而不腻',
+      address: '上海市普陀区真北路',
+      shop: '王小虎夫妻店',
+      shopId: '10333'
+    }, {
+      id: '12987123',
+      name: '好滋好味鸡蛋仔',
+      category: '江浙小吃、小吃零食',
+      desc: '荷兰优质淡奶，奶香浓而不腻',
+      address: '上海市普陀区真北路',
+      shop: '王小虎夫妻店',
+      shopId: '10333'
+    }, {
+      id: '12987125',
+      name: '好滋好味鸡蛋仔',
+      category: '江浙小吃、小吃零食',
+      desc: '荷兰优质淡奶，奶香浓而不腻',
+      address: '上海市普陀区真北路',
+      shop: '王小虎夫妻店',
+      shopId: '10333'
+    }, {
+      id: '12987126',
+      name: '好滋好味鸡蛋仔',
+      category: '江浙小吃、小吃零食',
+      desc: '荷兰优质淡奶，奶香浓而不腻',
+      address: '上海市普陀区真北路',
+      shop: '王小虎夫妻店',
+      shopId: '10333'
+    }]
   }
 }
 
@@ -997,7 +1006,7 @@ render() {
 
 选择单行数据时使用色块表示
 
-:::demo 实现多选非常简单: 手动添加一个`el-table-column`，设`type`属性为`selection`即可。在本例中，为了方便说明其他属性，我们还使用了`inline-template`和`show-tooltip-when-overflow`：设置了`inline-template`属性后，可以通过调用`row`对象中的值取代`prop`属性的设置；默认情况下若内容过多会折行显示，若需要单行显示可以使用`show-tooltip-when-overflow`属性，它接受一个`Boolean`，为`true`时多余的内容会在 hover 时以 tooltip 的形式显示出来。
+:::demo Table 组件提供了单选的支持，只需要配置`highlightCurrentRow`属性即可实现单选。之后由`currentChange`事件来管理选中时触发的事件，它会传入`currentRow`，`oldCurrentRow`。如果需要显示索引，可以增加一列`column`，设置`type`属性为`index`即可显示从 1 开始的索引号。
 ```js
 constructor(props) {
   super(props);
@@ -1095,7 +1104,7 @@ render() {
 
 选择多行数据时使用 Checkbox。
 
-:::demo 实现多选非常简单: 手动添加一个`el-table-column`，设`type`属性为`selection`即可。在本例中，为了方便说明其他属性，我们还使用了`inline-template`和`show-tooltip-when-overflow`：设置了`inline-template`属性后，可以通过调用`row`对象中的值取代`prop`属性的设置；默认情况下若内容过多会折行显示，若需要单行显示可以使用`show-tooltip-when-overflow`属性，它接受一个`Boolean`，为`true`时多余的内容会在 hover 时以 tooltip 的形式显示出来。
+:::demo 实现多选非常简单: 手动添加一个`column`，设`type`属性为`selection`即可。
 ```js
 constructor(props) {
   super(props);
@@ -1193,7 +1202,7 @@ render() {
 
 对表格进行排序，可快速查找或对比数据。
 
-:::demo 在列中设置`sortable`属性即可实现以该列为基准的排序，接受一个`Boolean`，默认为`false`。在本例中，我们还使用了`formatter`属性，它用于格式化指定列的值，接受一个`Function`，会传入两个参数：`row`和`column`，可以根据自己的需求进行处理。
+:::demo 在列中设置`sortable`属性即可实现以该列为基准的排序，接受一个`Boolean`，默认为`false`。
 ```js
 constructor(props) {
   super(props);
@@ -1254,7 +1263,7 @@ render() {
 
 对表格进行筛选，可快速查找到自己想看的数据。
 
-:::demo 在列中设置`filters` `filter-method`属性即可开启该列的筛选，filters 是一个数组，`filter-method`是一个方法，它用于决定某些数据是否显示，会传入两个参数：`value`和`row`。
+:::demo 在列中设置`filters` `filterMethod`属性即可开启该列的筛选，filters 是一个数组，`filterMethod`是一个方法，它用于决定某些数据是否显示，会传入两个参数：`value`和`row`。
 ```js
 constructor(props) {
   super(props);
@@ -1333,7 +1342,7 @@ render() {
 
 若表格展示的是各类数字，可以在表尾显示各列的合计。
 
-:::demo 在列中设置`filters` `filter-method`属性即可开启该列的筛选，filters 是一个数组，`filter-method`是一个方法，它用于决定某些数据是否显示，会传入两个参数：`value`和`row`。
+:::demo 将`showSummary`设置为`true`就会在表格尾部展示合计行。默认情况下，对于合计行，第一列不进行数据求合操作，而是显示「合计」二字（可通过`sumText`配置），其余列会将本列所有数值进行求合操作，并显示出来。当然，你也可以定义自己的合计逻辑。使用`summaryMethod`并传入一个方法，返回一个数组，这个数组中的各项就会显示在合计行的各列中，具体可以参考本例中的第二个表格。
 
 ```js
 constructor(props) {
@@ -1503,6 +1512,7 @@ render() {
 | width | 对应列的宽度 | string | — | — |
 | minWidth | 对应列的最小宽度，与 width 的区别是 width 是固定的，min-width 会把剩余宽度按比例分配给设置了 min-width 的列 | string | — | — |
 | fixed | 列是否固定在左侧或者右侧，true 表示固定在左侧 | string, boolean | true, left, right | - |
+| render | 自定义渲染使用的 Function | Function(row, column, index) | — | — |
 | renderHeader | 列标题 Label 区域渲染使用的 Function | Function(column) | — | — |
 | sortable | 对应列是否可以排序，如果设置为 'custom'，则代表用户希望远程排序，需要监听 Table 的 sort-change 事件 | boolean, string | true, false, 'custom' | false |
 | sortMethod | 对数据进行排序的时候使用的方法，仅当 sortable 设置为 true 的时候有效 | Function(a, b) | - | - |
