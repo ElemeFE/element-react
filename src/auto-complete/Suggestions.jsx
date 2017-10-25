@@ -30,24 +30,15 @@ export default class Suggestions extends Component {
   }
 
   componentDidUpdate(): void {
-    const reference = ReactDOM.findDOMNode(this.parent().inputNode);
-
-    if (this.state.showPopper) {
-      if (this.popperJS) {
-        this.popperJS.update();
-      } else {
-        this.popperJS = new Popper(reference, this.refs.popper, {
-          gpuAcceleration: false,
-          forceAbsolute: true
-        });
-      }
-    } else {
-      if (this.popperJS) {
-        this.popperJS.destroy();
-      }
-
-      delete this.popperJS;
-    }
+    // if (this.state.showPopper) {
+    //
+    // } else {
+    //   if (this.popperJS) {
+    //     this.popperJS.destroy();
+    //   }
+    //
+    //   delete this.popperJS;
+    // }
   }
 
   componentWillUnmount(): void {
@@ -71,6 +62,17 @@ export default class Suggestions extends Component {
     this.parent().select(item);
   }
 
+  onAppear() {
+    if (!this.popperJS) {
+      const reference = ReactDOM.findDOMNode(this.parent().inputNode);
+      this.popperJS = new Popper(reference, this.refs.popper, {
+        gpuAcceleration: false,
+        forceAbsolute: true
+      });
+    }
+    this.popperJS.update();
+  }
+
   render(): React.Element<any> {
     const { customItem } = this.parent().props;
     const { loading, highlightedIndex } = this.parent().state;
@@ -78,46 +80,49 @@ export default class Suggestions extends Component {
     const { showPopper, dropdownWidth } = this.state;
 
     return (
-      <Transition name="el-zoom-in-top">
-        <View show={showPopper}>
-          <div
-            ref="popper"
-            className={this.classNames('el-autocomplete-suggestion', {
-              'is-loading': loading
-            })}
-            style={{
-              width: dropdownWidth,
-              zIndex: 1
-            }}
-          >
-            <Scrollbar
-              viewComponent="ul"
-              wrapClass="el-autocomplete-suggestion__wrap"
-              viewClass="el-autocomplete-suggestion__list"
+      <div
+        ref="popper"
+        style={{
+          width: dropdownWidth,
+          zIndex: 1
+        }}
+      >
+        <Transition name="el-zoom-in-top" onAppear={this.onAppear.bind(this)}>
+          <View show={showPopper}>
+            <div
+              className={this.classNames('el-autocomplete-suggestion', {
+                'is-loading': loading
+              })}
             >
-              {
-                loading ? (
-                  <li><i className="el-icon-loading"></i></li>
-                ) : suggestions.map((item, index) => {
-                  return (
-                    <li
-                      key={index}
-                      className={this.classNames({'highlighted': highlightedIndex === index})}
-                      onClick={this.onSelect.bind(this, item)}>
-                      {
-                        !customItem ? item.value : React.createElement(customItem, {
-                          index,
-                          item
-                        })
-                      }
-                    </li>
-                  )
-                })
-              }
-            </Scrollbar>
-          </div>
-        </View>
-      </Transition>
+              <Scrollbar
+                viewComponent="ul"
+                wrapClass="el-autocomplete-suggestion__wrap"
+                viewClass="el-autocomplete-suggestion__list"
+              >
+                {
+                  loading ? (
+                    <li><i className="el-icon-loading"></i></li>
+                  ) : suggestions.map((item, index) => {
+                    return (
+                      <li
+                        key={index}
+                        className={this.classNames({'highlighted': highlightedIndex === index})}
+                        onClick={this.onSelect.bind(this, item)}>
+                        {
+                          !customItem ? item.value : React.createElement(customItem, {
+                            index,
+                            item
+                          })
+                        }
+                      </li>
+                    )
+                  })
+                }
+              </Scrollbar>
+            </div>
+          </View>
+        </Transition>
+      </div>
     )
   }
 }

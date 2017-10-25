@@ -51,12 +51,11 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     if (!preProps.visible && this.props.visible) {
       requestAnimationFrame(() => {
         poper.classList.remove('el-zoom-in-top-leave-active', 'el-zoom-in-top-leave-to');
-        poper.classList.add('el-zoom-in-top-enter');
+        poper.classList.add('el-zoom-in-top-enter', 'el-zoom-in-top-enter-active');
         poper.style.display = '';
         requestAnimationFrame(() => {
           this.poperIns.update();
           poper.classList.remove('el-zoom-in-top-enter');
-          poper.classList.add('el-zoom-in-top-enter-active');
           poper.classList.add('el-zoom-in-top-enter-to');
         })
       })
@@ -65,8 +64,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     if (preProps.visible && !this.props.visible) {
       requestAnimationFrame(() => {
         poper.classList.remove('el-zoom-in-top-enter-active', 'el-zoom-in-top-enter-to');
-        poper.classList.add('el-zoom-in-top-leave');
-        poper.classList.add('el-zoom-in-top-leave-active');
+        poper.classList.add('el-zoom-in-top-leave', 'el-zoom-in-top-leave-active');
         requestAnimationFrame(() => {
           poper.classList.remove('el-zoom-in-top-leave');
           poper.classList.add('el-zoom-in-top-leave-to');
