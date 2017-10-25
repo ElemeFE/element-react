@@ -26,7 +26,7 @@ export default class Tag extends Component {
     const { type, hit, closable, closeTransition, color } = this.props;
 
     return(
-      <Transition name={closeTransition ? '' : 'el-zoom-in-center'} duration="200">
+      <Transition name={closeTransition ? '' : 'el-zoom-in-center'}>
         <View key={this.state.visible} show={this.state.visible}>
           <span style={this.style({
             backgroundColor: color

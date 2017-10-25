@@ -91,31 +91,33 @@ export default class Dialog extends Component {
 
     return (
       <View show={ visible }>
-        <div
-          style={{ zIndex: 1013 }}
-          className={this.classNames('el-dialog__wrapper')}
-          onClick={ e => this.handleWrapperClick(e) }
-          ref="wrap"
-          tabIndex={ -1 }
-          onKeyDown={ e => this.onKeyDown(e) }
-        >
+        <span>
           <div
-            ref="dialog"
-            style={this.style(size === 'full' ?  {} : { 'marginBottom': '50px', 'top': top })}
-            className={ this.className("el-dialog", `el-dialog--${ size }`, customClass) }
+            style={{ zIndex: 1013 }}
+            className={this.classNames('el-dialog__wrapper')}
+            onClick={ e => this.handleWrapperClick(e) }
+            ref="wrap"
+            tabIndex={ -1 }
+            onKeyDown={ e => this.onKeyDown(e) }
           >
-            <div className="el-dialog__header">
-              <span className="el-dialog__title">{ title }</span>
-              <div className="el-dialog__headerbtn">
-                <i className="el-dialog__close el-icon el-icon-close" onClick={ e => this.close(e) }></i>
+            <div
+              ref="dialog"
+              style={this.style(size === 'full' ?  {} : { 'marginBottom': '50px', 'top': top })}
+              className={ this.className("el-dialog", `el-dialog--${ size }`, customClass) }
+          >
+              <div className="el-dialog__header">
+                <span className="el-dialog__title">{ title }</span>
+                <div className="el-dialog__headerbtn">
+                  <i className="el-dialog__close el-icon el-icon-close" onClick={ e => this.close(e) }></i>
+                </div>
               </div>
+              { this.props.children }
             </div>
-            { this.props.children }
           </div>
-        </div>
-        <View show={ modal } transition="v-modal" transitionKey="dialog-v-modal">
-          <div className="v-modal" style={{ zIndex: 1012 }}></div>
-        </View>
+          <View show={ modal } transition="v-modal" transitionKey="dialog-v-modal">
+            <div className="v-modal" style={{ zIndex: 1012 }}></div>
+          </View>
+        </span>
       </View>
     );
   }

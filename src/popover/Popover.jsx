@@ -70,28 +70,28 @@ export default class Popover extends Component {
   }
 
   componentDidUpdate(): void {
-    const { showPopper } = this.state;
-
-    if (showPopper) {
-      if (this.popperJS) {
-        this.popperJS.update();
-      } else {
-        if (this.refs.arrow) {
-          this.refs.arrow.setAttribute('x-arrow', '');
-        }
-
-        this.popperJS = new Popper(this.reference, this.refs.popper, {
-          placement: this.props.placement,
-          gpuAcceleration: false
-        });
-      }
-    } else {
-      if (this.popperJS) {
-        this.popperJS.destroy();
-      }
-
-      delete this.popperJS;
-    }
+    // const { showPopper } = this.state;
+    //
+    // if (showPopper) {
+    //   if (this.popperJS) {
+    //     this.popperJS.update();
+    //   } else {
+    //     if (this.refs.arrow) {
+    //       this.refs.arrow.setAttribute('x-arrow', '');
+    //     }
+    //
+    //     this.popperJS = new Popper(this.reference, this.refs.popper, {
+    //       placement: this.props.placement,
+    //       gpuAcceleration: false
+    //     });
+    //   }
+    // } else {
+    //   if (this.popperJS) {
+    //     this.popperJS.destroy();
+    //   }
+    //
+    //   delete this.popperJS;
+    // }
   }
 
   componentWillReceiveProps(props: Object) {
@@ -131,7 +131,20 @@ export default class Popover extends Component {
 
     return (
       <span>
-        <Transition name={transition} duration={200}>
+        <Transition name={transition} onAppear={() => {
+          if (!this.popperJS) {
+            if (this.refs.arrow) {
+              this.refs.arrow.setAttribute('x-arrow', '');
+            }
+
+            this.popperJS = new Popper(this.reference, this.refs.popper, {
+              placement: this.props.placement,
+              gpuAcceleration: false
+            });
+          }
+
+          this.popperJS.update();
+        }}>
           <View show={this.state.showPopper}>
             <div ref="popper" className={this.className('el-popover', popperClass)} style={this.style({ width: Number(width) })}>
               { title && <div className="el-popover__title">{title}</div> }

@@ -15,68 +15,71 @@ export default class UploadList extends Component {
     const isFinished = status => status === 'success';
     return (
       <Transition
-        component="ul"
-        className={this.classNames({
-          'el-upload-list': true,
-          [`el-upload-list--${listType}`]: true
-        })}
         name="list"
       >
-        {fileList.map(file => (
-          <li
-            className={this.classNames({
-              'el-upload-list__item': true,
-              [`is-${file.status}`]: true
-            })}
-            key={file.uid}
-          >
-            {['picture-card', 'picture'].includes(listType) &&
+        <ul
+          className={this.classNames({
+            'el-upload-list': true,
+            [`el-upload-list--${listType}`]: true
+          })}
+        >
+          {fileList.map(file => (
+            <li
+              className={this.classNames({
+                'el-upload-list__item': true,
+                [`is-${file.status}`]: true
+              })}
+              key={file.uid}
+            >
+              {['picture-card', 'picture'].includes(listType) &&
               isFinished(file.status) &&
-                <img
-                  className="el-upload-list__item-thumbnail"
-                  src={file.url}
-                  alt=""
-                />}
+              <img
+                className="el-upload-list__item-thumbnail"
+                src={file.url}
+                alt=""
+              />}
 
-            <a
-              className="el-upload-list__item-name"
-              onClick={() => onPreview(file)}
-            >
-              <i className="el-icon-document" />{file.name}
-            </a>
-            <label
-              className="el-upload-list__item-status-label"
-            >
-              <i
-                className={this.classNames({
-                  'el-icon-upload-success': true,
-                  'el-icon-circle-check': listType === 'text',
-                  'el-icon-check': ['picture-card', 'picture'].includes(
-                    listType
-                  )
-                })}
-              />
-
-            </label>
-            <i className="el-icon-close" onClick={() => onRemove(file)} />
-            <View
-              className="el-upload-list__item-actions"
-              show={listType === 'picture-card' && isFinished(file.status)}
-            >
-              <span
+              <a
+                className="el-upload-list__item-name"
                 onClick={() => onPreview(file)}
-                className="el-upload-list__item-preview"
               >
-                <i className="el-icon-view" />
-              </span>
-              <span
-                className="el-upload-list__item-delete"
-                onClick={() => onRemove(file)}
+                <i className="el-icon-document" />{file.name}
+              </a>
+              <label
+                className="el-upload-list__item-status-label"
               >
-                <i className="el-icon-delete2" />
-              </span>
-            </View>
-            {file.status === 'uploading' &&
+                <i
+                  className={this.classNames({
+                    'el-icon-upload-success': true,
+                    'el-icon-circle-check': listType === 'text',
+                    'el-icon-check': ['picture-card', 'picture'].includes(
+                      listType
+                    )
+                  })}
+                />
+
+              </label>
+              <i className="el-icon-close" onClick={() => onRemove(file)} />
+              <View
+                className="el-upload-list__item-actions"
+                show={listType === 'picture-card' && isFinished(file.status)}
+              >
+                <span>
+                  <span
+                    onClick={() => onPreview(file)}
+                    className="el-upload-list__item-preview"
+                  >
+                    <i className="el-icon-view" />
+                  </span>
+                  <span
+                    className="el-upload-list__item-delete"
+                    onClick={() => onRemove(file)}
+                  >
+                    <i className="el-icon-delete2" />
+                  </span>
+                </span>
+              </View>
+              {file.status === 'uploading' &&
               <Progress
                 strokeWidth={listType === 'picture-card' ? 6 : 2}
                 type={listType === 'picture-card' ? 'circle' : 'line'}
@@ -85,8 +88,9 @@ export default class UploadList extends Component {
                   isFinished(file.status) && file.showProgress ? 'success' : ''
                 }
               />}
-          </li>
-        ))}
+            </li>
+          ))}
+        </ul>
       </Transition>
     );
   }

@@ -939,7 +939,7 @@ class Select extends Component {
             }
           }}
         />
-        <Transition name="md-fade-bottom" duration="200">
+        <Transition name="md-fade-bottom">
           <View show={visible && this.emptyText() !== false}>
             <div ref="popper" className={this.classNames('el-select-dropdown', {
                 'is-multiple': multiple

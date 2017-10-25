@@ -45,8 +45,6 @@ export default class Notification extends Component {
 
     this.setState({
       visible: false
-    }, () => {
-      this.props.willUnmount();
     });
   }
 
@@ -68,8 +66,8 @@ export default class Notification extends Component {
 
   render() {
     return (
-      <Transition name="el-notification-fade" duration="300">
-        <View key={this.state.visible} show={this.state.visible}>
+      <Transition name="el-notification-fade" onHidden={() => { this.props.willUnmount() }}>
+        <View show={this.state.visible}>
           <div className="el-notification" style={{
               top: this.props.top,
               zIndex: 9999

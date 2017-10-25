@@ -24,9 +24,14 @@ test('View with one child not show', () => {
 
 test('View with more than one children', () => {
   const component = renderer.create(
-    <View style={{color: 'white'}} className="white">
-      <div>Children 1</div>
-      <div>Children 2</div>
+    <View>
+      <span
+        style={{color: 'white'}}
+        className="white"
+      >
+        <div>Children 1</div>
+        <div>Children 2</div>
+      </span>
     </View>
   );
   expect(component.toJSON()).toMatchSnapshot();
@@ -34,9 +39,14 @@ test('View with more than one children', () => {
 
 test('View with more than one children not show', () => {
   const component = renderer.create(
-    <View style={{color: 'white'}} className="white" show={false}>
-      <div>Children 1</div>
-      <div>Children 2</div>
+    <View show={false}>
+      <span
+        style={{color: 'white'}}
+        className="white"
+      >
+        <div>Children 1</div>
+        <div>Children 2</div>
+      </span>
     </View>
   );
   expect(component.toJSON()).toMatchSnapshot();
@@ -44,9 +54,14 @@ test('View with more than one children not show', () => {
 
 test('View with custom wrap component div', () => {
   const component = renderer.create(
-    <View style={{color: 'white'}} className="white" component="div">
-      <div>Children 1</div>
-      <div>Children 2</div>
+    <View>
+      <div
+        style={{color: 'white'}}
+        className="white"
+      >
+        <div>Children 1</div>
+        <div>Children 2</div>
+      </div>
     </View>
   );
   expect(component.toJSON()).toMatchSnapshot();
