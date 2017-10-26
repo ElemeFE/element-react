@@ -117,7 +117,7 @@ export default class MessageBox extends Component {
 
     setTimeout(() => {
       this.props.onClose();
-    }, 200);
+    }, 200)
   }
 
   render(): React.Element<any> {
@@ -180,7 +180,7 @@ export default class MessageBox extends Component {
           </Transition>
         </div>
         <Transition name="v-modal">
-          <View key={this.state.visible} show={this.state.visible}>
+          <View show={this.state.visible}>
             <div className="v-modal" style={{ zIndex: 1006 }}></div>
           </View>
         </Transition>

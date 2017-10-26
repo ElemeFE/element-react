@@ -939,7 +939,7 @@ class Select extends Component {
             }
           }}
         />
-        <Transition name="md-fade-bottom">
+        <Transition name="el-zoom-in-top">
           <View show={visible && this.emptyText() !== false}>
             <div ref="popper" className={this.classNames('el-select-dropdown', {
                 'is-multiple': multiple
