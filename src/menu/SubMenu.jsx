@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { PropTypes, View } from '../../libs';
+import { PropTypes, View, Transition, CollapseTransition } from '../../libs';
 
 import MixinComponent from './MixinComponent';
 
@@ -92,9 +92,20 @@ export default class SubMenu extends MixinComponent {
             })}>
           </i>
         </div>
-        <View show={this.opened()}>
-          <ul className="el-menu">{this.props.children}</ul>
-        </View>
+        {
+          this.rootMenu().props.mode === 'horizontal' ? (
+            <Transition name="el-zoom-in-top">
+              <View show={this.opened()}>
+                <ul className="el-menu">{this.props.children}</ul>
+              </View>
+            </Transition>
+          ) : (
+            <CollapseTransition isShow={this.opened()}>
+              <ul className="el-menu">{this.props.children}</ul>
+            </CollapseTransition>
+          )
+        }
+
       </li>
     )
   }

@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react';
-import { Component, View, PropTypes } from '../../libs';
+import { Component, View, Transition, PropTypes } from '../../libs';
 
 type State = {
   bodyOverflow: string,
@@ -18,7 +18,8 @@ export default class Dialog extends Component {
     modal: true,
     lockScroll: true,
     closeOnClickModal: true,
-    closeOnPressEscape: true
+    closeOnPressEscape: true,
+    showClose: true
   }
 
   constructor(props: Object) {
@@ -57,7 +58,9 @@ export default class Dialog extends Component {
   }
 
   componentWillUnmount(): void {
-    if (document.body && document.body.style) document.body.style.removeProperty('overflow');
+    if (this.props.lockScroll && document.body && document.body.style) {
+      document.body.style.removeProperty('overflow');
+    }
   }
 
   onKeyDown(e: SyntheticKeyboardEvent): void {
@@ -87,38 +90,49 @@ export default class Dialog extends Component {
   }
 
   render(): React.Element<any> {
-    const { visible, title, size, top, modal, customClass } = this.props;
+    const { visible, title, size, top, modal, customClass, showClose } = this.props;
 
     return (
-      <View show={ visible }>
-        <span>
-          <div
-            style={{ zIndex: 1013 }}
-            className={this.classNames('el-dialog__wrapper')}
-            onClick={ e => this.handleWrapperClick(e) }
-            ref="wrap"
-            tabIndex={ -1 }
-            onKeyDown={ e => this.onKeyDown(e) }
-          >
+      <div>
+        <Transition name="dialog-fade">
+          <View show={ visible }>
             <div
-              ref="dialog"
-              style={this.style(size === 'full' ?  {} : { 'marginBottom': '50px', 'top': top })}
-              className={ this.className("el-dialog", `el-dialog--${ size }`, customClass) }
-          >
-              <div className="el-dialog__header">
-                <span className="el-dialog__title">{ title }</span>
-                <div className="el-dialog__headerbtn">
-                  <i className="el-dialog__close el-icon el-icon-close" onClick={ e => this.close(e) }></i>
+              ref="wrap"
+              style={{ zIndex: 1013 }}
+              className={this.classNames('el-dialog__wrapper')}
+              onClick={ e => this.handleWrapperClick(e) }
+              onKeyDown={ e => this.onKeyDown(e) }
+            >
+              <div
+                ref="dialog"
+                style={this.style(size === 'full' ?  {} : { 'top': top })}
+                className={ this.className("el-dialog", `el-dialog--${ size }`, customClass) }
+              >
+                <div className="el-dialog__header">
+                  <span className="el-dialog__title">{ title }</span>
+                  {
+                    showClose && (
+                      <button type="button" className="el-dialog__headerbtn">
+                        <i className="el-dialog__close el-icon el-icon-close" onClick={ e => this.close(e) }></i>
+                      </button>
+                    )
+                  }
                 </div>
+                { this.props.children }
               </div>
-              { this.props.children }
             </div>
-          </div>
-          <View show={ modal } transition="v-modal" transitionKey="dialog-v-modal">
-            <div className="v-modal" style={{ zIndex: 1012 }}></div>
           </View>
-        </span>
-      </View>
+        </Transition>
+        {
+          modal && (
+            <Transition name="v-modal">
+              <View show={ visible }>
+                <div className="v-modal" style={{ zIndex: 1012 }}></div>
+              </View>
+            </Transition>
+          )
+        }
+      </div>
     );
   }
 }
@@ -143,5 +157,6 @@ Dialog.propTypes = {
   // 是否可以通过按下 ESC 关闭 Dialog
   closeOnPressEscape: PropTypes.bool,
   // 点击遮罩层或右上角叉或取消按钮的回调
-  onCancel: PropTypes.func.isRequired
+  onCancel: PropTypes.func.isRequired,
+  showClose: PropTypes.bool
 };

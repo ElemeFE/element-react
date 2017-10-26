@@ -69,31 +69,6 @@ export default class Popover extends Component {
     }
   }
 
-  componentDidUpdate(): void {
-    // const { showPopper } = this.state;
-    //
-    // if (showPopper) {
-    //   if (this.popperJS) {
-    //     this.popperJS.update();
-    //   } else {
-    //     if (this.refs.arrow) {
-    //       this.refs.arrow.setAttribute('x-arrow', '');
-    //     }
-    //
-    //     this.popperJS = new Popper(this.reference, this.refs.popper, {
-    //       placement: this.props.placement,
-    //       gpuAcceleration: false
-    //     });
-    //   }
-    // } else {
-    //   if (this.popperJS) {
-    //     this.popperJS.destroy();
-    //   }
-    //
-    //   delete this.popperJS;
-    // }
-  }
-
   componentWillReceiveProps(props: Object) {
     if (props.visible != this.props.visible) {
       this.setState({
@@ -104,10 +79,6 @@ export default class Popover extends Component {
 
   componentWillUnmount(): void {
     this.reference.parentNode.replaceChild(this.reference.cloneNode(true), this.reference);
-
-    if (this.popperJS) {
-      this.popperJS.destroy();
-    }
   }
 
   handleMouseEnter(): void {
@@ -126,25 +97,27 @@ export default class Popover extends Component {
     }, 200);
   }
 
+  onEnter(): void {
+    if (this.refs.arrow) {
+      this.refs.arrow.setAttribute('x-arrow', '');
+    }
+
+    this.popperJS = new Popper(this.reference, this.refs.popper, {
+      placement: this.props.placement,
+      gpuAcceleration: false
+    });
+  }
+
+  onAfterLeave(): void {
+    this.popperJS.destroy();
+  }
+
   render(): React.Element<any> {
     const { transition, popperClass, width, title, content, visibleArrow } = this.props;
 
     return (
       <span>
-        <Transition name={transition} onEnter={() => {
-          if (!this.popperJS) {
-            if (this.refs.arrow) {
-              this.refs.arrow.setAttribute('x-arrow', '');
-            }
-
-            this.popperJS = new Popper(this.reference, this.refs.popper, {
-              placement: this.props.placement,
-              gpuAcceleration: false
-            });
-          }
-
-          this.popperJS.update();
-        }}>
+        <Transition name={transition} onEnter={this.onEnter.bind(this)} onAfterLeave={this.onAfterLeave.bind(this)}>
           <View show={this.state.showPopper}>
             <div ref="popper" className={this.className('el-popover', popperClass)} style={this.style({ width: Number(width) })}>
               { title && <div className="el-popover__title">{title}</div> }

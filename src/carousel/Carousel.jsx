@@ -62,7 +62,7 @@ export default class Carousel extends Component {
 
   componentDidUpdate(props: Object, state: State): void {
     if (state.activeIndex != this.state.activeIndex) {
-      this.resetItemPosition();
+      this.resetItemPosition(state.activeIndex);
 
       if (this.props.onChange) {
         this.props.onChange(this.state.activeIndex, state.activeIndex);
@@ -112,9 +112,9 @@ export default class Carousel extends Component {
     });
   }
 
-  resetItemPosition(): void {
+  resetItemPosition(oldIndex: number): void {
     this.state.items.forEach((item, index) => {
-      item.translateItem(index, this.state.activeIndex);
+      item.translateItem(index, this.state.activeIndex, oldIndex);
     });
   }
 
