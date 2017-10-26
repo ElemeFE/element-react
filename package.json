@@ -93,6 +93,7 @@
   "jest": {
     "testRegex": "(/jest/.+\\.(js|jsx)$)|_test.jsx?$",
     "testPathIgnorePatterns": [
+      "<rootDir>/tests/jest/config.js",
       "<rootDir>/tests/jest/mock.js",
       "<rootDir>/dist"
     ],
