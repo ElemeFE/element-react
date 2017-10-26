@@ -62,7 +62,7 @@ export default class Suggestions extends Component {
     this.parent().select(item);
   }
 
-  onAppear() {
+  onEnter() {
     if (!this.popperJS) {
       const reference = ReactDOM.findDOMNode(this.parent().inputNode);
       this.popperJS = new Popper(reference, this.refs.popper, {
@@ -87,7 +87,7 @@ export default class Suggestions extends Component {
           zIndex: 1
         }}
       >
-        <Transition name="el-zoom-in-top" onAppear={this.onAppear.bind(this)}>
+        <Transition name="el-zoom-in-top" onEnter={this.onEnter.bind(this)}>
           <View show={showPopper}>
             <div
               className={this.classNames('el-autocomplete-suggestion', {
