@@ -131,7 +131,7 @@ export default class Popover extends Component {
 
     return (
       <span>
-        <Transition name={transition} onAppear={() => {
+        <Transition name={transition} onEnter={() => {
           if (!this.popperJS) {
             if (this.refs.arrow) {
               this.refs.arrow.setAttribute('x-arrow', '');

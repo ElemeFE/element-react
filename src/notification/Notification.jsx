@@ -66,7 +66,7 @@ export default class Notification extends Component {
 
   render() {
     return (
-      <Transition name="el-notification-fade" onHidden={() => { this.props.willUnmount() }}>
+      <Transition name="el-notification-fade" onAfterLeave={() => { this.props.willUnmount() }}>
         <View show={this.state.visible}>
           <div className="el-notification" style={{
               top: this.props.top,

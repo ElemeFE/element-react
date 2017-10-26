@@ -78,14 +78,13 @@ export default class Transition extends Component {
   }
 
   toggleVisible() {
-    const { name, onAppear, onVisible } = this.props;
+    const { name, onEnter, onAfterEnter,  } = this.props;
     const { enter, enterActive, enterTo, leaveActive, leaveTo } = getTransitionClass(name);
     const childDOM = ReactDOM.findDOMNode(this.el);
     this.visibleTransitionEnd = () => {
       childDOM.classList.remove(enterActive, enterTo);
       childDOM.removeEventListener('transitionend', this.visibleTransitionEnd);
-
-      onVisible && onVisible();
+      onAfterEnter && onAfterEnter();
     };
     childDOM.addEventListener('transitionend', this.visibleTransitionEnd);
 
@@ -97,7 +96,7 @@ export default class Transition extends Component {
       }
       childDOM.classList.add(enter, enterActive);
       childDOM.style.display = '';
-      onAppear && onAppear();
+      onEnter && onEnter();
       requestAnimationFrame(() => {
         childDOM.classList.remove(enter);
         childDOM.classList.add(enterTo);
@@ -106,7 +105,7 @@ export default class Transition extends Component {
   }
 
   toggleHidden() {
-    const { name, onHidden, onDisappear, children } = this.props;
+    const { name, onAfterLeave, onLeave, children } = this.props;
     const { leave, leaveActive, leaveTo, enterActive, enterTo } = getTransitionClass(name);
     const childDOM = ReactDOM.findDOMNode(this.el);
     this.hiddenTransitionEnd = () => {
@@ -123,7 +122,7 @@ export default class Transition extends Component {
         }
       });
 
-      promise.then(() => { onHidden && onHidden() })
+      promise.then(() => { onAfterLeave && onAfterLeave() })
 
     };
     childDOM.addEventListener('transitionend', this.hiddenTransitionEnd);
@@ -139,7 +138,7 @@ export default class Transition extends Component {
 
       childDOM.classList.add(leave, leaveActive);
 
-      onDisappear && onDisappear();
+      onLeave && onLeave();
       requestAnimationFrame(() => {
         childDOM.classList.remove(leave);
         childDOM.classList.add(leaveTo);
@@ -153,9 +152,9 @@ export default class Transition extends Component {
 }
 
 Transition.propTypes = {
-  name: PropTypes.string.isRequired,
-  onAppear: PropTypes.func, // triggered when enter transition start
-  onVisible: PropTypes.func, // triggered when enter transition end
-  onDisappear: PropTypes.func, // triggered when leave transition start
-  onHidden: PropTypes.func // tiggered when leave transition end
+  name: PropTypes.string,
+  onEnter: PropTypes.func, // triggered when enter transition start
+  onAfterEnter: PropTypes.func, // triggered when enter transition end
+  onLeave: PropTypes.func, // triggered when leave transition start
+  onAfterLeave: PropTypes.func // tiggered when leave transition end
 };
