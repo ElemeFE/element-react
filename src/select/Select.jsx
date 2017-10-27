@@ -149,33 +149,11 @@ class Select extends Component {
   }
 
   componentDidUpdate() {
-    const { visible } = this.state;
-
-    if (visible) {
-      if (this.popperJS) {
-        this.popperJS.update();
-      } else {
-        this.popperJS = new Popper(this.reference, this.popper, {
-          gpuAcceleration: false
-        });
-      }
-    } else {
-      if (this.popperJS) {
-        this.popperJS.destroy();
-      }
-
-      delete this.popperJS;
-    }
-
     this.state.inputWidth = this.reference.getBoundingClientRect().width;
   }
 
   componentWillUnmount() {
     removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
-
-    if (this.popperJS) {
-      this.popperJS.destroy();
-    }
   }
 
   debounce(): number {
@@ -428,6 +406,16 @@ class Select extends Component {
     }
 
     this.setState({ hoverIndex, voidRemoteQuery });
+  }
+
+  onEnter(): void {
+    this.popperJS = new Popper(this.reference, this.popper, {
+      gpuAcceleration: false
+    });
+  }
+
+  onAfterLeave(): void {
+    this.popperJS.destroy();
   }
 
   optionsAllDisabled(options: []): boolean {
@@ -939,8 +927,7 @@ class Select extends Component {
             }
           }}
         />
-        <Transition name="el-zoom-in-top">
-          <View show={visible && this.emptyText() !== false}>
+          <Transition name="el-zoom-in-top" onEnter={this.onEnter.bind(this)} onAfterLeave={this.onAfterLeave.bind(this)}>          <View show={visible && this.emptyText() !== false}>
             <div ref="popper" className={this.classNames('el-select-dropdown', {
                 'is-multiple': multiple
             })} style={{
