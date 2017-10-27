@@ -20,35 +20,6 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  // componentDidUpdate(): void {
-  //   const { showPopper } = this.state;
-  //
-  //   if (showPopper) {
-  //     if (this.popperJS) {
-  //       this.popperJS.update();
-  //     } else {
-  //       const parent: any = ReactDOM.findDOMNode(this.parent());
-  //
-  //       this.popperJS = new Popper(parent, this.refs.popper, {
-  //         placement: this.placement(),
-  //         gpuAcceleration: false
-  //       });
-  //     }
-  //   } else {
-  //     if (this.popperJS) {
-  //       this.popperJS.destroy();
-  //     }
-  //
-  //     delete this.popperJS;
-  //   }
-  // }
-  //
-  // componentWillUnmount(): void {
-  //   if (this.popperJS) {
-  //     this.popperJS.destroy();
-  //   }
-  // }
-
   onVisibleChange(visible: boolean): void {
     this.setState({
       showPopper: visible
@@ -64,7 +35,7 @@ export default class DropdownMenu extends Component {
     });
   }
 
-  onAfterLeave() {
+  onAfterLeave(): void {
     this.popperJS.destroy();
   }
 
