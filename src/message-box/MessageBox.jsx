@@ -114,18 +114,17 @@ export default class MessageBox extends Component {
     this.setState({
       visible: false
     });
-
-    setTimeout(() => {
-      this.props.onClose();
-    }, 200)
   }
 
   render(): React.Element<any> {
     return (
       <div>
         <div style={{ position: 'absolute', zIndex: 2001 }}>
-          <Transition name="msgbox-fade">
-            <View key={this.state.visible} show={this.state.visible}>
+          <Transition
+            name="msgbox-fade"
+            onAfterLeave={() => { this.props.willUnmount && this.props.willUnmount() }}
+          >
+            <View show={this.state.visible}>
               <div className="el-message-box__wrapper">
                 <div className="el-message-box">
                   {
