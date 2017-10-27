@@ -110,7 +110,7 @@ export default class Transition extends Component {
   didEnter(e) {
     const childDOM = ReactDOM.findDOMNode(this.el);
 
-    if (e.target !== childDOM) return;
+    if (!e || e.target !== childDOM) return;
 
     const { onAfterEnter } = this.props;
     const { enterActive, enterTo } = this.transitionClass;
@@ -125,7 +125,7 @@ export default class Transition extends Component {
 
   didLeave(e) {
     const childDOM = ReactDOM.findDOMNode(this.el);
-    if (e.target !== childDOM) return;
+    if (!e || e.target !== childDOM) return;
 
     const { onAfterLeave, children } = this.props;
     const { leaveActive, leaveTo } = this.transitionClass;
