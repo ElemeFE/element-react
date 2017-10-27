@@ -107,10 +107,13 @@ export default class Transition extends Component {
     element.classList.remove(action, active);
   }
 
-  didEnter() {
+  didEnter(e) {
+    const childDOM = ReactDOM.findDOMNode(this.el);
+
+    if (e.target !== childDOM) return;
+
     const { onAfterEnter } = this.props;
     const { enterActive, enterTo } = this.transitionClass;
-    const childDOM = ReactDOM.findDOMNode(this.el);
 
     childDOM.classList.remove(enterActive, enterTo);
 
@@ -120,10 +123,12 @@ export default class Transition extends Component {
     onAfterEnter && onAfterEnter();
   }
 
-  didLeave() {
+  didLeave(e) {
+    const childDOM = ReactDOM.findDOMNode(this.el);
+    if (e.target !== childDOM) return;
+
     const { onAfterLeave, children } = this.props;
     const { leaveActive, leaveTo } = this.transitionClass;
-    const childDOM = ReactDOM.findDOMNode(this.el);
 
     new Promise((resolve) => {
       if (this.isViewComponent(children)) {
