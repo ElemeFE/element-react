@@ -157,7 +157,7 @@ export default class Transition extends Component {
     childDOM.addEventListener('transitionend', this.didEnter);
     childDOM.addEventListener('animationend', this.didEnter);
 
-    this.animateElement(childDOM, enter, enterActive, this.didEnter);
+    // this.animateElement(childDOM, enter, enterActive, this.didEnter);
 
     requestAnimationFrame(() => {
       // when hidden transition not end
@@ -188,7 +188,7 @@ export default class Transition extends Component {
     childDOM.addEventListener('transitionend', this.didLeave);
     childDOM.addEventListener('animationend', this.didLeave);
 
-    this.animateElement(childDOM, leave, leaveActive, this.didLeave);
+    // this.animateElement(childDOM, leave, leaveActive, this.didLeave);
 
     requestAnimationFrame(() => {
       // when enter transition not end
