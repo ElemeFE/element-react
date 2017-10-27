@@ -4,7 +4,7 @@ import React from 'react';
 import SvPanel from './SvPanel';
 import HueSlider from './HueSlider';
 import AlphaSlider from './AlphaSlider';
-import { Component, PropTypes, Transition } from '../../../libs';
+import { Component, PropTypes, Transition, View } from '../../../libs';
 import Locale from '../../locale';
 
 export default class PickerDropdown extends Component {
@@ -17,7 +17,7 @@ export default class PickerDropdown extends Component {
     const currentColor = color.value;
     return (
       <Transition name="el-zoom-in-top">
-        {showPicker &&
+        <View show={showPicker}>
           <div className="el-color-dropdown el-color-picker__panel">
             <div className="el-color-dropdown__main-wrapper">
               <HueSlider
@@ -49,7 +49,8 @@ export default class PickerDropdown extends Component {
                 {Locale.t('el.colorpicker.confirm')}
               </button>
             </div>
-          </div>}
+          </div>
+        </View>
       </Transition>
     );
   }
