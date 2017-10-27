@@ -125,11 +125,9 @@ export default class Dialog extends Component {
         </Transition>
         {
           modal && (
-            <Transition name="v-modal">
               <View show={ visible }>
                 <div className="v-modal" style={{ zIndex: 1012 }}></div>
               </View>
-            </Transition>
           )
         }
       </div>

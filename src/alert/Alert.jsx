@@ -27,16 +27,18 @@ export default class Alert extends Component {
   close() {
     this.setState({
       visible: false
-    }, () => {
-      if (this.props.onClose) {
-        this.props.onClose();
-      }
     });
+  }
+
+  onAfterLeave() {
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
   }
 
   render() {
     return (
-      <Transition name="el-alert-fade">
+      <Transition name="el-alert-fade" onAfterLeave={this.onAfterLeave.bind(this)}>
         <View show={this.state.visible}>
           <div style={this.style()} className={this.className('el-alert', `el-alert--${ this.props.type }`)}>
             {
