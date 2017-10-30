@@ -2,6 +2,7 @@
 import * as React from 'react';
 import throttle from 'throttle-debounce/throttle';
 import { Component, PropTypes } from '../../libs';
+import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
 import Table from './Table';
 import type {
@@ -19,8 +20,6 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
   constructor(props: TableLayoutProps) {
     super(props);
     this.state = {
-      // fit: props.fit,
-      // show
       height: props.height || props.maxHeight || null, // Table's height or maxHeight prop
       gutterWidth: getScrollBarWidth(), // scrollBar width
       tableHeight: null, // Table's real height
@@ -33,7 +32,7 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
       scrollY: null, // has y scroll bar
     };
 
-    this.windowResizeListener = throttle(50, () => {
+    this.resizeListener = throttle(50, () => {
       this.scheduleLayout();
     });
   }
@@ -42,7 +41,7 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
     this.el = this.table.el;
 
     this.scheduleLayout();
-    window.addEventListener('resize', this.windowResizeListener);
+    addResizeListener(this.el, this.resizeListener)
   }
 
   componentWillReceiveProps(nextProps: TableLayoutProps) {
@@ -82,7 +81,7 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.windowResizeListener);
+    removeResizeListener(this.el, this.resizeListener)
   }
 
   isPropChanged(key: string, preProps: TableLayoutProps): boolean {

@@ -19,8 +19,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     super(props);
 
     this.container = getPopupContainer();
-    this.handleClickOutside = this.handleClickOutside.bind(this);
-    this.transitionEndHandler = this.transitionEndHandler.bind(this);
+    ['handleClickOutside', 'onEnter', 'onAfterLeave'].forEach(fn => { this[fn] = this[fn].bind(this) });
 
     this.state = {
       filteredValue: props.filteredValue,
@@ -29,11 +28,6 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
 
   componentDidMount() {
     this.renderPortal(this.renderContent(), this.container);
-    setTimeout(() => {
-      this.poperIns = new Popper(this.refer, this.container, {
-        placement: this.props.placement
-      });
-    });
 
     document.addEventListener('click', this.handleClickOutside);
   }
@@ -44,7 +38,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     }
   }
 
-  componentDidUpdate(preProps) {
+  componentDidUpdate() {
     this.renderPortal(this.renderContent(), this.container);
   }
 
@@ -72,14 +66,14 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     }
   }
 
-  transitionEndHandler() {
-    const { poper } = this;
-    if (poper.classList.contains('el-zoom-in-top-enter-to')) {
-      poper.classList.remove('el-zoom-in-top-enter-active', 'el-zoom-in-top-enter-to');
-    } else if (poper.classList.contains('el-zoom-in-top-leave-to')) {
-      poper.classList.remove('el-zoom-in-top-leave-active', 'el-zoom-in-top-leave-to');
-      poper.style.display = 'none';
-    }
+  onEnter() {
+    this.poperIns = new Popper(this.refer, this.container, {
+      placement: this.props.placement
+    });
+  }
+
+  onAfterLeave() {
+    this.poperIns.destroy();
   }
 
   renderPortal(element, container) {
@@ -137,14 +131,14 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     return (
       <Transition
         name="el-zoom-in-top"
-        onEnter={() => { this.poperIns.update() }}
+        onEnter={this.onEnter}
+        onAfterLeave={this.onAfterLeave}
       >
         <View show={visible}>
           <div
             className={'el-table-filter'}
             ref={(dom) => { this.poper = dom; }}
             onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }}  // prevent document click event
-            onTransitionEnd={this.transitionEndHandler}
           >
             {content}
           </div>
