@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
 import Input from '../';
@@ -16,7 +16,7 @@ describe('Input test', () => {
   });
 
   it('disabled', () => {
-    const w = mount(
+    const w = shallow(
       <Input disabled />
     );
     expect(w.find('.el-input input').prop('disabled')).toBe(true);
@@ -24,7 +24,7 @@ describe('Input test', () => {
 
   it('icon', () => {
     const cb = sinon.spy();
-    const w = mount(
+    const w = shallow(
       <Input
         icon="time"
         placeholder="请选择日期"
@@ -38,28 +38,28 @@ describe('Input test', () => {
   });
 
   it('size', () => {
-    const w = mount(
+    const w = shallow(
       <Input size="large" />
     );
     expect(w.hasClass('el-input--large')).toBeTruthy();
   });
 
   it('type', () => {
-    const w = mount(
+    const w = shallow(
       <Input type="textarea" />
     );
     expect(w.hasClass('el-textarea')).toBeTruthy();
   });
 
   it('rows', () => {
-    const w = mount(
+    const w = shallow(
       <Input type="textarea" rows={3} />
     );
     expect(w.find('.el-textarea__inner').prop('rows')).toBe(3);
   });
 
   it('resize', () => {
-    const w = mount(
+    const w = shallow(
       <Input type="textarea" resize="both" />
     );
     expect(w.find('.el-textarea__inner').first().prop('style').resize).toBe('both');
