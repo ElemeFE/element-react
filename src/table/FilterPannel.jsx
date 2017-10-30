@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Component } from '../../libs';
+import { Component, Transition, View } from '../../libs';
 import Popper from '../../libs/utils/popper';
 import Checkbox from '../checkbox';
 
@@ -46,34 +46,10 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
 
   componentDidUpdate(preProps) {
     this.renderPortal(this.renderContent(), this.container);
-
-    const { poper } = this;
-    if (!preProps.visible && this.props.visible) {
-      requestAnimationFrame(() => {
-        poper.classList.remove('el-zoom-in-top-leave-active', 'el-zoom-in-top-leave-to');
-        poper.classList.add('el-zoom-in-top-enter', 'el-zoom-in-top-enter-active');
-        poper.style.display = '';
-        requestAnimationFrame(() => {
-          this.poperIns.update();
-          poper.classList.remove('el-zoom-in-top-enter');
-          poper.classList.add('el-zoom-in-top-enter-to');
-        })
-      })
-    }
-
-    if (preProps.visible && !this.props.visible) {
-      requestAnimationFrame(() => {
-        poper.classList.remove('el-zoom-in-top-enter-active', 'el-zoom-in-top-enter-to');
-        poper.classList.add('el-zoom-in-top-leave', 'el-zoom-in-top-leave-active');
-        requestAnimationFrame(() => {
-          poper.classList.remove('el-zoom-in-top-leave');
-          poper.classList.add('el-zoom-in-top-leave-to');
-        })
-      })
-    }
   }
 
   componentWillUnmount() {
+    this.poperIns.destroy();
     ReactDOM.unmountComponentAtNode(this.container);
     document.removeEventListener('click', this.handleClickOutside);
     document.body.removeChild(this.container);
@@ -111,7 +87,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   }
 
   renderContent() {
-    const { multiple, filters } = this.props;
+    const { multiple, filters, visible } = this.props;
     const { filteredValue } = this.state;
 
     let content;
@@ -159,15 +135,21 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
     }
 
     return (
-      <div
-        className={'el-table-filter'}
-        style={!this.isMounted && { display: 'none' }} // set display: 'none' only first render
-        ref={(dom) => { this.poper = dom; }}
-        onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }}  // prevent document click event
-        onTransitionEnd={this.transitionEndHandler}
+      <Transition
+        name="el-zoom-in-top"
+        onEnter={() => { this.poperIns.update() }}
       >
-        {content}
-      </div>
+        <View show={visible}>
+          <div
+            className={'el-table-filter'}
+            ref={(dom) => { this.poper = dom; }}
+            onClick={(e) => { e.nativeEvent.stopImmediatePropagation() }}  // prevent document click event
+            onTransitionEnd={this.transitionEndHandler}
+          >
+            {content}
+          </div>
+        </View>
+      </Transition>
     )
   }
   render() {
