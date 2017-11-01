@@ -1,6 +1,6 @@
 {
   "name": "element-react",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Element UI for React",
   "private": false,
   "main": "dist/npm/es5/index.js",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/eleme/element-react",
   "devDependencies": {
-    "@types/react": "^16.0.19",
+    "@types/react": "^15.6.5",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^21.2.0",
@@ -71,7 +71,7 @@
     "sass-loader": "^6.0.5",
     "sinon": "^4.0.2",
     "style-loader": "^0.19.0",
-    "typescript": "^2.6.1",
+    "typescript": "^2.5.3",
     "url-loader": "^0.6.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3"
