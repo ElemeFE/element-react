@@ -45,8 +45,6 @@ export default class Notification extends Component {
 
     this.setState({
       visible: false
-    }, () => {
-      this.props.willUnmount();
     });
   }
 
@@ -68,12 +66,24 @@ export default class Notification extends Component {
 
   render() {
     return (
-      <Transition name="el-notification-fade" duration="300">
-        <View key={this.state.visible} show={this.state.visible}>
-          <div className="el-notification" style={{
-              top: this.props.top,
-              zIndex: 9999
-          }} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)} onClick={this.onClick.bind(this)}>
+      <Transition
+        name="el-notification-fade"
+        onAfterEnter={() => { this.offsetHeight = this.rootDOM.offsetHeight; }}
+        onLeave={() => { this.props.onClose && this.props.onClose() }}
+        onAfterLeave={() => { this.props.willUnmount(this.offsetHeight, parseInt(this.rootDOM.style.top)) }}
+      >
+        <View show={this.state.visible}>
+          <div
+            ref={(ele) => { this.rootDOM = ele; }}
+            className="el-notification"
+            style={{
+                top: this.props.top,
+                zIndex: 9999
+            }}
+            onMouseEnter={this.stopTimer.bind(this)}
+            onMouseLeave={this.startTimer.bind(this)}
+            onClick={this.onClick.bind(this)}
+          >
             {
               this.props.type && <i className={this.classNames('el-notification__icon', this.typeClass(), this.props.iconClass)} />
             }

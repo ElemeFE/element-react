@@ -68,7 +68,7 @@ export default class Tree extends Component {
 
   getNodeKey(node: any, otherwise: number) {
     const nodeKey = this.props.nodeKey;
-    if (nodeKey && node) {
+    if (nodeKey && node && node.data[nodeKey]) {
       return node.data[nodeKey];
     }
     return otherwise;

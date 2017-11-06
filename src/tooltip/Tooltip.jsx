@@ -37,54 +37,36 @@ export default class Tooltip extends Component {
     }
   }
 
-  componentDidUpdate(): void {
-    const { showPopper } = this.state;
-
-    if (showPopper) {
-      if (this.popperJS) {
-        this.popperJS.update();
-      } else {
-        const { popper, reference, arrow } = this.refs;
-        const { placement } = this.props;
-
-        if (arrow) {
-          arrow.setAttribute('x-arrow', '');
-        }
-
-        this.popperJS = new Popper(reference, popper, { placement, gpuAcceleration: false });
-      }
-    } else {
-      if (this.popperJS) {
-        this.popperJS.destroy();
-      }
-
-      delete this.popperJS;
-    }
-  }
-
-  componentWillUnmount(): void {
-    if (this.popperJS) {
-      this.popperJS.destroy();
-    }
-  }
-
   showPopper(): void {
-    if (this.props.manual) return ;
-
-    this.timeout = setTimeout(() => {
-      this.setState({ showPopper: true });
-    }, this.props.openDelay);
+    if (!this.props.manual) {
+      this.timeout = setTimeout(() => {
+        this.setState({ showPopper: true });
+      }, this.props.openDelay);
+    }
   }
 
   hidePopper(): void {
-    if (this.props.manual) return ;
-
-    clearTimeout(this.timeout);
-    this.setState({ showPopper: false});
+    if (!this.props.manual) {
+      clearTimeout(this.timeout);
+      this.setState({ showPopper: false });
+    }
   }
 
-  updatePopper() {
-    this.popperJS.update();
+  onEnter(): void {
+    const { popper, reference, arrow } = this.refs;
+
+    if (arrow) {
+      arrow.setAttribute('x-arrow', '');
+    }
+
+    this.popperJS = new Popper(reference, popper, {
+      placement: this.props.placement,
+      gpuAcceleration: false
+    });
+  }
+
+  onAfterLeave(): void {
+    this.popperJS.destroy();
   }
 
   render(): React.Element<any> {
@@ -95,14 +77,18 @@ export default class Tooltip extends Component {
         <div ref="reference" className="el-tooltip__rel">
           <div>{ this.props.children }</div>
         </div>
-        <Transition name={transition}>
-          <View show={ !disabled && this.state.showPopper } >
-            <div ref="popper" className={ this.classNames("el-tooltip__popper", `is-${effect}`) }>
-              <div>{ content }</div>
-              { visibleArrow && <div ref="arrow" className="popper__arrow"></div> }
-            </div>
-          </View>
-        </Transition>
+        {
+          !disabled && (
+            <Transition name={transition} onEnter={this.onEnter.bind(this)} onAfterLeave={this.onAfterLeave.bind(this)}>
+              <View show={this.state.showPopper} >
+                <div ref="popper" className={ this.classNames("el-tooltip__popper", `is-${effect}`) }>
+                  <div>{ content }</div>
+                  { visibleArrow && <div ref="arrow" className="popper__arrow"></div> }
+                </div>
+              </View>
+            </Transition>
+          )
+        }
       </div>
     )
   }

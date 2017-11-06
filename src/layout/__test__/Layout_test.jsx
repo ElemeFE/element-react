@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 
 import Layout from '../';
 
@@ -120,35 +120,35 @@ describe('Layout test', () => {
   });
 
   it('Alignment', () => {
-    const w1 = mount(
+    const w1 = render(
       <Layout.Row type="flex" className="row-bg">
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple-light"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
       </Layout.Row>
     );
-    const w2 = mount(
+    const w2 = render(
       <Layout.Row type="flex" className="row-bg" justify="center">
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple-light"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
       </Layout.Row>
     );
-    const w3 = mount(
+    const w3 = render(
       <Layout.Row type="flex" className="row-bg" justify="end">
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple-light"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
       </Layout.Row>
     );
-    const w4 = mount(
+    const w4 = render(
       <Layout.Row type="flex" className="row-bg" justify="space-between">
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple-light"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
       </Layout.Row>
     );
-    const w5 = mount(
+    const w5 = render(
       <Layout.Row type="flex" className="row-bg" justify="space-around">
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple-light"></div></Layout.Col>
@@ -194,14 +194,14 @@ describe('Layout test', () => {
   });
 
   it('Row with align', () => {
-    const w1 = mount(
+    const w1 = render(
       <Layout.Row type="flex" align="middle" className="row-bg">
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple-light"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
       </Layout.Row>
     );
-    const w2 = mount(
+    const w2 = render(
       <Layout.Row type="flex" align="bottom" className="row-bg">
         <Layout.Col span="6"><div className="grid-content bg-purple"></div></Layout.Col>
         <Layout.Col span="6"><div className="grid-content bg-purple-light"></div></Layout.Col>

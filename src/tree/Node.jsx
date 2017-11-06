@@ -2,9 +2,8 @@
 
 import React from 'react';
 
-import { PropTypes, Component } from '../../libs';
+import { PropTypes, Component, CollapseTransition } from '../../libs';
 import { watchPropertyChange, IDGenerator } from '../../libs/utils';
-import CollapseTransition from './CollapseTransition';
 import Checkbox from '../checkbox';
 
 

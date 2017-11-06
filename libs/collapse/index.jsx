@@ -112,7 +112,7 @@ export default class CollapseTransition extends Component {
   afterLeave(): void {
     if(!this.selfRef || !this.selfRef.dataset) return 
     const el = this.selfRef;
-    if (!el) return ; 
+    if (!el) return ;
 
     el.style.display = 'none';
     el.style.height = '';
@@ -124,7 +124,8 @@ export default class CollapseTransition extends Component {
   render(): React.Element<any> {
     return (
       <div
-        className="el-tree-node__children collapse-transition"
+        className="collapse-transition"
+        style={{ overflow: 'hidden' }}
         ref={e => this.selfRef = e}
       >
         {this.props.children}

@@ -93,12 +93,13 @@ test('Extended value types', () => {
 
 test('Disabled', () => {
   const switch1 = mount(
-      <Switch
-        value={true}
-        onText=""
-        offText=""
-        disabled>
-      </Switch>);
+    <Switch
+      value={true}
+      onText=""
+      offText=""
+      disabled>
+    </Switch>
+  );
 
   expect(switch1.find('label .el-switch').at(0).hasClass('is-disabled')).toEqual(true);
   expect(switch1.find('input[type="checkbox"]').at(0).prop('disabled')).toEqual(true);

@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import { PropTypes, Component } from '../../libs';
 import { EventRegister } from '../../libs/internal'
 
-
 import Input from '../input'
 import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants'
 import { Errors, require_condition, IDGenerator } from '../../libs/utils';

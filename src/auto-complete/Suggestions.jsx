@@ -29,33 +29,6 @@ export default class Suggestions extends Component {
     };
   }
 
-  componentDidUpdate(): void {
-    const reference = ReactDOM.findDOMNode(this.parent().inputNode);
-
-    if (this.state.showPopper) {
-      if (this.popperJS) {
-        this.popperJS.update();
-      } else {
-        this.popperJS = new Popper(reference, this.refs.popper, {
-          gpuAcceleration: false,
-          forceAbsolute: true
-        });
-      }
-    } else {
-      if (this.popperJS) {
-        this.popperJS.destroy();
-      }
-
-      delete this.popperJS;
-    }
-  }
-
-  componentWillUnmount(): void {
-    if (this.popperJS) {
-      this.popperJS.destroy();
-    }
-  }
-
   onVisibleChange(visible: boolean, inputWidth: string): void {
     this.setState({
       dropdownWidth: inputWidth,
@@ -71,6 +44,19 @@ export default class Suggestions extends Component {
     this.parent().select(item);
   }
 
+  onEnter(): void {
+    const reference = ReactDOM.findDOMNode(this.parent().inputNode);
+
+    this.popperJS = new Popper(reference, this.refs.popper, {
+      gpuAcceleration: false,
+      forceAbsolute: true
+    });
+  }
+
+  onAfterLeave(): void {
+    this.popperJS.destroy();
+  }
+
   render(): React.Element<any> {
     const { customItem } = this.parent().props;
     const { loading, highlightedIndex } = this.parent().state;
@@ -78,11 +64,11 @@ export default class Suggestions extends Component {
     const { showPopper, dropdownWidth } = this.state;
 
     return (
-      <Transition name="el-zoom-in-top">
+      <Transition name="el-zoom-in-top" onEnter={this.onEnter.bind(this)} onAfterLeave={this.onAfterLeave.bind(this)}>
         <View show={showPopper}>
           <div
             ref="popper"
-            className={this.classNames('el-autocomplete-suggestion', {
+            className={this.classNames('el-autocomplete-suggestion', 'el-popper', {
               'is-loading': loading
             })}
             style={{
