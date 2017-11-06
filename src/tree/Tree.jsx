@@ -11,17 +11,18 @@ type State = {
   store: any,
 };
 
-let propsToState = props =>{
+let propsToState = (ctx, props) =>{
   const {
     data, lazy, options, load, defaultCheckedKeys, defaultExpandedKeys, currentNodeKey, nodeKey,
     checkStrictly, autoExpandParent, defaultExpandAll, filterNodeMethod } = props
 
-  return {
-    store: new TreeStore({
+  let store = new TreeStore({
       key: nodeKey, data, lazy, props: options, load, currentNodeKey, checkStrictly,
       defaultCheckedKeys, defaultExpandedKeys, autoExpandParent, defaultExpandAll, filterNodeMethod
     })
-  }
+
+  store.syncView = ()=> ctx.setState({})
+  return { store } 
 }
 export default class Tree extends Component {
   state: State;
@@ -30,7 +31,7 @@ export default class Tree extends Component {
     super(props);
 
     this.state = {
-      ...propsToState(props)
+      ...propsToState(this, props)
     }
   }
 
@@ -43,7 +44,7 @@ export default class Tree extends Component {
       nextProps.options !== this.props.options 
      ){
       this.setState({
-        ...propsToState(nextProps)
+        ...propsToState(this, nextProps)
       })
      }
   }
@@ -185,7 +186,7 @@ Tree.propTypes = {
   isShowCheckbox: PropTypes.bool,
   accordion: PropTypes.bool,
   indent: PropTypes.number,
-  nodeKey: PropTypes.string.isRequired,
+  nodeKey: PropTypes.string,
   options: PropTypes.shape({
     children: PropTypes.string,
     label: PropTypes.string,
