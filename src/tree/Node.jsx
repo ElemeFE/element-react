@@ -1,7 +1,6 @@
 /* @flow */
 
 import React from 'react';
-import debounce from 'throttle-debounce/debounce';
 
 import { PropTypes, Component } from '../../libs';
 import { watchPropertyChange, IDGenerator } from '../../libs/utils';
@@ -26,8 +25,8 @@ NodeContent.propTypes = {
 
 type State = {
   childNodeRendered: boolean,
-  isShowCheckbox: boolean
 };
+
 
 export default class Node extends Component {
   state: State;
@@ -37,25 +36,26 @@ export default class Node extends Component {
 
     this.state = {
       childNodeRendered: false,
-      isShowCheckbox: false
-    };
-    this.state.isShowCheckbox = props.treeNode.isShowCheckbox;
-
-    this.oldChecked = false;
-    this.oldIndeterminate = false;
-    this.idGen = new IDGenerator();
+    }
+    this.idGen = new IDGenerator()
+    this.mapProps(props)
   }
 
-  componentDidMount(): void {
-    const nodeModel = this.props.nodeModel;
-    const childrenKey = this.props.options.children || 'children';
+  mapProps(props){
+    let {nodeModel, options: {children: childrenKey}} = props
 
-    const triggerChange = debounce(20, (...args) => {
-      if (this.isDeconstructed) return;
-      this.handleSelectChange.apply(this, args);
-    });
+    this.oldChecked = nodeModel.checked
+    this.oldIndeterminate = nodeModel.indeterminate
 
-    this.loadHandler = this.enhanceLoad(nodeModel);
+    const triggerChange = (...args)=>{
+      this.timer && clearTimeout(this.timer)
+      this.timer = setTimeout(()=>{
+        this.handleSelectChange(...args)
+      }, 20)
+    }
+    
+  
+    this.restoreEnhancedLoad = this.enhanceLoad(nodeModel);
     this.watchers = {
       [this.idGen.next()]: watchPropertyChange(
         nodeModel,
@@ -71,7 +71,7 @@ export default class Node extends Component {
         this.setState({});
       })
     };
-
+  
     if (nodeModel.data != null) {
       this.watchers[
         this.idGen.next()
@@ -82,25 +82,37 @@ export default class Node extends Component {
     }
   }
 
-  componentWillUnmount(): void {
-    this.loadHandler();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.nodeModel !== this.props.nodeModel || nextProps.options !== this.props.options || nextProps.nodeKey !== this.props.nodeKey){
+      this.dispose()
+      this.mapProps(nextProps)
+    }
+  }
+  
+  dispose(){
+    this.timer && clearTimeout(this.timer)
+    this.restoreEnhancedLoad();
     // clear watchs
     for (let w in this.watchers) {
       if (this.watchers[w]) {
         this.watchers[w]();
       }
     }
-    this.isDeconstructed = true;
+    this.watchers = null
+  }
+
+  componentWillUnmount(): void {
+    this.dispose()
   }
 
   enhanceLoad(nodeModel: Object): Function {
     const load = nodeModel.load;
     const enhanced = (...args) => {
-      load.apply(null, args);
+      load.apply(undefined, args);
       this.setState({});
     };
     nodeModel.load = enhanced;
-    return () => {
+    return () => { // deconstruct
       nodeModel.load = load;
     };
   }
@@ -131,7 +143,7 @@ export default class Node extends Component {
 
   handleClick(evt: ?SyntheticEvent): void {
     if (evt) evt.stopPropagation();
-    const { nodeModel, treeNode } = this.props;
+    const { treeNode } = this.props;
 
     treeNode.setCurrentNode(this);
     if (treeNode.props.expandOnClickNode){
@@ -187,7 +199,7 @@ export default class Node extends Component {
 
   render(): React.Element<any> {
     const { childNodeRendered } = this.state;
-    const { treeNode, nodeModel, renderContent, isShowCheckbox } = this.props;
+    const { treeNode, nodeModel, isShowCheckbox } = this.props;
 
     let expanded = nodeModel.expanded;
 
@@ -246,6 +258,10 @@ Node.propTypes = {
   treeNode: PropTypes.object.isRequired,
   isShowCheckbox: PropTypes.bool,
   onCheckChange: PropTypes.func,
+  parent: PropTypes.any,
+  nodeKey: PropTypes.string.isRequired,
+  onNodeCollapse: PropTypes.func,
+  onNodeExpand: PropTypes.func
 };
 
 Node.defaultProps = {

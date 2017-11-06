@@ -8,35 +8,45 @@ import Locale from '../locale';
 import TreeStore from './model/tree-store';
 
 type State = {
-  currentNode: ?Object,
   store: any,
 };
 
+let propsToState = props =>{
+  const {
+    data, lazy, options, load, defaultCheckedKeys, defaultExpandedKeys, currentNodeKey, nodeKey,
+    checkStrictly, autoExpandParent, defaultExpandAll, filterNodeMethod } = props
+
+  return {
+    store: new TreeStore({
+      key: nodeKey, data, lazy, props: options, load, currentNodeKey, checkStrictly,
+      defaultCheckedKeys, defaultExpandedKeys, autoExpandParent, defaultExpandAll, filterNodeMethod
+    })
+  }
+}
 export default class Tree extends Component {
   state: State;
 
   constructor(props: Object) {
     super(props);
-    const {
-      data, lazy, options, load, defaultCheckedKeys, defaultExpandedKeys, currentNodeKey, nodeKey,
-      checkStrictly, autoExpandParent, defaultExpandAll, filterNodeMethod } = this.props;
+
     this.state = {
-      store: new TreeStore({
-        key: nodeKey, data, lazy, props: options, load, currentNodeKey, checkStrictly,
-        defaultCheckedKeys, defaultExpandedKeys, autoExpandParent, defaultExpandAll, filterNodeMethod
-      }),
-      currentNode: null
-    };
-
-  }
-
-  componentWillReceiveProps(nextProps: Object): void {
-    if (nextProps.data instanceof Array) {
-      this.root.setData(nextProps.data);
-      this.setState({}); //force update
+      ...propsToState(props)
     }
   }
 
+  componentWillReceiveProps(nextProps: Object): void {
+    if (nextProps.data !== this.props.data ||
+      nextProps.currentNodeKey !== this.props.currentNodeKey ||
+      nextProps.defaultCheckedKeys !== this.props.defaultCheckedKeys ||
+      nextProps.defaultExpandedKeys !== this.props.defaultExpandedKeys ||
+      nextProps.nodeKey !== this.props.nodeKey ||
+      nextProps.options !== this.props.options 
+     ){
+      this.setState({
+        ...propsToState(nextProps)
+      })
+     }
+  }
 
   get root(): any{
     return this.state.store.root;
@@ -45,7 +55,6 @@ export default class Tree extends Component {
   get store(): any {
     return this.state.store
   }
-
 
   filter(value: any) {
     if (!this.props.filterNodeMethod) throw new Error('[Tree] filterNodeMethod is required when filter');
@@ -89,21 +98,16 @@ export default class Tree extends Component {
 
   // used by child nodes, use tree store to store this info?
   getCurrentNode(): ?Object {
-    return this.state.currentNode;
+    return this.store.getCurrentNode()
   }
 
   setCurrentNode(node: Object): void {
     require_condition(node != null);
-
     let {onCurrentChange, onNodeClicked} = this.props;
     this.store.setCurrentNode(node);
-    this.setState({
-      currentNode: node
-    }, ()=>{
-      let nodeModel = node.props.nodeModel;
-      onCurrentChange(nodeModel.data, node)
-      onNodeClicked(nodeModel.data, node)
-    });
+    let nodeModel = node.props.nodeModel;
+    onCurrentChange(nodeModel.data, node)
+    onNodeClicked(nodeModel.data, node)
   }
 
   closeSiblings(exclude: any){
@@ -122,43 +126,45 @@ export default class Tree extends Component {
       highlightCurrent,
       isShowCheckbox,
       onCheckChange,
-      onNodeClicked,
-      emptyText
+      emptyText,
+      nodeKey
     } = this.props;
 
-    const renderEmptyText = ()=>{
+    const renderNodes = ()=>{
       if (!this.root.childNodes || this.root.childNodes.length === 0){
         return (
           <div className="el-tree__empty-block">
             <span className="el-tree__empty-text">{emptyText}</span>
           </div>
         )
-      } else return null;
-    }
-
-    return (
-      <div
-        style={this.style()}
-        className={this.className('el-tree', {
-          'el-tree--highlight-current': highlightCurrent
-        })}
-      >
-        {this.root.childNodes.map((e, idx) => {
+      } else {
+        return this.root.childNodes.map((e, idx) => {
           return (
             <Node
-              ref="cnode"
               key={this.getNodeKey(e,idx)}
               nodeModel={e}
               options={options}
               renderContent={renderContent}
               treeNode={this}
               parent={this}
+              nodeKey={nodeKey}
               isShowCheckbox={isShowCheckbox}
               onCheckChange={onCheckChange}
             />
           );
+        })
+      }
+    }
+
+    return (
+      <div
+        className={this.className('el-tree', {
+          'el-tree--highlight-current': highlightCurrent
         })}
-        {renderEmptyText()}
+
+        style={this.style()}
+      >
+        {renderNodes()}
       </div>
     );
   }
@@ -168,10 +174,10 @@ Tree.propTypes = {
   autoExpandParent: PropTypes.bool,
   checkStrictly: PropTypes.bool,
   currentNodeKey: PropTypes.any,
-  defaultCheckedKeys: PropTypes.array,
-  defaultExpandedKeys: PropTypes.array,
+  defaultCheckedKeys: PropTypes.arrayOf(PropTypes.any),
+  defaultExpandedKeys: PropTypes.arrayOf(PropTypes.any),
   defaultExpandAll: PropTypes.bool,
-  data: PropTypes.array,
+  data: PropTypes.arrayOf(PropTypes.any),
   emptyText: PropTypes.string,
   expandOnClickNode: PropTypes.bool,
   filterNodeMethod: PropTypes.func,
@@ -179,7 +185,7 @@ Tree.propTypes = {
   isShowCheckbox: PropTypes.bool,
   accordion: PropTypes.bool,
   indent: PropTypes.number,
-  nodeKey: PropTypes.string,
+  nodeKey: PropTypes.string.isRequired,
   options: PropTypes.shape({
     children: PropTypes.string,
     label: PropTypes.string,
