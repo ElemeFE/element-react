@@ -4,16 +4,18 @@ import * as Errors from './errors'
 
 export {require_condition, ReactUtils, Errors}
 
+const sWatchCache = Symbol('watch_cache')
 export function watchPropertyChange(target, property, cb) {
   require_condition(
     target != null &&
     typeof property === 'string' &&
     typeof cb === 'function', 'invalid arguments')
 
-  if (!target.__watch_cache){
-    target.__watch_cache = {}
+  
+  if (!target[sWatchCache]){
+    target[sWatchCache] = {}
   }
-  let cache = target.__watch_cache
+  let cache = target[sWatchCache]
 
   require_condition(cache[property] == null, `duplicated watch on ${target}'s ${property}`)
   cache[property] = cb
@@ -34,10 +36,10 @@ export function watchPropertyChange(target, property, cb) {
   })
 
   return ()=>{
-    if (target.__watch_cache && target.__watch_cache[property]){
+    if (target[sWatchCache] && target[sWatchCache][property]){
       delete target[property]
       target[property] = origin
-      delete target.__watch_cache[property]
+      delete target[sWatchCache][property]
     }
   }
 }
