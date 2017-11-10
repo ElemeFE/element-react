@@ -40,9 +40,10 @@ export default function NotificationCenter(props = {}, type) {
 
         for (let i = 0, len = instances.length; i < len; i++) {
           const element = instances[i];
+          const elementTop = parseInt(element.style.top);
 
-          if (element.offsetTop > top) {
-            element.style.top = `${element.offsetTop - height - 16}px`;
+          if (elementTop > top) {
+            element.style.top = `${elementTop - height - 16}px`;
           }
         }
       })

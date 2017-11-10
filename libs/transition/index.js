@@ -50,7 +50,7 @@ export default class Transition extends Component {
     if (this.isViewComponent(children)) {
       if ((!preChildren || !preChildren.props.show) && children.props.show) {
         this.toggleVisible();
-      } else if (preChildren.props.show && !children.props.show) {
+      } else if (preChildren && preChildren.props.show && !children.props.show) {
         this.toggleHidden();
       }
     } else {
