@@ -309,15 +309,15 @@ class Select extends Component {
 
       if (option) {
         this.addOptionToValue(option);
+        this.setState({ selectedInit, currentPlaceholder });
       } else {
         selected = {};
         selectedLabel = '';
+        this.setState({ selectedInit, selected, currentPlaceholder, selectedLabel }, () => {
+          this.resetHoverIndex();
+        });
       }
     }
-
-    this.setState({ selectedInit, selected, currentPlaceholder, selectedLabel }, () => {
-      this.resetHoverIndex();
-    });
   }
 
   onSelectedChange(val: any, bubble: boolean = true) {
