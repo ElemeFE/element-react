@@ -380,10 +380,12 @@ constructor(props) {
 
 append(store, data) {
   store.append({ id: this.id++, label: `testtest_${this.id}`, children: [] }, data);
+  store.syncView();
 }
 
 remove(store, data) {
   store.remove(data);
+  store.syncView();
 }
 
 renderContent(nodeModel, data, store) {
@@ -594,8 +596,8 @@ render() {
 ### options
 | Attribute | Description                              | Type   | Accepted Values | Default |
 | --------- | ---------------------------------------- | ------ | --------------- | ------- |
-| label     | specify which key of node object is used as the node's label | string | —               | —       |
-| children  | specify which key of node object is used as the node's subtree | string | —               | —       |
+| label     | specify which key of node object is used as the node's label | string | —               | label       |
+| children  | specify which key of node object is used as the node's subtree | string | —               | children |
 
 ### Method
 `Tree` has the following method, which returns the currently selected array of nodes.

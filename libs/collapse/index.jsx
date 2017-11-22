@@ -45,6 +45,7 @@ export default class CollapseTransition extends Component {
   }
 
   beforeEnter(): void {
+    if(!this.selfRef || !this.selfRef.dataset) return 
     const el = this.selfRef;
     //prepare
     el.dataset.oldPaddingTop = el.style.paddingTop;
@@ -56,6 +57,7 @@ export default class CollapseTransition extends Component {
   }
 
   enter(): void {
+    if(!this.selfRef || !this.selfRef.dataset) return 
     const el = this.selfRef;
     //start
     el.style.display = 'block';
@@ -75,6 +77,7 @@ export default class CollapseTransition extends Component {
   }
 
   afterEnter(): void {
+    if(!this.selfRef || !this.selfRef.dataset) return 
     const el = this.selfRef;
     el.style.display = 'block';
     el.style.height = '';
@@ -82,6 +85,7 @@ export default class CollapseTransition extends Component {
   }
 
   beforeLeave(): void {
+    if(!this.selfRef || !this.selfRef.dataset) return 
     const el = this.selfRef;
     el.dataset.oldPaddingTop = el.style.paddingTop;
     el.dataset.oldPaddingBottom = el.style.paddingBottom;
@@ -95,6 +99,7 @@ export default class CollapseTransition extends Component {
   }
 
   leave(): void {
+    if(!this.selfRef || !this.selfRef.dataset) return 
     const el = this.selfRef;
     if (el.scrollHeight !== 0) {
       el.style.height = 0;
@@ -105,6 +110,7 @@ export default class CollapseTransition extends Component {
   }
 
   afterLeave(): void {
+    if(!this.selfRef || !this.selfRef.dataset) return 
     const el = this.selfRef;
     if (!el) return ;
 
