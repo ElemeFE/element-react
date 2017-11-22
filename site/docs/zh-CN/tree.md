@@ -387,10 +387,12 @@ constructor(props) {
 
 append(store, data) {
   store.append({ id: this.id++, label: `testtest_${this.id}`, children: [] }, data);
+  store.syncView();
 }
 
 remove(store, data) {
   store.remove(data);
+  store.syncView();
 }
 
 renderContent(nodeModel, data, store) {
@@ -609,8 +611,8 @@ render() {
 
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| label | 指定节点标签为节点对象的某个属性值 | string | — | — |
-| children | 指定子树为节点对象的某个属性值 | string | — | — |
+| label | 指定节点标签为节点对象的某个属性值 | string | — | label |
+| children | 指定子树为节点对象的某个属性值 | string | — | children |
 
 ### 方法
 `Tree` 拥有如下方法，返回目前被选中的节点数组：

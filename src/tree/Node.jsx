@@ -1,7 +1,6 @@
 /* @flow */
 
 import React from 'react';
-import debounce from 'throttle-debounce/debounce';
 
 import { PropTypes, Component, CollapseTransition } from '../../libs';
 import { watchPropertyChange, IDGenerator } from '../../libs/utils';
@@ -25,8 +24,8 @@ NodeContent.propTypes = {
 
 type State = {
   childNodeRendered: boolean,
-  isShowCheckbox: boolean
 };
+
 
 export default class Node extends Component {
   state: State;
@@ -36,70 +35,84 @@ export default class Node extends Component {
 
     this.state = {
       childNodeRendered: false,
-      isShowCheckbox: false
-    };
-    this.state.isShowCheckbox = props.treeNode.isShowCheckbox;
-
-    this.oldChecked = false;
-    this.oldIndeterminate = false;
-    this.idGen = new IDGenerator();
+    }
+    this.idGen = new IDGenerator()
+    this.mapProps(props)
   }
 
-  componentDidMount(): void {
-    const nodeModel = this.props.nodeModel;
-    const childrenKey = this.props.options.children || 'children';
+  mapProps(props: Object): void{
+    let {nodeModel} = props
+    this.oldChecked = nodeModel.checked
+    this.oldIndeterminate = nodeModel.indeterminate
+  }
 
-    const triggerChange = debounce(20, (...args) => {
-      if (this.isDeconstructed) return;
-      this.handleSelectChange.apply(this, args);
-    });
+  componentDidMount(){
+    this.registerEvents(this.props)
+  }
+  
+  componentWillReceiveProps(nextProps: Object) {
+    if (nextProps.nodeModel !== this.props.nodeModel || nextProps.options !== this.props.options || nextProps.nodeKey !== this.props.nodeKey){
+      this.dispose()
+      this.mapProps(nextProps)
+      this.registerEvents(nextProps)
+    }
+  }
 
-    this.loadHandler = this.enhanceLoad(nodeModel);
+  registerEvents(props: Object){
+    let {nodeModel, options: {children: childrenKey}} = props
+    
+    const triggerChange = (...args)=>{
+      this.timer && clearTimeout(this.timer)
+      this.timer = setTimeout(()=>{
+        this.handleSelectChange(...args)
+      }, 20)
+    }
+    
+    this.restoreEnhancedLoad = this.enhanceLoad(nodeModel);
     this.watchers = {
-      [this.idGen.next()]: watchPropertyChange(
-        nodeModel,
-        'indeterminate',
-        value => {
+      [this.idGen.next()]: watchPropertyChange( nodeModel, 'indeterminate', value => {
           triggerChange(nodeModel.checked, value);
-        }
-      ),
+      }),
       [this.idGen.next()]: watchPropertyChange(nodeModel, 'checked', value => {
         triggerChange(value, nodeModel.indeterminate);
       }),
       [this.idGen.next()]: watchPropertyChange(nodeModel, 'loading', () => {
-        this.setState({});
-      })
+        this.refresh();
+      }),
     };
-
+  
     if (nodeModel.data != null) {
-      this.watchers[
-        this.idGen.next()
-      ] = watchPropertyChange(nodeModel.data, childrenKey, () => {
+      this.watchers[this.idGen.next()] = watchPropertyChange(nodeModel.data, childrenKey, () => {
         nodeModel.updateChildren();
-        this.setState({}); //force update view
+        this.refresh(); //force update view
       });
     }
   }
-
-  componentWillUnmount(): void {
-    this.loadHandler();
+  
+  dispose(){
+    this.timer && clearTimeout(this.timer)
+    this.restoreEnhancedLoad();
     // clear watchs
     for (let w in this.watchers) {
       if (this.watchers[w]) {
         this.watchers[w]();
       }
     }
-    this.isDeconstructed = true;
+    this.watchers = null
+  }
+
+  componentWillUnmount(): void {
+    this.dispose()
   }
 
   enhanceLoad(nodeModel: Object): Function {
     const load = nodeModel.load;
     const enhanced = (...args) => {
-      load.apply(null, args);
-      this.setState({});
+      load.apply(undefined, args);
+      this.refresh();
     };
     nodeModel.load = enhanced;
-    return () => {
+    return () => { // deconstruct
       nodeModel.load = load;
     };
   }
@@ -112,7 +125,7 @@ export default class Node extends Component {
       this.oldChecked !== checked || this.oldIndeterminate !== indeterminate
     ) {
       onCheckChange(nodeModel.data, checked, indeterminate);
-      this.setState({}); //force update
+      this.refresh(); //force update
     }
 
     this.oldChecked = checked;
@@ -121,7 +134,7 @@ export default class Node extends Component {
 
   getNodeKey(node: any, otherwise: number) {
     const nodeKey = this.props.nodeKey;
-    if (nodeKey && node) {
+    if (nodeKey && node && node.data[nodeKey]) {
       return node.data[nodeKey];
     }
     return otherwise;
@@ -130,7 +143,7 @@ export default class Node extends Component {
 
   handleClick(evt: ?SyntheticEvent): void {
     if (evt) evt.stopPropagation();
-    const { nodeModel, treeNode } = this.props;
+    const { treeNode } = this.props;
 
     treeNode.setCurrentNode(this);
     if (treeNode.props.expandOnClickNode){
@@ -186,7 +199,7 @@ export default class Node extends Component {
 
   render(): React.Element<any> {
     const { childNodeRendered } = this.state;
-    const { treeNode, nodeModel, renderContent, isShowCheckbox } = this.props;
+    const { treeNode, nodeModel, isShowCheckbox } = this.props;
 
     let expanded = nodeModel.expanded;
 
@@ -245,6 +258,10 @@ Node.propTypes = {
   treeNode: PropTypes.object.isRequired,
   isShowCheckbox: PropTypes.bool,
   onCheckChange: PropTypes.func,
+  parent: PropTypes.any,
+  nodeKey: PropTypes.string,
+  onNodeCollapse: PropTypes.func,
+  onNodeExpand: PropTypes.func
 };
 
 Node.defaultProps = {
