@@ -201,9 +201,8 @@ export default class TableBody extends Component<TableBodyProps> {
               )}
             </tr>
           ), this.context.store.isRowExpanding(row, rowKey) && (
-            <tr>
+            <tr key={`${rowKey}Expanded`}>
               <td
-                key={rowKey}
                 colSpan={store.columns.length}
                 className="el-table__expanded-cell"
               >
