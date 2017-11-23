@@ -15,8 +15,13 @@ module.exports = {
     filename: '[chunkhash:12].js'
   },
   plugins: [
-    new ExtractTextPlugin({ filename: '[chunkhash:12].css' }),
-    new HtmlWebpackPlugin({ template: './index.html' })
+    new ExtractTextPlugin({
+      filename: '[chunkhash:12].css'
+    }),
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      favicon: path.join(basePath, 'site/assets/favicon.ico')
+    })
   ].concat(process.env.TRAVIS_CI ? [] : [
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
     new webpack.optimize.ModuleConcatenationPlugin(),
