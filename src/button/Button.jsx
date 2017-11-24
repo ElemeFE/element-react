@@ -5,8 +5,8 @@ import { Component, PropTypes } from '../../libs';
 
 export default class Button extends Component {
   onClick(e: SyntheticEvent): void {
-    if (this.props.onClick) {
-      this.props.onClick(e);
+    if (!this.props.loading) {
+      this.props.onClick && this.props.onClick(e);
     }
   }
 
