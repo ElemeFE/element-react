@@ -202,7 +202,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
   renderHeader(column: _Column): ?React.Node {
     const { type } = column;
     if (type === 'expand') {
-      return '';
+      return column.label || '';
     }
 
     if (type === 'index') {
