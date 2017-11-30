@@ -41,12 +41,18 @@ describe('Layout test', () => {
         <Layout.Col span="4"><div className="grid-content bg-purple-light"></div></Layout.Col>
       </Layout.Row>
     );
+    const w6 = mount(
+      <Layout.Row>
+        <Layout.Col span="0"><div className="grid-content bg-purple"></div></Layout.Col>
+      </Layout.Row>
+    );
     expect(w1.find('.el-row .el-col-24 .grid-content').exists()).toBeTruthy();
     expect(w1.find('.el-row .el-col-24').length).toBe(1);
     expect(w2.find('.el-row .el-col-12').length).toBe(2);
     expect(w3.find('.el-row .el-col-8').length).toBe(3);
     expect(w4.find('.el-row .el-col-6').length).toBe(4);
     expect(w5.find('.el-row .el-col-4').length).toBe(6);
+    expect(w6.find('.el-row .el-col-0').length).toBe(1);
   });
 
   it('Column spacing', () => {
@@ -171,8 +177,13 @@ describe('Layout test', () => {
         <Layout.Col xs="8" sm="6" md="4" lg="3"><div className="grid-content bg-purple-light"></div></Layout.Col>
       </Layout.Row>
     );
+    const w1 = mount(
+      <Layout.Row gutter="10">
+        <Layout.Col xs="0" sm="6" md="4" lg="3"><div className="grid-content bg-purple"></div></Layout.Col>
+      </Layout.Row>
+    );
     expect(w.find('.el-col-24.el-col-xs-8.el-col-sm-6.el-col-md-4.el-col-lg-3').length).toBe(2);
-    expect(w.find('.el-col-24.el-col-xs-4.el-col-sm-6.el-col-md-8.el-col-lg-9').length).toBe(2);
+    expect(w1.find('.el-col-24.el-col-xs-0.el-col-sm-6.el-col-md-4.el-col-lg-3').length).toBe(1);
   });
 
   it('Row custom tag', () => {

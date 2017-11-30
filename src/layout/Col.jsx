@@ -19,7 +19,7 @@ export default class Col extends Component {
     let classList = [];
 
     ['span', 'offset', 'pull', 'push'].forEach(prop => {
-      if (this.props[prop]) {
+      if (this.props[prop] >= 0) {
         classList.push(
           prop !== 'span'
           ? `el-col-${prop}-${this.props[prop]}`
@@ -38,10 +38,8 @@ export default class Col extends Component {
             : `el-col-${size}-${props[prop]}`
           );
         });
-      } else {
-        if (this.props[size]) {
-          classList.push(`el-col-${size}-${Number(this.props[size])}`);
-        }
+      } else if (this.props[size] >= 0) {
+        classList.push(`el-col-${size}-${Number(this.props[size])}`);
       }
     });
 
