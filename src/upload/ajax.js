@@ -33,53 +33,56 @@ export default function upload(option) {
     return;
   }
 
-  const xhr = new XMLHttpRequest();
-  const action = option.action;
+  return new Promise((resolve, reject) => {
 
-  if (xhr.upload) {
-    xhr.upload.onprogress = function progress(e) {
-      if (e.total > 0) {
-        e.percent = e.loaded / e.total * 100;
-      }
-      option.onProgress(e);
+    const xhr = new XMLHttpRequest();
+    const action = option.action;
+
+    if (xhr.upload) {
+      xhr.upload.onprogress = function progress(e) {
+        if (e.total > 0) {
+          e.percent = e.loaded / e.total * 100;
+        }
+        option.onProgress(e);
+      };
+    }
+
+    const formData = new FormData();
+
+    if (option.data) {
+      Object.keys(option.data).map(key => {
+        formData.append(key, option.data[key]);
+      });
+    }
+
+    formData.append(option.filename, option.file);
+
+    xhr.onerror = function error(e) {
+      reject(e);
     };
-  }
 
-  const formData = new FormData();
+    xhr.onload = function onload() {
+      if (xhr.status < 200 || xhr.status >= 300) {
+        return reject(getError(action, option, xhr));
+      }
 
-  if (option.data) {
-    Object.keys(option.data).map(key => {
-      formData.append(key, option.data[key]);
-    });
-  }
+      resolve(getBody(xhr));
+    };
 
-  formData.append(option.filename, option.file);
+    xhr.open('post', action, true);
 
-  xhr.onerror = function error(e) {
-    option.onError(e);
-  };
-
-  xhr.onload = function onload() {
-    if (xhr.status < 200 || xhr.status >= 300) {
-      return option.onError(getError(action, option, xhr));
+    if (option.withCredentials && 'withCredentials' in xhr) {
+      xhr.withCredentials = true;
     }
 
-    option.onSuccess(getBody(xhr));
-  };
+    const headers = option.headers || {};
 
-  xhr.open('post', action, true);
-
-  if (option.withCredentials && 'withCredentials' in xhr) {
-    xhr.withCredentials = true;
-  }
-
-  const headers = option.headers || {};
-
-  for (let item in headers) {
-    if (headers.hasOwnProperty(item) && headers[item] !== null) {
-      xhr.setRequestHeader(item, headers[item]);
+    for (let item in headers) {
+      if (headers.hasOwnProperty(item) && headers[item] !== null) {
+        xhr.setRequestHeader(item, headers[item]);
+      }
     }
-  }
-  xhr.send(formData);
-  return xhr;
+    xhr.send(formData);
+
+  })
 }

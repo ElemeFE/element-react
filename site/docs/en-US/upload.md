@@ -273,13 +273,45 @@ submitUpload() {
 ```
 :::
 
+
+### Concurrency control
+
+::: demo
+```js
+render () {
+  const fileList = [
+    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}
+  ]
+
+  return (
+    <Upload
+      className="upload-demo"
+      action="//jsonplaceholder.typicode.com/posts/"
+      multiple
+      fileList={fileList}
+      onSuccess={res => this.handleSuccess(res)}
+      tip={<div className="el-upload__tip">Try uploading 5 files at once</div>}
+    >
+      <Button size="small" type="primary">click to upload</Button>
+    </Upload>
+  )
+}
+
+handleSuccess (res) {
+  console.log(res)
+}
+
+```
+:::
+
 ### Upload Attribute
 
 | Attribute      | Description          | Type      | Accepted Values                | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | action | required, request URL | string | — | — |
 | headers | request headers | object | — | — |
-| multiple | whether uploading multiple files is permitted | boolean | — | — |
+| multiple | whether uploading multiple files is permitted | boolean | — | false |
+| concurrency | the number of files can be uploaded at the same time | number | — | 2 |
 | data | additions options of request | object | — | — |
 | name | key name for uploaded file | string | — | file |
 | withCredentials | whether cookies are sent | boolean | — | false |

@@ -26,7 +26,7 @@ export default class AjaxUpload extends Component {
         return;
       }
       this.uploadFiles(files);
-      this.refs.input.value = null;
+      this.input.value = null;
     }
   }
 
@@ -39,41 +39,51 @@ export default class AjaxUpload extends Component {
     if (!multiple) {
       postFiles = postFiles.slice(0, 1);
     }
+
+    this.props.onStart(postFiles);
+
     postFiles.forEach(file => {
-      this.props.onStart(file);
-      if (this.props.autoUpload) this.upload(file);
+      if (this.props.autoUpload) {
+        this.uploadQueue(file)
+      }
     });
   }
 
-  upload(rawFile: RawFile, file?: _File): void {
-    const { beforeUpload } = this.props;
-    if (!beforeUpload) {
-      return this.post(rawFile);
-    }
-    const before = beforeUpload(rawFile);
-    if (before && before.then) {
-      before.then(
-        processedFile => {
-          if (
-            Object.prototype.toString.call(processedFile) === '[object File]'
-          ) {
-            this.post(processedFile);
-          } else {
-            this.post(rawFile);
-          }
-        },
-        () => {
-          if (file) this.onRemove(file);
-        }
-      );
-    } else if (before !== false) {
-      this.post(rawFile);
-    } else {
-      if (file) this.onRemove(file);
-    }
+  uploadQueue (rawFile: RawFile, file?: _File): void {
+    this.props.queue.add(() => this.upload(rawFile))
   }
 
-  post(file: RawFile): void {
+  upload(rawFile: RawFile, file?: _File): Promise<void> {
+    return new Promise((resolve: Function, reject: Function) => {
+      const { beforeUpload } = this.props;
+      if (!beforeUpload) {
+        return this.post(rawFile, resolve, reject)
+      }
+      const before = beforeUpload(rawFile);
+      if (before && before.then) {
+        before.then(
+          processedFile => {
+            if (
+              Object.prototype.toString.call(processedFile) === '[object File]'
+            ) {
+              return this.post(processedFile, resolve, reject);
+            } else {
+              return this.post(rawFile, resolve, reject);
+            }
+          },
+          () => {
+            if (file) this.onRemove(file);
+          }
+        );
+      } else if (before !== false) {
+        this.post(rawFile, resolve, reject);
+      } else {
+        if (file) this.onRemove(file);
+      }
+    })
+  }
+
+  post(file: RawFile, resolve: Function, reject: Function): Promise<void> {
     const {
       name: filename,
       headers,
@@ -84,21 +94,27 @@ export default class AjaxUpload extends Component {
       onSuccess,
       onError
     } = this.props;
-    ajax({
+
+    return ajax({
       headers,
       withCredentials,
       file,
       data,
       filename,
       action,
-      onProgress: e => onProgress(e, file),
-      onSuccess: res => onSuccess(res, file),
-      onError: err => onError(err, file)
+      onProgress: e => onProgress(e, file)
+    }).then(res => {
+      onSuccess(res, file),
+      resolve(res)
+    })
+    .catch(error => {
+      onError(error, file)
+      reject(error)
     });
   }
 
   handleClick(): void {
-    this.refs.input.click();
+    this.input.click();
   }
 
   render(): React.Element<any> {
@@ -113,13 +129,13 @@ export default class AjaxUpload extends Component {
       >
         {drag
           ? <Cover onFile={file => this.uploadFiles(file)}>
-              {this.props.children}
-            </Cover>
+            {this.props.children}
+          </Cover>
           : this.props.children}
         <input
           className="el-upload__input"
           type="file"
-          ref="input"
+          ref={ref => { this.input = ref } }
           onChange={e => this.handleChange(e)}
           multiple={multiple}
           accept={accept}

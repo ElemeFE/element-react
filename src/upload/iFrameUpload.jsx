@@ -64,8 +64,8 @@ export default class IframeUpload extends Component {
     if (this.state.disabled) return;
     this.setState({ disabled: false, file });
     this.props.onStart && this.props.onStart(file);
-    const formNode = this.refs.form;
-    const dataSpan = this.refs.data;
+    const formNode = this.form;
+    const dataSpan = this.dataSpan;
     let data = this.props.data;
     if (typeof data === 'function') {
       data = data(file);
@@ -81,7 +81,7 @@ export default class IframeUpload extends Component {
 
   handleClick(): void {
     if (!this.state.disabled) {
-      this.refs.input.click();
+      this.input.click();
     }
   }
 
@@ -110,9 +110,9 @@ export default class IframeUpload extends Component {
         onDragOver={e => this.handleDragover(e)}
         onDragLeave={e => this.handleDragleave(e)}
       >
-        <iframe onLoad={() => this.onload()} ref="iframe" name={frameName} />
+        <iframe onLoad={() => this.onload()} name={frameName} />
         <form
-          ref="form"
+          ref={ref => { this.form = ref }}
           action={action}
           target={frameName}
           encType="multipart/form-data"
@@ -121,13 +121,13 @@ export default class IframeUpload extends Component {
           <input
             className="el-upload__input"
             type="file"
-            ref="input"
+            ref={ref => { this.input = ref }}
             name={name}
             onChange={e => this.handleChange(e)}
             accept={accept}
           />
           <input type="hidden" name="documentDomain" value={document.domain} />
-          <span ref="data" />
+          <span ref={ref => { this.dataSpan = ref }} />
         </form>
         {drag
           ? <Cover onFile={file => this.uploadFiles(file)}>
