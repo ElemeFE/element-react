@@ -15,6 +15,7 @@ const typeMap = {
 
 type State = {
   visible: boolean,
+  inputValue?: string,
   editorErrorMessage?: string
 };
 
@@ -25,7 +26,8 @@ export default class MessageBox extends Component {
     super(props);
 
     this.state = {
-      visible: false
+      visible: false,
+      inputValue: props.inputValue
     };
   }
 
@@ -44,6 +46,9 @@ export default class MessageBox extends Component {
   }
 
   onChange(value: string): void {
+    this.setState({
+      inputValue: value
+    });
     this.validate(value);
   }
 
@@ -71,7 +76,6 @@ export default class MessageBox extends Component {
       }
     }
 
-    this.inputValue = value;
     this.setState({ editorErrorMessage });
 
     return !editorErrorMessage;
@@ -87,9 +91,9 @@ export default class MessageBox extends Component {
           break;
         case 'confirm':
           if (modal === 'prompt') {
-            if (this.validate(this.inputValue)) {
+            if (this.validate(this.state.inputValue || '')) {
               if (showInput) {
-                promise.resolve({ value: this.inputValue, action });
+                promise.resolve({ value: this.state.inputValue, action });
               } else {
                 promise.resolve(action);
               }
@@ -117,7 +121,7 @@ export default class MessageBox extends Component {
   }
 
   render(): React.Element<any> {
-    const { willUnmount, inputValue, title, showClose, message, showInput, inputPlaceholder, showCancelButton, cancelButtonClass, showConfirmButton, confirmButtonClass, inputType } = this.props;
+    const { willUnmount, title, showClose, message, showInput, inputPlaceholder, showCancelButton, cancelButtonClass, showConfirmButton, confirmButtonClass, inputType } = this.props;
     const { visible, editorErrorMessage } = this.state;
 
     return (
@@ -158,7 +162,7 @@ export default class MessageBox extends Component {
                                 'invalid': editorErrorMessage
                               })}
                               type={inputType}
-                              value={inputValue}
+                              value={this.state.inputValue}
                               placeholder={inputPlaceholder}
                               onChange={this.onChange.bind(this)}
                             />
