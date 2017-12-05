@@ -302,6 +302,8 @@ class Select extends Component {
           this.addOptionToValue(option);
         }
       });
+
+      this.forceUpdate();
     }
 
     if (!multiple) {
@@ -525,9 +527,9 @@ class Select extends Component {
       selected = option;
       selectedLabel = option.currentLabel();
       hoverIndex = option.index;
-    }
 
-    this.setState({ selected, selectedLabel, hoverIndex });
+      this.setState({ selected, selectedLabel, hoverIndex });
+    }
   }
 
   managePlaceholder() {
