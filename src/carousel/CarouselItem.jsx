@@ -10,7 +10,8 @@ type State = {
   scale: number,
   active: boolean,
   ready: boolean,
-  inStage: boolean
+  inStage: boolean,
+  animating: boolean
 };
 
 export default class CarouselItem extends Component {
@@ -25,7 +26,8 @@ export default class CarouselItem extends Component {
       scale: 1,
       active: false,
       ready: false,
-      inStage: false
+      inStage: false,
+      animating: false
     };
   }
 
@@ -76,10 +78,14 @@ export default class CarouselItem extends Component {
     }
   }
 
-  translateItem(index: number, activeIndex: number) {
+  translateItem(index: number, activeIndex: number, oldIndex: number) {
     const parent: any = ReactDOM.findDOMNode(this.parent());
     const parentWidth = parent.offsetWidth;
     const length = this.parent().state.items.length;
+
+    if (!this.parent().iscard && oldIndex !== undefined) {
+      this.state.animating = index === activeIndex || index === oldIndex;
+    }
 
     if (index !== activeIndex && length > 2) {
       index = this.processIndex(index, activeIndex, length);
@@ -112,7 +118,7 @@ export default class CarouselItem extends Component {
   }
 
   render() {
-    const { hover, translate, scale, active, ready, inStage } = this.state;
+    const { hover, translate, scale, active, ready, inStage, animating } = this.state;
 
     return (
       <View show={ready}>
@@ -121,14 +127,14 @@ export default class CarouselItem extends Component {
             'is-active': active,
             'el-carousel__item--card': this.parent().iscard,
             'is-in-stage': inStage,
-            'is-hover': hover
+            'is-hover': hover,
+            'is-animating': animating
           })}
           onClick={this.handleItemClick.bind(this)}
           style={{
             msTransform: `translateX(${ translate }px) scale(${ scale })`,
             WebkitTransform: `translateX(${ translate }px) scale(${ scale })`,
-            transform: `translateX(${ translate }px) scale(${ scale })`,
-            width: this.calculateWidth
+            transform: `translateX(${ translate }px) scale(${ scale })`
           }}>
           {
             this.parent().iscard && (

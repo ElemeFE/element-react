@@ -149,33 +149,11 @@ class Select extends Component {
   }
 
   componentDidUpdate() {
-    const { visible } = this.state;
-
-    if (visible) {
-      if (this.popperJS) {
-        this.popperJS.update();
-      } else {
-        this.popperJS = new Popper(this.reference, this.popper, {
-          gpuAcceleration: false
-        });
-      }
-    } else {
-      if (this.popperJS) {
-        this.popperJS.destroy();
-      }
-
-      delete this.popperJS;
-    }
-
     this.state.inputWidth = this.reference.getBoundingClientRect().width;
   }
 
   componentWillUnmount() {
     removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
-
-    if (this.popperJS) {
-      this.popperJS.destroy();
-    }
   }
 
   debounce(): number {
@@ -324,6 +302,8 @@ class Select extends Component {
           this.addOptionToValue(option);
         }
       });
+
+      this.forceUpdate();
     }
 
     if (!multiple) {
@@ -331,15 +311,15 @@ class Select extends Component {
 
       if (option) {
         this.addOptionToValue(option);
+        this.setState({ selectedInit, currentPlaceholder });
       } else {
         selected = {};
         selectedLabel = '';
+        this.setState({ selectedInit, selected, currentPlaceholder, selectedLabel }, () => {
+          this.resetHoverIndex();
+        });
       }
     }
-
-    this.setState({ selectedInit, selected, currentPlaceholder, selectedLabel }, () => {
-      this.resetHoverIndex();
-    });
   }
 
   onSelectedChange(val: any, bubble: boolean = true) {
@@ -428,6 +408,16 @@ class Select extends Component {
     }
 
     this.setState({ hoverIndex, voidRemoteQuery });
+  }
+
+  onEnter(): void {
+    this.popperJS = new Popper(this.reference, this.popper, {
+      gpuAcceleration: false
+    });
+  }
+
+  onAfterLeave(): void {
+    this.popperJS.destroy();
   }
 
   optionsAllDisabled(options: []): boolean {
@@ -537,9 +527,9 @@ class Select extends Component {
       selected = option;
       selectedLabel = option.currentLabel();
       hoverIndex = option.index;
-    }
 
-    this.setState({ selected, selectedLabel, hoverIndex });
+      this.setState({ selected, selectedLabel, hoverIndex });
+    }
   }
 
   managePlaceholder() {
@@ -939,7 +929,7 @@ class Select extends Component {
             }
           }}
         />
-        <Transition name="md-fade-bottom" duration="200">
+        <Transition name="el-zoom-in-top" onEnter={this.onEnter.bind(this)} onAfterLeave={this.onAfterLeave.bind(this)}>
           <View show={visible && this.emptyText() !== false}>
             <div ref="popper" className={this.classNames('el-select-dropdown', {
                 'is-multiple': multiple

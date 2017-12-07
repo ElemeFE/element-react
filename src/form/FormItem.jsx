@@ -210,10 +210,8 @@ export default class FormItem extends Component {
         }
         <div className="el-form-item__content" style={this.contentStyle()}>
           {this.props.children}
-          <Transition name="md-fade-bottom">
-            {
-              error && <div className="el-form-item__error">{error}</div>
-            }
+          <Transition name="el-zoom-in-top">
+            { error && <div className="el-form-item__error">{error}</div> }
           </Transition>
         </div>
       </div>

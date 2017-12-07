@@ -60,14 +60,10 @@ function next(props) {
 
     const component = React.createElement(MessageBox, Object.assign({}, props, {
       promise: { resolve, reject },
-      onClose: () => {
+      willUnmount: () => {
         ReactDOM.unmountComponentAtNode(div);
         document.body.removeChild(div);
         document.body.style.removeProperty('overflow');
-
-        if (props.onClose instanceof Function) {
-          props.onClose();
-        }
       }
     }));
 

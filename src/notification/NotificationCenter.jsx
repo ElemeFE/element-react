@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 
 import Notification from './Notification';
 
+const className = '.el-notification';
+
 export default function NotificationCenter(props = {}, type) {
-  const div = document.createElement('div'), className = 'el-notification';
+  const div = document.createElement('div');
 
   document.body.appendChild(div);
 
@@ -18,44 +20,37 @@ export default function NotificationCenter(props = {}, type) {
     props.type = type;
   }
 
-  const instances = document.getElementsByClassName(className);
-
-  props.top = props.offset || 0;
-
-  for (let i = 0, len = instances.length; i < len; i++) {
-    props.top += instances[i].offsetHeight + 16;
+  if (!props.offset) {
+    props.offset = 0
   }
 
-  props.top += 16;
+  const instances = document.querySelectorAll(className)
 
-  const component = React.createElement(Notification, Object.assign({}, props, {
-    willUnmount: () => {
+  const lastInstance = instances[instances.length - 1];
+
+  props.top = (lastInstance ? (parseInt(lastInstance.style.top) + lastInstance.offsetHeight) : props.offset) + 16;
+
+  const element = React.createElement(Notification, Object.assign({}, props, {
+    willUnmount(height, top) {
       ReactDOM.unmountComponentAtNode(div);
       document.body.removeChild(div);
 
-      setTimeout(() => {
-        const instances = document.querySelectorAll('.el-notification');
+      requestAnimationFrame(() => {
+        const instances = document.querySelectorAll(className);
 
         for (let i = 0, len = instances.length; i < len; i++) {
           const element = instances[i];
+          const elementTop = parseInt(element.style.top);
 
-          if (element.offsetTop > props.offsetHeight) {
-            element.style.top = `${element.offsetTop - props.offsetHeight - 16}px`;
+          if (elementTop > top) {
+            element.style.top = `${elementTop - height - 16}px`;
           }
         }
       })
-
-      if (props.onClose instanceof Function) {
-        props.onClose();
-      }
     }
   }));
 
-  ReactDOM.render(component, div, () => {
-    setTimeout(() => {
-      props.offsetHeight = div.getElementsByClassName(className)[0].offsetHeight;
-    });
-  });
+  ReactDOM.render(element, div);
 }
 
 /* eslint-disable */

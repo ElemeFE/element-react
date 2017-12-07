@@ -20,39 +20,23 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  componentDidUpdate(): void {
-    const { showPopper } = this.state;
-
-    if (showPopper) {
-      if (this.popperJS) {
-        this.popperJS.update();
-      } else {
-        const parent: any = ReactDOM.findDOMNode(this.parent());
-
-        this.popperJS = new Popper(parent, this.refs.popper, {
-          placement: this.placement(),
-          gpuAcceleration: false
-        });
-      }
-    } else {
-      if (this.popperJS) {
-        this.popperJS.destroy();
-      }
-
-      delete this.popperJS;
-    }
-  }
-
-  componentWillUnmount(): void {
-    if (this.popperJS) {
-      this.popperJS.destroy();
-    }
-  }
-
   onVisibleChange(visible: boolean): void {
     this.setState({
       showPopper: visible
     })
+  }
+
+  onEnter(): void {
+    const parent = ReactDOM.findDOMNode(this.parent());
+
+    this.popperJS = new Popper(parent, this.refs.popper, {
+      placement: this.placement(),
+      gpuAcceleration: false
+    });
+  }
+
+  onAfterLeave(): void {
+    this.popperJS.destroy();
   }
 
   parent(): Component {
@@ -65,7 +49,7 @@ export default class DropdownMenu extends Component {
 
   render(): React.Element<any> {
     return (
-      <Transition name="md-fade-bottom">
+      <Transition name="el-zoom-in-top" onEnter={this.onEnter.bind(this)} onAfterLeave={this.onAfterLeave.bind(this)}>
         <View show={this.state.showPopper}>
           <ul ref="popper" style={this.style()} className={this.className('el-dropdown-menu')}>
             {this.props.children}

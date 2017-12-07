@@ -443,8 +443,8 @@ render() {
 |-------------  |---------------- |---------------- |---------------------- |-------- |
 | type         | 类型   | string  | text/textarea | text |
 | value         | 绑定值           | string, number  | — | — |
-| maxlength     | 最大输入长度      | number          |  —  | — |
-| minlength     | 最小输入长度      | number          | — | — |
+| maxLength     | 最大输入长度      | number          |  —  | — |
+| minLength     | 最小输入长度      | number          | — | — |
 | placeholder   | 输入框占位文本    | string          | — | — |
 | disabled      | 禁用            | boolean         | — | false   |
 | size          | 输入框尺寸，只在 `type!="textarea"` 时有效      | string          | large, small, mini  | — |
@@ -453,12 +453,12 @@ render() {
 | autosize      | 自适应内容高度，只对 `type="textarea"` 有效，可传入对象，如，{ minRows: 2, maxRows: 6 }  |  boolean/object | — |  false   |
 | autoComplete | 原生属性，自动补全 | string | on, off | off |
 | name | 原生属性 | string | — | — |
-| readonly | 原生属性，是否只读 | boolean | — | false |
+| readOnly | 原生属性，是否只读 | boolean | — | false |
 | max | 原生属性，设置最大值 | — | — | — |
 | min | 原生属性，设置最小值 | — | — | — |
 | step | 原生属性，设置输入字段的合法数字间隔 | — | — | — |
 | resize | 控制是否能被用户缩放 | string | none, both, horizontal, vertical | — |
-| autofocus | 原生属性，自动获取焦点 | boolean | true, false | false |
+| autoFocus | 原生属性，自动获取焦点 | boolean | true, false | false |
 | onIconClick | 点击 Input 内的图标的钩子函数 | function | — | — |
 
 ### Autocomplete Attributes

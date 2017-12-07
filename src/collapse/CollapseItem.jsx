@@ -1,36 +1,11 @@
 /* @flow */
 
 import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
-import { loadStyleString } from '../../libs/utils/dom';
+import { Component, PropTypes, CollapseTransition } from '../../libs';
 
 export default class CollapseItem extends Component {
   constructor(props: Object) {
     super(props);
-  }
-
-  componentWillMount(): void {
-    loadStyleString(
-      `.collapse-enter {
-        max-height: 0px;
-        -webkit-transition: max-height .3s ease;
-        overflow: hidden;
-      }
-      .collapse-enter.collapse-enter-active {
-        height: auto;
-        max-height: 100px;
-      }
-      .collapse-leave {
-        max-height: 100px;
-        -webkit-transition: max-height .3s ease;
-      }
-      .collapse-leave.collapse-leave-active {
-        overflow: hidden;
-        max-height: 0px;
-      }
-      `,
-      'collaspe-item'
-    );
   }
 
   render(): React.Element<any> {
@@ -47,15 +22,13 @@ export default class CollapseItem extends Component {
           <i className="el-collapse-item__header__arrow el-icon-arrow-right" />
           {title}
         </div>
-        <Transition name="collapse">
-          <View show={isActive}>
-            <div className="el-collapse-item__wrap">
-              <div className="el-collapse-item__content">
-                {this.props.children}
-              </div>
+        <CollapseTransition isShow={isActive}>
+          <div className="el-collapse-item__wrap">
+            <div className="el-collapse-item__content">
+              {this.props.children}
             </div>
-          </View>
-        </Transition>
+          </div>
+        </CollapseTransition>
       </div>
     );
   }

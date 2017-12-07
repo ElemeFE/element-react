@@ -36,8 +36,6 @@ export default class Toast extends Component {
 
     this.setState({
       visible: false
-    }, () => {
-      this.props.willUnmount();
     });
   }
 
@@ -57,8 +55,8 @@ export default class Toast extends Component {
     const { iconClass, customClass } = this.props;
 
     return (
-      <Transition name="el-message-fade" duration="300">
-        <View key={this.state.visible} show={this.state.visible}>
+      <Transition name="el-message-fade" onAfterLeave={() => { this.props.willUnmount(); }}>
+        <View show={this.state.visible}>
           <div className={this.classNames('el-message', customClass)} onMouseEnter={this.stopTimer.bind(this)} onMouseLeave={this.startTimer.bind(this)}>
             { !iconClass && <img className="el-message__img" src={icons[this.props.type]} /> }
             <div className={this.classNames('el-message__group', { 'is-with-icon': iconClass })}>

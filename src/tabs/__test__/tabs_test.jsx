@@ -1,5 +1,4 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import { Tabs, Icon, Button } from '../../../src';
@@ -171,7 +170,7 @@ test('Customized trigger button of new tab', () => {
   }
 
   const removeTab = (tab) => {
-    const { tabs, tabIndex } = state;
+    const { tabs } = state;
 
     tabs.splice(tab.key.replace(/^\.\$/, ''), 1);
     state.tabs = tabs;

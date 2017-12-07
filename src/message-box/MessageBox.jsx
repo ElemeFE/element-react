@@ -15,6 +15,7 @@ const typeMap = {
 
 type State = {
   visible: boolean,
+  inputValue?: string,
   editorErrorMessage?: string
 };
 
@@ -25,7 +26,8 @@ export default class MessageBox extends Component {
     super(props);
 
     this.state = {
-      visible: false
+      visible: false,
+      inputValue: props.inputValue
     };
   }
 
@@ -44,6 +46,9 @@ export default class MessageBox extends Component {
   }
 
   onChange(value: string): void {
+    this.setState({
+      inputValue: value
+    });
     this.validate(value);
   }
 
@@ -71,7 +76,6 @@ export default class MessageBox extends Component {
       }
     }
 
-    this.inputValue = value;
     this.setState({ editorErrorMessage });
 
     return !editorErrorMessage;
@@ -87,9 +91,9 @@ export default class MessageBox extends Component {
           break;
         case 'confirm':
           if (modal === 'prompt') {
-            if (this.validate(this.inputValue)) {
+            if (this.validate(this.state.inputValue || '')) {
               if (showInput) {
-                promise.resolve({ value: this.inputValue, action });
+                promise.resolve({ value: this.state.inputValue, action });
               } else {
                 promise.resolve(action);
               }
@@ -114,26 +118,28 @@ export default class MessageBox extends Component {
     this.setState({
       visible: false
     });
-
-    setTimeout(() => {
-      this.props.onClose();
-    }, 200);
   }
 
   render(): React.Element<any> {
+    const { willUnmount, title, showClose, message, showInput, inputPlaceholder, showCancelButton, cancelButtonClass, showConfirmButton, confirmButtonClass, inputType } = this.props;
+    const { visible, editorErrorMessage } = this.state;
+
     return (
       <div>
         <div style={{ position: 'absolute', zIndex: 2001 }}>
-          <Transition name="msgbox-fade" duration="300">
-            <View key={this.state.visible} show={this.state.visible}>
+          <Transition
+            name="msgbox-fade"
+            onAfterLeave={() => { willUnmount && willUnmount() }}
+          >
+            <View show={visible}>
               <div className="el-message-box__wrapper">
                 <div className="el-message-box">
                   {
-                    this.props.title && (
+                    title && (
                       <div className="el-message-box__header">
-                        <div className="el-message-box__title">{this.props.title}</div>
+                        <div className="el-message-box__title">{title}</div>
                         {
-                          this.props.showClose && (
+                          showClose && (
                             <button type="button" className="el-message-box__headerbtn" aria-label="Close" onClick={this.handleAction.bind(this, 'cancel')}>
                               <i className="el-message-box__close el-icon-close" />
                             </button>
@@ -143,35 +149,37 @@ export default class MessageBox extends Component {
                     )
                   }
                   {
-                    this.props.message && (
+                    message && (
                       <div className="el-message-box__content">
                         <div className={this.classNames('el-message-box__status', this.typeClass())}></div>
                         <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
-                          <p>{this.props.message}</p>
+                          <p>{message}</p>
                         </div>
-                        <View show={this.props.showInput}>
+                        <View show={showInput}>
                           <div className="el-message-box__input">
                             <Input
                               className={this.classNames({
-                                'invalid': this.state.editorErrorMessage
+                                'invalid': editorErrorMessage
                               })}
-                              placeholder={this.props.inputPlaceholder}
+                              type={inputType}
+                              value={this.state.inputValue}
+                              placeholder={inputPlaceholder}
                               onChange={this.onChange.bind(this)}
                             />
                             <div className="el-message-box__errormsg" style={{
-                              visibility: this.state.editorErrorMessage ? 'visible' : 'hidden'
-                            }}>{this.state.editorErrorMessage}</div>
+                              visibility: editorErrorMessage ? 'visible' : 'hidden'
+                            }}>{editorErrorMessage}</div>
                           </div>
                         </View>
                       </div>
                     )
                   }
                   <div className="el-message-box__btns">
-                    <View show={this.props.showCancelButton}>
-                      <Button className={this.props.cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.cancelButtonText()}</Button>
+                    <View show={showCancelButton}>
+                      <Button className={cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.cancelButtonText()}</Button>
                     </View>
-                    <View show={this.props.showConfirmButton}>
-                      <Button className={this.classNames('el-button--primary', this.props.confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.confirmButtonText()}</Button>
+                    <View show={showConfirmButton}>
+                      <Button className={this.classNames('el-button--primary', confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.confirmButtonText()}</Button>
                     </View>
                   </div>
                 </div>
@@ -179,8 +187,8 @@ export default class MessageBox extends Component {
             </View>
           </Transition>
         </div>
-        <Transition name="v-modal" duration="200">
-          <View key={this.state.visible} show={this.state.visible}>
+        <Transition name="v-modal">
+          <View show={visible}>
             <div className="v-modal" style={{ zIndex: 1006 }}></div>
           </View>
         </Transition>
@@ -206,6 +214,8 @@ MessageBox.propTypes = {
   inputPattern: PropTypes.regex,
   inputValidator: PropTypes.func,
   inputErrorMessage: PropTypes.string,
+  inputValue: PropTypes.any,
+  inputType: PropTypes.string,
   promise: PropTypes.object,
   onClose: PropTypes.func
 }
