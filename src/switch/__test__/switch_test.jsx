@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import { Switch, Tooltip } from '../../../src';
 
 test('Basic usage', () => {
@@ -112,5 +112,27 @@ test('Disabled', () => {
 
   expect(switch2.find('label .el-switch').at(0).hasClass('is-disabled')).toEqual(true);
   expect(switch2.find('input[type="checkbox"]').at(0).prop('disabled')).toEqual(true);
+
+});
+
+test('Focus', () => {
+  const focusFn = jest.fn();
+  const blurFn = jest.fn();
+  const switch1 = mount(
+    <Switch
+      allowFocus={true}
+      onFocus={focusFn}
+      onBlur={blurFn}
+    >
+    </Switch>
+  );
+
+  expect(focusFn.mock.calls.length).toBe(0);
+  expect(blurFn.mock.calls.length).toBe(0);
+
+  switch1.find('input').simulate('focus');
+  expect(focusFn.mock.calls.length).toBe(1);
+  switch1.find('input').simulate('blur');
+  expect(blurFn.mock.calls.length).toBe(1);
 
 });
