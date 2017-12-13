@@ -18,6 +18,7 @@ module.exports = {
     'slider': 'Slider 滑块',
     'time-picker': 'Time Picker 时间选择器',
     'date-picker': 'Date Picker 日期选择器',
+    'datetime-picker': 'DateTimePicker 日期时间选择器',
     'upload': 'Upload 上传',
     'rate': 'Rate 评分',
     'color-picker': 'ColorPicker 颜色选择器',

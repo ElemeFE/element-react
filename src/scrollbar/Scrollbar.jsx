@@ -94,7 +94,9 @@ export class Scrollbar extends Component {
     let nodes;
     if (!native){
       const wrap = (
-        <div ref="wrap"
+        <div 
+          {...others}
+          ref="wrap"
           key={0}
           style={style}
           onScroll={this.handleScroll.bind(this)}
@@ -111,7 +113,12 @@ export class Scrollbar extends Component {
     }else {
       nodes = [
         (
-          <div key={0} ref="wrap" className={this.classNames(wrapClass, 'el-scrollbar__wrap')} style={style}>
+          <div 
+            {...others}
+            key={0} 
+            ref="wrap" 
+            className={this.classNames(wrapClass, 'el-scrollbar__wrap')} 
+            style={style}>
             {view}
           </div>
         )

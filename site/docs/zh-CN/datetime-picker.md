@@ -1,13 +1,11 @@
-## DatePicker 日期选择器
 
-用于选择或输入日期
+## DateTimePicker 日期时间选择器
 
-###  选择日
+在同一个选择器里选择日期和时间
 
-以「日」为基本单位，基础的日期选择控件
+###  日期和时间点
 
-:::demo 基本单位由`type`属性指定。快捷选项需配置`shortcuts`，禁用日期通过 `disabledDate` 设置，传入函数
-
+:::demo 通过设置`isShowTime`，即可在同一个选择器里同时进行日期和时间的选择。快捷选项的使用方法与 Date Picker 相同。
 ```js
 
 constructor(props) {
@@ -24,6 +22,7 @@ render() {
         <span className="demonstration">默认</span>
         <DatePicker
           value={value1}
+          isShowTime={true}
           placeholder="选择日期"
           onChange={date=>{
             console.debug('DatePicker1 changed: ', date)
@@ -36,6 +35,7 @@ render() {
         <span className="demonstration">带快捷选项</span>
         <DatePicker
           ref={e=>this.datepicker2 = e}
+          isShowTime={true}
           value={value2}
           align="right"
           placeholder="选择日期"
@@ -78,68 +78,6 @@ render() {
 
 
 
-###  其他日期单位
-
-通过扩展基础的日期选择，可以选择周、月、年
-
-:::demo
-```js
-
-constructor(props) {
-  super(props)
-  this.state = {}
-}
-
-render() {
-  const {value1, value2, value3} = this.state
-
-  return (
-    <div className="source">
-      <div className="block">
-        <span className="demonstration">周</span>
-        <DatePicker
-          value={value1}
-          placeholder="选择周"
-          onChange={date=>{
-            console.debug('week DatePicker1 changed: ', date)
-            this.setState({value1: date})
-          }}
-          format="yyyy 第 WW 周"
-          selectionMode="week"
-          />
-      </div>
-      <div className="block">
-        <span className="demonstration">月</span>
-        <DatePicker
-          value={value2}
-          placeholder="选择月"
-          onChange={date=>{
-            console.debug('month DatePicker changed: ', date)
-            this.setState({value2: date})
-          }}
-          selectionMode="month"
-          />
-      </div>
-      <div className="block">
-        <span className="demonstration">年</span>
-        <DatePicker
-          value={value3}
-          placeholder="选择年"
-          onChange={date=>{
-            console.debug('year DatePicker changed: ', date)
-            this.setState({value3: date})
-          }}
-          selectionMode="year"
-          align="right"
-          />
-      </div>
-    </div>
-  )
-}
-```
-:::
-
-
 ###  选择日期范围
 
 可在一个选择器中便捷地选择一个时间范围
@@ -161,6 +99,7 @@ render() {
         <DateRangePicker
           value={value1}
           placeholder="选择日期范围"
+          isShowTime={true}
           onChange={date=>{
             console.debug('DateRangePicker1 changed: ', date)
             this.setState({value1: date})
@@ -171,6 +110,7 @@ render() {
         <span className="demonstration">带快捷选项</span>
         <DateRangePicker
           value={value2}
+          isShowTime={true}
           placeholder="选择日期范围"
           align="right"
           ref={e=>this.daterangepicker2 = e}
@@ -218,35 +158,5 @@ render() {
 :::
 
 
-### 公共参数
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
-|---------- |-------------- |---------- |--------------------------------  |-------- |
-| placeholder | 占位内容 | string | — | — |
-| format | 时间日期格式化 | string | 年 `yyyy`，月 `MM`，日 `dd`，小时 `HH`，分 `mm`，秒 `ss` | yyyy-MM-dd |
-| align | 对齐方式 | string | left, center, right | left |
-| isShowTrigger | 是否显示图标 | boolean | - | true |
-| isReadOnly | 是否是只读 | boolean | - | false |
-| isDisabled | 是否是禁用 | boolean | - | false |
-| isShowTime | 是否显示时间 | boolean | - | false |
-| firstDayOfWeek | 周起始日 | Number | 0 到 6 | 0 |
-| onFocus | focus 事件触发 | (SyntheticEvent)=>() | - | - |
-| onBlur | blur 事件触发 | (SyntheticEvent)=>() | - | - |
-
-### DatePicker
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
-|---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | - | Date/null | — | - |
-| shortcuts | 快捷选项 | {text: string, onClick: ()=>()}[] | - | - |
-| selectionMode | 日期类型 | string, one of ['year', 'month', 'week', 'day'] | - | 'day' |
-| disabledDate | 是否禁用日期 | (Date, selectionMode)=>boolean | - | - |
-| showWeekNumber | 是否展示周数 | boolean | - | false |
-
-
-### DateRangePanel
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
-|---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | - | Date[]/null | — | - |
-| shortcuts | 快捷选项 | {text: string, onClick: ()=>()}[] | - | - |
-| showWeekNumber | 是否展示周数 | boolean | - | false |
-| rangeSeparator | 选择范围时的分隔符 | string | - | ' - ' |
-
+### 参数
+和 DatePicker 相同

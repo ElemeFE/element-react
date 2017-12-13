@@ -16,6 +16,7 @@ class Component extends React.Component<{}, {}> {
           value={value1}
           placeholder="选择日期"
           firstDayOfWeek={2}
+          isShowTime={true}
           onChange={date => {
             console.debug('DatePicker1 changed: ', date)
             this.setState({ value1: date })
