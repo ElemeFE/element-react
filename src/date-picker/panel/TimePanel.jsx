@@ -11,7 +11,7 @@ import { PopperBase } from './PopperBase'
 const mapPropsToState = (props) => {
   const state: any = {
     format: props.format || 'HH:mm:ss',
-    currentDate: props.currentDate || Date()
+    currentDate: props.currentDate || new Date()
   };
   state.isShowSeconds = (state.format || '').indexOf('ss') !== -1
   return state

@@ -23,6 +23,7 @@ export default {
       'slider': require('./slider'),
       'time-picker': require('./time-picker'),
       'date-picker': require('./date-picker'),
+      'datetime-picker': require('./datetime-picker'),
       'upload': require('./upload'),
       'rate': require('./rate'),
       'color-picker': require('./color-picker'),
