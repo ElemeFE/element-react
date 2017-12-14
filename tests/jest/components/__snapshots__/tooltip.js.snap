@@ -1,0 +1,556 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Advanced usage 1`] = `"[object Object]"`;
+
+exports[`Advanced usage 2`] = `"[object Object]"`;
+
+exports[`Basic Usage 1`] = `
+<div
+  className="box"
+>
+  <div
+    className="top"
+  >
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              top-start
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Top Left prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              top
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Top Center prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              top-end
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Top Right prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+  </div>
+  <div
+    className="left"
+  >
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              left-start
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Left Top prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              left
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Left Center prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              left-end
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Left Bottom prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+  </div>
+  <div
+    className="right"
+  >
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              right-start
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Right Top prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              right
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Right Center prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              right-end
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Right Bottom prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+  </div>
+  <div
+    className="bottom"
+  >
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              bottom-start
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Bottom Left prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              bottom
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Bottom Center prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+    <div
+      className="el-tooltip item"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="el-tooltip__rel"
+      >
+        <div>
+          <button
+            className="el-button el-button--default"
+            disabled={false}
+            onClick={[Function]}
+            style={Object {}}
+            type="button"
+          >
+            <span>
+              bottom-end
+            </span>
+          </button>
+        </div>
+      </div>
+      <span
+        className={undefined}
+        style={undefined}
+      >
+        <div
+          className="el-tooltip__popper is-dark"
+          style={
+            Object {
+              "display": "none",
+            }
+          }
+        >
+          <div>
+            Bottom Right prompts info
+          </div>
+          <div
+            className="popper__arrow"
+          />
+        </div>
+      </span>
+    </div>
+  </div>
+</div>
+`;

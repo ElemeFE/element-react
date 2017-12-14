@@ -86,6 +86,26 @@ render() {
 ```
 :::
 
+### 焦点
+
+:::demo 设置`allowFocus`属性，接受一个`Boolean`，设置`true`即可激活。
+
+```js
+render() {
+  return (
+    <div>
+      <Switch
+        allowFocus={true}
+        onFocus={()=>console.log('focus')}
+        onBlur={()=>console.log('blur')}
+        >
+      </Switch>
+    </div>
+  )
+}
+```
+:::
+
 ### Attributes
 
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
@@ -101,8 +121,11 @@ render() {
 | onColor  | switch 打开时的背景色    | string   | — | #20A0FF |
 | offColor  | switch 关闭时的背景色    | string   | — | #C0CCDA |
 | name  | switch 对应的 name 属性    | string   | — | — |
+| allowFocus | 允许 switch 触发 focus 和 blur 事件 | boolean | boolean | — | false |
 
 ### Events
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
 | onChange  | switch 状态发生变化时的回调函数    | value |
+| onBlur  | switch 失去焦点时触发，仅当 `allow-focus` 为 true 时生效 | event: Event |
+| onFocus  | switch 获得焦点时触发，仅当 `allow-focus` 为 true 时生效 | event: Event |

@@ -61,6 +61,24 @@ export default class Switch extends Component {
     this.refs.core.style.backgroundColor = newColor;
   }
 
+  setFocus() {
+    if (this.props.allowFocus) {
+      this.refs.input.focus();
+    }
+  }
+
+  handleFocus(e: Object) {
+    if (this.props.allowFocus) {
+      this.props.onFocus(e);
+    }
+  }
+
+  handleBlur(e: Object) {
+    if (this.props.allowFocus) {
+      this.props.onBlur(e);
+    }
+  }
+
   handleChange(e: Object) {
     this.setState({
       value: e.target.checked ? this.props.onValue : this.props.offValue
@@ -81,7 +99,7 @@ export default class Switch extends Component {
   }
 
   render() {
-    const { name, disabled, onText, offText, onValue, onIconClass, offIconClass } = this.props;
+    const { name, disabled, onText, offText, onValue, onIconClass, offIconClass, allowFocus } = this.props;
     const { value, coreWidth, buttonStyle } = this.state;
 
     return (
@@ -98,16 +116,21 @@ export default class Switch extends Component {
         </View>
 
         <input
-          className="el-switch__input"
+          className={this.className('el-switch__input', {
+            'allow-focus' : allowFocus
+          })}
           type="checkbox"
           checked={value === onValue}
           name={name}
+          ref="input"
           disabled={disabled}
           onChange={this.handleChange.bind(this)}
+          onFocus={this.handleFocus.bind(this)}
+          onBlur={this.handleBlur.bind(this)}
         />
 
         <span className="el-switch__core" ref="core" style={{ 'width': coreWidth + 'px' }}>
-          <span className="el-switch__button" style={Object.assign({}, buttonStyle)} />
+          <span className="el-switch__button" style={Object.assign({}, buttonStyle)} onClick={this.setFocus.bind(this)}/>
         </span>
 
         <Transition name="label-fade">
@@ -151,7 +174,10 @@ Switch.propTypes = {
   onValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]),
   offValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]),
   name: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func,
+  allowFocus: PropTypes.bool
 };
 
 Switch.defaultProps = {
@@ -166,5 +192,6 @@ Switch.defaultProps = {
   offValue: false,
   onColor: '',
   offColor: '',
-  name: ''
+  name: '',
+  allowFocus: false
 };

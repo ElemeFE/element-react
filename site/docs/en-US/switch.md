@@ -86,6 +86,26 @@ render() {
 ```
 :::
 
+### Focus
+
+:::demo Adding the `allowFocus` attribute，allow `focus` and `blur` events on the input.
+
+```js
+render() {
+  return (
+    <div>
+      <Switch
+        allowFocus={true}
+        onFocus={()=>console.log('focus')}
+        onBlur={()=>console.log('blur')}
+        >
+      </Switch>
+    </div>
+  )
+}
+```
+:::
+
 ### Attributes
 
 | Attribute      | Description    | Type      | Accepted Values     | Default   |
@@ -101,8 +121,11 @@ render() {
 | onColor  | background color when in `on` state   | string   | — | #20A0FF |
 | offColor  |background color when in `off` state  | string   | — | #C0CCDA |
 | name  | input name of Switch   | string   | — | — |
+| allowFocus | allow `focus` and `blur` events on the input | boolean | — | false |
 
 ### Events
 | Event Name      | Description    | Parameters      |
 |---------- |-------- |---------- |
 | onChange  | triggers when value changes  | value |
+| onBlur  | triggers on blur (if `allow-focus` is true) | event: Event |
+| onFocus  | triggers on focus (if `allow-focus` is true) | event: Event |
