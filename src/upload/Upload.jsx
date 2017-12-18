@@ -5,6 +5,7 @@ import { Component, PropTypes } from '../../libs';
 import UploadList from './UploadList';
 import iFrameUpload from './iFrameUpload';
 import AjaxUpload from './AjaxUpload';
+import PQueue from './pQueue';
 import type { UploadState, RawFile, _File, _ProgressEvent } from './Types';
 
 export default class Upload extends Component {
@@ -18,6 +19,7 @@ export default class Upload extends Component {
     fileList: [],
     showFileList: true,
     autoUpload: true,
+    concurrency: 2,
     onRemove() {},
     onPreview() {},
     onProgress() {},
@@ -32,6 +34,7 @@ export default class Upload extends Component {
       fileList: [],
       tempIndex: 1
     };
+    this.queue = new PQueue({ concurrency: this.props.concurrency })
   }
 
   componentWillMount(): void {
@@ -64,27 +67,29 @@ export default class Upload extends Component {
     return null;
   }
 
-  handleStart(file: RawFile): void {
+  handleStart(files: Array<RawFile>): void {
     let { tempIndex, fileList } = this.state;
+    files.forEach(file => {
+      file.uid = Date.now() + tempIndex++;
 
-    file.uid = Date.now() + tempIndex++;
+      let _file: _File = {
+        status: 'ready',
+        name: file.name,
+        size: file.size,
+        percentage: 0,
+        uid: file.uid,
+        raw: file
+      };
 
-    let _file: _File = {
-      status: 'ready',
-      name: file.name,
-      size: file.size,
-      percentage: 0,
-      uid: file.uid,
-      raw: file
-    };
+      try {
+        _file.url = URL.createObjectURL(file);
+      } catch (err) {
+        return;
+      }
 
-    try {
-      _file.url = URL.createObjectURL(file);
-    } catch (err) {
-      return;
-    }
+      fileList.push(_file);
+    })
 
-    fileList.push(_file);
     this.setState({
       fileList,
       tempIndex
@@ -156,10 +161,13 @@ export default class Upload extends Component {
   }
 
   submit(): void {
+    const upload = typeof FormData !== 'undefined' ?
+    this.uploadInner.uploadQueue : this.uploadInner.upload
+
     this.state.fileList
       .filter(file => file.status === 'ready')
       .forEach(file => {
-        this.refs['upload-inner'].upload(file.raw, file);
+        upload.call(this.uploadInner, file.raw, file);
       });
   }
 
@@ -203,6 +211,7 @@ export default class Upload extends Component {
       data,
       accept,
       listType,
+      queue: this.queue,
       onStart: this.handleStart.bind(this),
       onProgress: this.handleProgress.bind(this),
       onSuccess: this.handleSuccess.bind(this),
@@ -210,7 +219,7 @@ export default class Upload extends Component {
       onPreview: this.handlePreview.bind(this),
       onRemove: this.handleRemove.bind(this),
       showCover: this.showCover(),
-      ref: 'upload-inner'
+      ref: ref => { this.uploadInner = ref }
     };
     const trigger = this.props.trigger || this.props.children;
     const uploadComponent = typeof FormData !== 'undefined'
@@ -256,5 +265,6 @@ Upload.propTypes = {
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
   onChange: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
+  concurrency: PropTypes.number,
 };

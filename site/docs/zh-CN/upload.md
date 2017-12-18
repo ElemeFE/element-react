@@ -273,13 +273,44 @@ submitUpload() {
 ```
 :::
 
+### 控制并发
+
+::: demo
+```js
+render () {
+  const fileList = [
+    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}
+  ]
+
+  return (
+    <Upload
+      className="upload-demo"
+      action="//jsonplaceholder.typicode.com/posts/"
+      multiple
+      fileList={fileList}
+      onSuccess={res => this.handleSuccess(res)}
+      tip={<div className="el-upload__tip">试试一次上传5个文件</div>}
+    >
+      <Button size="small" type="primary">点击上传</Button>
+    </Upload>
+  )
+}
+
+handleSuccess (res) {
+  console.log(res)
+}
+
+```
+:::
+
 ### Upload Attribute
 
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | action | 必选参数, 上传的地址 | string | — | — |
 | headers | 可选参数, 设置上传的请求头部 | object | — | — |
-| multiple | 可选参数, 是否支持多选文件 | boolean | — | — |
+| multiple | 可选参数, 是否支持多选文件 | boolean | — | false |
+| concurrency | 可选参数, 可以同时上传的文件数量 | number | — | 2 |
 | data | 可选参数, 上传时附带的额外参数 | object | — | — |
 | name | 可选参数, 上传的文件字段名 | string | — | file |
 | withCredentials | 支持发送 cookie 凭证信息 | boolean | — | false |
