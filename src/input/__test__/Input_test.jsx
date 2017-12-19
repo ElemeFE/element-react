@@ -1,10 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 
 import Input from '../';
 
-// const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+// const dInputelay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
 describe('Input test', () => {
   it('create', () => {
@@ -65,4 +65,16 @@ describe('Input test', () => {
     expect(w.find('.el-textarea__inner').first().prop('style').resize).toBe('both');
   });
 
+  it('onChange', (done) => {
+    const updateValue = function(event) {
+      expect(event.target).toBeInstanceOf(EventTarget);
+      done();
+    };
+
+    const w = mount(
+      <Input onChange={updateValue} />
+    );
+
+    w.find('input').simulate('change');
+  });
 });

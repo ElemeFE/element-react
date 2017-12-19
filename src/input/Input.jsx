@@ -58,7 +58,7 @@ export default class Input extends Component {
     const { onChange } = this.props;
 
     if (onChange) {
-      onChange(e.target.value);
+      onChange(e);
     }
     this.resizeTextarea();
   }
