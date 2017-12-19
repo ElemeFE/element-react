@@ -68,7 +68,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     defaultExpandAll: false,
     highlightCurrentRow: false,
     showSummary: false,
-    sumText: '合计',
+    sumText: Locale.t('el.table.sumText'),
   };
 
   static childContextTypes = {
