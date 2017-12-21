@@ -27,14 +27,21 @@ const isValidValue = (value) => {
 
 // only considers date-picker's value: Date or [Date, Date]
 const valueEquals = function (a: any, b: any) {
-  const aIsArray = a instanceof Array;
-  const bIsArray = b instanceof Array;
+  const aIsArray = Array.isArray(a)
+  const bIsArray = Array.isArray(b)
+
+  let isEqual = (a, b)=>{ // equal if a, b date is equal or both is null or undefined
+    let equal = false
+    if (a && b) equal = a.getTime() === b.getTime()
+    else equal = a === b && a == null
+    return equal
+  }
+
   if (aIsArray && bIsArray) {
-    return new Date(a[0]).getTime() === new Date(b[0]).getTime() &&
-      new Date(a[1]).getTime() === new Date(b[1]).getTime();
+    return isEqual(a[0], b[0]) && isEqual(a[1], b[1])
   }
   if (!aIsArray && !bIsArray) {
-    return new Date(a).getTime() === new Date(b).getTime();
+    return isEqual(a, b)
   }
   return false;
 };
@@ -107,8 +114,6 @@ export default class BasePicker extends Component {
    * @param isKeepPannel: boolean = false
    */
   onPicked(value: ValidDateType, isKeepPannel: boolean = false) {//only change input value on picked triggered
-    require_condition(isValidValue(value))
-
     let hasChanged = !valueEquals(this.state.value, value)
     this.setState({
       pickerVisible: isKeepPannel,
@@ -123,8 +128,7 @@ export default class BasePicker extends Component {
   }
 
   dateToStr(date: ValidDateType) {
-    if (!date) return ''
-    require_condition(isValidValue(date))
+    if (!isValidValue(date)) return ''
 
     const tdate = date
     const formatter = (
@@ -161,9 +165,9 @@ export default class BasePicker extends Component {
       state.value = null
     }
 
-    if (state.value == null) {
-      state.value = new Date()
-    }
+    // if (state.value == null) {
+    //   state.value = new Date()
+    // }
 
     return state
   }
@@ -289,17 +293,23 @@ export default class BasePicker extends Component {
 
     const createPickerPanel = () => {
       if (pickerVisible) {
+        /* eslint-disable */
+        let {placeholder, onFocus, onBlur, onChange, ...others} = this.props
+        /* eslint-enable */
         return (
           <MountBody ref={e => this.pickerProxy = e}>
             {
               this.pickerPanel(
                 this.state,
-                Object.assign({}, this.props, {
-                  getPopperRefElement: () => ReactDOM.findDOMNode(this.refs.inputRoot),
-                  popperMixinOption: {
-                    placement: PLACEMENT_MAP[this.props.align] || PLACEMENT_MAP.left
+                {
+                  ...others,
+                  ... {
+                    getPopperRefElement: () => ReactDOM.findDOMNode(this.refs.inputRoot),
+                    popperMixinOption: {
+                      placement: PLACEMENT_MAP[this.props.align] || PLACEMENT_MAP.left
+                    }
                   }
-                })
+                }
               )
             }
           </MountBody>

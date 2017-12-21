@@ -56,14 +56,14 @@ export default class TimeSpinner extends Component {
       //[[datefrom, dateend]...]
       selectableRange: PropTypes.arrayOf(
         PropTypes.arrayOf(PropTypes.instanceOf(Date))
-      ).isRequired,
+      ),
       /*
       type: one of [hours, minutes, seconds]
 
       onChange: ({type})=>()
       */
       onChange: PropTypes.func.isRequired,
-      onSelectRangeChange: PropTypes.func.isRequired
+      onSelectRangeChange: PropTypes.func
     };
   }
 
@@ -72,7 +72,8 @@ export default class TimeSpinner extends Component {
       hours: 0,
       minutes: 0,
       seconds: 0,
-      isShowSeconds: true
+      isShowSeconds: true,
+      onSelectRangeChange: ()=>{}
     };
   }
 

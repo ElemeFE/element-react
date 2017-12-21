@@ -18,6 +18,7 @@ module.exports = {
     'slider': 'Slider',
     'time-picker': 'Time Picker',
     'date-picker': 'Date Picker',
+    'datetime-picker': 'DateTime Picker',
     'upload': 'Upload',
     'rate': 'Rate',
     'color-picker': 'ColorPicker',

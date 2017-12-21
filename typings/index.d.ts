@@ -963,7 +963,7 @@ declare namespace ElementReact {
 }
 
 declare namespace ElementReactLibs {
-  type dateType = Date | string
+  type dateType = Date | string | null 
   type SelectionMode = 'year' | 'month' | 'week' | 'day'
   interface ComponentProps<T> {
     className?: string
@@ -981,15 +981,15 @@ declare namespace ElementReactLibs {
     isReadOnly?: boolean
     isDisabled?: boolean
     placeholder?: string
-    onFocus?(TimeSelectReactComponent?): void
-    onBlur?(TimeSelectReactComponent?): void
+    onFocus?(self?: any): void
+    onBlur?(self?: any): void
     onChange?(value?): void
     value?: dateType | dateType[]
   }
   interface DatePanelProps extends DatePickerBaseProps {
     value?: dateType | dateType[]
     onPick?: (date: Date) => void
-    showTime?: boolean
+    isShowTime?: boolean
     showWeekNumber?: boolean
     format?: string
     shortcuts?: any[]

@@ -1,12 +1,10 @@
-## DatePicker
+## DateTimePicker
 
-Use Date Picker for date input.
+Select date and time in one picker.
 
-###  Enter Date
+###  Date and time
 
-Basic date picker measured by 'day'.
-
-:::demo The measurement is determined by the `type` attribute. You can enable quick options by creating object with `shortcuts` property. The disabled date is set by `disabledDate`, which is a function.
+:::demo You can select date and time in one picker at the same time by setting `isShowTime` to `true`. The way to use shortcuts is the same as Date Picker.
 
 ```js
 
@@ -23,6 +21,7 @@ render() {
       <div className="block">
         <span className="demonstration">Default</span>
         <DatePicker
+          isShowTime={true}
           value={value1}
           placeholder="Pick a day"
           onChange={date=>{
@@ -35,6 +34,7 @@ render() {
       <div className="block">
         <span className="demonstration">Picker with quick options</span>
         <DatePicker
+          isShowTime={true}
           ref={e=>this.datepicker2 = e}
           value={value2}
           align="right"
@@ -76,74 +76,11 @@ render() {
 ```
 :::
 
-### Other measurements
 
-You can choose week, month or year by extending the standard date picker component.
 
-:::demo
+### Date and time range
 
-```js
-
-constructor(props) {
-  super(props)
-  this.state = {}
-}
-
-render() {
-  const {value1, value2, value3} = this.state
-
-  return (
-    <div className="source">
-      <div className="block">
-        <span className="demonstration">Week</span>
-        <DatePicker
-          value={value1}
-          placeholder="Pick a week"
-          onChange={date=>{
-            console.debug('week DatePicker1 changed: ', date)
-            this.setState({value1: date})
-          }}
-          format="yyyywWW"
-          selectionMode="week"
-          />
-      </div>
-      <div className="block">
-        <span className="demonstration">Month</span>
-        <DatePicker
-          value={value2}
-          placeholder="Pick a month"
-          onChange={date=>{
-            console.debug('month DatePicker changed: ', date)
-            this.setState({value2: date})
-          }}
-          selectionMode="month"
-          />
-      </div>
-      <div className="block">
-        <span className="demonstration">Year</span>
-        <DatePicker
-          value={value3}
-          placeholder="Pick a year"
-          onChange={date=>{
-            console.debug('year DatePicker changed: ', date)
-            this.setState({value3: date})
-          }}
-          selectionMode="year"
-          align="right"
-          />
-      </div>
-    </div>
-  )
-}
-```
-
-:::
-
-###  Date Range
-
-Picking a date range is supported.
-
-:::demo
+:::demo You can select date and time range by setting `isShowTime` to `true`.
 
 ```js
 constructor(props) {
@@ -159,6 +96,7 @@ render() {
       <div className="block">
         <span className="demonstration">Default</span>
         <DateRangePicker
+          isShowTime={true}
           value={value1}
           placeholder="Pick a range"
           onChange={date=>{
@@ -170,6 +108,7 @@ render() {
       <div className="block">
         <span className="demonstration">With quick options</span>
         <DateRangePicker
+          isShowTime={true}
           value={value2}
           placeholder="Pick a range"
           align="right"
@@ -218,35 +157,7 @@ render() {
 
 :::
 
-### Common Props
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
-|---------- |-------------- |---------- |--------------------------------  |-------- |
-| placeholder | - | string | — | — |
-| format | - | string | 年 `yyyy`，月 `MM`，日 `dd`，小时 `HH`，分 `mm`，秒 `ss` | yyyy-MM-dd |
-| align | - | string | left, center, right | left |
-| isShowTrigger | whether to show trigger icon | boolean | - | true |
-| isReadOnly | - | boolean | - | false |
-| isDisabled | - | boolean | - | false |
-| isShowTime | show time or not | boolean | - | false |
-| firstDayOfWeek | first day of week | Number | 0 to 6 | 0 |
-| onFocus | - | (SyntheticEvent)=>() | - | - |
-| onBlur | - | (SyntheticEvent)=>() | - | - |
 
+### Attributes
 
-### DatePicker
-| Attribute      | Description          | Type      | Accepted Values       | Default  |
-|---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | - | Date/null | — | - |
-| shortcuts | - | {text: string, onClick: ()=>() }[] | - | - |
-| selectionMode | calendar type  | string, one of ['year', 'month', 'week', 'day'] | - | 'day' |
-| disabledDate | whether to disabled date selection | (Date, selectionMode)=>boolean | - | - |
-| showWeekNumber | whether to show week number | boolean | - | false |
-
-
-### DateRangePanel
-| Attribute      | Description          | Type      | Accepted Values       | Default  |
-|---------- |-------------- |---------- |--------------------------------  |-------- |
-| value | - | Date[]/null | — | - |
-| shortcuts | - | {text: string, onClick: ()=>() }[] | - | - |
-| showWeekNumber | whether to show week number | boolean | - | false |
-| rangeSeparator | range separator | string | - | ' - ' |
+See DatePicker

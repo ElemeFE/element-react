@@ -57,7 +57,7 @@ type PopperMixinOption = any;
 export type DatePanelProps = {
   value: ?Date,
   onPick: (date: Date)=>void,
-  showTime: boolean,
+  isShowTime: boolean,
   showWeekNumber: boolean,
   format: ?string,
   shortcuts: ?Shortcut[],
@@ -71,7 +71,7 @@ type DateRange = [Date, ?Date]
 export type DateRangePanelProps = {
   value: DateRange,
   onPick: (range?: DateRange, bool: boolean)=>void,
-  showTime: boolean,
+  isShowTime: boolean,
   shortcuts: ?Shortcut[],
   disabledDate: ?DisableDateFunc,
   getPopperRefElement: ?GetPopperRefElement,
@@ -132,7 +132,7 @@ export interface BasePickerProps {
 
 export type DatePickerProps =  BasePickerProps & {
   value: ?Date,
-  showTime: boolean,
+  isShowTime: boolean,
   showWeekNumber: boolean,
   shortcuts: ?Shortcut[],
   selectionMode: ?SelectionMode,
@@ -144,7 +144,7 @@ export type DatePickerProps =  BasePickerProps & {
 
 export type DateRangePickerProps = BasePickerProps & {
   value: DateRange,
-  showTime: boolean,
+  isShowTime: boolean,
   shortcuts: ?Shortcut[],
   rangeSeparator: string,
   firstDayofweek: ?number

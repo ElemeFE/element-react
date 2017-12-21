@@ -18,10 +18,7 @@ import Locale from '../../locale'
 
 import type {DateTableProps} from '../Types';
 
-/*
-  todo:
-    clear ?
-*/
+
 function isFunction(func) {
   return typeof func === 'function'
 }
@@ -167,7 +164,7 @@ export default class DateTable extends Component {
 
   // calc classnames for cell
   getCellClasses(cell: any) {
-    const {selectionMode, value, date} = this.props
+    const {selectionMode, date} = this.props
 
     let classes = [];
     if ((cell.type === 'normal' || cell.type === 'today') && !cell.disabled) {
@@ -181,10 +178,13 @@ export default class DateTable extends Component {
 
     if (selectionMode === 'day'
       && (cell.type === 'normal' || cell.type === 'today')
-      && value
-      && value.getFullYear() === date.getFullYear()
-      && value.getMonth() === date.getMonth()
-      && value.getDate() === Number(cell.text)) {
+      // following code only highlight date that is the actuall value of the datepicker, but actually it should
+      // be the temp that value use selected
+      && date.getDate() === +cell.text){
+      // && value
+      // && value.getFullYear() === date.getFullYear()
+      // && value.getMonth() === date.getMonth()
+      // && value.getDate() === Number(cell.text)) {
       classes.push('current');
     }
 
