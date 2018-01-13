@@ -63,13 +63,13 @@ export default class AjaxUpload extends Component {
           }
         },
         () => {
-          if (file) this.onRemove(file);
+          if (file && typeof this.props.onRemove === 'function') this.props.onRemove(file);
         }
       );
     } else if (before !== false) {
       this.post(rawFile);
     } else {
-      if (file) this.onRemove(file);
+      if (file && typeof this.props.onRemove === 'function') this.props.onRemove(file);
     }
   }
 
