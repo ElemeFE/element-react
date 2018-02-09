@@ -1,5 +1,5 @@
 import format from './format';
-import defaultLang from './lang/zh-CN';
+import defaultLang from './lang/en';
 
 let _lang = defaultLang
 
