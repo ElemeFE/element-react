@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
-import Locale from '../locale';
+import local from '../locale';
 
 import TableLayout from './TableLayout';
 import type {
@@ -64,11 +64,11 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     showHeader: true,
     stripe: false,
     fit: true,
-    emptyText: Locale.t('el.table.emptyText'),
+    emptyText: local.t('el.table.emptyText'),
     defaultExpandAll: false,
     highlightCurrentRow: false,
     showSummary: false,
-    sumText: Locale.t('el.table.sumText'),
+    sumText: local.t('el.table.sumText'),
   };
 
   static childContextTypes = {
