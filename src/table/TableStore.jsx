@@ -109,13 +109,13 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       this[fn] = this[fn].bind(this);
     });
 
-    this.isMounted = false;
+    this._isMounted = false;
   }
 
   componentWillMount() {
     this.updateColumns(getColumns(this.props));
     this.updateData(this.props);
-    this.isMounted = true;
+    this._isMounted = true;
   }
 
   componentWillReceiveProps(nextProps: TableStoreProps) {
@@ -204,7 +204,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       selectedRows = selectedRows && selectedRows.filter(row => data.includes(row));
     }
 
-    if (!this.isMounted) {
+    if (!this._isMounted) {
       expandingRows = defaultExpandAll ? data.slice() : [];
     } else {
       expandingRows = expandingRows.filter(row => data.includes(row));
