@@ -212,7 +212,7 @@ export default class Transition extends Component {
   }
 
   render() {
-   return this.state.children;
+   return this.state.children || null;
   }
 }
 
