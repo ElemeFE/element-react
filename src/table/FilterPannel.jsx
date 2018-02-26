@@ -5,6 +5,7 @@ import Popper from '../../libs/utils/popper';
 import Checkbox from '../checkbox';
 
 import { FilterProps, FilterState } from './Types'
+import local from '../locale';
 
 function getPopupContainer() {
   const container = document.createElement('div');
@@ -101,9 +102,9 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
             disabled={!filteredValue || !filteredValue.length}
             onClick={this.changeFilteredValue.bind(this, filteredValue)}
           >
-            筛选
+            {local.t('el.table.confirmFilter')}
           </button>
-          <button onClick={this.changeFilteredValue.bind(this, null)}>重置</button>
+          <button onClick={this.changeFilteredValue.bind(this, null)}>{local.t('el.table.resetFilter')}</button>
         </div>
       )]
     } else {
@@ -113,7 +114,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
             className={this.classNames('el-table-filter__list-item', { 'is-active': !filteredValue })}
             onClick={this.changeFilteredValue.bind(this, null)}
           >
-            全部
+            {local.t('el.table.clearFilter')}
           </li>
           {filters && filters.map(filter => (
             <li
