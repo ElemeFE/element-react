@@ -195,10 +195,11 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     const { columns } = this.state;
     const filteredData = filterData(data.slice(), columns);
 
-    let { currentRow, selectedRows, expandingRows } = this.state;
+    let { hoverRow, currentRow, selectedRows, expandingRows } = this.state;
+    hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
     currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
 
-    if (columns !== this.props.columns && !columns[0].reserveSelection) {
+    if (this._isMounted && data !== this.props.data && !columns[0].reserveSelection) {
       selectedRows = [];
     } else {
       selectedRows = selectedRows && selectedRows.filter(row => data.includes(row));
@@ -213,15 +214,14 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     this.setState(Object.assign(this.state, {
       data: filteredData,
       filteredData,
-      hoverRow: null,
+      hoverRow,
       currentRow,
       expandingRows,
       selectedRows,
     }));
 
-    if (defaultSort) {
+    if ((!this._isMounted || data !== this.props.data) && defaultSort) {
       const { prop, order = 'ascending' } = defaultSort;
-      const { columns } = this.state;
       const sortColumn = columns.find(column => column.property === prop);
       this.changeSortCondition(sortColumn, order, false);
     }
