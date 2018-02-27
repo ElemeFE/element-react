@@ -202,7 +202,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (this._isMounted && data !== this.props.data && !columns[0].reserveSelection) {
       selectedRows = [];
     } else {
-      selectedRows = selectedRows && selectedRows.filter(row => data.includes(row));
+      selectedRows = selectedRows && selectedRows.filter(row => data.includes(row)) || [];
     }
 
     if (!this._isMounted) {
@@ -224,6 +224,8 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       const { prop, order = 'ascending' } = defaultSort;
       const sortColumn = columns.find(column => column.property === prop);
       this.changeSortCondition(sortColumn, order, false);
+    } else {
+      this.changeSortCondition(null, null, false);
     }
   }
 
