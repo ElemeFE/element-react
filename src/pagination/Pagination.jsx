@@ -9,7 +9,7 @@ import locale from '../locale';
 const Pre = props => {
   const disabled = props.internalCurrentPage <= 1 ? 'disabled' : '';
   return (
-    <button className={`btn-prev ${disabled}`} onClick={props.prev}>
+    <button type="button" className={`btn-prev ${disabled}`} onClick={props.prev}>
       <i className="el-icon el-icon-arrow-left" />
     </button>
   );
@@ -22,7 +22,7 @@ const Next = props => {
     : '';
 
   return (
-    <button className={`btn-next ${disabled}`} onClick={props.next}>
+    <button type="button" className={`btn-next ${disabled}`} onClick={props.next}>
       <i className="el-icon el-icon-arrow-right" />
     </button>
   );
