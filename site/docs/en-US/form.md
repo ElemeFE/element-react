@@ -571,7 +571,12 @@ render() {
 | label-position | position of label | string | left/right/top | right |
 | label-width | width of label, and all form items will inherit from `Form` | string | — | — |
 | label-suffix | suffix of the label | string | — | — |
-| show-message  | whether to show the error message | boolean | — | true |
+
+### Form Events
+
+| Method | Description | Parameters |
+| ---- | ---- | ---- |
+| onSubmit | submit the form | — |
 
 ### Form Methods
 

@@ -569,6 +569,12 @@ render() {
 | labelWidth | 表单域标签的宽度，所有的 form-item 都会继承 form 组件的 labelWidth 的值 | string | — | — |
 | labelSuffix | 表单域标签的后缀 | string | — | — |
 
+### Form Events
+
+| Method | Description | Parameters |
+| ---- | ---- | ---- |
+| onSubmit | submit the form | — |
+
 ### Form Methods
 
 | 方法名      | 说明          |
