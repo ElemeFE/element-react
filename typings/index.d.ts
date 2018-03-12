@@ -425,17 +425,18 @@ declare namespace ElementReact {
     autoFocus?: boolean
     maxLength?: number
     minLength?: number
-    defaultValue?: any
-    value?: any
+    defaultValue?: string | number
+    value?: string | number
 
     // type !== 'textarea'
     size?: 'large' | 'small' | 'mini'
-    prepend?: any
-    append?: any
+    prepend?: string | React.ReactElement<any>
+    append?: string | React.ReactElement<any>
 
     // type === 'textarea'
     autosize?: boolean | Object
     rows?: number
+    resize?: 'none' | 'both' | 'horizontal' | 'vertical'
 
     // event
     onFocus?(e?: React.SyntheticEvent<HTMLInputElement>): void
@@ -452,11 +453,6 @@ declare namespace ElementReact {
     // form related
     form?: string
     validating?: boolean
-
-    max?: string | number
-    min?: string | number
-    step?: string | number
-    resize?: 'none' | 'both' | 'horizontal' | 'vertical'
   }
   export class Input extends ElementReactLibs.Component<InputProps, {}> { }
 
