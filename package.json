@@ -1,7 +1,7 @@
 {
-  "name": "element-react-ui-components",
-  "version": "0.0.2",
-  "description": "Element UI components for React",
+  "name": "element-react",
+  "version": "1.4.7",
+  "description": "Element UI for React",
   "private": false,
   "main": "dist/npm/es5/index.js",
   "jsnext:main": "next.js",
@@ -18,16 +18,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/amittkSharma/element-react"
+    "url": "git+https://github.com/eleme/element-react.git"
   },
   "keywords": [
     "Element",
     "UI",
     "React"
   ],
-  "author": "Amitt K Sharma",
+  "author": "ELEME Inc",
   "license": "MIT",
-  "homepage": "https://github.com/amittkSharma/element-react",
+  "bugs": {
+    "url": "https://github.com/eleme/element-react/issues"
+  },
+  "homepage": "https://github.com/eleme/element-react",
   "devDependencies": {
     "@types/react": "^15.6.7",
     "babel-cli": "^6.26.0",
@@ -70,7 +73,7 @@
     "sass-loader": "^6.0.5",
     "sinon": "^4.0.2",
     "style-loader": "^0.19.0",
-    "typescript": "2.7.2",
+    "typescript": "^2.6.1",
     "url-loader": "^0.6.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
