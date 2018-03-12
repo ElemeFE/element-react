@@ -598,12 +598,12 @@ render() {
 | autoExpandParent   | 展开子节点的时候是否自动展开父节点                        | boolean                     | —    | true  |
 | defaultExpandedKeys | 默认展开的节点的 key 的数组                         | array                       | —    | —     |
 | isShowCheckbox        | 节点是否可被选择                                 | boolean                     | —    | false |
-| checkedKeyStrictly        | 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false   | boolean                     | —    | false |
+| checkStrictly         | 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false   | boolean                     | —    | false |
 | defaultCheckedKeys  | 默认勾选的节点的 key 的数组                         | array                       | —    | —     |
 | filterNodeMethod    | 对树节点进行筛选时执行的方法，返回 true 表示这个节点可以显示，返回 false 则表示这个节点会被隐藏 | Function(value, data, node) | —    | —     |
 | accordion             | 是否每次只打开一个同级树节点展开                         | boolean                     | —    | false |
 | indent                | 相邻级节点间的水平缩进，单位为像素                        | number                     | —    | 16 |
-
+| lazy                | 設置是否加載子樹數據 | boolean                     | —    | false |
 
 ### options
 
@@ -611,6 +611,7 @@ render() {
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | label | 指定节点标签为节点对象的某个属性值 | string | — | — |
 | children | 指定子树为节点对象的某个属性值 | string | — | — |
+| icon      | 指定節點對象的哪個鍵用作節點的圖標 | string | — | — |
 
 ### 方法
 `Tree` 拥有如下方法，返回目前被选中的节点数组：

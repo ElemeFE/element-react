@@ -210,6 +210,7 @@ Tree.defaultProps = {
   emptyText: Locale.t('el.tree.emptyText'),
   indent: 16,
   options: { children: 'children', label: 'label', icon: 'icon' },
+  lazy: false,
   onCheckChange() {},
   onNodeClicked() {},
   onCurrentChange(){},
