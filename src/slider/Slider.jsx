@@ -82,6 +82,10 @@ export default class Slider extends Component {
 
       if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && Array.isArray(oldValue) && this.props.value.every((item, index) => item === oldValue[index])) {
         return;
+      }else if(!this.props.range && typeof props.value === 'number' && !isNaN(props.value)){
+        this.setState({
+          firstValue: props.value
+        })
       }
 
       this.setValues();

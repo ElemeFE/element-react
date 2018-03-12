@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
+import local from '../locale';
 
 import TableLayout from './TableLayout';
 import type {
@@ -63,11 +64,11 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     showHeader: true,
     stripe: false,
     fit: true,
-    emptyText: '暂无数据',
+    emptyText: local.t('el.table.emptyText'),
     defaultExpandAll: false,
     highlightCurrentRow: false,
     showSummary: false,
-    sumText: '合计',
+    sumText: local.t('el.table.sumText'),
   };
 
   static childContextTypes = {
@@ -107,24 +108,28 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     ].forEach((fn) => {
       this[fn] = this[fn].bind(this);
     });
+
+    this._isMounted = false;
   }
 
   componentWillMount() {
     this.updateColumns(getColumns(this.props));
     this.updateData(this.props);
+    this._isMounted = true;
   }
 
   componentWillReceiveProps(nextProps: TableStoreProps) {
-    const { data } = this.props;
+    // const { data } = this.props;
     const nextColumns = getColumns(nextProps);
 
     if (getColumns(this.props) !== nextColumns) {
       this.updateColumns(nextColumns);
     }
 
-    if (data !== nextProps.data) {
-      this.updateData(nextProps);
-    }
+    this.updateData(nextProps);
+    // if (data !== nextProps.data) {
+    //   this.updateData(nextProps);
+    // }
 
   }
 
@@ -190,22 +195,37 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     const { columns } = this.state;
     const filteredData = filterData(data.slice(), columns);
 
-    // do filter when data changed, clear hover, select and expanding status
+    let { hoverRow, currentRow, selectedRows, expandingRows } = this.state;
+    hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
+    currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
+
+    if (this._isMounted && data !== this.props.data && !columns[0].reserveSelection) {
+      selectedRows = [];
+    } else {
+      selectedRows = selectedRows && selectedRows.filter(row => data.includes(row)) || [];
+    }
+
+    if (!this._isMounted) {
+      expandingRows = defaultExpandAll ? data.slice() : [];
+    } else {
+      expandingRows = expandingRows.filter(row => data.includes(row));
+    }
+
     this.setState(Object.assign(this.state, {
       data: filteredData,
       filteredData,
-      hoverRow: null,
-      currentRow: null,
-      expandingRows: defaultExpandAll ? data.slice() : [],
-    }, !columns[0].reserveSelection && {
-      selectedRows: [],
+      hoverRow,
+      currentRow,
+      expandingRows,
+      selectedRows,
     }));
 
-    if (defaultSort) {
+    if ((!this._isMounted || data !== this.props.data) && defaultSort) {
       const { prop, order = 'ascending' } = defaultSort;
-      const { columns } = this.state;
       const sortColumn = columns.find(column => column.property === prop);
       this.changeSortCondition(sortColumn, order, false);
+    } else {
+      this.changeSortCondition(null, null, false);
     }
   }
 
