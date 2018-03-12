@@ -227,10 +227,10 @@ render() {
 | isShowTrigger | whether to show trigger icon | boolean | - | true |
 | isReadOnly | - | boolean | - | false |
 | isDisabled | - | boolean | - | false |
-| isShowTime | show time or not | boolean | - | false |
-| firstDayOfWeek | first day of week | Number | 0 to 6 | 0 |
 | onFocus | - | (SyntheticEvent)=>() | - | - |
 | onBlur | - | (SyntheticEvent)=>() | - | - |
+| onChange | - | (SyntheticEvent)=>() | - | - |
+| value | - | date | - | - |
 
 
 ### DatePicker
