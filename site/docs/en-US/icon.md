@@ -37,3 +37,9 @@ render() {
 }
 ```
 :::
+
+## Icons Attributes
+
+| Attribute      | Description          | Type      | Accepted Values       | Default  |
+| ----| ----| ----| ---- | ----- |
+|name | Set icon's name | string | — | — |
