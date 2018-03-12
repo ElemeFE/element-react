@@ -299,8 +299,8 @@ export default class Rate extends Component {
 }
 
 Rate.propTypes = {
-  colors: PropTypes.array,
-  texts: PropTypes.array,
+  colors: PropTypes.arrayOf(PropTypes.string),
+  texts: PropTypes.arrayOf(PropTypes.string),
   showText: PropTypes.bool,
   textColor: PropTypes.string,
   disabled: PropTypes.bool,
@@ -312,7 +312,7 @@ Rate.propTypes = {
   max: PropTypes.number,
   voidColor: PropTypes.string,
   disabledVoidColor: PropTypes.string,
-  iconClasses: PropTypes.array,
+  iconClasses: PropTypes.arrayOf(PropTypes.string),
   voidIconClass: PropTypes.string,
   disabledVoidIconClass: PropTypes.string,
   allowHalf: PropTypes.bool
