@@ -151,6 +151,7 @@ declare namespace ElementReact {
     type?: 'flex'
     justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between'
     align?: 'top' | 'middle' | 'bottom'
+    tag?: string
   }
   class Row extends ElementReactLibs.Component<RowProps, {}> { }
   interface ColProps extends ElementReactLibs.ComponentProps<{}> {
@@ -163,6 +164,7 @@ declare namespace ElementReact {
     sm?: number | string | Object
     md?: number | string | Object
     lg?: number | string | Object
+    tag?: string
   }
   class Col extends ElementReactLibs.Component<ColProps, {}> { }
   export const Layout: {
@@ -963,7 +965,7 @@ declare namespace ElementReact {
 }
 
 declare namespace ElementReactLibs {
-  type dateType = Date | string | null 
+  type dateType = Date | string | null
   type SelectionMode = 'year' | 'month' | 'week' | 'day'
   interface ComponentProps<T> {
     className?: string
