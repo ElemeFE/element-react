@@ -295,9 +295,8 @@ declare namespace ElementReact {
     lockScroll?: boolean
     closeOnClickModal?: boolean
     closeOnPressEscape?: boolean
+    showClose?: boolean
     onCancel?(): void
-    onOpen?(...args): any
-    opClose?(...args): any
   }
   interface DialogBodyProps extends ElementReactLibs.ComponentProps<{}> { }
   interface DialogFooterProps extends ElementReactLibs.ComponentProps<{}> { }

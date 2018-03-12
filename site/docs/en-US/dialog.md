@@ -152,6 +152,7 @@ render() {
 
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
+| visible   | state of Dialog. | boolean | — | false |
 | title     | title of Dialog. Can also be passed with a named slot (see the following table) | string    | — | — |
 | size      | size of Dialog | string    | tiny/small/large/full | small |
 | top      | value for `top` of Dialog CSS, works when `size` is not `full` | string    | — | 15% |
@@ -166,5 +167,4 @@ render() {
 ### Events
 | Event Name | Description | Parameters |
 |---------- |-------- |---------- |
-| onOpen | triggers when the Dialog opens | — |
-| onClose | triggers when the Dialog closes | — |
+| onCancel | triggers when the Dialog closes | — |

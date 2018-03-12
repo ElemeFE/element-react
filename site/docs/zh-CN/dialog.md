@@ -149,6 +149,7 @@ render() {
 ### Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
+| visible   | Dialog 州 | boolean    | —                               | false      |
 | title     | Dialog 的标题 | string    | —                               | —      |
 | size      | Dialog 的大小 | string    | tiny/small/large/full | small |
 | top       | Dialog CSS 中的 top 值（仅在 size 不为 full 时有效） | string    | —                       | 15%     |
@@ -161,5 +162,4 @@ render() {
 ### Events
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
-| onClose  | Dialog 关闭的回调 | — |
-| onOpen  | Dialog 打开的回调 | — |
+| onCancel  | Dialog 关闭的回调 | — |
