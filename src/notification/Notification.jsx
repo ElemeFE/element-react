@@ -108,6 +108,7 @@ Notification.propTypes = {
   duration: PropTypes.number,
   iconClass: PropTypes.string,
   onClick: PropTypes.func,
+  onClose: PropTypes.func,
   top: PropTypes.number
 }
 
