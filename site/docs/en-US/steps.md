@@ -124,8 +124,6 @@ render() {
 | active | current activation step  | number | — | 0 |
 | processStatus | status of current step | string | wait/process/finish/error/success | process |
 | finishStatus | status of end step | string | wait/process/finish/error/success | finish |
-| alignCenter | whether step description is centered | boolean | — | false |
-| center | center whole `Steps` component | boolean | - | false |
 
 ### Step Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
@@ -133,3 +131,8 @@ render() {
 | title | step title | string | — | — |
 | description | step description | string | — | — |
 | icon | step icon | icons provided by Element Icon. Can be overwritten by a named slot if you want to use  custom icons | string | — |
+| status | step status | string | wait/process/finish/error/success | wait |
+| direction | display direction | string | vertical/horizontal | horizontal |
+| style | step style | Object | — | — |
+| lineStyle | step lineStyle | Object | — | — |
+| stepNumber | step stepNumber | number | — | — |
