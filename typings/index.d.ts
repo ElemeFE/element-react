@@ -599,8 +599,8 @@ declare namespace ElementReact {
     range?: boolean
     vertical?: boolean
     height?: string
-    formatTooltip?(): void
-    onChange?(value): void
+    formatTooltip?(value: number | number[]): void
+    onChange?(value: number | number[]): void
   }
   export class Slider extends ElementReactLibs.Component<SliderProps, {}> { }
 

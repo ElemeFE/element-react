@@ -166,8 +166,12 @@ render() {
 | showInputControls | 在显示输入框的情况下，是否显示输入框的控制按钮 | boolean | — | true|
 | showStops | 是否显示间断点 | boolean | — | false |
 | range | 是否为范围选择 | boolean | — | false |
+| value | set slider values | number/number[] | — | 0 |
+| vertical | whether to display slider vertically | boolean | — | — |
+| height | set Slider height | string | — | — |
 
 ### Events
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
 | onChange | 值改变时触发 | 改变后的值 |
+| formatTooltip | function for formatting value | value |
