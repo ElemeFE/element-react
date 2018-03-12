@@ -217,7 +217,7 @@ declare namespace ElementReact {
     confirmButtonClass?: string
     inputPlaceholder?: string
     inputPattern?: RegExp
-    inputValidator?(): string | boolean
+    inputValidator?(value: string): string | boolean
     inputErrorMessage?: string
     inputValue?: string
     inputType?: string
