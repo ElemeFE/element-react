@@ -147,6 +147,8 @@ render() {
 ### Radio-group Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
+| value     | Radio 的 value   | string,number,boolean    |       —        |      —   |
+| disabled  | 是否禁用    | boolean   | — | false   |
 | size     | Radio 按钮组尺寸   | string  | large, small  |    —     |
 | fill  | 按钮激活时的填充色和边框色    | string   | — | #20a0ff   |
 | textColor  | 按钮激活时的文本颜色    | string   | — | #ffffff   |
@@ -160,6 +162,6 @@ render() {
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
 | value     | Radio 的 value  | string,number  |        —       |     —    |
-| disabled  | 是否禁用    | boolean   | — | false   |
+| disabled  | 是否禁用    | boolean   | — | inherited/false   |
 | name      | 原生 name 属性 | string    |  —   |  —  |
 | size      | Radio 按钮组尺寸   | string  | large, small | inherited |
