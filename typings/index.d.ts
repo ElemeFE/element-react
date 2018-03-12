@@ -654,6 +654,9 @@ declare namespace ElementReact {
     offValue?: number | string | boolean
     name?: string
     onChange?(value: number | string | boolean): void
+    onBlur?(e: React.SyntheticEvent<HTMLButtonElement>): void
+    onFocus?(e: React.SyntheticEvent<HTMLButtonElement>): void
+    allowFocus?: boolean
   }
   export class Switch extends ElementReactLibs.Component<SwitchProps, {}> { }
 

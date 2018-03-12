@@ -110,6 +110,7 @@ render() {
 
 | Attribute      | Description    | Type      | Accepted Values     | Default   |
 |---------- |-------- |---------- |-------------  |-------- |
+| value  | set Switch value    | number/string/boolean   | — | true   |
 | disabled  | whether Switch is disabled    | boolean   | — | false   |
 | width  | width of Switch    | number   | — | 58（with text）/ 46（no text） |
 | onIconClass  | class name of the icon displayed when in `on` state, overrides `onText`| string   | — | — |
