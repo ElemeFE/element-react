@@ -161,3 +161,5 @@ render() {
 |---------- |-------- |---------- |-------------  |-------- |
 | value     | Radio 的 value  | string,number  |        —       |     —    |
 | disabled  | 是否禁用    | boolean   | — | false   |
+| name      | 原生 name 属性 | string    |  —   |  —  |
+| size      | Radio 按钮组尺寸   | string  | large, small | inherited |

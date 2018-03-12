@@ -162,5 +162,7 @@ onChange | triggers when the bound value changes | the label value of the chosen
 
  Attribute      | Description          | Type      | Accepted Values       | Default
 ---- | ---- | ---- | ---- | ----
-label | the value of radio | string/number | — | —
+value | the value of radio | string/number | — | —
 disabled | whether radio is disabled | boolean | — | false
+name | native 'name' attribute | string | — | —
+size | the size of radio buttons | string | large/small | inherited

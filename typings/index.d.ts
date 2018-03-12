@@ -275,6 +275,7 @@ declare namespace ElementReact {
     value: string | number
     disabled?: boolean
     name?: string
+    size?: 'large' | 'small'
   }
   class RadioGroup extends ElementReactLibs.Component<RadioGroupProps, {}> { }
   class RadioButton extends ElementReactLibs.Component<RadioButtonProps, {}> { }

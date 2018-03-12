@@ -29,9 +29,10 @@ export default class RadioButton extends Radio {
   }
 
   render(): React.Element<any> {
+    const { value, children, name, size } = this.props;
     return (
       <label style={this.style()} className={this.className('el-radio-button',
-        this.props.size && `el-radio-button--${this.size()}`, {
+        size && `el-radio-button--${this.size()}`, {
           'is-active': this.state.checked
         })
       }>
@@ -39,11 +40,12 @@ export default class RadioButton extends Radio {
           type="radio"
           className="el-radio-button__orig-radio"
           checked={this.state.checked}
+          name={name}
           disabled={this.isDisabled()}
           onChange={this.onChange.bind(this)}
         />
         <span className="el-radio-button__inner" style={this.state.checked ? this.activeStyle() : {}}>
-          {this.props.children || this.props.value}
+          {children || value}
         </span>
       </label>
     )
@@ -57,5 +59,6 @@ RadioButton.contextTypes = {
 RadioButton.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   disabled: PropTypes.bool,
-  name: PropTypes.string
+  name: PropTypes.string,
+  size: PropTypes.oneOf(['large', 'small'])
 };
