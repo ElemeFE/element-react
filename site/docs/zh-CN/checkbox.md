@@ -245,6 +245,7 @@ render() {
 | disabled  | 按钮禁用    | boolean   |  — | false   |
 | checked  | 当前是否勾选    | boolean   |  — | false   |
 | indeterminate  | 设置 indeterminate 状态，只负责样式控制    | boolean   |  — | false   |
+| focus  | if the checkbox is focused | boolean   |  — | false   |
 
 ### Checkbox.Group Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
@@ -254,6 +255,7 @@ render() {
 | textColor  | 按钮激活时的文本颜色    | string   | — | #ffffff   |
 | min     | 可被勾选的 checkbox 的最大数量   | number    |       —        |     —    |
 | max     | 可被勾选的 checkbox 的最小数量   | number    |       —        |     —    |
+| value   | checkbox value | — |       —        |     —    |
 
 ### Checkbox.Group Events
 | 事件名称      | 说明    | 回调参数      |

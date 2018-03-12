@@ -574,7 +574,7 @@ declare namespace ElementReact {
     size?: 'large' | 'small'
     fill?: string
     textColor?: string
-    value?: any
+    value?: string[]
     onChange?(value?): void
   }
   interface CheckboxButtonProps extends ElementReactLibs.ComponentProps<{}> { }
