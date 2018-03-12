@@ -155,6 +155,7 @@ render() {
 | autoplay | 是否自动切换 | boolean | — | true |
 | interval | 自动切换的时间间隔，单位为毫秒 | number | — | 3000 |
 | indicatorPosition | 指示器的位置 | string | outside/none | — |
+| indicator | whether show the indicator | boolean | — | true |
 | arrow | 切换箭头的显示时机 | string | always/hover/never | hover |
 | type | 走马灯的类型 | string | card/flatcard | — |
 
