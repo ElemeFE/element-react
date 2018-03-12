@@ -133,9 +133,16 @@ render() {
  Attribute      | Description          | Type      | Accepted Values       | Default
 ---- | ---- | ---- | ---- | ----
 checked | checked state of radio | boolean | — | false
-label | the value of radio | string/number/boolean | — | —
+value | the value of radio | string/number/boolean | — | —
 disabled | whether radio is disabled | boolean | — | false
-name | native 'name' attribute | string    |      —         |     —
+name | native 'name' attribute | string    |      —        |     —
+
+### Radio Events
+
+| Event Name | Description | Parameters |
+--- | --- | ---
+onChange | triggers when the bound value changes | the label value of the chosen radio | value
+
 
 ### Radio-group Attributes
 
