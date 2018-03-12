@@ -183,7 +183,7 @@ declare namespace ElementReact {
   // Message
   type Message = any
   interface MessageOptions {
-    message: string
+    message: string | React.ReactElement<any>
     type?: typeColor | 'error'
     iconClass?: string
     customClass?: string
@@ -206,7 +206,7 @@ declare namespace ElementReact {
     modal?: 'alert' | 'confirm' | 'prompt'
     type?: typeColor | 'error'
     title?: string
-    message?: string
+    message?: string | React.ReactElement<any>
     showInput?: boolean
     showClose?: boolean
     showCancelButton?: boolean
@@ -219,6 +219,10 @@ declare namespace ElementReact {
     inputPattern?: RegExp
     inputValidator?(): string | boolean
     inputErrorMessage?: string
+    inputValue?: string
+    inputType?: string
+    promise?: Object
+    onClose?: void
   }
   export const MessageBox: {
     alert(message: string, props?: NextOptions): Promise<void>
