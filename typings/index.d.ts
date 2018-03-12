@@ -358,10 +358,10 @@ declare namespace ElementReact {
     addable?: boolean
     editable?: boolean
     // TODO: add tab type
-    onTabClick?(tab?: any): void
-    onTabRemove?(name?: string): void
+    onTabClick?(tab?: React.ReactElement<any>, e?: React.SyntheticEvent<HTMLInputElement>): void
+    onTabRemove?(tab?: React.ReactElement<any>, e?: React.SyntheticEvent<HTMLInputElement>): void
     onTabAdd?(): void
-    onTabEdit?(targetName?: string, action?: string): void
+    onTabEdit?(targetName?: string, tab?: React.ReactElement<any>): void
   }
   interface TabsPaneProps extends ElementReactLibs.ComponentProps<{}> {
     label?: string | React.ReactElement<any>
