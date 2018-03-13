@@ -939,6 +939,7 @@ declare namespace ElementReact {
     showAllLevels?: boolean
     debounce?: number
     activeItemChange?(param?: any[]): void
+    beforeFilter?(value?: string): void
     onChange?(value?): void
   }
   export class Cascader extends ElementReactLibs.Component<CascaderProps, {}> { }
