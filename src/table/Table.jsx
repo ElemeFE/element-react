@@ -4,7 +4,6 @@ import { Component, PropTypes } from '../../libs';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
-import local from '../locale';
 
 import type {
   TableProps,
@@ -149,7 +148,7 @@ export default class Table extends Component<TableProps, TableState> {
               style={{ width: this.bodyWidth }}
               className="el-table__empty-block"
             >
-              <span className="el-table__empty-text">{local.t('el.table.emptyText')}</span>
+              <span className="el-table__empty-text">{props.emptyText}</span>
             </div>
           )}
         </div>
