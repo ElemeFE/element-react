@@ -44,7 +44,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   }
 
   componentWillUnmount() {
-    this.poperIns.destroy();
+    this.poperIns && this.poperIns.destroy();
     ReactDOM.unmountComponentAtNode(this.container);
     document.removeEventListener('click', this.handleClickOutside);
     document.body.removeChild(this.container);
@@ -78,7 +78,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   }
 
   renderPortal(element, container) {
-    ReactDOM.unstable_renderSubtreeIntoContainer(this, element, container);
+    ReactDOM.render(element, container);
   }
 
   renderContent() {
