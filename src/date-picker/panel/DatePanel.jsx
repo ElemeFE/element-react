@@ -389,7 +389,7 @@ export default class DatePanel extends PopperBase {
                 <div className="el-date-picker__time-header">
                   <span className="el-date-picker__editor-wrap">
                     <Input 
-                      placehoder={t('el.datepicker.selectDate')}
+                      placeholder={t('el.datepicker.selectDate')}
                       value={this.visibleDate}
                       size="small"
                       onChange={date=>this.visibleDate=date}
@@ -399,7 +399,7 @@ export default class DatePanel extends PopperBase {
                     <Input 
                       ref="input"
                       onFocus={()=> this.setState({timePickerVisible: !this.state.timePickerVisible})}
-                      placehoder={t('el.datepicker.selectTime')}
+                      placeholder={t('el.datepicker.selectTime')}
                       value={this.visibleTime}
                       size="small"
                       onChange={date=>this.visibleDate=date}
