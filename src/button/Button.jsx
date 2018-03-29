@@ -4,10 +4,8 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Button extends Component {
-  onClick(e: SyntheticEvent): void {
+  onClick(e: Event & { target: HTMLButtonElement }): void {
     e.target.blur();
-    e.cancelBubble = true;
-    e.stopPropagation();
     if (!this.props.loading) {
       this.props.onClick && this.props.onClick(e);
     }
