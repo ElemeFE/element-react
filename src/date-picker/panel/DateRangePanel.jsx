@@ -206,7 +206,7 @@ export default class DateRangePanel extends PopperBase {
     if (pickedDate) {
       minDate = this.setTime(minDate, pickedDate);
     }
-    this.setState({minDate, minTimePickerVisible: isKeepPanel, rangeState: {selecting: true}})
+    this.setState({minDate, minTimePickerVisible: isKeepPanel,})
   }
 
   handleMaxTimePick(pickedDate, isKeepPanel) {
@@ -224,7 +224,6 @@ export default class DateRangePanel extends PopperBase {
     this.setState({
       maxDate, 
       maxTimePickerVisible: isKeepPanel,
-      rangeState: {selecting: false}
     })
   }
 
