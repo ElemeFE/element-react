@@ -13,7 +13,7 @@ export default class Canvas extends React.Component {
     this.playerId = `${parseInt(Math.random() * 1e9).toString(36)}`
     this.document = this.props.children.match(/([^]*)\n?(```[^]+```)/)
     this.description = marked(this.document[1])
-    this.source = this.document[2].match(/```(.*)\n([^]+)```/)
+    this.source = this.document[2].match(/```(.*)\n?([^]+)```/)
 
     this.state = {
       showBlock: false
