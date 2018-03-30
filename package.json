@@ -46,7 +46,7 @@
     "codemirror": "^5.32.0",
     "core-js": "^2.5.1",
     "css-loader": "^0.28.7",
-    "element-theme-default": "^1.4.9",
+    "element-theme-default": "^1.4.13",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
     "eslint": "^3.19.0",
