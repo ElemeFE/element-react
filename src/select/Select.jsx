@@ -773,7 +773,7 @@ class Select extends Component {
       selected = selected.slice(0);
 
       selected.forEach((item, index) => {
-        if (item === option || item.currentLabel() === option.currentLabel()) {
+        if (item === option || item.props.value === option.props.value) {
           optionIndex = index;
         }
       });
