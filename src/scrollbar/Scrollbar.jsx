@@ -1,5 +1,6 @@
 
 import React from 'react';
+import ReactDOM from 'react-dom'
 
 import { PropTypes, Component } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
@@ -30,10 +31,11 @@ export class Scrollbar extends Component {
     this.cleanRAF = ()=>{
       cancelAnimationFrame(rafId)
     }
+    this.resize = ReactDOM.findDOMNode(this.refs.resize)
     if (!this.props.noresize){
-      addResizeListener(this.refs.resize, handler)
+      addResizeListener(this.resize, handler)
       this.cleanResize = ()=>{
-        removeResizeListener(this.refs.resize, handler);
+        removeResizeListener(this.resize, handler);
       }
     }
   }
