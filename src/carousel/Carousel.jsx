@@ -40,6 +40,8 @@ export default class Carousel extends Component {
     this.throttledIndicatorHover = throttle(300, index => {
       this.handleIndicatorHover(index);
     });
+
+    this.resetItemPosition = this._resetItemPosition.bind(this)
   }
 
   getChildContext(): Context {
@@ -49,7 +51,7 @@ export default class Carousel extends Component {
   }
 
   componentDidMount() {
-    addResizeListener(this.refs.root, this.resetItemPosition.bind(this));
+    
 
     if (this.props.initialIndex < this.state.items.length && this.props.initialIndex >= 0) {
       this.setState({
@@ -61,6 +63,8 @@ export default class Carousel extends Component {
   }
 
   componentDidUpdate(props: Object, state: State): void {
+    addResizeListener(this.refs.root, this.resetItemPosition);
+    
     if (state.activeIndex != this.state.activeIndex) {
       this.resetItemPosition(state.activeIndex);
 
@@ -71,7 +75,7 @@ export default class Carousel extends Component {
   }
 
   componentWillUnmount(): void {
-    removeResizeListener(this.refs.root, this.resetItemPosition.bind(this));
+    removeResizeListener(this.refs.root, this.resetItemPosition);
   }
 
   handleMouseEnter(): void {
@@ -112,7 +116,7 @@ export default class Carousel extends Component {
     });
   }
 
-  resetItemPosition(oldIndex: number): void {
+  _resetItemPosition(oldIndex: number): void {
     this.state.items.forEach((item, index) => {
       item.translateItem(index, this.state.activeIndex, oldIndex);
     });

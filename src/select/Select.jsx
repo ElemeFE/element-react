@@ -91,6 +91,8 @@ class Select extends Component {
     this.debouncedOnInputChange = debounce(this.debounce(), () => {
       this.onInputChange();
     });
+
+    this.resetInputWidth = this._resetInputWidth.bind(this) 
   }
 
   getChildContext(): Object {
@@ -100,8 +102,6 @@ class Select extends Component {
   }
 
   componentDidMount() {
-    addResizeListener(this.refs.root, this.resetInputWidth.bind(this));
-
     this.reference = ReactDOM.findDOMNode(this.refs.reference);
     this.popper = ReactDOM.findDOMNode(this.refs.popper);
 
@@ -150,10 +150,11 @@ class Select extends Component {
 
   componentDidUpdate() {
     this.state.inputWidth = this.reference.getBoundingClientRect().width;
+    addResizeListener(this.refs.root, this.resetInputWidth);
   }
 
   componentWillUnmount() {
-    removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
+    removeResizeListener(this.refs.root, this.resetInputWidth);
   }
 
   debounce(): number {
@@ -552,7 +553,7 @@ class Select extends Component {
     });
   }
 
-  resetInputWidth() {
+  _resetInputWidth() {
     this.setState({
       inputWidth: this.reference.getBoundingClientRect().width
     })
