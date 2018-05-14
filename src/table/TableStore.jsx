@@ -11,7 +11,7 @@ import type {
   _Column
 } from './Types';
 import normalizeColumns from './normalizeColumns';
-import { getLeafColumns, getValueByPath, getColumns, convertToRows } from "./utils";
+import { getLeafColumns, getValueByPath, getColumns, convertToRows, getRowIdentity } from "./utils";
 
 let tableIDSeed = 1;
 
@@ -92,8 +92,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       isComplex: null, // whether some column is fixed
       expandingRows: [],
       hoverRow: null,
-      rowKey: props.rowKey,
-      defaultExpandAll: props.defaultExpandAll,
       currentRow: null,
       selectable: null,
       selectedRows: null,
@@ -135,7 +133,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   get isAllSelected(): boolean {
-    const { currentRowKey } = this.props;
+    const { currentRowKey, rowKey } = this.props;
     const { selectedRows, data, selectable } = this.state;
     const selectableData = selectable ? data.filter((row, index) => selectable(row, index)) : data;
 
@@ -144,7 +142,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     }
 
     if (Array.isArray(currentRowKey)) {
-      return currentRowKey.length === selectableData.length;
+      return selectableData.every(data => currentRowKey.includes(getRowIdentity(data, rowKey)));
     }
 
     return selectedRows && selectedRows.length === selectableData.length;
@@ -241,7 +239,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   toggleRowExpanded(row: Object, rowKey: string | number) {
     const { expandRowKeys } = this.props;
     let { expandingRows } = this.state;
-    if (expandRowKeys) { // controlled expanding status
+    if (expandRowKeys) {
       const isRowExpanding = expandRowKeys.includes(rowKey);
       this.dispatchEvent('onExpand', row, !isRowExpanding);
       return;
@@ -273,8 +271,11 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   setCurrentRow(row: ?Object = null) {
-    const { highlightCurrentRow, currentRowKey } = this.props;
-    if (!highlightCurrentRow || currentRowKey) return;
+    const { currentRowKey, rowKey } = this.props;
+    if (currentRowKey && !Array.isArray(currentRowKey)) {
+      this.dispatchEvent('onCurrentChange', getRowIdentity(row, rowKey), currentRowKey);
+      return;
+    }
 
     const { currentRow: oldRow } = this.state;
     this.setState({
@@ -287,7 +288,23 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   toggleRowSelection(row: Object, isSelected?: boolean) {
     const { currentRowKey } = this.props;
 
-    if (Array.isArray(currentRowKey)) return;
+    if (Array.isArray(currentRowKey)) {
+      const rowIndex = currentRowKey.indexOf(row); 
+      const newCurrentRowKey = currentRowKey.slice();
+      if (isSelected !== undefined) {
+        if (isSelected && rowIndex === -1) {
+          newCurrentRowKey.push(row);
+        } else if (!isSelected && rowIndex !== -1) {
+          newCurrentRowKey.splice(rowIndex, 1);
+        }
+      } else {
+        rowIndex === -1 ? newCurrentRowKey.push(row) : newCurrentRowKey.splice(rowIndex, 1)
+      }
+
+      this.dispatchEvent('onSelect', newCurrentRowKey, row);
+      this.dispatchEvent('onSelectChange', newCurrentRowKey);
+      return;
+    }
 
     const selectedRows = this.state.selectedRows.slice();
     const rowIndex = selectedRows.indexOf(row);
@@ -305,28 +322,36 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     this.setState({
       selectedRows
     }, () => {
-      this.dispatchEvent('onSelect', selectedRows, row)
-      this.dispatchEvent('onSelectChange', selectedRows)
+      this.dispatchEvent('onSelect', selectedRows, row);
+      this.dispatchEvent('onSelectChange', selectedRows);
     });
   }
 
   toggleAllSelection() {
-    const { currentRowKey } = this.props;
-    if (Array.isArray(currentRowKey)) return;
-
+    const { currentRowKey, rowKey } = this.props;
     let { data, selectedRows, selectable } = this.state;
+
+    const allSelectableRows = selectable ? data.filter((data, index) => selectable(data, index)) : data.slice();
+
+    if (Array.isArray(currentRowKey)) {
+      const newCurrentRowKey = this.isAllSelected ? [] : allSelectableRows.map(row => getRowIdentity(row, rowKey));
+      this.dispatchEvent('onSelectAll', newCurrentRowKey);
+      this.dispatchEvent('onSelectChange', newCurrentRowKey);
+      return;
+    }
+
 
     if (this.isAllSelected) {
       selectedRows = [];
     } else {
-      selectedRows = selectable ? data.filter((data, index) => selectable(data, index)) : data.slice();
+      selectedRows = allSelectableRows;
     }
 
     this.setState({
       selectedRows,
     }, () => {
-      this.dispatchEvent('onSelectAll', selectedRows)
-      this.dispatchEvent('onSelectChange', selectedRows)
+      this.dispatchEvent('onSelectAll', selectedRows);
+      this.dispatchEvent('onSelectChange', selectedRows);
     })
   }
 
