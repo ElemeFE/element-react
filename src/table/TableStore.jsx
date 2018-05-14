@@ -100,6 +100,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       sortOrder: null,
       sortColumn: null,
     };
+
     [
       'toggleRowSelection',
       'toggleAllSelection',
@@ -145,7 +146,8 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (Array.isArray(currentRowKey)) {
       return currentRowKey.length === selectableData.length;
     }
-    return selectedRows.length === selectableData.length;
+
+    return selectedRows && selectedRows.length === selectableData.length;
   }
 
   // shouldComponentUpdate(nextProps) {
@@ -344,6 +346,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (Array.isArray(currentRowKey)) {
       return currentRowKey.includes(rowKey);
     }
+
     return selectedRows.includes(row);
   }
 
