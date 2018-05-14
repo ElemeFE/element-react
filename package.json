@@ -1,6 +1,6 @@
 {
   "name": "element-react",
-  "version": "1.4.18",
+  "version": "1.4.19",
   "description": "Element UI for React",
   "private": false,
   "main": "dist/npm/es5/index.js",
