@@ -286,19 +286,21 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   toggleRowSelection(row: Object, isSelected?: boolean) {
-    const { currentRowKey } = this.props;
+    const { currentRowKey, rowKey } = this.props;
 
     if (Array.isArray(currentRowKey)) {
-      const rowIndex = currentRowKey.indexOf(row); 
+      const toggledRowKey = getRowIdentity(row, rowKey);
+      const rowIndex = currentRowKey.indexOf(toggledRowKey);
       const newCurrentRowKey = currentRowKey.slice();
+
       if (isSelected !== undefined) {
         if (isSelected && rowIndex === -1) {
-          newCurrentRowKey.push(row);
+          newCurrentRowKey.push(toggledRowKey);
         } else if (!isSelected && rowIndex !== -1) {
           newCurrentRowKey.splice(rowIndex, 1);
         }
       } else {
-        rowIndex === -1 ? newCurrentRowKey.push(row) : newCurrentRowKey.splice(rowIndex, 1)
+        rowIndex === -1 ? newCurrentRowKey.push(toggledRowKey) : newCurrentRowKey.splice(rowIndex, 1)
       }
 
       this.dispatchEvent('onSelect', newCurrentRowKey, row);
