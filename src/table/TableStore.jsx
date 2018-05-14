@@ -270,7 +270,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     return expandingRows.includes(row);
   }
 
-  setCurrentRow(row: ?Object = null) {
+  setCurrentRow(row: Object) {
     const { currentRowKey, rowKey } = this.props;
     if (currentRowKey && !Array.isArray(currentRowKey)) {
       this.dispatchEvent('onCurrentChange', getRowIdentity(row, rowKey), currentRowKey);
