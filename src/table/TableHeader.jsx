@@ -124,6 +124,10 @@ export default class TableHeader extends Component<TableHeaderProps> {
     }
   }
 
+  handleMouseOut() {
+    _document.body.style.cursor = "";
+  }
+
   handleHeaderClick(column: _Column, event: SyntheticEvent) {
     if (column.sortable && !column.filters) {
       this.handleSortClick(column, null, event);
@@ -236,17 +240,10 @@ export default class TableHeader extends Component<TableHeaderProps> {
       >
         <colgroup>
           {store.columns.map((column, index) => (
-            <col
-              style={{
-                width: column.realWidth,
-              }}
-              key={index}
-            />
+            <col width={column.realWidth} style={{ width: column.realWidth }} key={index} />
           ))}
           {!fixed && (
-            <col
-              style={{ width: layout.scrollY ? layout.gutterWidth : 0 }}
-            />
+            <col width={layout.scrollY ? layout.gutterWidth : 0} style={{ width: layout.scrollY ? layout.gutterWidth : 0 }} />
           )}
         </colgroup>
         <thead>
@@ -270,6 +267,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
                   )}
                   onMouseMove={this.handleMouseMove.bind(this, column)}
                   onMouseDown={this.handleMouseDown.bind(this, column)}
+                  onMouseOut={this.handleMouseOut}
                   onClick={this.handleHeaderClick.bind(this, column)}
                   key={cellIndex}
                 >

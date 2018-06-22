@@ -31,7 +31,7 @@ export default class Tree extends Component {
   }
 
   componentWillReceiveProps(nextProps: Object): void {
-    if (nextProps.data instanceof Array) {
+    if (nextProps.data instanceof Array && this.props.data !== nextProps.data) {
       this.root.setData(nextProps.data);
       this.setState({}); //force update
     }

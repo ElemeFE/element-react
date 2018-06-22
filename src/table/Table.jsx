@@ -129,7 +129,7 @@ export default class Table extends Component<TableProps, TableState> {
           <div className="el-table__header-wrapper" ref={this.bindRef('headerWrapper')}>
             <TableHeader
               {...this.props}
-              style={{ width: layout.bodyWidth || '' }}
+              style={{ width: this.bodyWidth || '' }}
             />
           </div>
         )}
@@ -160,7 +160,7 @@ export default class Table extends Component<TableProps, TableState> {
           >
             <TableFooter
               {...this.props}
-              style={{ width: layout.bodyWidth || '' }}
+              style={{ width: this.bodyWidth || '' }}
             />
           </div>
         )}
@@ -177,7 +177,7 @@ export default class Table extends Component<TableProps, TableState> {
                 <TableHeader
                   fixed="left"
                   {...this.props}
-                  style={{ width: layout.fixedWidth || '' }}
+                  style={{ width: this.bodyWidth || '' }}
                 />
               </div>
             )}
@@ -191,7 +191,7 @@ export default class Table extends Component<TableProps, TableState> {
               <TableBody
                 fixed="left"
                 {...this.props}
-                style={{ width: layout.fixedWidth || '' }}
+                style={{ width: this.bodyWidth || '' }}
               />
             </div>
             {props.showSummary && (
@@ -199,7 +199,7 @@ export default class Table extends Component<TableProps, TableState> {
                 <TableFooter
                   fixed="left"
                   {...this.props}
-                  style={{ width: layout.fixedWidth || '' }}
+                  style={{ width: this.bodyWidth || '' }}
                 />
               </div>
             )}
@@ -219,7 +219,7 @@ export default class Table extends Component<TableProps, TableState> {
                 <TableHeader
                   fixed="right"
                   {...this.props}
-                  style={{ width: layout.rightFixedWidth || '' }}
+                  style={{ width: this.bodyWidth || '' }}
                 />
               </div>
             )}
@@ -233,7 +233,7 @@ export default class Table extends Component<TableProps, TableState> {
               <TableBody
                 fixed="right"
                 {...this.props}
-                style={{ width: layout.rightFixedWidth || '' }}
+                style={{ width: this.bodyWidth || '' }}
               />
             </div>
             {props.showSummary && (
@@ -245,7 +245,7 @@ export default class Table extends Component<TableProps, TableState> {
                 <TableFooter
                   fixed="right"
                   {...this.props}
-                  style={{ width: layout.rightFixedWidth || '' }}
+                  style={{ width: this.bodyWidth || '' }}
                 />
               </div>
             )}

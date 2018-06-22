@@ -159,58 +159,58 @@ export default class TableBody extends Component<TableBodyProps> {
       >
         <colgroup>
           {store.columns.map((column, index) => (
-            <col style={{ width: column.realWidth }} key={index} />
+            <col width={column.realWidth} style={{ width: column.realWidth }} key={index} />
           ))}
         </colgroup>
         <tbody>
-        {store.data.map((row, rowIndex) => {
-          const rowKey = this.getKeyOfRow(row, rowIndex);
-          return [(
-            <tr
-              key={rowKey}
-              style={this.getRowStyle(row, rowIndex)}
-              className={this.className('el-table__row', {
-                'el-table__row--striped': props.stripe && rowIndex % 2 === 1,
-                'hover-row': store.hoverRow === rowIndex,
-                'current-row': props.highlightCurrentRow && (props.currentRowKey === rowKey || store.currentRow === row)
-              }, typeof props.rowClassName === 'string'
-                ? props.rowClassName
-                : typeof props.rowClassName === 'function'
-                && props.rowClassName(row, rowIndex))}
-              onMouseEnter={this.handleMouseEnter.bind(this, rowIndex)}
-              onMouseLeave={this.handleMouseLeave}
-              onClick={this.handleClick.bind(this, row)}
-              onContextMenu={this.handleRowContextMenu.bind(this, row)}
-            >
-              {store.columns.map((column, cellIndex) => (
-                <td
-                  key={cellIndex}
-                  className={this.classNames(column.className, column.align, column.columnKey, {
-                    'is-hidden': columnsHidden[cellIndex]
-                  })}
-                  onMouseEnter={this.handleCellMouseEnter.bind(this, row, column)}
-                  onMouseLeave={this.handleCellMouseLeave.bind(this, row, column)}
-                  onClick={this.handleCellClick.bind(this, row, column)}
-                  onDoubleClick={this.handleCellDbClick.bind(this, row, column)}
-                >
-                  <div className="cell">{this.renderCell(row, column, rowIndex, rowKey)}</div>
-                </td>
-              ))}
-              {!props.fixed && layout.scrollY && !!layout.gutterWidth && (
-                <td className="gutter" />
-              )}
-            </tr>
-          ), this.context.store.isRowExpanding(row, rowKey) && (
-            <tr key={`${rowKey}Expanded`}>
-              <td
-                colSpan={store.columns.length}
-                className="el-table__expanded-cell"
+          {store.data.map((row, rowIndex) => {
+            const rowKey = this.getKeyOfRow(row, rowIndex);
+            return [(
+              <tr
+                key={rowKey}
+                style={this.getRowStyle(row, rowIndex)}
+                className={this.className('el-table__row', {
+                  'el-table__row--striped': props.stripe && rowIndex % 2 === 1,
+                  'hover-row': store.hoverRow === rowIndex,
+                  'current-row': props.highlightCurrentRow && (props.currentRowKey === rowKey || store.currentRow === row)
+                }, typeof props.rowClassName === 'string'
+                  ? props.rowClassName
+                  : typeof props.rowClassName === 'function'
+                  && props.rowClassName(row, rowIndex))}
+                onMouseEnter={this.handleMouseEnter.bind(this, rowIndex)}
+                onMouseLeave={this.handleMouseLeave}
+                onClick={this.handleClick.bind(this, row)}
+                onContextMenu={this.handleRowContextMenu.bind(this, row)}
               >
-                {typeof props.renderExpanded === 'function' && props.renderExpanded(row, rowIndex)}
-              </td>
-            </tr>
-          )];
-        })}
+                {store.columns.map((column, cellIndex) => (
+                  <td
+                    key={cellIndex}
+                    className={this.classNames(column.className, column.align, column.columnKey, {
+                      'is-hidden': columnsHidden[cellIndex]
+                    })}
+                    onMouseEnter={this.handleCellMouseEnter.bind(this, row, column)}
+                    onMouseLeave={this.handleCellMouseLeave.bind(this, row, column)}
+                    onClick={this.handleCellClick.bind(this, row, column)}
+                    onDoubleClick={this.handleCellDbClick.bind(this, row, column)}
+                  >
+                    <div className="cell">{this.renderCell(row, column, rowIndex, rowKey)}</div>
+                  </td>
+                ))}
+                {!props.fixed && layout.scrollY && !!layout.gutterWidth && (
+                  <td className="gutter" />
+                )}
+              </tr>
+            ), this.context.store.isRowExpanding(row, rowKey) && (
+              <tr key={`${rowKey}Expanded`}>
+                <td
+                  colSpan={store.columns.length}
+                  className="el-table__expanded-cell"
+                >
+                  {typeof props.renderExpanded === 'function' && props.renderExpanded(row, rowIndex)}
+                </td>
+              </tr>
+            )];
+          })}
         </tbody>
       </table>
     );

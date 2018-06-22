@@ -7,11 +7,6 @@ import { getRangeHours } from '../utils';
 import { Scrollbar } from '../../scrollbar';
 import type {TimeSpinnerProps, TimeTypes } from '../Types';
 
-
-function withIndex(arr) {
-  return arr.map((e, i) => (e, i));
-}
-
 function range(end) {
   let r = [];
   for (let i = 0; i < end; i++) {
@@ -32,8 +27,8 @@ function propsToState(props: TimeSpinnerProps) {
   setOnValid(validateMinOrSec(minutes), state => state.minutes = minutes);
   setOnValid(validateMinOrSec(seconds), state => state.seconds = seconds);
   state.hoursList = getRangeHours(selectableRange);
-  state.minutesLisit = withIndex(range(60));
-  state.secondsList = withIndex(range(60));
+  state.minutesLisit = range(60)
+  state.secondsList = range(60)
   return state;
 }
 
@@ -198,16 +193,16 @@ export default class TimeSpinner extends Component {
           viewClass="el-time-spinner__list"
           viewComponent="ul"
         >
-          {minutesLisit.map((disabled, idx) => {
+          {minutesLisit.map((minute) => {
             return (
               <li
-                key={idx}
-                onClick={() => this.handleChange('minutes', idx)}
+                key={minute}
+                onClick={() => this.handleChange('minutes', minute)}
                 className={this.classNames('el-time-spinner__item', {
-                  active: idx === minutes
+                  active: minute === minutes
                 })}
               >
-                {idx}
+                {minute}
               </li>
             );
           })}
@@ -222,16 +217,16 @@ export default class TimeSpinner extends Component {
             viewClass="el-time-spinner__list"
             viewComponent="ul"
           >
-            {secondsList.map((disabled, idx) => {
+            {secondsList.map((sec) => {
               return (
                 <li
-                  key={idx}
-                  onClick={() => this.handleChange('seconds', idx)}
+                  key={sec}
+                  onClick={() => this.handleChange('seconds', sec)}
                   className={this.classNames('el-time-spinner__item', {
-                    active: idx === seconds
+                    active: sec === seconds
                   })}
                 >
-                  {idx}
+                  {sec}
                 </li>
               );
             })}

@@ -35,6 +35,7 @@ export default class MessageBox extends Component {
     this.setState({
       visible: true
     })
+    document.activeElement && document.activeElement.blur()
   }
 
   confirmButtonText(): string {

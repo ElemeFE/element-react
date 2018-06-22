@@ -1,5 +1,6 @@
 
 import React from 'react';
+import ReactDOM from 'react-dom'
 
 import { PropTypes, Component } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
@@ -17,6 +18,8 @@ export class Scrollbar extends Component {
       moveX: 0,
       moveY: 0
     };
+
+    this.update = this._update.bind(this)
   }
 
   get wrap(){
@@ -25,18 +28,22 @@ export class Scrollbar extends Component {
 
   componentDidMount(){
     if (this.native) return;
-    let handler = this.update.bind(this)
-    let rafId = requestAnimationFrame(handler)
+    let rafId = requestAnimationFrame(this.update)
     this.cleanRAF = ()=>{
       cancelAnimationFrame(rafId)
     }
+  }
+
+  componentDidUpdate() {
+    this.resizeDom = ReactDOM.findDOMNode(this.refs.resize)
     if (!this.props.noresize){
-      addResizeListener(this.refs.resize, handler)
+      addResizeListener(this.resizeDom, this.update)
       this.cleanResize = ()=>{
-        removeResizeListener(this.refs.resize, handler);
+        removeResizeListener(this.resizeDom, this.update);
       }
     }
   }
+  
 
   componentWillUnmount(){
     this.cleanRAF();
@@ -51,7 +58,7 @@ export class Scrollbar extends Component {
     })
   }
 
-  update() {
+  _update() {
     let heightPercentage, widthPercentage;
     const wrap = this.wrap;
     if (!wrap) return;
