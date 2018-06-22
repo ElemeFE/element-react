@@ -1380,7 +1380,7 @@ render() {
 | fit | whether width of column automatically fits its container | boolean | — | true |
 | showHeader | whether table header is visible | boolean | — | true |
 | highlightCurrentRow | whether current row is highlighted | boolean | — | false |
-| currentRowKey | key of current row, a set only prop | string,number | — | — |
+| currentRowKey | key or keys of selected row | string, number, string[], number[] | — | — |
 | rowClassName | function that returns custom class names for a row, or a string assigning class names for every row | Function(row, index)/String | — | — |
 | rowStyle | function that returns custom style for a row,  or a string assigning custom style for every row | Function(row, index)/Object | — | — |
 | rowKey | key of row data, used for optimizing rendering. Required if `reserveSelection` is on. When its type is String, multiLevel access is supported, e.g. `user.info.id`, but `user.info[0].id` is not supported, in which case `Function` should be used. | Function(row)/String | — | — |

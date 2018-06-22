@@ -342,7 +342,7 @@ render() {
 
 ### Autocomplete Attributes
 
-Attribute | Description | Type | Options | Default
+|Attribute | Description | Type | Options | Default|
 |----| ----| ----| ---- | -----|
 |placeholder| the placeholder of Autocomplete| string | — | — |
 |disabled | whether Autocomplete is disabled  | boolean | — | false|

@@ -124,6 +124,10 @@ export default class TableHeader extends Component<TableHeaderProps> {
     }
   }
 
+  handleMouseOut() {
+    _document.body.style.cursor = "";
+  }
+
   handleHeaderClick(column: _Column, event: SyntheticEvent) {
     if (column.sortable && !column.filters) {
       this.handleSortClick(column, null, event);
@@ -263,6 +267,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
                   )}
                   onMouseMove={this.handleMouseMove.bind(this, column)}
                   onMouseDown={this.handleMouseDown.bind(this, column)}
+                  onMouseOut={this.handleMouseOut}
                   onClick={this.handleHeaderClick.bind(this, column)}
                   key={cellIndex}
                 >

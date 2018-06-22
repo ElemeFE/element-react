@@ -530,7 +530,7 @@ declare namespace ElementReact {
   // Tooltip
   interface TooltipProps extends ElementReactLibs.ComponentProps<{}> {
     effect?: 'dark' | 'light'
-    content?: 'string' | React.ReactElement<any>
+    content?: string | React.ReactElement<any>
     placement?: 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end'
     disabled?: boolean
     transition?: string
