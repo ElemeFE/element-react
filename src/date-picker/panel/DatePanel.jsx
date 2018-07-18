@@ -96,6 +96,7 @@ export default class DatePanel extends PopperBase {
     this.updateState(() => {
       const { date } = this.state
       const { month, year } = deconstructDate(date)
+      date.setMonth(month, 1)
 
       if (month == 0) {
         date.setFullYear(year - 1)
@@ -110,6 +111,7 @@ export default class DatePanel extends PopperBase {
     this.updateState(() => {
       const { date } = this.state
       const { month, year } = deconstructDate(date)
+      date.setMonth(month, 1)
 
       if (month == 11) {
         date.setFullYear(year + 1)
