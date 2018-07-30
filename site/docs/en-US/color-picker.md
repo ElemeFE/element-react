@@ -43,6 +43,7 @@ render() {
 ### Attributes
 | Attribute | Description | Type | Accepted Values | Default |
 |---------- |-------- |---------- |-------------  |-------- |
+| value | whether to set color | string | — | — |
 | showAlpha | whether to display the alpha slider | boolean | — | false |
 | colorFormat | color format of v-model | string | hsl / hsv / hex / rgb | hex (when show-alpha is false)/ rgb (when show-alpha is true) |
 

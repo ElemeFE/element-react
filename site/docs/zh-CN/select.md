@@ -439,6 +439,7 @@ render() {
 ### Select Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
+| value | set value | any | — | — |
 | multiple | 是否多选 | boolean | — | false |
 | disabled | 是否禁用 | boolean | — | false |
 | clearable | 单选时是否可以清空选项 | boolean | — | false |
@@ -462,7 +463,6 @@ render() {
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | label | 分组的组名 | string | — | — |
-| disabled | 是否将该分组下所有选项置为禁用 | boolean | — | false |
 
 ### Option Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |

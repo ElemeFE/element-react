@@ -131,3 +131,9 @@ render() {
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | name | 唯一标志符 | string/number | — | — |
 | title | 面板标题 | string/node | — | — |
+| isActive | whether to activate item | boolean | — | — |
+
+### Collapse Item Events
+| Event Name | Description | Parameters |
+|---------|---------|---------|
+| onClick | triggers when click on item | name |

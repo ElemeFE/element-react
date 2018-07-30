@@ -110,6 +110,7 @@ render() {
 
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
+| value  | set Switch value    | number/string/boolean   | — | true   |
 | disabled  | 是否禁用    | boolean   | — | false   |
 | width  | switch 的宽度（像素）    | number   | — | 58（有文字）/ 46（无文字） |
 | onIconClass  | switch 打开时所显示图标的类名，<br>设置此项会忽略 `onText`    | string   | — | — |

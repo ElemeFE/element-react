@@ -454,12 +454,23 @@ render() {
 | autoComplete | 原生属性，自动补全 | string | on, off | off |
 | name | 原生属性 | string | — | — |
 | readOnly | 原生属性，是否只读 | boolean | — | false |
-| max | 原生属性，设置最大值 | — | — | — |
-| min | 原生属性，设置最小值 | — | — | — |
-| step | 原生属性，设置输入字段的合法数字间隔 | — | — | — |
 | resize | 控制是否能被用户缩放 | string | none, both, horizontal, vertical | — |
 | autoFocus | 原生属性，自动获取焦点 | boolean | true, false | false |
-| onIconClick | 点击 Input 内的图标的钩子函数 | function | — | — |
+| defaultValue | 設置默認值 | string/number| — | — |
+| prepend | set prepend element | string/element | - | - |
+| append | set append element | string/element | - | - |
+| validating | adding loading icon | boolean | - | false |
+
+### Input Events
+
+| Event Name | Description | Parameters |
+|----| ----| ----|
+| onIconClick | hook function when clicking on the input icon | — |
+| onFocus | triggers when a suggestion is focused | suggestion being clicked |
+| onBlur | hook function for suggestion loses focus | suggestion being clicked |
+| onChange | hook function for control input | — |
+| onMouseEnter | hook function when mouse enter on element | — |
+| onMouseLeave | hook function when mouse leave on element | — |
 
 ### Autocomplete Attributes
 

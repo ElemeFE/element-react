@@ -584,11 +584,12 @@ render() {
 | autoExpandParent   |  whether to expand father node when a child node is expanded                        | boolean                     | —    | true  |
 | defaultExpandedKeys | array of keys of initially expanded nodes                         | array                       | —    | —     |
 | isShowCheckbox        |  whether node is selectable                                  | boolean                     | —    | false |
-| checkedKeyStrictly        |whether checked state of a node not affects its father and child nodes when `isShowCheckbox` is `true`   | boolean                     | —    | false |
+| checkStrictly                |whether checked state of a node not affects its father and child nodes when `isShowCheckbox` is `true`   | boolean                     | —    | false |
 | defaultCheckedKeys  | array of keys of initially checked nodes                         | array                       | —    | —     |
 | filterNodeMethod    | this function will be executed on each node when use filter method. if return `false`, tree node will be hidden. | Function(value, data, node) | —    | —     |
 | accordion             | whether only one node among the same level can be expanded at one time                         | boolean                     | —    | false |
 | indent                |horizontal indentation of nodes in adjacent levels in pixels                        | number                     | —    | 16 |
+| lazy                | Set true if loading subtree data | boolean                     | —    | false |
 
 
 ### options
@@ -596,6 +597,7 @@ render() {
 | --------- | ---------------------------------------- | ------ | --------------- | ------- |
 | label     | specify which key of node object is used as the node's label | string | —               | —       |
 | children  | specify which key of node object is used as the node's subtree | string | —               | —       |
+| icon      | specify which key of node object is used as the node's icon | string | —               | —       |
 
 ### Method
 `Tree` has the following method, which returns the currently selected array of nodes.

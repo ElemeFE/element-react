@@ -170,8 +170,12 @@ render() {
 | show-stops | whether to display breakpoints | boolean | — | false |
 | show-tooltip | whether to display tooltip value | boolean | — | true |
 | range | whether to select a range | boolean | — | false |
+| value | set slider values | number/number[] | — | 0 |
+| vertical | whether to display slider vertically | boolean | — | — |
+| height | set Slider height | string | — | — |
 
 ## Events
 | Event Name | Description | Parameters |
 |---------- |-------- |---------- |
-| change | triggers when the value changes (if the mouse is being dragged, this event only fires when the mouse is released) | value after changing |
+| onChange | triggers when the value changes (if the mouse is being dragged, this event only fires when the mouse is released) | value after changing |
+| formatTooltip | function for formatting value | value |

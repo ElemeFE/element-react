@@ -116,5 +116,6 @@ SubMenu.childContextTypes = {
 };
 
 SubMenu.propTypes = {
-  index: PropTypes.string.isRequired
+  index: PropTypes.string.isRequired,
+  title: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
 };

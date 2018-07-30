@@ -107,3 +107,4 @@ render() {
 | value          | 显示值      | string, number          |          —             |    —     |
 | max          |  最大值，超过最大值会显示 '{max}+'，要求 value 是 Number 类型    | number  |         —              |     —    |
 | isDot       | 小圆点    | boolean  |  —  |  false |
+| hidden | 隱藏的徽章 | boolean | — | false |

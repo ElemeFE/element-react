@@ -43,6 +43,7 @@ render() {
 ### Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
+| value | whether to set color | string | — | — |
 | showAlpha | 是否支持透明度选择 | boolean | — | false |
 | colorFormat | 写入 value 的颜色的格式 | string | hsl / hsv / hex / rgb | hex（show-alpha 为 false）/ rgb（show-alpha 为 true） |
 

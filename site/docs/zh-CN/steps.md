@@ -126,3 +126,8 @@ render() {
 | title | 标题 | string | — | — |
 | description | 描述性文字 | string/ReactElement | — | — |
 | icon | 图标 | Element Icon 提供的图标，如果要使用自定义图标可以通过自定义element的方式写入 | string | — |
+| status | step status | string | wait/process/finish/error/success | wait |
+| direction | display direction | string | vertical/horizontal | horizontal |
+| style | step style | Object | — | — |
+| lineStyle | step lineStyle | Object | — | — |
+| stepNumber | step stepNumber | number | — | — |

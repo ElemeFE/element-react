@@ -1434,5 +1434,5 @@ render() {
 ### Events
 | Event Name | Description | Parameters |
 |---------- |-------- |---------- |
-| change  | triggers when the binding value changes | value |
+| onChange  | triggers when the binding value changes | value |
 | activeItemChange | triggers when active option changes, only works when `change-on-select` is `false` | an array of active options |

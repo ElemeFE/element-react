@@ -156,6 +156,7 @@ render() {
 | autoplay | whether automatically loop the slides | boolean | — | true |
 | interval | interval of the auto loop, in milliseconds | number | — | 3000 |
 | indicatorPosition | position of the indicators | string | outside/none | — |
+| indicator | whether show the indicator | boolean | — | true |
 | arrow | when arrows are shown | string | always/hover/never | hover |
 | type | type of the Carousel | string | card/flatcard | — |
 

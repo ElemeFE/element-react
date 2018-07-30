@@ -83,6 +83,7 @@ render() {
 | textColor | 辅助文字的颜色 | string | — | 1F2D3D |
 | texts | 辅助文字数组 | array | — | ['极差', '失望', '一般', '满意', '惊喜'] |
 | textTemplate | 只读时的辅助文字模板 | string | — | {value} |
+| value | 評分 | number | — | 0 |
 
 ### Events
 | 事件名称      | 说明    | 回调参数      |

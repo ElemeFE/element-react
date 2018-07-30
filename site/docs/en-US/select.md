@@ -446,19 +446,12 @@ render() {
 | disabled | whether Select is disabled | boolean | — | false |
 | size | size of Input | string | large/small/mini | — |
 | clearable | whether single select can be cleared | boolean | — | false |
-| multipleLimit | maximum number of options user can select when `multiple` is `true`. No limit when set to 0 | number | — | 0 |
-| name | the name attribute of select input | string | — | — |
 | placeholder | placeholder | string | — | Select |
 | filterable | whether Select is filterable | boolean | — | false |
-| allowCreate | whether creating new items is allowed. To use this, `filterable` must be true | boolean | — | false |
 | filterMethod | custom filter method | function | — | — |
 | remote | whether options are loaded from server | boolean | — | false |
 | remoteMethod | custom remote search method | function | — | — |
 | loading | whether Select is loading data from server | boolean | — | false |
-| loadingText | displayed text while loading data from server | string | — | Loading |
-| noMatchText | displayed text when no data matches the filtering query | string | — | No matching data |
-| noDataText | displayed text when there is no options | string | — | No data |
-| popperClass | custom class name for Select's dropdown | string | — | — |
 
 ### Select Events
 | Event Name | Description | Parameters |
@@ -472,11 +465,11 @@ render() {
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | label | name of the group | string | — | — |
-| disabled | whether to disable all options in this group | boolean | — | false |
 
 ### Option Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | value | value of option | string/number/object | — | — |
 | label | label of option, same as `value` if omitted | string/number | — | — |
+| selected | whether option is selected | boolean | — | false |
 | disabled | whether option is disabled | boolean | — | false |

@@ -87,6 +87,7 @@ render() {
 | textColor | color of texts | string | — | #1F2D3D |
 | texts | text array | array | — | ['极差', '失望', '一般', '满意', '惊喜'] |
 | textTemplate | text template when the component is read-only | string | — | {value} |
+| value | rating score | number | — | 0 |
 
 ### Events
 | Event Name | Description | Parameters |

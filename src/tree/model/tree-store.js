@@ -36,7 +36,7 @@ export default class TreeStore {
       const childNodes = node.root ? node.root.childNodes : node.childNodes;
 
       childNodes.forEach((child) => {
-        child.visible = filterNodeMethod.call(child, value, child.data, child);
+        child.visible = filterNodeMethod.call(value, child.data, child);
 
         traverse(child);
       });

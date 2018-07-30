@@ -333,12 +333,23 @@ render() {
 |autoComplete | same as `auto-complete` in native input | string | on/off | off |
 |name | same as `name` in native input | string | — | — |
 | readOnly | same as `readonly` in native input | boolean | — | false |
-|max | same as `max` in native input | — | — | — |
-|min | same as `min` in native input | — | — | — |
-|step| same as `step` in native input | — | — | — |
 |resize| control the resizability | string | none, both, horizontal, vertical | — |
 |autoFocus | same as `autofocus` in native input | boolean | — | false |
-| onIconClick | hook function when clicking on the input icon | function | — | — |
+|defaultValue | set default value | string/number| — | — |
+|prepend | set prepend element | string/element | - | - |
+|append | set append element | string/element | - | - |
+|validating | adding loading icon | boolean | - | false |
+
+### Input Events
+
+| Event Name | Description | Parameters |
+|----| ----| ----|
+| onIconClick | hook function when clicking on the input icon | — |
+| onFocus | triggers when a suggestion is focused | suggestion being clicked |
+| onBlur | hook function for suggestion loses focus | suggestion being clicked |
+| onChange | hook function for control input | — |
+| onMouseEnter | hook function when mouse enter on element | — |
+| onMouseLeave | hook function when mouse leave on element | — |
 
 ### Autocomplete Attributes
 

@@ -151,6 +151,7 @@ declare namespace ElementReact {
     type?: 'flex'
     justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between'
     align?: 'top' | 'middle' | 'bottom'
+    tag?: string
   }
   class Row extends ElementReactLibs.Component<RowProps, {}> { }
   interface ColProps extends ElementReactLibs.ComponentProps<{}> {
@@ -163,6 +164,7 @@ declare namespace ElementReact {
     sm?: number | string | Object
     md?: number | string | Object
     lg?: number | string | Object
+    tag?: string
   }
   class Col extends ElementReactLibs.Component<ColProps, {}> { }
   export const Layout: {
@@ -181,7 +183,7 @@ declare namespace ElementReact {
   // Message
   type Message = any
   interface MessageOptions {
-    message: string
+    message: string | React.ReactElement<any>
     type?: typeColor | 'error'
     iconClass?: string
     customClass?: string
@@ -204,7 +206,7 @@ declare namespace ElementReact {
     modal?: 'alert' | 'confirm' | 'prompt'
     type?: typeColor | 'error'
     title?: string
-    message?: string
+    message?: string | React.ReactElement<any>
     showInput?: boolean
     showClose?: boolean
     showCancelButton?: boolean
@@ -215,8 +217,12 @@ declare namespace ElementReact {
     confirmButtonClass?: string
     inputPlaceholder?: string
     inputPattern?: RegExp
-    inputValidator?(): string | boolean
+    inputValidator?(value: string): string | boolean
     inputErrorMessage?: string
+    inputValue?: string
+    inputType?: string
+    promise?: Object
+    onClose?: void
   }
   export const MessageBox: {
     alert(message: string, props?: NextOptions): Promise<void>
@@ -269,6 +275,7 @@ declare namespace ElementReact {
     value: string | number
     disabled?: boolean
     name?: string
+    size?: 'large' | 'small'
   }
   class RadioGroup extends ElementReactLibs.Component<RadioGroupProps, {}> { }
   class RadioButton extends ElementReactLibs.Component<RadioButtonProps, {}> { }
@@ -288,9 +295,8 @@ declare namespace ElementReact {
     lockScroll?: boolean
     closeOnClickModal?: boolean
     closeOnPressEscape?: boolean
+    showClose?: boolean
     onCancel?(): void
-    onOpen?(...args): any
-    opClose?(...args): any
   }
   interface DialogBodyProps extends ElementReactLibs.ComponentProps<{}> { }
   interface DialogFooterProps extends ElementReactLibs.ComponentProps<{}> { }
@@ -352,10 +358,10 @@ declare namespace ElementReact {
     addable?: boolean
     editable?: boolean
     // TODO: add tab type
-    onTabClick?(tab?: any): void
-    onTabRemove?(name?: string): void
+    onTabClick?(tab?: React.ReactElement<any>, e?: React.SyntheticEvent<HTMLInputElement>): void
+    onTabRemove?(tab?: React.ReactElement<any>, e?: React.SyntheticEvent<HTMLInputElement>): void
     onTabAdd?(): void
-    onTabEdit?(targetName?: string, action?: string): void
+    onTabEdit?(targetName?: string, tab?: React.ReactElement<any>): void
   }
   interface TabsPaneProps extends ElementReactLibs.ComponentProps<{}> {
     label?: string | React.ReactElement<any>
@@ -419,17 +425,18 @@ declare namespace ElementReact {
     autoFocus?: boolean
     maxLength?: number
     minLength?: number
-    defaultValue?: any
-    value?: any
+    defaultValue?: string | number
+    value?: string | number
 
     // type !== 'textarea'
     size?: 'large' | 'small' | 'mini'
-    prepend?: any
-    append?: any
+    prepend?: string | React.ReactElement<any>
+    append?: string | React.ReactElement<any>
 
     // type === 'textarea'
     autosize?: boolean | Object
     rows?: number
+    resize?: 'none' | 'both' | 'horizontal' | 'vertical'
 
     // event
     onFocus?(e?: React.SyntheticEvent<HTMLInputElement>): void
@@ -446,11 +453,6 @@ declare namespace ElementReact {
     // form related
     form?: string
     validating?: boolean
-
-    max?: string | number
-    min?: string | number
-    step?: string | number
-    resize?: 'none' | 'both' | 'horizontal' | 'vertical'
   }
   export class Input extends ElementReactLibs.Component<InputProps, {}> { }
 
@@ -572,7 +574,7 @@ declare namespace ElementReact {
     size?: 'large' | 'small'
     fill?: string
     textColor?: string
-    value?: any
+    value?: string[]
     onChange?(value?): void
   }
   interface CheckboxButtonProps extends ElementReactLibs.ComponentProps<{}> { }
@@ -597,8 +599,8 @@ declare namespace ElementReact {
     range?: boolean
     vertical?: boolean
     height?: string
-    formatTooltip?(): void
-    onChange?(value): void
+    formatTooltip?(value: number | number[]): void
+    onChange?(value: number | number[]): void
   }
   export class Slider extends ElementReactLibs.Component<SliderProps, {}> { }
 
@@ -652,6 +654,9 @@ declare namespace ElementReact {
     offValue?: number | string | boolean
     name?: string
     onChange?(value: number | string | boolean): void
+    onBlur?(e: React.SyntheticEvent<HTMLButtonElement>): void
+    onFocus?(e: React.SyntheticEvent<HTMLButtonElement>): void
+    allowFocus?: boolean
   }
   export class Switch extends ElementReactLibs.Component<SwitchProps, {}> { }
 
@@ -663,6 +668,7 @@ declare namespace ElementReact {
     labelWidth?: string | number
     labelSuffix?: string
     inline?: boolean
+    onSubmit?(): void
   }
   interface FormItemProps extends ElementReactLibs.ComponentProps<{}> {
     label?: string
@@ -731,6 +737,9 @@ declare namespace ElementReact {
     multiple?: boolean
     placeholder?: string
     onChange?(value?): void
+    onVisibleChange?(visible?: boolean): void,
+    onRemoveTag?(value?): void,
+    onClear?(): void
   }
   interface SelectOptionProps extends ElementReactLibs.ComponentProps<{}> {
     value: any
@@ -739,7 +748,6 @@ declare namespace ElementReact {
     disabled?: boolean
   }
   interface SelectOptionGroupProps extends ElementReactLibs.ComponentProps<{}> {
-    // disabled?: boolean
     label?: string
   }
   class SelectOption extends ElementReactLibs.Component<SelectOptionProps, {}> { }
@@ -760,6 +768,7 @@ declare namespace ElementReact {
     hideOnClick?: boolean
     onClick?(): void
     onCommand?(command?: string, instance?): void
+    onVisibleChange?(visible: boolean): void
   }
   interface DropdownMenuProps extends ElementReactLibs.ComponentProps<{}> { }
   interface DropdownItemProps extends ElementReactLibs.ComponentProps<{}> {
@@ -930,6 +939,7 @@ declare namespace ElementReact {
     showAllLevels?: boolean
     debounce?: number
     activeItemChange?(param?: any[]): void
+    beforeFilter?(value?: string): void
     onChange?(value?): void
   }
   export class Cascader extends ElementReactLibs.Component<CascaderProps, {}> { }
@@ -963,7 +973,7 @@ declare namespace ElementReact {
 }
 
 declare namespace ElementReactLibs {
-  type dateType = Date | string | null 
+  type dateType = Date | string | null
   type SelectionMode = 'year' | 'month' | 'week' | 'day'
   interface ComponentProps<T> {
     className?: string

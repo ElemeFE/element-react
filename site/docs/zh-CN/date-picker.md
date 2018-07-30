@@ -227,10 +227,10 @@ render() {
 | isShowTrigger | 是否显示图标 | boolean | - | true |
 | isReadOnly | 是否是只读 | boolean | - | false |
 | isDisabled | 是否是禁用 | boolean | - | false |
-| isShowTime | 是否显示时间 | boolean | - | false |
-| firstDayOfWeek | 周起始日 | Number | 0 到 6 | 0 |
 | onFocus | focus 事件触发 | (SyntheticEvent)=>() | - | - |
 | onBlur | blur 事件触发 | (SyntheticEvent)=>() | - | - |
+| onChange | - | (SyntheticEvent)=>() | - | - |
+| value | - | date | - | - |
 
 ### DatePicker
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |

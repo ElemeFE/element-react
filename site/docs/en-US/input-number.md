@@ -112,6 +112,7 @@ render() {
 
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |----| ----| ---| ----| -----|
+|defaultValue | binding default value| number | — | — |
 |value | binding value| number | — | — |
 |min | the minimum allowed value | number | — | 0 |
 |max | the maximum allowed value | number | — | `Infinity` |

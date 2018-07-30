@@ -286,16 +286,24 @@ submitUpload() {
 | showFileList | whether to show the uploaded file list | boolean | — | true |
 | drag | whether to activate drag and drop mode | boolean | - | - |
 | accept | accepted [file types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept)| string | — | — |
-| onPreview | hook function when clicking the uploaded files | function(file) | — | — |
-| onRemove | hook function when files are removed | function(file, fileList) | — | — |
-| onSuccess | hook function when uploaded successfully | function(response, file, fileList) | — | — |
-| onError | hook function when some errors occurs | function(err, file, fileList) | — | — |
-| onProgress | hook function when some progress occurs | function(event, file, fileList) | — | — |
-| onChange | hook function when file status change | function(file, fileList) | — | — |
 | beforeUpload | hook function before uploading with the file to be uploaded as its parameter. If `false` or a `Promise` is returned, uploading will be aborted | function(file) | — | — |
 | listType | type of fileList | string | text/picture/picture-card | text |
 | autoUpload | whether to auto upload file | boolean | — | true |
 | fileList | default uploaded files, i.e: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}] | array | — | [] |
+
+| tip | set the tip | element | — | — |
+| trigger | set element to start upload | element | — | — |
+| className | set class name | string | — | — |
+
+### Upload Events
+| Event Name      | Description       | Parameters |
+|---------- |-------------- | -- |
+| onPreview | hook function when clicking the uploaded files | function(file) |
+| onRemove | hook function when files are removed | function(file, fileList) |
+| onSuccess | hook function when uploaded successfully | function(response, file, fileList) |
+| onError | hook function when some errors occurs | function(err, file, fileList) |
+| onProgress | hook function when some progress occurs | function(event, file, fileList) |
+| onChange | hook function when file status change | function(file, fileList) |
 
 ### Methods
 | Event Name      | Description       | Parameters |

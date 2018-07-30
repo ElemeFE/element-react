@@ -133,14 +133,22 @@ render() {
  Attribute      | Description          | Type      | Accepted Values       | Default
 ---- | ---- | ---- | ---- | ----
 checked | checked state of radio | boolean | — | false
-label | the value of radio | string/number/boolean | — | —
+value | the value of radio | string/number/boolean | — | —
 disabled | whether radio is disabled | boolean | — | false
-name | native 'name' attribute | string    |      —         |     —
+name | native 'name' attribute | string    |      —        |     —
+
+### Radio Events
+
+| Event Name | Description | Parameters |
+--- | --- | ---
+onChange | triggers when the bound value changes | the label value of the chosen radio | value
 
 ### Radio-group Attributes
 
  Attribute      | Description          | Type      | Accepted Values       | Default
 ---- | ---- | ---- | ---- | ----
+value | the value of radio | string/number | — | —
+disabled | whether radio is disabled | boolean | — | false
 size | the size of radio buttons | string | large/small | —
 fill  | border and background color when button is active | string   | — | #20a0ff   |
 textColor | font color when button is active | string   | — | #ffffff   |
@@ -155,5 +163,7 @@ onChange | triggers when the bound value changes | the label value of the chosen
 
  Attribute      | Description          | Type      | Accepted Values       | Default
 ---- | ---- | ---- | ---- | ----
-label | the value of radio | string/number | — | —
-disabled | whether radio is disabled | boolean | — | false
+value | the value of radio | string/number | — | —
+disabled | whether radio is disabled | boolean | — | inherited/false
+name | native 'name' attribute | string | — | —
+size | the size of radio buttons | string | large/small | inherited
