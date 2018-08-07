@@ -9,7 +9,7 @@ export default class Loading extends Component {
   }
 
   getStyle(): {
-    position: string,
+    position?: string,
     top?: number,
     right?: number,
     bottom?: number,
@@ -30,9 +30,12 @@ export default class Loading extends Component {
     } else {
       this.enableScroll();
 
-      return {
-        position: 'relative'
+      if (this.props.loading) {
+        return {
+          position: 'relative'
+        }
       }
+      return {};
     }
   }
 
