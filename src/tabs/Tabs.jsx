@@ -2,9 +2,10 @@
 
 import * as React from 'react';
 import { Component, PropTypes, View } from '../../libs';
+import typeof TabPane from './TabPane';
 
 type Props = {
-  children: React.Node,
+  children: TabPane,
   type: 'card' | 'border-card',
   activeName: string,
   value: string,
@@ -89,7 +90,7 @@ export default class Tabs extends Component {
     onTabAdd && onTabAdd();
   }
 
-  handleTabRemove(tab: React.Node, index: number, e: SyntheticEvent<HTMLSpanElement>): void {
+  handleTabRemove(tab: TabPane, index: number, e: SyntheticEvent<HTMLSpanElement>): void {
     const { children, currentName } = this.state;
     const { onTabRemove, onTabEdit } = this.props;
 
@@ -114,7 +115,7 @@ export default class Tabs extends Component {
     });
   }
 
-  handleTabClick(tab: React.Node, e: SyntheticEvent<HTMLDivElement>): void | boolean {
+  handleTabClick(tab: TabPane, e: SyntheticEvent<HTMLDivElement>): void | boolean {
     if (tab.props.disabled) {
       return false;
     }

@@ -128,7 +128,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     _document.body.style.cursor = "";
   }
 
-  handleHeaderClick(column: _Column, event: SyntheticEvent<HTMLElement>) {
+  handleHeaderClick(column: _Column, event: SyntheticEvent<HTMLTableCellElement>) {
     if (column.sortable && !column.filters) {
       this.handleSortClick(column, null, event);
     } else if (column.filters && !column.sortable) {
@@ -168,7 +168,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     this.dispatchEvent('onHeaderClick', column, event)
   }
 
-  handleFilterClick(column: _Column, event: SyntheticEvent<HTMLDivElement>) {
+  handleFilterClick(column: _Column, event: SyntheticEvent<HTMLElement>) {
     if (event) {
       event.stopPropagation();
       event.nativeEvent.stopImmediatePropagation();

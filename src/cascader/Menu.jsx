@@ -49,14 +49,19 @@ export default class CascaderMenu extends Component {
   }
 
   select(item: any, menuIndex: number) {
+    let {activeValue} = this.state
     if (item.__IS__FLAT__OPTIONS) {
-      this.state.activeValue = item.value;
+      activeValue = item.value;
     } else {
-      this.state.activeValue.splice(menuIndex, this.state.activeValue.length - 1, item.value);
+      if (!menuIndex) {
+        activeValue = [item.value];
+      } else {
+        activeValue.splice(menuIndex, activeValue.length - 1, item.value);
+      }
     }
 
     this.forceUpdate();
-    this.parent().handlePick(this.state.activeValue);
+    this.parent().handlePick(activeValue);
   }
 
   handleMenuLeave() {
