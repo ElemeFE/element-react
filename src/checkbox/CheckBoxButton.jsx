@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import CheckBox from './CheckBox';
 
 export default class CheckboxButton extends CheckBox {

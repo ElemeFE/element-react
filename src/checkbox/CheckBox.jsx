@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react'
+import * as React from 'react'
 import { Component, PropTypes } from '../../libs'
 
 type State = {
@@ -42,7 +42,7 @@ export default class Checkbox extends Component {
     });
   }
 
-  onChange(e: SyntheticEvent): void {
+  onChange(e: SyntheticEvent<HTMLInputElement>): void {
     if (e.target instanceof HTMLInputElement) {
       const { label } = this.state;
       const { trueLabel, falseLabel} = this.props;

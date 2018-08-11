@@ -243,7 +243,7 @@ class Cascader extends Component {
     return flatOptions;
   }
 
-  clearValue(e: SyntheticEvent) {
+  clearValue(e: SyntheticEvent<HTMLElement>) {
     e.stopPropagation();
 
     this.handlePick([], true);

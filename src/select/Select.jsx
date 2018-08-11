@@ -449,7 +449,7 @@ class Select extends Component {
     return criteria;
   }
 
-  emptyText(): mixed {
+  emptyText(): string | boolean | null {
     const { loading, filterable } = this.props;
     const { voidRemoteQuery, options, filteredOptionsCount } = this.state;
 

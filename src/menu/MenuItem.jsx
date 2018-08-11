@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { PropTypes } from '../../libs';
 
 import MixinComponent from './MixinComponent';

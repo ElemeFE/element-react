@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';

@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
 import { Component, PropTypes } from '../../libs';
@@ -172,7 +172,7 @@ class AutoComplete extends Component {
     return (isValidData || this.state.loading) && this.state.isFocus;
   }
 
-  onKeyDown(e: SyntheticKeyboardEvent): void {
+  onKeyDown(e: SyntheticKeyboardEvent<HTMLInputElement>): void {
     const { highlightedIndex } = this.state;
 
     switch (e.keyCode) {

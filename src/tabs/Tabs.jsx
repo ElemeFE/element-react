@@ -1,10 +1,10 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes, View } from '../../libs';
 
 type Props = {
-  children: React.Element<any>,
+  children: React.Node,
   type: 'card' | 'border-card',
   activeName: string,
   value: string,
@@ -89,7 +89,7 @@ export default class Tabs extends Component {
     onTabAdd && onTabAdd();
   }
 
-  handleTabRemove(tab: React.Element<any>, index: number, e: SyntheticEvent): void {
+  handleTabRemove(tab: React.Node, index: number, e: SyntheticEvent<HTMLSpanElement>): void {
     const { children, currentName } = this.state;
     const { onTabRemove, onTabEdit } = this.props;
 
@@ -114,7 +114,7 @@ export default class Tabs extends Component {
     });
   }
 
-  handleTabClick(tab: React.Element<any>, e: SyntheticEvent): void | boolean {
+  handleTabClick(tab: React.Node, e: SyntheticEvent<HTMLDivElement>): void | boolean {
     if (tab.props.disabled) {
       return false;
     }
@@ -273,13 +273,13 @@ export default class Tabs extends Component {
     const scrollBtn = scrollable
       ? [
         (<span key="el-tabs__nav-prev"
-          className={scrollable.prev ? 'el-tabs__nav-prev' : 'el-tabs__nav-prev is-disabled'}
+          className={scrollPrev ? 'el-tabs__nav-prev' : 'el-tabs__nav-prev is-disabled'}
           onClick={() => this.scrollPrev()}
         >
           <i className="el-icon-arrow-left"></i>
         </span>),
         (<span key="el-tabs__nav-next"
-          className={scrollable.next ? 'el-tabs__nav-next' : 'el-tabs__nav-next is-disabled'}
+          className={scrollNext ? 'el-tabs__nav-next' : 'el-tabs__nav-next is-disabled'}
           onClick={() => this.scrollNext()}
         >
           <i className="el-icon-arrow-right"></i>

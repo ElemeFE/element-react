@@ -5,7 +5,7 @@ import { PropTypes } from '../../../libs';
 import { limitRange } from '../utils'
 import TimeSpinner from '../basic/TimeSpinner'
 import Locale from '../../locale'
-import type {TimePanelProps} from '../Types';
+import type { TimeTypeProps, TimePanelProps } from '../Types';
 import { PopperBase } from './PopperBase'
 
 const mapPropsToState = (props) => {
@@ -57,7 +57,7 @@ export default class TimePanel extends PopperBase {
 
   // type: string,  one of [hours, minutes, seconds]
   // date: {type: number}
-  handleChange(date: {string: number}) {
+  handleChange(date: TimeTypeProps) {
     const {currentDate} = this.state
 
     if (date.hours !== undefined) {
