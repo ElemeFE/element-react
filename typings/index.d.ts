@@ -619,7 +619,7 @@ declare namespace ElementReact {
     fixed?: boolean | string
     filterMethod?: () => void
     filters?: Object[]
-    render?: (data? :Object) => void
+    render?: (data? :Object, column? :Object, index? :number) => void
   }
   interface TableProps extends ElementReactLibs.ComponentProps<{}> {
     columns?: TableColumn[]
