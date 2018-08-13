@@ -1,10 +1,10 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 type Props = {
-  children: React.Element<any>,
+  children: React.Node,
   value: number | string,
   max: number,
   isDot: boolean,

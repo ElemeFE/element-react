@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 import ajax from './ajax';
 import Cover from './Cover';
@@ -19,7 +19,7 @@ export default class AjaxUpload extends Component {
     return str.indexOf('image') !== -1;
   }
 
-  handleChange(e: SyntheticEvent): void {
+  handleChange(e: SyntheticEvent<HTMLInputElement>): void {
     if (e.target instanceof HTMLInputElement) {
       const files = e.target.files;
       if (!files) {
@@ -111,11 +111,12 @@ export default class AjaxUpload extends Component {
         })}
         onClick={() => this.handleClick()}
       >
-        {drag
-          ? <Cover onFile={file => this.uploadFiles(file)}>
-              {this.props.children}
-            </Cover>
-          : this.props.children}
+        {drag ?
+          <Cover onFile={file => this.uploadFiles(file)}>
+            {this.props.children}
+          </Cover> :
+          this.props.children
+        }
         <input
           className="el-upload__input"
           type="file"

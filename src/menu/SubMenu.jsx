@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { PropTypes, View, Transition, CollapseTransition } from '../../libs';
 

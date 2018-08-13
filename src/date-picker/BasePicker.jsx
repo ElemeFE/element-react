@@ -199,7 +199,7 @@ export default class BasePicker extends Component {
     this.props.onBlur(this);
   }
 
-  handleKeydown(evt: SyntheticKeyboardEvent) {
+  handleKeydown(evt: SyntheticKeyboardEvent<HTMLInputElement>) {
     const keyCode = evt.keyCode;
     // tab
     if (keyCode === 9 || keyCode === 27) {
@@ -234,7 +234,7 @@ export default class BasePicker extends Component {
     return true
   }
 
-  handleClickOutside(evt: SyntheticEvent) {
+  handleClickOutside(evt: SyntheticEvent<*>) {
     const { value, pickerVisible } = this.state
     if (!this.isInputFocus && !pickerVisible) {
       return

@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Button from '../button';
 import TransferPanel from './TransferPanel';
@@ -25,8 +25,8 @@ type Props = {
     disabled: string
   },
   onChange: Function,
-  leftFooter?: React.Element<any>,
-  rightFooter?: React.Element<any>
+  leftFooter?: React.Node,
+  rightFooter?: React.Node
 };
 
 type State = {

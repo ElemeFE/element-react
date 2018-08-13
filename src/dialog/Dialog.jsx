@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, View, Transition, PropTypes } from '../../libs';
 
 type State = {
@@ -63,13 +63,13 @@ export default class Dialog extends Component {
     }
   }
 
-  onKeyDown(e: SyntheticKeyboardEvent): void {
+  onKeyDown(e: SyntheticKeyboardEvent<HTMLDivElement>): void {
     if (this.props.closeOnPressEscape && e.keyCode === 27) {
       this.close(e);
     }
   }
 
-  handleWrapperClick(e: SyntheticEvent): void {
+  handleWrapperClick(e: SyntheticEvent<HTMLDivElement>): void {
     if (e.target instanceof HTMLDivElement) {
       if (this.props.closeOnClickModal && e.target === e.currentTarget) {
         this.close(e);
@@ -77,7 +77,7 @@ export default class Dialog extends Component {
     }
   }
 
-  close(e: SyntheticEvent | SyntheticKeyboardEvent): void {
+  close(e: SyntheticEvent<HTMLDivElement> | SyntheticKeyboardEvent<HTMLDivElement>): void {
     this.props.onCancel(e);
   }
 

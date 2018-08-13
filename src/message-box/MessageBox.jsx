@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import Button from '../button';
 import Input from '../input';

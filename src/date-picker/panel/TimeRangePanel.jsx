@@ -5,7 +5,7 @@ import { PropTypes } from '../../../libs';
 import { limitRange, parseDate } from '../utils';
 import TimeSpinner from '../basic/TimeSpinner';
 import Locale from '../../locale';
-import type {TimeRangePanelProps } from '../Types';
+import type { TimeTypeProps, TimeRangePanelProps } from '../Types';
 import { PopperBase } from './PopperBase'
 
 const MIN_TIME = parseDate('00:00:00', 'HH:mm:ss');
@@ -97,7 +97,7 @@ export default class TimeRangePanel extends PopperBase {
 
   // type = hours | minutes | seconds
   // date: {type: number}
-  handleChange(date: { string: ?number }, field: string) {
+  handleChange(date: TimeTypeProps, field: string) {
     const ndate = this.state[field];
 
     if (date.hours !== undefined) {

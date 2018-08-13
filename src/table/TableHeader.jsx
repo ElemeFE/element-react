@@ -39,7 +39,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     return this.props.store.rightFixedColumns.length;
   }
 
-  handleMouseMove(column: _Column, event: SyntheticMouseEvent) {
+  handleMouseMove(column: _Column, event: SyntheticMouseEvent<HTMLTableCellElement>) {
     if (!column.resizable) return;
     if (column.subColumns && column.subColumns.length) return;
 
@@ -61,7 +61,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     }
   }
 
-  handleMouseDown(column: _Column, event: SyntheticMouseEvent) {
+  handleMouseDown(column: _Column, event: SyntheticMouseEvent<HTMLTableCellElement>) {
     if (this.draggingColumn) {
       this.dragging = true;
 
@@ -87,14 +87,14 @@ export default class TableHeader extends Component<TableHeaderProps> {
       _document.onselectstart = () => false;
       _document.ondragstart = () => false;
 
-      const handleMouseMove = (event: MouseEvent) => {
+      const handleMouseMove = (event: SyntheticMouseEvent<*>) => {
         const deltaLeft = event.clientX - startMouseLeft;
         const proxyLeft = startLeft + deltaLeft;
 
         resizeProxy.style.left = Math.max(minLeft, proxyLeft) + 'px';
       };
 
-      const handleMouseUp = (event: MouseEvent) => {
+      const handleMouseUp = (event: SyntheticMouseEvent<*>) => {
         if (this.dragging) {
           const finalLeft = parseInt(resizeProxy.style.left, 10);
           const columnWidth = finalLeft - startColumnLeft;
@@ -128,7 +128,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     _document.body.style.cursor = "";
   }
 
-  handleHeaderClick(column: _Column, event: SyntheticEvent) {
+  handleHeaderClick(column: _Column, event: SyntheticEvent<HTMLTableCellElement>) {
     if (column.sortable && !column.filters) {
       this.handleSortClick(column, null, event);
     } else if (column.filters && !column.sortable) {
@@ -138,7 +138,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     }
   }
 
-  handleSortClick(column: _Column, givenOrder: ?string, event: SyntheticEvent) {
+  handleSortClick(column: _Column, givenOrder: ?string, event: SyntheticEvent<HTMLElement>) {
     event.stopPropagation();
     event.nativeEvent.stopImmediatePropagation();
 
@@ -168,7 +168,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     this.dispatchEvent('onHeaderClick', column, event)
   }
 
-  handleFilterClick(column: _Column, event: SyntheticEvent) {
+  handleFilterClick(column: _Column, event: SyntheticEvent<HTMLElement>) {
     if (event) {
       event.stopPropagation();
       event.nativeEvent.stopImmediatePropagation();

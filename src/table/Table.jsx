@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React from 'react';
 import { Component, PropTypes } from '../../libs';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
@@ -101,7 +101,7 @@ export default class Table extends Component<TableProps, TableState> {
   }
 
   bindRef(key: string) {
-    return (node: Object) => { this[key] = node; }
+    return (node: HTMLDivElement | null) => { if (node) this[key] = node; }
   }
 
   render() {

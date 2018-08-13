@@ -1,10 +1,10 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Button extends Component {
-  onClick(e: SyntheticEvent): void {
+  onClick(e: SyntheticEvent<HTMLButtonElement>): void {
     if (!this.props.loading) {
       this.props.onClick && this.props.onClick(e);
     }
