@@ -87,8 +87,8 @@
     "throttle-debounce": "^1.0.1"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": ">=16.3.0",
+    "react-dom": ">=16.3.0"
   },
   "jest": {
     "testRegex": "(/jest/.+\\.(js|jsx)$)|_test.jsx?$",

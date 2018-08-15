@@ -72,8 +72,7 @@ export default class Suggestions extends Component {
               'is-loading': loading
             })}
             style={{
-              width: dropdownWidth,
-              zIndex: 1
+              width: dropdownWidth
             }}
           >
             <Scrollbar

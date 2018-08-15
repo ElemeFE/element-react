@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
 const typeMap = {
@@ -65,7 +66,13 @@ export default class Notification extends Component {
   }
 
   render() {
-    return (
+    const body = document.body;
+
+    if (!body) {
+      return null;
+    }
+
+    return ReactDOM.createPortal(
       <Transition
         name="el-notification-fade"
         onAfterEnter={() => { this.offsetHeight = this.rootDOM.offsetHeight; }}
@@ -77,8 +84,7 @@ export default class Notification extends Component {
             ref={(ele) => { this.rootDOM = ele; }}
             className="el-notification"
             style={{
-                top: this.props.top,
-                zIndex: 9999
+                top: this.props.top
             }}
             onMouseEnter={this.stopTimer.bind(this)}
             onMouseLeave={this.startTimer.bind(this)}
@@ -96,7 +102,8 @@ export default class Notification extends Component {
             </div>
           </div>
         </View>
-      </Transition>
+      </Transition>,
+      body
     )
   }
 }
