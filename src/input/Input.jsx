@@ -69,8 +69,19 @@ export default class Input extends Component {
   }
 
   handleBlur(e: SyntheticEvent): void {
-    const { onBlur } = this.props;
+    const { onBlur } = this.props
+    if (this.props.trim) this.handleTrim(e)
     if (onBlur) onBlur(e)
+  }
+
+  handleTrim(e: SyntheticEvent): void {
+    if(this.props.onChange) {
+      // this's for controlled components 
+      this.props.onChange(e.target.value.trim())
+    } else {
+      // this's for uncontrolled components
+      this.refs.input.value = this.refs.input.value.trim()
+    }
   }
 
   handleIconClick(): void {
@@ -170,6 +181,7 @@ Input.propTypes = {
   minLength: PropTypes.number,
   defaultValue: PropTypes.any,
   value: PropTypes.any,
+  trim: PropTypes.bool,
 
   // type !== 'textarea'
   size: PropTypes.oneOf(['large', 'small', 'mini']),
