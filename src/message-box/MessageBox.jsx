@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import Button from '../button';
 import Input from '../input';
@@ -127,7 +127,12 @@ export default class MessageBox extends Component {
 
     return (
       <div>
-        <div style={{ position: 'absolute', zIndex: 2001 }}>
+        <Transition name="v-modal">
+          <View show={visible}>
+            <div className="v-modal"></div>
+          </View>
+        </Transition>
+        <div style={{ position: 'absolute' }}>
           <Transition
             name="msgbox-fade"
             onAfterLeave={() => { willUnmount && willUnmount() }}
@@ -188,11 +193,6 @@ export default class MessageBox extends Component {
             </View>
           </Transition>
         </div>
-        <Transition name="v-modal">
-          <View show={visible}>
-            <div className="v-modal" style={{ zIndex: 1006 }}></div>
-          </View>
-        </Transition>
       </div>
     )
   }

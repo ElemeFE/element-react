@@ -1,7 +1,6 @@
 /* @flow */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 type State = {
@@ -31,7 +30,7 @@ export default class Pager extends Component {
     };
   }
 
-  onPagerClick(e: SyntheticEvent): void {
+  onPagerClick(e: SyntheticEvent<HTMLUListElement>): void {
     const target = e.target;
     if (target instanceof HTMLElement) {
       if (target.tagName === 'UL') {

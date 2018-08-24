@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
 import { Component, PropTypes } from '../../libs';

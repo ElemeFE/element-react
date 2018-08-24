@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Loading extends Component {
@@ -13,8 +13,7 @@ export default class Loading extends Component {
     top?: number,
     right?: number,
     bottom?: number,
-    left?: number,
-    zIndex?: number
+    left?: number
   } {
     if (this.props.fullscreen) {
       this.disableScroll();
@@ -24,8 +23,7 @@ export default class Loading extends Component {
         top: 0,
         right: 0,
         bottom: 0,
-        left: 0,
-        zIndex: 99999
+        left: 0
       }
     } else {
       this.enableScroll();
@@ -59,12 +57,12 @@ export default class Loading extends Component {
 
     return (
       <div style={this.style(this.getStyle())} className={this.className()}>
+        {this.props.children}
         { loading && (
           <div
             style={{
               display: 'block',
               position: 'absolute',
-              zIndex: 657,
               backgroundColor: 'rgba(255, 255, 255, 0.901961)',
               margin: 0,
               top: 0,
@@ -88,7 +86,6 @@ export default class Loading extends Component {
             </div>
           </div>
         )}
-        {this.props.children}
       </div>
     )
   }

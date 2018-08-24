@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../../libs';
 import draggable from '../draggable';
 import type { AlphaSliderState, DragOptions } from '../Types';
@@ -32,7 +32,7 @@ export default class AlphaSlider extends Component {
     this.update();
   }
 
-  handleClick(event: SyntheticMouseEvent): void {
+  handleClick(event: SyntheticMouseEvent<HTMLDivElement>): void {
     const thumb = this.refs.thumb;
     const target = event.target;
     if (target !== thumb) {
@@ -40,7 +40,7 @@ export default class AlphaSlider extends Component {
     }
   }
 
-  handleDrag(event: SyntheticMouseEvent): void {
+  handleDrag(event: SyntheticMouseEvent<HTMLDivElement>): void {
     const { vertical, color } = this.props;
     const { onChange } = this.context;
     const rect = this.$el.getBoundingClientRect();

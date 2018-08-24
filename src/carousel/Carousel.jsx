@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import throttle from 'throttle-debounce/throttle';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';

@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import SvPanel from './SvPanel';
 import HueSlider from './HueSlider';
 import AlphaSlider from './AlphaSlider';

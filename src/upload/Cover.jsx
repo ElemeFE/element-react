@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Cover extends Component {
@@ -15,17 +15,17 @@ export default class Cover extends Component {
     };
   }
 
-  handleDragover(e: SyntheticDragEvent): void {
+  handleDragover(e: SyntheticDragEvent<HTMLDivElement>): void {
     e.preventDefault();
     this.setState({ dragOver: true });
   }
 
-  handleDragleave(e: SyntheticDragEvent): void {
+  handleDragleave(e: SyntheticDragEvent<HTMLDivElement>): void {
     e.preventDefault();
     this.setState({ dragOver: false });
   }
 
-  onDrop(e: SyntheticDragEvent): void {
+  onDrop(e: SyntheticDragEvent<HTMLDivElement>): void {
     e.preventDefault();
     this.setState({ dragOver: false });
     this.props.onFile(e.dataTransfer.files);

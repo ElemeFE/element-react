@@ -10,7 +10,6 @@ import local from '../locale';
 function getPopupContainer() {
   const container = document.createElement('div');
   container.className = 'el-table-poper';
-  container.style.zIndex = 999;
   document.body.appendChild(container);
   return container;
 }

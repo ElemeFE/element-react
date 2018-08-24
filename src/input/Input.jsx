@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import calcTextareaHeight from './calcTextareaHeight'
@@ -54,7 +54,7 @@ export default class Input extends Component {
     return value;
   }
 
-  handleChange(e: SyntheticInputEvent): void {
+  handleChange(e: SyntheticInputEvent<HTMLInputElement | HTMLTextAreaElement>): void {
     const { onChange } = this.props;
 
     if (onChange) {
@@ -63,12 +63,12 @@ export default class Input extends Component {
     this.resizeTextarea();
   }
 
-  handleFocus(e: SyntheticEvent): void {
+  handleFocus(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>): void {
     const { onFocus } = this.props;
     if (onFocus) onFocus(e)
   }
 
-  handleBlur(e: SyntheticEvent): void {
+  handleBlur(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>): void {
     const { onBlur } = this.props;
     if (onBlur) onBlur(e)
   }

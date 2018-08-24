@@ -1,17 +1,15 @@
 /* @flow */
 
-import React, { Component } from 'react';
+import * as React from 'react';
 
 const ANIMATION_DURATION = 300;
 
 type Props = {
   isShow: boolean,
-  children?: React.Element<any>
+  children?: React.Node
 };
 
-export default class CollapseTransition extends Component {
-  props: Props;
-
+export default class CollapseTransition extends React.Component <Props> {
   selfRef: any;
   leaveTimer: any;
   enterTimer: any;

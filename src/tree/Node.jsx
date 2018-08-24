@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import debounce from 'throttle-debounce/debounce';
 
 import { PropTypes, Component, CollapseTransition } from '../../libs';
@@ -128,7 +128,7 @@ export default class Node extends Component {
   }
 
 
-  handleClick(evt: ?SyntheticEvent): void {
+  handleClick(evt: ?SyntheticEvent<HTMLDivElement>): void {
     if (evt) evt.stopPropagation();
     const { nodeModel, treeNode } = this.props;
 
@@ -138,7 +138,7 @@ export default class Node extends Component {
     }
   }
 
-  handleExpandIconClick(evt: ?SyntheticEvent): void {
+  handleExpandIconClick(evt: ?SyntheticEvent<HTMLSpanElement>): void {
     if (evt) evt.stopPropagation();
 
     const { nodeModel, parent } = this.props;

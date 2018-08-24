@@ -1,5 +1,5 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes, View } from '../../libs';
 import Input from '../input';
 import Checkbox from '../checkbox';
@@ -18,7 +18,7 @@ type Props = {
   checked: Array<Object>,
   hasChecked?: boolean,
   noChecked?: boolean,
-  children: React.Element<any>
+  children: React.Node
 };
 
 type defaultProps = {

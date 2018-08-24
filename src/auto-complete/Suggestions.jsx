@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
@@ -72,8 +72,7 @@ export default class Suggestions extends Component {
               'is-loading': loading
             })}
             style={{
-              width: dropdownWidth,
-              zIndex: 1
+              width: dropdownWidth
             }}
           >
             <Scrollbar
