@@ -17,6 +17,10 @@ render() {
       onPreview={file => this.handlePreview(file)}
       onRemove={(file, fileList) => this.handleRemove(file, fileList)}
       fileList={fileList}
+      limit={3}
+      onExceed={(files, fileList) => {
+        Message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      }}
       tip={<div className="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>}
     >
       <Button size="small" type="primary">点击上传</Button>
