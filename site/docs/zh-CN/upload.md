@@ -300,6 +300,9 @@ submitUpload() {
 | listType | 文件列表的类型 | string | text/picture/picture-card | text |
 | autoUpload | 是否在选取文件后立即进行上传 | boolean | — | true |
 | fileList | 上传的文件列表, 例如: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}] | array | — | [] |
+| disabled | 是否禁用 | boolean | — | false|
+| limit | 最大允许上传个数	| number | — | — |
+| onExceed	| 文件超出个数限制时的钩子	 | function(files, fileList)	| — | — |
 
 ### Methods
 | 方法名      | 说明          | 参数 |

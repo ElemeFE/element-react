@@ -296,6 +296,9 @@ submitUpload() {
 | listType | type of fileList | string | text/picture/picture-card | text |
 | autoUpload | whether to auto upload file | boolean | — | true |
 | fileList | default uploaded files, i.e: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}] | array | — | [] |
+| disabled | 是否禁用 | boolean | — | false|
+| limit | 最大允许上传个数	| number | — | — |
+| onExceed	| 文件超出个数限制时的钩子	 | function(files, fileList)	| — | — |
 
 ### Methods
 | Event Name      | Description       | Parameters |
