@@ -18,6 +18,7 @@ export default class Upload extends Component {
     fileList: [],
     showFileList: true,
     autoUpload: true,
+    disabled: false,
     onRemove() {},
     onPreview() {},
     onProgress() {},
@@ -185,7 +186,10 @@ export default class Upload extends Component {
       data,
       accept,
       listType,
-      className
+      className,
+      limit,
+      disabled,
+      onExceed
     } = this.props;
     let uploadList;
     if (showFileList && fileList.length) {
@@ -203,6 +207,10 @@ export default class Upload extends Component {
       data,
       accept,
       listType,
+      fileList,
+      limit,
+      disabled,
+      onExceed,
       onStart: this.handleStart.bind(this),
       onProgress: this.handleProgress.bind(this),
       onSuccess: this.handleSuccess.bind(this),
