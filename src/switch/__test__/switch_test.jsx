@@ -11,16 +11,16 @@ test('Basic usage', () => {
     </Switch>
   );
 
-  expect(switch1.find('div .el-switch__label').at(0).text()).toEqual('');
-  expect(switch1.find('div .el-switch__label').at(1).text()).toEqual('');
-  expect(switch1.find('label .el-switch').at(0).hasClass('is-checked')).toEqual(true);
+  expect(switch1.find('label.el-switch .el-switch__label').at(0).text()).toEqual('');
+  expect(switch1.find('label.el-switch .el-switch__label').at(1).text()).toEqual('');
+  expect(switch1.find('label.el-switch').hasClass('is-checked')).toEqual(true);
 
   // switch off
   switch1.find('input').simulate('change', {target: {value: false}});
 
-  expect(switch1.find('div .el-switch__label').at(0).text()).toEqual('');
-  expect(switch1.find('div .el-switch__label').at(1).text()).toEqual('');
-  expect(switch1.find('label .el-switch').at(0).hasClass('is-checked')).toEqual(false);
+  expect(switch1.find('label.el-switch .el-switch__label').at(0).text()).toEqual('');
+  expect(switch1.find('label.el-switch .el-switch__label').at(1).text()).toEqual('');
+  expect(switch1.find('label.el-switch').at(0).hasClass('is-checked')).toEqual(false);
 
   const switch2 = mount(
     <Switch
@@ -30,20 +30,21 @@ test('Basic usage', () => {
     </Switch>
   );
 
-  expect(switch2.find('label .el-switch').at(0).hasClass('is-checked')).toEqual(true);
-  expect(switch2.find('div .el-switch__label').at(0).text()).toEqual('ON');
-  expect(switch2.find('div .el-switch__label').at(1).text()).toEqual('OFF');
-  expect(switch2.find('div .el-switch__label').at(0).prop('style').display).toEqual(undefined);
-  expect(switch2.find('div .el-switch__label').at(1).prop('style').display).toEqual('none');
+  expect(switch2.find('label.el-switch').at(0).hasClass('is-checked')).toEqual(true);
+  expect(switch2.find('label.el-switch .el-switch__label').at(0).text()).toEqual('ON');
+  expect(switch2.find('label.el-switch .el-switch__label').at(1).text()).toEqual('OFF');
+  expect(switch2.find('label.el-switch .el-switch__label').at(0).prop('style').display).toEqual(undefined);
+  expect(switch2.find('label.el-switch .el-switch__label').at(1).prop('style').display).toEqual('none');
 
   // switch off
   switch2.find('input[type="checkbox"]').simulate('change', {target: {value: false}});
 
-  expect(switch2.find('label .el-switch').at(0).hasClass('is-checked')).toEqual(false);
-  expect(switch2.find('div .el-switch__label').at(0).text()).toEqual('ON');
-  expect(switch2.find('div .el-switch__label').at(1).text()).toEqual('OFF');
-  expect(switch2.find('div .el-switch__label').at(0).prop('style').display).toEqual('none');
-  expect(switch2.find('div .el-switch__label').at(1).prop('style').display).toEqual(undefined);
+  expect(switch2.find('label.el-switch').at(0).hasClass('is-checked')).toEqual(false);
+  expect(switch2.find('label.el-switch .el-switch__label').at(0).text()).toEqual('ON');
+  expect(switch2.find('label.el-switch .el-switch__label').at(1).text()).toEqual('OFF');
+  expect(switch2.find('label.el-switch .el-switch__label').at(0).prop('style').display).toEqual('none');
+  expect(switch2.find('label.el-switch .el-switch__label').at(1).prop('style').display).toEqual(undefined);
+
 });
 
 test('Extended value types', () => {
@@ -73,7 +74,7 @@ test('Extended value types', () => {
       </Tooltip>
     </div>);
 
-  expect(component.find('label .el-switch .el-switch--wide').at(0).hasClass('is-checked')).toEqual(true);
+  expect(component.find('label.el-switch.el-switch--wide').at(0).hasClass('is-checked')).toEqual(true);
   expect(component.find('div .el-switch__label').at(0).text()).toEqual('ON');
   expect(component.find('div .el-switch__label').at(1).text()).toEqual('OFF');
   expect(component.find('div .el-switch__label').at(0).prop('style').display).toEqual(undefined);
@@ -83,7 +84,7 @@ test('Extended value types', () => {
   // switch off
   component.find('input[type="checkbox"]').simulate('change', {target: {value: false}});
 
-  expect(component.find('label .el-switch .el-switch--wide').at(0).hasClass('is-checked')).toEqual(false);
+  expect(component.find('label.el-switch.el-switch--wide').at(0).hasClass('is-checked')).toEqual(false);
   expect(component.find('div .el-switch__label').at(0).text()).toEqual('ON');
   expect(component.find('div .el-switch__label').at(1).text()).toEqual('OFF');
   expect(component.find('div .el-switch__label').at(0).prop('style').display).toEqual('none');
@@ -101,7 +102,7 @@ test('Disabled', () => {
     </Switch>
   );
 
-  expect(switch1.find('label .el-switch').at(0).hasClass('is-disabled')).toEqual(true);
+  expect(switch1.find('label.el-switch').at(0).hasClass('is-disabled')).toEqual(true);
   expect(switch1.find('input[type="checkbox"]').at(0).prop('disabled')).toEqual(true);
 
   const switch2 = mount(
@@ -110,7 +111,7 @@ test('Disabled', () => {
       disabled>
     </Switch>);
 
-  expect(switch2.find('label .el-switch').at(0).hasClass('is-disabled')).toEqual(true);
+  expect(switch2.find('label.el-switch').at(0).hasClass('is-disabled')).toEqual(true);
   expect(switch2.find('input[type="checkbox"]').at(0).prop('disabled')).toEqual(true);
 
 });
