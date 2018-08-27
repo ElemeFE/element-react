@@ -70,7 +70,7 @@ export default class Input extends Component {
 
   handleBlur(e: SyntheticEvent): void {
     const { onBlur } = this.props
-    // if (this.props.trim) this.handleTrim()
+    if (this.props.trim) this.handleTrim()
     if (onBlur) onBlur(e)
   }
 
