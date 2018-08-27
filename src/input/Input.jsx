@@ -70,17 +70,15 @@ export default class Input extends Component {
 
   handleBlur(e: SyntheticEvent): void {
     const { onBlur } = this.props
-    if (this.props.trim) this.handleTrim(e)
+    // if (this.props.trim) this.handleTrim()
     if (onBlur) onBlur(e)
   }
 
-  handleTrim(e: SyntheticEvent): void {
+  handleTrim(): void {
+    this.refs.input.value = this.refs.input.value.trim()
     if(this.props.onChange) {
       // this's for controlled components 
-      this.props.onChange(e.target.value.trim())
-    } else {
-      // this's for uncontrolled components
-      this.refs.input.value = this.refs.input.value.trim()
+      this.props.onChange(this.refs.input.value.trim())
     }
   }
 
