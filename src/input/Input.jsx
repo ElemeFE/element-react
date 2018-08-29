@@ -16,6 +16,7 @@ export default class Input extends Component {
     type: 'text',
     autosize: false,
     rows: 2,
+    trim: false,
     autoComplete: 'off'
   }
 
@@ -77,7 +78,7 @@ export default class Input extends Component {
   handleTrim(): void {
     this.refs.input.value = this.refs.input.value.trim()
     if(this.props.onChange) {
-      // this's for controlled components 
+      // this's for controlled components
       this.props.onChange(this.refs.input.value.trim())
     }
   }
@@ -105,7 +106,7 @@ export default class Input extends Component {
   }
 
   render(): React.Element<any> {
-    const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave,
+    const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave, trim,
       ...otherProps
     } = this.props;
 
