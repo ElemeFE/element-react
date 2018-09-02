@@ -88,7 +88,8 @@ export default class AjaxUpload extends Component {
       onSuccess,
       onError
     } = this.props;
-    ajax({
+    const {httpRequest = ajax} = this.props 
+    const req = httpRequest({
       headers,
       withCredentials,
       file,
@@ -99,6 +100,9 @@ export default class AjaxUpload extends Component {
       onSuccess: res => onSuccess(res, file),
       onError: err => onError(err, file)
     });
+    if(req && req.then){
+      req.then(onSuccess, onError)
+    }
   }
 
   handleClick(): void {
@@ -154,5 +158,6 @@ AjaxUpload.propTypes = {
   fileList: PropTypes.array,
   disabled: PropTypes.bool,
   limit: PropTypes.number,
-  onExceed: PropTypes.func
+  onExceed: PropTypes.func,
+  httpRequest: PropTypes.func
 };

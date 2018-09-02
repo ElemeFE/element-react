@@ -303,6 +303,7 @@ submitUpload() {
 | disabled | 是否禁用 | boolean | — | false|
 | limit | 最大允许上传个数	| number | — | — |
 | onExceed	| 文件超出个数限制时的钩子	 | function(files, fileList)	| — | — |
+| httpRequest	| 覆盖默认的上传行为，可以自定义上传的实现	 | function	| — | — |
 
 ### Methods
 | 方法名      | 说明          | 参数 |

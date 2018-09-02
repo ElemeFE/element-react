@@ -189,7 +189,8 @@ export default class Upload extends Component {
       className,
       limit,
       disabled,
-      onExceed
+      onExceed,
+      httpRequest
     } = this.props;
     let uploadList;
     if (showFileList && fileList.length) {
@@ -211,6 +212,7 @@ export default class Upload extends Component {
       limit,
       disabled,
       onExceed,
+      httpRequest,
       onStart: this.handleStart.bind(this),
       onProgress: this.handleProgress.bind(this),
       onSuccess: this.handleSuccess.bind(this),
@@ -264,5 +266,9 @@ Upload.propTypes = {
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
   onChange: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  limit: PropTypes.number,
+  onExceed: PropTypes.func,
+  httpRequest: PropTypes.func
 };
