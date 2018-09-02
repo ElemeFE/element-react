@@ -92,7 +92,7 @@ class Select extends Component {
       this.onInputChange();
     });
 
-    this.resetInputWidth = this._resetInputWidth.bind(this) 
+    this.resetInputWidth = this._resetInputWidth.bind(this)
   }
 
   getChildContext(): Object {
