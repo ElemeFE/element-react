@@ -1219,7 +1219,7 @@ constructor(props) {
         label: "姓名",
         prop: "name",
         width: 180,
-        sortable: true
+        sortable: 'custom'
       },
       {
         label: "地址",
@@ -1232,20 +1232,25 @@ constructor(props) {
       address: '上海市普陀区金沙江路 1518 弄'
     }, {
       date: '2016-05-04',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1517 弄'
+      name: '鸣人',
+      address: '火影村'
     }, {
       date: '2016-05-01',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1519 弄'
+      name: '坂田银时',
+      address: '歌舞伎町'
     }, {
       date: '2016-05-03',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1516 弄'
+      name: '宇智波鼬',
+      address: '晓'
     }]
   }
 }
-
+handleSort(data){
+  console.log('自定义');
+  console.log(data.column);
+  console.log(data.prop);
+  console.log(data.order);
+}
 render() {
   return (
     <Table
@@ -1253,6 +1258,7 @@ render() {
       columns={this.state.columns}
       data={this.state.data}
       border={true}
+      onSortChange={this.handleSort.bind(this)}
     />
   )
 }
