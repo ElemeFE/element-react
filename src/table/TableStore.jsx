@@ -390,7 +390,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     let sortedData;
     if (!order || sortable === 'custom') {
       sortedData = data;
-    } else if (sortable && sortable != 'custom') {
+    } else if (sortable && sortable !== 'custom') {
       const flag = order === 'ascending' ? 1 : -1;
       if (sortMethod) {
         sortedData = data.sort((a, b) => sortMethod(a, b) ? flag : -flag);
@@ -409,13 +409,13 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
           { column: null, prop: null, order: null }
         )
     }
-    if (sortable && sortable != 'custom') {
+    if (sortable && sortable !== 'custom') {
       this.setState({
         sortColumn: column,
         sortOrder: order,
         data: sortedData,
       },sortSet());
-    } else if (sortable && sortable == 'custom') {
+    } else if (sortable && sortable === 'custom') {
       this.setState({
         sortColumn: column,
         sortOrder: order,
