@@ -154,7 +154,7 @@ export default class MessageBox extends Component {
                       <div className="el-message-box__content">
                         <div className={this.classNames('el-message-box__status', this.typeClass())}></div>
                         <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
-                          <p>{message}</p>
+                          <div>{message}</div>
                         </div>
                         <View show={showInput}>
                           <div className="el-message-box__input">
