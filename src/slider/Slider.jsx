@@ -142,7 +142,7 @@ export default class Slider extends Component {
       }
     }
 
-    this.forceUpdate();
+    this.setState({ oldValue });
   }
 
   setPosition(percent: number): void {
