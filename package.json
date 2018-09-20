@@ -1,6 +1,6 @@
 {
   "name": "element-react",
-  "version": "1.4.20",
+  "version": "1.4.22",
   "description": "Element UI for React",
   "private": false,
   "main": "dist/npm/es5/index.js",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eleme/element-react.git"
+    "url": "git+https://github.com/ElemeFE/element-react.git"
   },
   "keywords": [
     "Element",
@@ -28,9 +28,9 @@
   "author": "ELEME Inc",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/eleme/element-react/issues"
+    "url": "https://github.com/ElemeFE/element-react/issues"
   },
-  "homepage": "https://github.com/eleme/element-react",
+  "homepage": "https://github.com/ElemeFE/element-react",
   "devDependencies": {
     "@types/react": "^15.6.7",
     "babel-cli": "^6.26.0",
