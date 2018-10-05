@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import Tooltip from '../tooltip';
@@ -54,7 +54,7 @@ export default class SliderButton extends Component {
     });
   }
 
-  onButtonDown(event: SyntheticMouseEvent) {
+  onButtonDown(event: SyntheticMouseEvent<HTMLDivElement>) {
     if (this.disabled()) return;
 
     this.onDragStart(event);
@@ -64,7 +64,7 @@ export default class SliderButton extends Component {
     window.addEventListener('contextmenu', this.onDragEnd.bind(this));
   }
 
-  onDragStart(event: SyntheticMouseEvent) {
+  onDragStart(event: SyntheticMouseEvent<HTMLDivElement>) {
     this.setState({
       dragging: true,
       startX: event.clientX,
@@ -73,7 +73,7 @@ export default class SliderButton extends Component {
     });
   }
 
-  onDragging(event: SyntheticMouseEvent) {
+  onDragging(event: SyntheticMouseEvent<*>) {
     if (this.state.dragging) {
       this.state.currentX = event.clientX;
       this.state.currentY = event.clientY;

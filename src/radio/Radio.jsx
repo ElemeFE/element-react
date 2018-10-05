@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 type State = {
@@ -29,7 +29,7 @@ export default class Radio extends Component {
     }
   }
 
-  onChange(e: SyntheticInputEvent) {
+  onChange(e: SyntheticInputEvent<HTMLInputElement>) {
     const checked = e.target.checked;
 
     if (checked) {

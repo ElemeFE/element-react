@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 import Cover from './Cover';
 import type { IframeUploadState } from './Types';
@@ -45,13 +45,13 @@ export default class IframeUpload extends Component {
     this.setState({ disabled: false });
   }
 
-  onDrop(e: SyntheticDragEvent): void {
+  onDrop(e: SyntheticDragEvent<HTMLDivElement>): void {
     e.preventDefault();
     this.setState({ dragOver: false });
     this.uploadFiles(e.dataTransfer.files); // TODO
   }
 
-  handleChange(e: SyntheticInputEvent): void {
+  handleChange(e: SyntheticInputEvent<HTMLInputElement>): void {
     if (e.target instanceof HTMLInputElement) {
       const file: File = e.target.files[0];
       if (file) {
@@ -85,12 +85,12 @@ export default class IframeUpload extends Component {
     }
   }
 
-  handleDragover(e: SyntheticDragEvent): void {
+  handleDragover(e: SyntheticDragEvent<HTMLDivElement>): void {
     e.preventDefault();
     this.setState({ onDrop: true });
   }
 
-  handleDragleave(e: SyntheticDragEvent): void {
+  handleDragleave(e: SyntheticDragEvent<HTMLDivElement>): void {
     e.preventDefault();
     this.setState({ onDrop: false });
   }

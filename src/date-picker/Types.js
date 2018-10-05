@@ -31,6 +31,13 @@ type Range<T> = [T, Date]
 type TimeSpinnerSelectableRange = Range<any>[]
 type TimeSpinnerOnSelectRangeChange = (range: Range<number>)=>void
 export type TimeTypes = 'hours' | 'minutes' | 'seconds'
+
+export type TimeTypeProps = {
+  hours: ?number,
+  minutes: ?number,
+  seconds: ?number
+}
+
 export type TimeSpinnerProps = {
   hours: ?number,
   minutes: ?number,

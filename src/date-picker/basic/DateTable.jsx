@@ -43,7 +43,7 @@ export default class DateTable extends Component {
   }
 
 
-  WEEKS() {
+  WEEKS(): Array<string> {
     // 0-6
     const week = this.getOffsetWeek();
     return WEEKS.slice(week).concat(WEEKS.slice(0, week));
@@ -254,7 +254,7 @@ export default class DateTable extends Component {
   }
 
 
-  handleMouseMove(event: SyntheticMouseEvent) {
+  handleMouseMove(event: SyntheticMouseEvent<HTMLTableElement>) {
     const {showWeekNumber, onChangeRange, rangeState, selectionMode} = this.props
 
     const getDateOfCell = (row, column, showWeekNumber) => {
@@ -274,7 +274,7 @@ export default class DateTable extends Component {
     onChangeRange(rangeState)
   }
 
-  handleClick(event: SyntheticEvent) {
+  handleClick(event: SyntheticEvent<HTMLTableElement>) {
     let target: any = event.target;
 
     if (target.tagName !== 'TD') return;

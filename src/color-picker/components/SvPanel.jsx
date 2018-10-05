@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../../libs';
 import draggable from '../draggable';
 import type { SvPanelState, DragOptions } from '../Types';
@@ -52,7 +52,7 @@ export default class SvPanel extends Component {
     });
   }
 
-  handleDrag(event: SyntheticMouseEvent): void {
+  handleDrag(event: SyntheticMouseEvent<HTMLDivElement>): void {
     const { color } = this.props;
     const { onChange } = this.context;
     const el = this.$el;

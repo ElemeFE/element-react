@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import InputNumber from '../input-number';
@@ -166,7 +166,7 @@ export default class Slider extends Component {
     this.refs[button].setPosition(percent);
   }
 
-  onSliderClick(event: SyntheticMouseEvent): void {
+  onSliderClick(event: SyntheticMouseEvent<HTMLDivElement>): void {
     if (this.props.disabled || this.state.dragging) return;
 
     if (this.props.vertical) {

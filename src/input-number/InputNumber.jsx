@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 import Input from '../input';
@@ -29,7 +29,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  onKeyDown(e: SyntheticKeyboardEvent): void {
+  onKeyDown(e: SyntheticKeyboardEvent<HTMLInputElement>): void {
     switch (e.keyCode) {
       case 38: // KeyUp
         e.preventDefault();
