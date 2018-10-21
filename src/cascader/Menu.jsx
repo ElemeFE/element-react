@@ -43,7 +43,7 @@ export default class CascaderMenu extends Component {
   }
 
   componentDidUpdate(props: Object, state: State) {
-    if (state.value != this.state.value || state.visible != this.state.visible) {
+    if (state.value !== this.state.value || state.visible !== this.state.visible) {
       this.setState({ activeValue: this.state.value });
     }
   }
@@ -65,14 +65,12 @@ export default class CascaderMenu extends Component {
   }
 
   handleMenuLeave() {
-    // this.$emit('menuLeave');
   }
 
   activeItem(item: any, menuIndex: number) {
     const activeOptions = this.activeOptions();
 
     this.state.activeValue.splice(menuIndex, activeOptions.length, item.value);
-    // this.activeOptions.splice(menuIndex + 1, len, item.children);
 
     this.forceUpdate();
 

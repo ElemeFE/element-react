@@ -81,6 +81,7 @@
   "dependencies": {
     "async-validator": "^1.8.5",
     "classnames": "^2.2.6",
+    "popper.js": "^1.14.4",
     "prop-types": "^15.6.2",
     "raf": "^3.4.0",
     "react-click-outside": "^3.0.0",
