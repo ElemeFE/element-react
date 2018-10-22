@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
 import debounce from 'throttle-debounce/debounce';
-import Popper from '../../libs/utils/popper';
+import Popper from 'popper.js';
 import { Component, PropTypes, View } from '../../libs';
 
 import CascaderMenu from './Menu';
@@ -88,15 +88,20 @@ class Cascader extends Component {
   componentDidUpdate(props: Object, state: State) {
     const { menuVisible } = this.state;
 
-    if (menuVisible != state.menuVisible) {
+    if (menuVisible !== state.menuVisible) {
       if (menuVisible) {
         this.showMenu();
 
         if (this.popperJS) {
           this.popperJS.update();
         } else {
-          this.popperJS = new Popper(this.input, this.refs.menu, {
-            gpuAcceleration: false
+          this.popperJS = new Popper(this.input, ReactDOM.findDOMNode(this.refs.menu), {
+            placement: 'bottom-start',
+            modifiers: {
+              computeStyle: {
+                gpuAcceleration: false
+              }
+            }
           });
         }
       } else {
@@ -329,13 +334,13 @@ class Cascader extends Component {
                 <i
                   className="el-input__icon el-icon-circle-close el-cascader__clearIcon"
                   onClick={this.clearValue.bind(this)}
-                ></i>
+                />
               ) : (
                 <i
                   className={this.classNames('el-input__icon el-icon-caret-bottom', {
                     'is-reverse': menuVisible
                   })}
-                ></i>
+                />
               )
             }
           />
