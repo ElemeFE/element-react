@@ -83,9 +83,9 @@ export default class Input extends Component {
     }
   }
 
-  handleIconClick(): void {
+  handleIconClick(e: SyntheticEvent): void {
     if (this.props.onIconClick) {
-      this.props.onIconClick()
+      this.props.onIconClick(e)
     }
   }
 
