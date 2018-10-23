@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popper from '../../libs/utils/popper';
+import Popper from 'popper.js';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
 type State = {
@@ -31,7 +31,11 @@ export default class DropdownMenu extends Component {
 
     this.popperJS = new Popper(parent, this.refs.popper, {
       placement: this.placement(),
-      gpuAcceleration: false
+      modifiers: {
+        computeStyle: {
+          gpuAcceleration: false
+        }
+      }
     });
   }
 
