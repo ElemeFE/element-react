@@ -76,6 +76,7 @@ export default class Carousel extends Component {
 
   componentWillUnmount(): void {
     removeResizeListener(this.refs.root, this.resetItemPosition);
+    this.pauseTimer();
   }
 
   handleMouseEnter(): void {
