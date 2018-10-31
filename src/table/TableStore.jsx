@@ -118,18 +118,16 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   componentWillReceiveProps(nextProps: TableStoreProps) {
-    // const { data } = this.props;
+    const { data } = this.props;
     const nextColumns = getColumns(nextProps);
 
     if (getColumns(this.props) !== nextColumns) {
       this.updateColumns(nextColumns);
     }
-
-    this.updateData(nextProps);
-    // if (data !== nextProps.data) {
-    //   this.updateData(nextProps);
-    // }
-
+    
+    if (JSON.stringify(data) !== JSON.stringify(nextProps.data)) {
+      this.updateData(nextProps);
+    }
   }
 
   get isAllSelected(): boolean {
