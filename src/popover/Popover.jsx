@@ -58,6 +58,8 @@ export default class Popover extends Component {
 
       popper.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
       popper.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+    } else if (trigger === 'manual') {
+        this.setState({ showPopper: this.props.visible });
     } else {
       if (this.reference.nodeName === 'INPUT' || this.reference.nodeName === 'TEXTAREA') {
         this.reference.addEventListener('focus', () => { this.setState({ showPopper: true })});
@@ -139,7 +141,7 @@ export default class Popover extends Component {
 Popover.propTypes = {
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   placement: PropTypes.oneOf(['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end']),
-  trigger: PropTypes.oneOf(['click', 'focus', 'hover']),
+  trigger: PropTypes.oneOf(['click', 'focus', 'hover', 'manual']),
   title: PropTypes.string,
   content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
   popperClass: PropTypes.string,
