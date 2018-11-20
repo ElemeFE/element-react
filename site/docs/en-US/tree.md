@@ -624,7 +624,7 @@ render() {
 ### Supplementary Explaination
 
 | argument name | description
-|------|--------|------|
+|------|--------|
 | nodeModel  | the logical model of a tree node|
 | nodeModel.data  | corresponding data that passed into tree component|
 | node  | the view model of a tree node, a react component instance |
