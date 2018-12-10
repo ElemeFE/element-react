@@ -1,4 +1,4 @@
 #build
 tests
-#site
+site
 .*
