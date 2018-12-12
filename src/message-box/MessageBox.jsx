@@ -122,7 +122,7 @@ export default class MessageBox extends Component {
   }
 
   render(): React.Element<any> {
-    const { willUnmount, title, wrapClassName, showClose, message, showInput, inputPlaceholder, showCancelButton, cancelButtonClass, showConfirmButton, confirmButtonClass, inputType } = this.props;
+    const { willUnmount, title, showClose, message, showInput, inputPlaceholder, showCancelButton, cancelButtonClass, showConfirmButton, confirmButtonClass, inputType } = this.props;
     const { visible, editorErrorMessage } = this.state;
 
     return (
@@ -133,7 +133,7 @@ export default class MessageBox extends Component {
             onAfterLeave={() => { willUnmount && willUnmount() }}
           >
             <View show={visible}>
-              <div className={`el-message-box__wrapper ${wrapClassName || ''}`}>
+              <div className="el-message-box__wrapper">
                 <div className="el-message-box">
                   {
                     title && (
@@ -202,7 +202,6 @@ MessageBox.propTypes = {
   modal: PropTypes.oneOf(['alert', 'confirm', 'prompt']),
   type: PropTypes.oneOf(['success', 'warning', 'info', 'error']),
   title: PropTypes.string,
-  wrapClassName: PropTypes.string,
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   showInput: PropTypes.bool,
   showClose: PropTypes.bool,
