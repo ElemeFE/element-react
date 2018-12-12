@@ -31,16 +31,15 @@ constructor(props) {
     value: ''
   };
 }
-
 render() {
   return (
-    <Select value={this.state.value}>
-      {
-        this.state.options.map(el => {
-          return <Select.Option key={el.value} label={el.label} value={el.value} />
-        })
-      }
-    </Select>
+      <Select value={this.state.value} placeholder="请选择">
+        {
+          this.state.options.map(el => {
+            return <Select.Option key={el.value} label={el.label} value={el.value} />
+          })
+        }
+      </Select>
   )
 }
 ```

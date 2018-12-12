@@ -460,6 +460,7 @@ render() {
 | resize | 控制是否能被用户缩放 | string | none, both, horizontal, vertical | — |
 | autoFocus | 原生属性，自动获取焦点 | boolean | true, false | false |
 | onIconClick | 点击 Input 内的图标的钩子函数 | function | — | — |
+| trim          | 对input内容进行trim    | boolean    | — | false |
 
 ### Autocomplete Attributes
 

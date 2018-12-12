@@ -249,4 +249,3 @@ render() {
 | shortcuts | 快捷选项 | {text: string, onClick: ()=>()}[] | - | - |
 | showWeekNumber | 是否展示周数 | boolean | - | false |
 | rangeSeparator | 选择范围时的分隔符 | string | - | ' - ' |
-

@@ -1,4 +1,4 @@
-import PopperJS from './popper';
+import PopperJS from 'popper.js';
 import { require_condition } from './assert'
 
 const mixinPrototype = {
@@ -35,14 +35,14 @@ const mixinPrototype = {
       popperOptions.offset = offset;
     }
 
-    this._poperJS = new PopperJS(reference, popper, popperOptions);
-
-    this._poperJS.onCreate(() => {
+    popperOptions.onCreate = () => {
       this._resetTransformOrigin();
       this._popper_state.isCreated = true
-      this._poperJS._popper.style.zIndex = zIndex
-      this._poperJS._popper.style.width = width !== null ? `${width}px` : reference.getBoundingClientRect().width + 'px'
-    });
+      this._poperJS.popper.style.zIndex = zIndex
+      this._poperJS.popper.style.width = width !== null ? `${width}px` : reference.getBoundingClientRect().width + 'px'
+    }
+
+    this._poperJS = new PopperJS(reference, popper, popperOptions);
   },
 
   destroyPopper() {
@@ -63,9 +63,9 @@ const mixinPrototype = {
 
   _resetTransformOrigin() {
     let placementMap = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
-    let placement = this._poperJS._popper.getAttribute('x-placement').split('-')[0];
+    let placement = this._poperJS.popper.getAttribute('x-placement').split('-')[0];
     let origin = placementMap[placement];
-    this._poperJS._popper.style.transformOrigin = ['top', 'bottom'].indexOf(placement) > -1
+    this._poperJS.popper.style.transformOrigin = ['top', 'bottom'].indexOf(placement) > -1
       ? `center ${origin}`
       : `${origin} center`;
   },
@@ -139,9 +139,9 @@ const PopperReactMixinMethods = {
 
 /**
  * this Mixin provide utility method to hook reactjs component lifecycle
- * 
+ *
  * @param getPopperRootDom: ()=>HTMLElement, return your popper root HTMLElement when componentDidMount is called
- * @param getRefDom: ()=>HTMLElement, ref node, the node that popper aligns its pop-up to, see the popperjs doc for more information 
+ * @param getRefDom: ()=>HTMLElement, ref node, the node that popper aligns its pop-up to, see the popperjs doc for more information
  */
 export function PopperReactMixin(getPopperRootDom, getRefDom, config) {
   require_condition(typeof getPopperRootDom === 'function', '`getPopperRootDom` func is required!')

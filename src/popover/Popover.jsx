@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popper from '../../libs/utils/popper';
+import Popper from 'popper.js';
 import { Component, PropTypes, Transition, View } from '../../libs';
 
 type State = {
@@ -70,7 +70,7 @@ export default class Popover extends Component {
   }
 
   componentWillReceiveProps(props: Object) {
-    if (props.visible != this.props.visible) {
+    if (props.visible !== this.props.visible) {
       this.setState({
         showPopper: props.visible
       });
@@ -104,7 +104,11 @@ export default class Popover extends Component {
 
     this.popperJS = new Popper(this.reference, this.refs.popper, {
       placement: this.props.placement,
-      gpuAcceleration: false
+      modifiers: {
+        computeStyle: {
+          gpuAcceleration: false
+        }
+      }
     });
   }
 
@@ -122,7 +126,7 @@ export default class Popover extends Component {
             <div ref="popper" className={this.className('el-popover', popperClass)} style={this.style({ width: Number(width) })}>
               { title && <div className="el-popover__title">{title}</div> }
               { content }
-              { visibleArrow && <div ref="arrow" className="popper__arrow"></div>}
+              { visibleArrow && <div ref="arrow" className="popper__arrow"/>}
             </div>
           </View>
         </Transition>
