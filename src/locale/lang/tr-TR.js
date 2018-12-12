@@ -1,7 +1,7 @@
 export default {
   el: {
     colorpicker: {
-      confirm: 'OK',
+      confirm: 'Tamam',
       clear: 'Temizle'
     },
     datepicker: {
@@ -9,14 +9,14 @@ export default {
       today: 'Bugün',
       cancel: 'İptal',
       clear: 'Temizle',
-      confirm: 'OK',
+      confirm: 'Tamam',
       selectDate: 'Tarih seç',
       selectTime: 'Saat seç',
       startDate: 'Başlangıç Tarihi',
       startTime: 'Başlangıç Saati',
       endDate: 'Bitiş Tarihi',
       endTime: 'Bitiş Saati',
-      year: '',
+      year: 'Yıl',
       month1: 'Ocak',
       month2: 'Şubat',
       month3: 'Mart',
@@ -29,7 +29,7 @@ export default {
       month10: 'Ekim',
       month11: 'Kasım',
       month12: 'Aralık',
-      // week: 'week',
+      week: 'Hafta',
       weeks: {
         sun: 'Paz',
         mon: 'Pzt',
@@ -67,13 +67,13 @@ export default {
     },
     pagination: {
       goto: 'Git',
-      pagesize: '/page',
+      pagesize: '/Sayfa',
       total: 'Toplam {total}',
       pageClassifier: ''
     },
     messagebox: {
       title: 'Mesaj',
-      confirm: 'OK',
+      confirm: 'Tamam',
       cancel: 'İptal',
       error: 'İllegal giriş'
     },
@@ -85,9 +85,9 @@ export default {
     table: {
       emptyText: 'Veri yok',
       confirmFilter: 'Onayla',
-      resetFilter: 'Reset',
+      resetFilter: 'Sıfırla',
       clearFilter: 'Hepsi',
-      sumText: 'Sum' // to be translated
+      sumText: 'Topla'
     },
     tree: {
       emptyText: 'Veri yok'
@@ -95,10 +95,10 @@ export default {
     transfer: {
       noMatch: 'Eşleşen veri bulunamadı',
       noData: 'Veri yok',
-      titles: ['List 1', 'List 2'], // to be translated
-      filterPlaceholder: 'Enter keyword', // to be translated
-      noCheckedFormat: '{total} items', // to be translated
-      hasCheckedFormat: '{checked}/{total} checked' // to be translated
+      titles: ['Liste 1', 'Liste 2'],
+      filterPlaceholder: 'Kelimeyi Girin',
+      noCheckedFormat: '{total} eleman',
+      hasCheckedFormat: '{checked}/{total} seçildi'
     }
   }
 };

@@ -148,7 +148,7 @@ export default class InputNumber extends Component {
       })}>
         {
           controls && (
-            <span
+            <span>
               className={this.classNames("el-input-number__decrease", {
                 'is-disabled': this.minDisabled
               })}
