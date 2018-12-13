@@ -297,7 +297,7 @@ submitUpload() {
 | onProgress | 可选参数, 文件上传时的钩子 | function(event, file, fileList) | — | — |
 | onChange | 可选参数, 文件状态改变时的钩子，上传成功或者失败时都会被调用 | function(file, fileList) | — | — |
 | beforeUpload | 可选参数, 上传文件之前的钩子，参数为上传的文件，若返回 false 或者 Promise 则停止上传。 | function(file) | — | — |
-| listType | 文件列表的类型 | string | text/picture/picture-card | text |
+| listType | 文件列表的类型 | string | none/text/picture/picture-card | text |
 | autoUpload | 是否在选取文件后立即进行上传 | boolean | — | true |
 | fileList | 上传的文件列表, 例如: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}] | array | — | [] |
 | disabled | 是否禁用 | boolean | — | false|
