@@ -54,7 +54,7 @@ export default class MessageBox extends Component {
   }
 
   typeClass(): string {
-    return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
+    return this.props.type && typeMap[this.props.type] && `el-icon-${typeMap[this.props.type]}`;
   }
 
   validate(value: string): boolean {
