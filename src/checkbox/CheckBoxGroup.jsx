@@ -4,7 +4,7 @@ import React from "react";
 import { Component, PropTypes } from "../../libs";
 
 type State = {
-  options: Array<string>
+  options: Array<string | number>
 };
 
 export default class CheckboxGroup extends Component {
@@ -32,7 +32,7 @@ export default class CheckboxGroup extends Component {
     };
   }
 
-  onChange(value: string, checked: boolean): void {
+  onChange(value: string | number, checked: boolean): void {
     const index = this.state.options.indexOf(value);
 
     if (checked) {
