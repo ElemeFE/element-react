@@ -4,8 +4,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
 import debounce from 'throttle-debounce/debounce';
+import Popper from 'popper.js';
 import StyleSheet from '../../libs/utils/style';
-import Popper from '../../libs/utils/popper';
 import { Component, PropTypes, Transition, View } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
@@ -91,6 +91,8 @@ class Select extends Component {
     this.debouncedOnInputChange = debounce(this.debounce(), () => {
       this.onInputChange();
     });
+
+    this.resetInputWidth = this._resetInputWidth.bind(this)
   }
 
   getChildContext(): Object {
@@ -100,12 +102,11 @@ class Select extends Component {
   }
 
   componentDidMount() {
-    addResizeListener(this.refs.root, this.resetInputWidth.bind(this));
-
     this.reference = ReactDOM.findDOMNode(this.refs.reference);
     this.popper = ReactDOM.findDOMNode(this.refs.popper);
 
     this.handleValueChange();
+    addResizeListener(this.refs.root, this.resetInputWidth);
   }
 
   componentWillReceiveProps(props: Object) {
@@ -153,7 +154,7 @@ class Select extends Component {
   }
 
   componentWillUnmount() {
-    removeResizeListener(this.refs.root, this.resetInputWidth.bind(this));
+    removeResizeListener(this.refs.root, this.resetInputWidth);
   }
 
   debounce(): number {
@@ -204,8 +205,6 @@ class Select extends Component {
         }
       }
 
-      // this.broadcast('select-dropdown', 'destroyPopper');
-
       if (this.refs.input) {
         this.refs.input.blur();
       }
@@ -250,8 +249,6 @@ class Select extends Component {
           this.refs.input.focus();
         } else {
           this.refs.reference.focus();
-
-          // this.broadcast('input', 'inputSelect');
         }
       }
 
@@ -345,8 +342,6 @@ class Select extends Component {
         form && form.onFieldChange();
       }
 
-      // this.dispatch('form-item', 'el.form.change', val);
-
       if (filterable) {
         query = '';
         hoverIndex = -1;
@@ -412,16 +407,16 @@ class Select extends Component {
 
   onEnter(): void {
     this.popperJS = new Popper(this.reference, this.popper, {
-      gpuAcceleration: false
+      modifiers: {
+        computeStyle: {
+          gpuAcceleration: false
+        }
+      }
     });
   }
 
   onAfterLeave(): void {
     this.popperJS.destroy();
-  }
-
-  optionsAllDisabled(options: []): boolean {
-     return options.length === (options.filter(item => item.props.disabled === true).length);
   }
 
   iconClass(): string {
@@ -471,10 +466,6 @@ class Select extends Component {
     }
 
     return null;
-  }
-
-  doDestroy() {
-    this.refs.popper.doDestroy();
   }
 
   handleClose() {
@@ -552,7 +543,7 @@ class Select extends Component {
     });
   }
 
-  resetInputWidth() {
+  _resetInputWidth() {
     this.setState({
       inputWidth: this.reference.getBoundingClientRect().width
     })
@@ -773,7 +764,7 @@ class Select extends Component {
       selected = selected.slice(0);
 
       selected.forEach((item, index) => {
-        if (item === option || item.currentLabel() === option.currentLabel()) {
+        if (item === option || item.props.value === option.props.value) {
           optionIndex = index;
         }
       });

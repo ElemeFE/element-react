@@ -1,10 +1,11 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import Popper from 'popper.js';
 import { Component, Transition, View } from '../../libs';
-import Popper from '../../libs/utils/popper';
 import Checkbox from '../checkbox';
 
 import { FilterProps, FilterState } from './Types'
+import local from '../locale';
 
 function getPopupContainer() {
   const container = document.createElement('div');
@@ -43,7 +44,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   }
 
   componentWillUnmount() {
-    this.poperIns.destroy();
+    this.poperIns && this.poperIns.destroy();
     ReactDOM.unmountComponentAtNode(this.container);
     document.removeEventListener('click', this.handleClickOutside);
     document.body.removeChild(this.container);
@@ -77,7 +78,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
   }
 
   renderPortal(element, container) {
-    ReactDOM.unstable_renderSubtreeIntoContainer(this, element, container);
+    ReactDOM.render(element, container);
   }
 
   renderContent() {
@@ -101,9 +102,9 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
             disabled={!filteredValue || !filteredValue.length}
             onClick={this.changeFilteredValue.bind(this, filteredValue)}
           >
-            筛选
+            {local.t('el.table.confirmFilter')}
           </button>
-          <button onClick={this.changeFilteredValue.bind(this, null)}>重置</button>
+          <button onClick={this.changeFilteredValue.bind(this, null)}>{local.t('el.table.resetFilter')}</button>
         </div>
       )]
     } else {
@@ -113,7 +114,7 @@ export default class FilterPannel extends Component<FilterProps, FilterState> {
             className={this.classNames('el-table-filter__list-item', { 'is-active': !filteredValue })}
             onClick={this.changeFilteredValue.bind(this, null)}
           >
-            全部
+            {local.t('el.table.clearFilter')}
           </li>
           {filters && filters.map(filter => (
             <li

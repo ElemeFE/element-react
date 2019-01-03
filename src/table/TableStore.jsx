@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { Component, PropTypes } from '../../libs';
+import local from '../locale';
 
 import TableLayout from './TableLayout';
 import type {
@@ -10,7 +11,7 @@ import type {
   _Column
 } from './Types';
 import normalizeColumns from './normalizeColumns';
-import { getLeafColumns, getValueByPath, getColumns, convertToRows } from "./utils";
+import { getLeafColumns, getValueByPath, getColumns, convertToRows, getRowIdentity } from "./utils";
 
 let tableIDSeed = 1;
 
@@ -63,11 +64,11 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     showHeader: true,
     stripe: false,
     fit: true,
-    emptyText: '暂无数据',
+    emptyText: local.t('el.table.emptyText'),
     defaultExpandAll: false,
     highlightCurrentRow: false,
     showSummary: false,
-    sumText: '合计',
+    sumText: local.t('el.table.sumText'),
   };
 
   static childContextTypes = {
@@ -91,14 +92,13 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       isComplex: null, // whether some column is fixed
       expandingRows: [],
       hoverRow: null,
-      rowKey: props.rowKey,
-      defaultExpandAll: props.defaultExpandAll,
       currentRow: null,
       selectable: null,
       selectedRows: null,
       sortOrder: null,
       sortColumn: null,
     };
+
     [
       'toggleRowSelection',
       'toggleAllSelection',
@@ -107,11 +107,14 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     ].forEach((fn) => {
       this[fn] = this[fn].bind(this);
     });
+
+    this._isMounted = false;
   }
 
   componentWillMount() {
     this.updateColumns(getColumns(this.props));
     this.updateData(this.props);
+    this._isMounted = true;
   }
 
   componentWillReceiveProps(nextProps: TableStoreProps) {
@@ -121,15 +124,14 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (getColumns(this.props) !== nextColumns) {
       this.updateColumns(nextColumns);
     }
-
-    if (data !== nextProps.data) {
+    
+    if (JSON.stringify(data) !== JSON.stringify(nextProps.data)) {
       this.updateData(nextProps);
     }
-
   }
 
   get isAllSelected(): boolean {
-    const { currentRowKey } = this.props;
+    const { currentRowKey, rowKey } = this.props;
     const { selectedRows, data, selectable } = this.state;
     const selectableData = selectable ? data.filter((row, index) => selectable(row, index)) : data;
 
@@ -138,9 +140,10 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     }
 
     if (Array.isArray(currentRowKey)) {
-      return currentRowKey.length === selectableData.length;
+      return selectableData.every(data => currentRowKey.includes(getRowIdentity(data, rowKey)));
     }
-    return selectedRows.length === selectableData.length;
+
+    return selectedRows && selectedRows.length === selectableData.length;
   }
 
   // shouldComponentUpdate(nextProps) {
@@ -190,22 +193,36 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     const { columns } = this.state;
     const filteredData = filterData(data.slice(), columns);
 
-    // do filter when data changed, clear hover, select and expanding status
+    let { hoverRow, currentRow, selectedRows, expandingRows } = this.state;
+    hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
+    currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
+
+    if (this._isMounted && data !== this.props.data && !columns[0].reserveSelection) {
+      selectedRows = [];
+    } else {
+      selectedRows = selectedRows && selectedRows.filter(row => data.includes(row)) || [];
+    }
+
+    if (!this._isMounted) {
+      expandingRows = defaultExpandAll ? data.slice() : [];
+    } else {
+      expandingRows = expandingRows.filter(row => data.includes(row));
+    }
+
     this.setState(Object.assign(this.state, {
       data: filteredData,
       filteredData,
-      hoverRow: null,
-      currentRow: null,
-      expandingRows: defaultExpandAll ? data.slice() : [],
-    }, !columns[0].reserveSelection && {
-      selectedRows: [],
+      hoverRow,
+      currentRow,
+      expandingRows,
+      selectedRows,
     }));
-
-    if (defaultSort) {
+    if ((!this._isMounted || data !== this.props.data) && defaultSort) {
       const { prop, order = 'ascending' } = defaultSort;
-      const { columns } = this.state;
       const sortColumn = columns.find(column => column.property === prop);
       this.changeSortCondition(sortColumn, order, false);
+    } else {
+      this.changeSortCondition(null, null, false);
     }
   }
 
@@ -219,7 +236,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   toggleRowExpanded(row: Object, rowKey: string | number) {
     const { expandRowKeys } = this.props;
     let { expandingRows } = this.state;
-    if (expandRowKeys) { // controlled expanding status
+    if (expandRowKeys) {
       const isRowExpanding = expandRowKeys.includes(rowKey);
       this.dispatchEvent('onExpand', row, !isRowExpanding);
       return;
@@ -250,9 +267,12 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     return expandingRows.includes(row);
   }
 
-  setCurrentRow(row: ?Object = null) {
-    const { highlightCurrentRow, currentRowKey } = this.props;
-    if (!highlightCurrentRow || currentRowKey) return;
+  setCurrentRow(row: Object) {
+    const { currentRowKey, rowKey } = this.props;
+    if (currentRowKey && !Array.isArray(currentRowKey)) {
+      this.dispatchEvent('onCurrentChange', getRowIdentity(row, rowKey), currentRowKey);
+      return;
+    }
 
     const { currentRow: oldRow } = this.state;
     this.setState({
@@ -263,9 +283,27 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   toggleRowSelection(row: Object, isSelected?: boolean) {
-    const { currentRowKey } = this.props;
+    const { currentRowKey, rowKey } = this.props;
 
-    if (Array.isArray(currentRowKey)) return;
+    if (Array.isArray(currentRowKey)) {
+      const toggledRowKey = getRowIdentity(row, rowKey);
+      const rowIndex = currentRowKey.indexOf(toggledRowKey);
+      const newCurrentRowKey = currentRowKey.slice();
+
+      if (isSelected !== undefined) {
+        if (isSelected && rowIndex === -1) {
+          newCurrentRowKey.push(toggledRowKey);
+        } else if (!isSelected && rowIndex !== -1) {
+          newCurrentRowKey.splice(rowIndex, 1);
+        }
+      } else {
+        rowIndex === -1 ? newCurrentRowKey.push(toggledRowKey) : newCurrentRowKey.splice(rowIndex, 1)
+      }
+
+      this.dispatchEvent('onSelect', newCurrentRowKey, row);
+      this.dispatchEvent('onSelectChange', newCurrentRowKey);
+      return;
+    }
 
     const selectedRows = this.state.selectedRows.slice();
     const rowIndex = selectedRows.indexOf(row);
@@ -283,28 +321,36 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     this.setState({
       selectedRows
     }, () => {
-      this.dispatchEvent('onSelect', selectedRows, row)
-      this.dispatchEvent('onSelectChange', selectedRows)
+      this.dispatchEvent('onSelect', selectedRows, row);
+      this.dispatchEvent('onSelectChange', selectedRows);
     });
   }
 
   toggleAllSelection() {
-    const { currentRowKey } = this.props;
-    if (Array.isArray(currentRowKey)) return;
-
+    const { currentRowKey, rowKey } = this.props;
     let { data, selectedRows, selectable } = this.state;
+
+    const allSelectableRows = selectable ? data.filter((data, index) => selectable(data, index)) : data.slice();
+
+    if (Array.isArray(currentRowKey)) {
+      const newCurrentRowKey = this.isAllSelected ? [] : allSelectableRows.map(row => getRowIdentity(row, rowKey));
+      this.dispatchEvent('onSelectAll', newCurrentRowKey);
+      this.dispatchEvent('onSelectChange', newCurrentRowKey);
+      return;
+    }
+
 
     if (this.isAllSelected) {
       selectedRows = [];
     } else {
-      selectedRows = selectable ? data.filter((data, index) => selectable(data, index)) : data.slice();
+      selectedRows = allSelectableRows;
     }
 
     this.setState({
       selectedRows,
     }, () => {
-      this.dispatchEvent('onSelectAll', selectedRows)
-      this.dispatchEvent('onSelectChange', selectedRows)
+      this.dispatchEvent('onSelectAll', selectedRows);
+      this.dispatchEvent('onSelectChange', selectedRows);
     })
   }
 
@@ -324,14 +370,13 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (Array.isArray(currentRowKey)) {
       return currentRowKey.includes(rowKey);
     }
+
     return selectedRows.includes(row);
   }
 
-  changeSortCondition(column: ?_Column, order: ?string, shouldDispatchEvent?: boolean = true) {
-    if (!column) ({ sortColumn: column, sortOrder: order } = this.state)
+  changeSortCondition(column: ?_Column, order: ?string, shouldDispatchEvent?: boolean = true) { if (!column) ({ sortColumn: column, sortOrder: order } = this.state)
 
     const data = this.state.filteredData.slice();
-
     if (!column) {
       this.setState({
         data
@@ -339,11 +384,11 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       return;
     }
 
-    const { sortMethod, property } = column;
+    const { sortMethod, property, sortable } = column;
     let sortedData;
-    if (!order) {
+    if (!order || sortable === 'custom') {
       sortedData = data;
-    } else {
+    } else if (sortable && sortable !== 'custom') {
       const flag = order === 'ascending' ? 1 : -1;
       if (sortMethod) {
         sortedData = data.sort((a, b) => sortMethod(a, b) ? flag : -flag);
@@ -355,14 +400,26 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
         });
       }
     }
+    let sortSet = () => {
+      shouldDispatchEvent && this.dispatchEvent('onSortChange', 
+          column && order ? 
+          { column, prop: column.property, order } : 
+          { column: null, prop: null, order: null }
+        )
+    }
+    if (sortable && sortable !== 'custom') {
+      this.setState({
+        sortColumn: column,
+        sortOrder: order,
+        data: sortedData,
+      },sortSet());
+    } else if (sortable && sortable === 'custom') {
+      this.setState({
+        sortColumn: column,
+        sortOrder: order,
+      },sortSet())
+    }
 
-    this.setState({
-      sortColumn: column,
-      sortOrder: order,
-      data: sortedData,
-    }, () => {
-      shouldDispatchEvent && this.dispatchEvent('onSortChange', column && order ? { column, prop: column.property, order } : { column: null, prop: null, order: null })
-    });
   }
 
   toggleFilterOpened(column: _Column) {

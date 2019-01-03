@@ -638,7 +638,7 @@ render() {
 ### 参数说明
 
 | 参数 | 说明
-|------|--------|------|
+|------|--------|
 | nodeModel  | tree node 的 model|
 | nodeModel.data  | 对应的tree node节点的传入的data节点|
 | node  | 实际的view层的react element节点|

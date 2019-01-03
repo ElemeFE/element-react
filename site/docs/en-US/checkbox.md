@@ -49,7 +49,7 @@ constructor(props) {
 }
 render() {
   return (
-    <Checkbox.Group options={this.state.checkList}>
+    <Checkbox.Group value={this.state.checkList}>
       <Checkbox label="Option A"></Checkbox>
       <Checkbox label="Option B"></Checkbox>
       <Checkbox label="Option C"></Checkbox>
@@ -250,6 +250,7 @@ render() {
 ### Checkbox-group Attributes
 | Attribute      | Description         | Type    | Options                         | Default|
 |---------- |-------- |---------- |-------------  |-------- |
+| value   | Used for setting the currently selected value   | string[]  | - |    []     |
 |size | the size of checkbox buttons | string | large/small | —
 |fill  | border and background color when button is active | string   | — | #20a0ff   |
 |textColor | font color when button is active | string   | — | #ffffff   |

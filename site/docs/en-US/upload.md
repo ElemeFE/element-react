@@ -293,9 +293,13 @@ submitUpload() {
 | onProgress | hook function when some progress occurs | function(event, file, fileList) | — | — |
 | onChange | hook function when file status change | function(file, fileList) | — | — |
 | beforeUpload | hook function before uploading with the file to be uploaded as its parameter. If `false` or a `Promise` is returned, uploading will be aborted | function(file) | — | — |
-| listType | type of fileList | string | text/picture/picture-card | text |
+| listType | type of fileList | string | none/text/picture/picture-card | text |
 | autoUpload | whether to auto upload file | boolean | — | true |
 | fileList | default uploaded files, i.e: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg'}] | array | — | [] |
+| disabled | whether to disable upload | boolean | — | false|
+| limit | maximum number of uploads allowed		| number | — | — |
+| onExceed	| hook function when limit is exceeded		 | function(files, fileList)	| — | — |
+| httpRequest	| override default xhr behavior, allowing you to implement your own upload-file's request	 | function	| — | — |
 
 ### Methods
 | Event Name      | Description       | Parameters |

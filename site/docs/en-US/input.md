@@ -339,10 +339,11 @@ render() {
 |resize| control the resizability | string | none, both, horizontal, vertical | — |
 |autoFocus | same as `autofocus` in native input | boolean | — | false |
 | onIconClick | hook function when clicking on the input icon | function | — | — |
+| trim        | trim input contents   | boolean    | — | false |
 
 ### Autocomplete Attributes
 
-Attribute | Description | Type | Options | Default
+|Attribute | Description | Type | Options | Default|
 |----| ----| ----| ---- | -----|
 |placeholder| the placeholder of Autocomplete| string | — | — |
 |disabled | whether Autocomplete is disabled  | boolean | — | false|
