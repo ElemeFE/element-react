@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import requestAnimationFrame from 'raf';
 
+/**
+ * @deprecated
+ */
 export default class Transition extends Component {
   constructor(props) {
     super(props);
