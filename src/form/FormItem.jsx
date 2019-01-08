@@ -204,7 +204,11 @@ export default class FormItem extends Component {
         {
           label && (
             <label className="el-form-item__label" style={this.labelStyle()}>
-              {label + this.parent().props.labelSuffix}
+              {
+                typeof(label) === 'string'? 
+                label + this.parent().props.labelSuffix :
+                label
+              }
             </label>
           )
         }
@@ -228,7 +232,7 @@ FormItem.childContextTypes = {
 };
 
 FormItem.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   prop: PropTypes.string,
   required: PropTypes.bool,
