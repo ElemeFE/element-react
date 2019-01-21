@@ -56,8 +56,8 @@ class Cascader extends Component {
         });
 
         before.then(() => {
-            this.handleInputChange(value);
-          });
+          this.handleInputChange(value);
+        });
       } else {
         this.handleInputChange(value);
       }
@@ -325,7 +325,7 @@ class Cascader extends Component {
             readOnly={!filterable}
             placeholder={currentLabels.length ? undefined : this.placeholder()}
             value={inputValue}
-            onChange={value => { this.setState({inputValue: value}) }}
+            onChange={value => { this.setState({ inputValue: value }) }}
             onKeyUp={this.debouncedInputChange.bind(this)}
             size={size}
             disabled={disabled}
@@ -337,11 +337,11 @@ class Cascader extends Component {
                 />
               ) : (
                 <i
-                  className={this.classNames('el-input__icon el-icon-caret-bottom', {
-                    'is-reverse': menuVisible
-                  })}
-                />
-              )
+                    className={this.classNames('el-input__icon el-icon-caret-bottom', {
+                      'is-reverse': menuVisible
+                    })}
+                  />
+                )
             }
           />
           <View show={currentLabels.length}>
@@ -370,7 +370,9 @@ Cascader.childContextTypes = {
 };
 
 Cascader.propTypes = {
-  options: PropTypes.array.isRequired,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.string
+  })).isRequired,
   props: PropTypes.object,
   value: PropTypes.array,
   placeholder: PropTypes.string,
@@ -400,7 +402,7 @@ Cascader.defaultProps = {
     value: 'value',
     disabled: 'disabled'
   },
-  beforeFilter: () => (() => {})
+  beforeFilter: () => (() => { })
 }
 
 export default ClickOutside(Cascader);

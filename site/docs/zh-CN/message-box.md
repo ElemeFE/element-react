@@ -118,6 +118,7 @@ import { MessageBox } from 'element-react';
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | title | MessageBox 标题 | string | — | — |
+| customClass | 对话框外层容器的类名 | string | — | - |
 | message | MessageBox 消息正文内容 | string/ReactElement | — | — |
 | type | 消息类型，用于显示图标 | string | success/info/<br>warning/error | — |
 | lockScroll | 是否在 MessageBox 出现时将 body 滚动锁定 | boolean | — | true |
