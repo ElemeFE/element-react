@@ -125,7 +125,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       this.updateColumns(nextColumns);
     }
     
-    if (JSON.stringify(data) !== JSON.stringify(nextProps.data)) {
+    if (data !== nextProps.data) {
       this.updateData(nextProps);
     }
   }
