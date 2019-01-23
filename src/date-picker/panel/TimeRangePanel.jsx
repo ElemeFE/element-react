@@ -116,13 +116,6 @@ export default class TimeRangePanel extends PopperBase {
       [field]: ndate
     };
 
-    const { minTime, maxTime } = this.state;
-    state.minSelectableRange = [[MIN_TIME, maxTime]];
-    state.maxSelectableRange = [[minTime, MAX_TIME]];
-
-    state.minTime = limitRange(minTime, state.minSelectableRange);
-    state.maxTime = limitRange(maxTime, state.maxSelectableRange);
-
     this.setState(state);
     this.handleConfirm(true);
 
