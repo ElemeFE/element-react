@@ -10,6 +10,10 @@ import type {
   Column,
   _Column
 } from './Types';
+import {
+  deepCompare
+} from './utils'
+
 import normalizeColumns from './normalizeColumns';
 import { getLeafColumns, getValueByPath, getColumns, convertToRows, getRowIdentity } from "./utils";
 
@@ -124,8 +128,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (getColumns(this.props) !== nextColumns) {
       this.updateColumns(nextColumns);
     }
-    
-    if (JSON.stringify(data) !== JSON.stringify(nextProps.data)) {
+    if (deepCompare(data,nextProps.data)){
       this.updateData(nextProps);
     }
   }
@@ -145,7 +148,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
 
     return selectedRows && selectedRows.length === selectableData.length;
   }
-
+  
   // shouldComponentUpdate(nextProps) {
   //   const propsKeys = Object.keys(this.props);
   //   const nextPropsKeys = Object.keys(nextProps);
@@ -196,7 +199,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     let { hoverRow, currentRow, selectedRows, expandingRows } = this.state;
     hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
     currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
-
     if (this._isMounted && data !== this.props.data && !columns[0].reserveSelection) {
       selectedRows = [];
     } else {
@@ -370,7 +372,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (Array.isArray(currentRowKey)) {
       return currentRowKey.includes(rowKey);
     }
-
     return selectedRows.includes(row);
   }
 

@@ -95,7 +95,6 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
       layout: this
     };
   }
-
   scheduleLayout() {
     this.setState(this.caculateWidth(), () => {
       this.updateHeight();
