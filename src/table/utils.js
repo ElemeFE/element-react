@@ -124,13 +124,13 @@ export function convertToRows(columns: Array<_Column>): Array<Array<_Column>> {
   return rows;
 }
 
-const isObject = (obj) => {
+const isObject = (obj: Object): boolean => {
   return Object.prototype.toString.call(obj) === '[object Object]'
 }
-const isArray = (arr) => {
+const isArray = (arr: number): boolean => {
   return Object.prototype.toString.call(arr) === '[object Array]'
 }
-const deepCompare = (obj1, obj2) => {
+const deepCompare = (obj1: any, obj2: any): boolean => {
   if (obj1 && obj2 && obj1.length !== obj2.length) {
     return true
   } else if (isArray(obj1) && isArray(obj2)) {
