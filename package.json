@@ -85,6 +85,7 @@
     "prop-types": "^15.6.2",
     "raf": "^3.4.0",
     "react-click-outside": "^3.0.0",
+    "react-transition-group": "^2.5.2",
     "throttle-debounce": "^1.0.1"
   },
   "peerDependencies": {
