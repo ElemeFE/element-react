@@ -122,7 +122,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   }
 
   componentWillReceiveProps(nextProps: TableStoreProps) {
-    const { data } = this.state;
+    const { data } = this.props;
     const nextColumns = getColumns(nextProps);
 
     if (getColumns(this.props) !== nextColumns) {
