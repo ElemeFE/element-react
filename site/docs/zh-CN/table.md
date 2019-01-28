@@ -1128,12 +1128,8 @@ constructor(props) {
         label: "地址",
         prop: "address"
       }
-    ]
-  }
-}
-
-render() {
-  const data = [{
+    ],
+    data: [{
       date: '2016-05-02',
       name: '王小虎',
       province: '上海',
@@ -1183,14 +1179,18 @@ render() {
       address: '上海市普陀区金沙江路 1518 弄',
       zip: 200333
      }]
+  }
+}
+
+render() {
   return (
     <Table
       style={{width: '100%'}}
       columns={this.state.columns}
-      data={data}
+      data={this.state.data}
       border={true}
       height={250}
-      onSelectChange={(selection) => { this.setState({}) }}
+      onSelectChange={(selection) => { console.log(selection) }}
       onSelectAll={(selection) => { console.log(selection) }}
     />
   )
