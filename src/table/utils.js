@@ -123,3 +123,33 @@ export function convertToRows(columns: Array<_Column>): Array<Array<_Column>> {
   });
   return rows;
 }
+
+const isObject = (obj) => {
+  return Object.prototype.toString.call(obj) === '[object Object]'
+}
+const isArray = (arr) => {
+  return Object.prototype.toString.call(arr) === '[object Array]'
+}
+const deepCompare = (obj1, obj2) => {
+  if (obj1 && obj2 && obj1.length !== obj2.length) {
+    return true
+  } else if (isArray(obj1) && isArray(obj2)) {
+    return obj1.some((value,key) => (
+      deepCompare(value, obj2[key])
+    ))
+  } else if (isObject(obj1) && isObject(obj2)) {
+    for (let key in obj1) {
+      if (deepCompare(obj1[key], obj2[key])) {
+        return true 
+      }
+    }
+    return false
+  }
+  return obj1 !== obj2
+}
+
+export {
+  deepCompare,
+  isObject,
+  isArray 
+}
