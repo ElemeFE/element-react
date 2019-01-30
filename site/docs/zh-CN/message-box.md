@@ -122,6 +122,7 @@ import { MessageBox } from 'element-react';
 | message | MessageBox 消息正文内容 | string/ReactElement | — | — |
 | type | 消息类型，用于显示图标 | string | success/info/<br>warning/error | — |
 | lockScroll | 是否在 MessageBox 出现时将 body 滚动锁定 | boolean | — | true |
+| showClose | 是否显示关闭按钮 | boolean | — | true |
 | showCancelButton | 是否显示取消按钮 | boolean | — | false（以 confirm 和 prompt 方式调用时为 true） |
 | showConfirmButton | 是否显示确定按钮 | boolean | — | true |
 | cancelButtonText | 取消按钮的文本内容 | string | — | 取消 |
