@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react';
-import debounce from 'throttle-debounce/debounce';
+import { debounce } from 'throttle-debounce';
 
 import { PropTypes, Component, CollapseTransition } from '../../libs';
 import { watchPropertyChange, IDGenerator } from '../../libs/utils';

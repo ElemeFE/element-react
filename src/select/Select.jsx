@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
-import debounce from 'throttle-debounce/debounce';
+import { debounce } from 'throttle-debounce';
 import Popper from 'popper.js';
 import StyleSheet from '../../libs/utils/style';
 import { Component, PropTypes, Transition, View } from '../../libs';
