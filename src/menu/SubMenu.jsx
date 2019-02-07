@@ -78,7 +78,7 @@ export default class SubMenu extends MixinComponent {
     return this.rootMenu().state.openedMenus.indexOf(this.props.index) !== -1;
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <li style={this.style()} className={this.className('el-submenu', {
         'is-active': this.state.active,

@@ -16,7 +16,7 @@ import {
 } from '../utils'
 import Locale from '../../locale'
 
-import type {DateTableProps} from '../Types';
+import type { DateTableProps } from '../Types';
 
 
 function isFunction(func) {
@@ -46,10 +46,10 @@ export default class DateTable extends Component {
   WEEKS() {
     // 0-6
     const week = this.getOffsetWeek();
-    return WEEKS.slice(week).concat(WEEKS.slice(0, week));
+    return [...WEEKS.slice(week), ...WEEKS.slice(0, week)];
   }
 
-  getOffsetWeek(){
+  getOffsetWeek() {
     return this.props.firstDayOfWeek % 7;
   }
 
@@ -60,8 +60,8 @@ export default class DateTable extends Component {
   }
 
   getRows() {
-    const {date, disabledDate, showWeekNumber, minDate, maxDate, selectionMode, firstDayOfWeek} = this.props
-    const {tableRows} = this.state
+    const { date, disabledDate, showWeekNumber, minDate, maxDate, selectionMode, firstDayOfWeek } = this.props
+    const { tableRows } = this.state
 
     const ndate = new Date(date.getTime());
     let day = getFirstDayOfMonth(ndate); // day of first day
@@ -79,7 +79,7 @@ export default class DateTable extends Component {
     const now = clearHours(new Date());
 
 
-    for (var i = 0; i < 6; i++) { // rows
+    for (let i = 0; i < 6; i++) { // rows
       const row = rows[i];
       /*
       cell: {
@@ -99,10 +99,17 @@ export default class DateTable extends Component {
         }
       }
 
-      for (var j = 0; j < 7; j++) {  // columns
+      for (let j = 0; j < 7; j++) {  // columns
         let cell: any = row[showWeekNumber ? j + 1 : j];
         if (!cell) {
-          row[showWeekNumber ? j + 1 : j]  = { row: i, column: j, type: 'normal', inRange: false, start: false, end: false };
+          row[showWeekNumber ? j + 1 : j] = {
+            row: i,
+            column: j,
+            type: 'normal',
+            inRange: false,
+            start: false,
+            end: false
+          };
           cell = row[showWeekNumber ? j + 1 : j]
         }
 
@@ -164,7 +171,7 @@ export default class DateTable extends Component {
 
   // calc classnames for cell
   getCellClasses(cell: any) {
-    const {selectionMode, date} = this.props
+    const { selectionMode, date } = this.props
 
     let classes = [];
     if ((cell.type === 'normal' || cell.type === 'today') && !cell.disabled) {
@@ -180,7 +187,7 @@ export default class DateTable extends Component {
       && (cell.type === 'normal' || cell.type === 'today')
       // following code only highlight date that is the actuall value of the datepicker, but actually it should
       // be the temp that value use selected
-      && date.getDate() === +cell.text){
+      && date.getDate() === +cell.text) {
       // && value
       // && value.getFullYear() === date.getFullYear()
       // && value.getMonth() === date.getMonth()
@@ -208,7 +215,7 @@ export default class DateTable extends Component {
   }
 
   getMarkedRangeRows(): any[] {
-    const {showWeekNumber, minDate, selectionMode, rangeState} = this.props
+    const { showWeekNumber, minDate, selectionMode, rangeState } = this.props
     const rows = this.getRows();
     if (!(selectionMode === SELECTION_MODES.RANGE && rangeState.selecting && rangeState.endDate instanceof Date)) return rows;
 
@@ -254,8 +261,8 @@ export default class DateTable extends Component {
   }
 
 
-  handleMouseMove(event: SyntheticMouseEvent) {
-    const {showWeekNumber, onChangeRange, rangeState, selectionMode} = this.props
+  handleMouseMove(event: SyntheticMouseEvent<any>) {
+    const { showWeekNumber, onChangeRange, rangeState, selectionMode } = this.props
 
     const getDateOfCell = (row, column, showWeekNumber) => {
       const startDate = this.getStartDate();
@@ -274,14 +281,14 @@ export default class DateTable extends Component {
     onChangeRange(rangeState)
   }
 
-  handleClick(event: SyntheticEvent) {
+  handleClick(event: SyntheticEvent<any>) {
     let target: any = event.target;
 
     if (target.tagName !== 'TD') return;
     if (hasClass(target, 'disabled') || hasClass(target, 'week')) return;
 
-    const {selectionMode, date, onPick, minDate, maxDate, rangeState, } = this.props
-    const {year, month} = deconstructDate(date)
+    const { selectionMode, date, onPick, minDate, maxDate, rangeState, } = this.props
+    const { year, month } = deconstructDate(date)
 
     if (selectionMode === 'week') {
       target = target.parentNode.cells[1];
@@ -340,7 +347,7 @@ export default class DateTable extends Component {
 
   render() {
     const $t = Locale.t
-    const {selectionMode, showWeekNumber} = this.props
+    const { selectionMode, showWeekNumber } = this.props
 
     return (
       <table
@@ -351,31 +358,31 @@ export default class DateTable extends Component {
         className={this.classNames('el-date-table', { 'is-week-mode': selectionMode === 'week' })}>
         <tbody>
 
-          <tr>
-            {showWeekNumber && <th>{$t('el.datepicker.week')}</th>}
-            {
-              this.WEEKS().map((e, idx)=> <th key={idx}>{$t(`el.datepicker.weeks.${e}`)}</th> )
-            }
-          </tr>
-
+        <tr>
+          {showWeekNumber && <th>{$t('el.datepicker.week')}</th>}
           {
-            this.getMarkedRangeRows().map((row, idx) => {
-              return (
-                <tr
-                  key={idx}
-                  className={this.classNames('el-date-table__row', { 'current': row.isWeekActive })}>
-                  {
-                    row.map((cell, idx) => (
-                      <td className={this.getCellClasses(cell)} key={idx}>
-                        {cell.type === 'today' ? $t('el.datepicker.today') : cell.text}
-                      </td>
-                    ))
-                  }
-
-                </tr>
-              )
-            })
+            this.WEEKS().map((e, idx) => <th key={idx}>{$t(`el.datepicker.weeks.${e}`)}</th>)
           }
+        </tr>
+
+        {
+          this.getMarkedRangeRows().map((row, idx) => {
+            return (
+              <tr
+                key={idx}
+                className={this.classNames('el-date-table__row', { 'current': row.isWeekActive })}>
+                {
+                  row.map((cell, idx) => (
+                    <td className={this.getCellClasses(cell)} key={idx}>
+                      {cell.type === 'today' ? $t('el.datepicker.today') : cell.text}
+                    </td>
+                  ))
+                }
+
+              </tr>
+            )
+          })
+        }
 
         </tbody>
       </table>
