@@ -128,7 +128,7 @@ export default class Node extends Component {
   }
 
 
-  handleClick(evt: ?SyntheticEvent): void {
+  handleClick(evt: ?SyntheticEvent<any>): void {
     if (evt) evt.stopPropagation();
     const { nodeModel, treeNode } = this.props;
 
@@ -138,7 +138,7 @@ export default class Node extends Component {
     }
   }
 
-  handleExpandIconClick(evt: ?SyntheticEvent): void {
+  handleExpandIconClick(evt: ?SyntheticEvent<any>): void {
     if (evt) evt.stopPropagation();
 
     const { nodeModel, parent } = this.props;
@@ -184,7 +184,7 @@ export default class Node extends Component {
     this.props.nodeModel.setChecked(checked, true);
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { childNodeRendered } = this.state;
     const { treeNode, nodeModel, renderContent, isShowCheckbox } = this.props;
 

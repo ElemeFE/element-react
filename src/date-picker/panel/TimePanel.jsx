@@ -5,7 +5,7 @@ import { PropTypes } from '../../../libs';
 import { limitRange } from '../utils'
 import TimeSpinner from '../basic/TimeSpinner'
 import Locale from '../../locale'
-import type {TimePanelProps} from '../Types';
+import type { TimePanelProps } from '../Types';
 import { PopperBase } from './PopperBase'
 
 const mapPropsToState = (props) => {
@@ -57,8 +57,8 @@ export default class TimePanel extends PopperBase {
 
   // type: string,  one of [hours, minutes, seconds]
   // date: {type: number}
-  handleChange(date: {string: number}) {
-    const {currentDate} = this.state
+  handleChange(date: { hours?: number, minutes?: number, seconds?: number }) {
+    const { currentDate } = this.state
 
     if (date.hours !== undefined) {
       currentDate.setHours(date.hours);
@@ -77,16 +77,16 @@ export default class TimePanel extends PopperBase {
 
 
   handleConfirm(isKeepPannelOpen: boolean = false) {
-    const {currentDate} = this.state
-    const {onPicked, selectableRange} = this.props
+    const { currentDate } = this.state
+    const { onPicked, selectableRange } = this.props
 
     const date = new Date(limitRange(currentDate, selectableRange, 'HH:mm:ss'));
     onPicked(date, isKeepPannelOpen)
   }
 
   render() {
-    const {isShowSeconds, currentDate } = this.state
-    const {onSelectRangeChange, selectableRange} = this.props
+    const { isShowSeconds, currentDate } = this.state
+    const { onSelectRangeChange, selectableRange } = this.props
 
     const hours = currentDate.getHours();
     const minutes = currentDate.getMinutes();
@@ -108,7 +108,7 @@ export default class TimePanel extends PopperBase {
             seconds={seconds}
             selectableRange={selectableRange}
             onSelectRangeChange={onSelectRangeChange}
-            />
+          />
         </div>
         <div className="el-time-panel__footer">
           <button
