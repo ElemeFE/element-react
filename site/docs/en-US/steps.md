@@ -124,8 +124,6 @@ render() {
 | active | current activation step  | number | — | 0 |
 | processStatus | status of current step | string | wait/process/finish/error/success | process |
 | finishStatus | status of end step | string | wait/process/finish/error/success | finish |
-| alignCenter | whether step description is centered | boolean | — | false |
-| center | center whole `Steps` component | boolean | - | false |
 
 ### Step Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
