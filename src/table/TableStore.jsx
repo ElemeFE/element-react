@@ -49,7 +49,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     currentRowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number,]),
     rowClassName: PropTypes.func,
     rowStyle: PropTypes.func,
-    rowKey: PropTypes.func,
+    rowKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string,]),
     emptyText: PropTypes.string,
     defaultExpandAll: PropTypes.bool,
     expandRowKeys:PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
