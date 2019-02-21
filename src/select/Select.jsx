@@ -34,6 +34,7 @@ type State = {
   cachedPlaceHolder: string,
   currentPlaceholder: string,
   selectedLabel: string,
+  name: string,
   value: any,
   visible: boolean,
   query: string,
@@ -70,6 +71,7 @@ class Select extends Component {
       cachedPlaceHolder: props.placeholder || i18n.t('el.select.placeholder'),
       currentPlaceholder: props.placeholder || i18n.t('el.select.placeholder'),
       selectedLabel: '',
+      name: props.name || '',
       selectedInit: false,
       visible: false,
       selected: undefined,
@@ -889,7 +891,7 @@ class Select extends Component {
           value={selectedLabel}
           type="text"
           placeholder={currentPlaceholder}
-          name="name"
+          name={this.state.name}
           size={size}
           disabled={disabled}
           readOnly={!filterable || multiple}
@@ -956,6 +958,7 @@ Select.contextTypes = {
 Select.propTypes = {
   value: PropTypes.any,
   size: PropTypes.string,
+  name: PropTypes.string,
   disabled: PropTypes.bool,
   clearable: PropTypes.bool,
   filterable: PropTypes.bool,
