@@ -619,7 +619,7 @@ declare namespace ElementReact {
     fixed?: boolean | string
     filterMethod?: () => void
     filters?: Object[]
-    render?: () => void
+    render?: (data? :Object, column? :Object, index? :number) => void
   }
   interface TableProps extends ElementReactLibs.ComponentProps<{}> {
     columns?: TableColumn[]
@@ -692,7 +692,7 @@ declare namespace ElementReact {
     autoUpload?: boolean
     accept?: string
     drag?: boolean
-    listType?: 'text' | 'picture' | 'picture-card'
+    listType?: 'none' | 'text' | 'picture' | 'picture-card'
     tip?: React.ReactElement<any>
     trigger?: React.ReactElement<any>
     beforeUpload?(file?): boolean | Promise<any>
@@ -963,7 +963,7 @@ declare namespace ElementReact {
 }
 
 declare namespace ElementReactLibs {
-  type dateType = Date | string | null 
+  type dateType = Date | string | null
   type SelectionMode = 'year' | 'month' | 'week' | 'day'
   interface ComponentProps<T> {
     className?: string

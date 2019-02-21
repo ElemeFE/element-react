@@ -1,7 +1,9 @@
 /* @flow */
 
-import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
+import * as React from 'react';
+import { Component, PropTypes, Animate, View } from '../../libs';
+
+const { Transition } = Animate
 
 const typeMap = {
   success: 'circle-check',
@@ -19,14 +21,10 @@ export default class Notification extends Component {
 
   constructor(props: Object) {
     super(props);
-
-    this.state = {
-      visible: false
-    };
+    this.state = { visible: true };
   }
 
   componentDidMount() {
-    this.setState({ visible: true });
     this.startTimer();
   }
 
@@ -41,18 +39,13 @@ export default class Notification extends Component {
   }
 
   onClose() {
-    this.stopTimer();
-
-    this.setState({
-      visible: false
-    });
+    this.setState({ visible: false }, () => this.stopTimer());
   }
 
   startTimer() {
-    if (this.props.duration) {
-      this.timeout = setTimeout(() => {
-        this.onClose();
-      }, this.props.duration)
+    const { duration } = this.props
+    if (duration) {
+      this.timeout = setTimeout(() => this.onClose(), duration)
     }
   }
 
@@ -61,38 +54,54 @@ export default class Notification extends Component {
   }
 
   typeClass(): string {
-    return this.props.type && typeMap[this.props.type] ? `el-icon-${ typeMap[this.props.type] }` : '';
+    const { type } = this.props
+    return type && typeMap[type] ? `el-icon-${ typeMap[type] }` : '';
   }
 
   render() {
+    const { visible } = this.state
+    const { onClose = () => false, willUnmount, duration, top, type, iconClass, title, message } = this.props
     return (
       <Transition
-        name="el-notification-fade"
-        onAfterEnter={() => { this.offsetHeight = this.rootDOM.offsetHeight; }}
-        onLeave={() => { this.props.onClose && this.props.onClose() }}
-        onAfterLeave={() => { this.props.willUnmount(this.offsetHeight, parseInt(this.rootDOM.style.top)) }}
+        unmountOnExit
+        transitionClass={{
+          exiting: 'el-notification-fade-leave-active',
+          exited: 'el-notification-fade-enter'
+        }}
+        in={visible}
+        onEnter={() => {
+          this.offsetHeight = this.rootDOM.offsetHeight;
+        }}
+        onExit={() => willUnmount(this.offsetHeight, parseInt(this.rootDOM.style.top))}
+        onExited={() => onClose()}
       >
-        <View show={this.state.visible}>
+        <View show={visible}>
           <div
             ref={(ele) => { this.rootDOM = ele; }}
             className="el-notification"
             style={{
-                top: this.props.top,
-                zIndex: 9999
+              top,
+              zIndex: 9999
             }}
             onMouseEnter={this.stopTimer.bind(this)}
             onMouseLeave={this.startTimer.bind(this)}
             onClick={this.onClick.bind(this)}
           >
             {
-              this.props.type && <i className={this.classNames('el-notification__icon', this.typeClass(), this.props.iconClass)} />
+              type && (
+                <i className={this.classNames('el-notification__icon', this.typeClass(), iconClass)} />
+              )
             }
-            <div className={this.classNames('el-notification__group', {
-              'is-with-icon': this.typeClass() || this.props.iconClass
-            })}>
-              <h2 className="el-notification__title">{this.props.title}</h2>
-              <div className="el-notification__content">{this.props.message}</div>
-              <div className="el-notification__closeBtn el-icon-close" onClick={this.onClose.bind(this)}></div>
+            <div
+              className={
+                this.classNames('el-notification__group', {
+                  'is-with-icon': this.typeClass() || iconClass
+                })
+              }
+            >
+              <h2 className="el-notification__title">{title}</h2>
+              <div className="el-notification__content">{message}</div>
+              <div className="el-notification__closeBtn el-icon-close" onClick={this.onClose.bind(this)} />
             </div>
           </div>
         </View>

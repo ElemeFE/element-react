@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 
 export default class View extends Component {
   render() {
-    const style = this.props.hasOwnProperty('show') && !this.props.show && {
-      display: 'none'
-    };
+    const classNames = [];
+    const { show = true, className = '', children } = this.props;
+    const mixed = { style: { ...children.props.style } };
+    if (!show) mixed.style.display = 'none';
+    if (children.props.className) classNames.push(children.props.className);
+    if (className) classNames.push(className);
+    mixed.className = classNames.join(' ');
 
-    return React.cloneElement(React.Children.only(this.props.children), {
-      style: Object.assign({}, this.props.children.props.style, style)
-    });
+    return React.cloneElement(React.Children.only(this.props.children), mixed);
   }
 }
 

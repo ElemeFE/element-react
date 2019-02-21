@@ -54,7 +54,7 @@ export default class MessageBox extends Component {
   }
 
   typeClass(): string {
-    return this.props.type && typeMap[this.props.type] && `el-icon-${ typeMap[this.props.type] }`;
+    return this.props.type && typeMap[this.props.type] && `el-icon-${typeMap[this.props.type]}`;
   }
 
   validate(value: string): boolean {
@@ -152,9 +152,9 @@ export default class MessageBox extends Component {
                   {
                     message && (
                       <div className="el-message-box__content">
-                        <div className={this.classNames('el-message-box__status', this.typeClass())}></div>
+                        <div className={this.classNames('el-message-box__status', this.typeClass())} />
                         <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
-                          <p>{message}</p>
+                          <div>{message}</div>
                         </div>
                         <View show={showInput}>
                           <div className="el-message-box__input">
@@ -190,7 +190,7 @@ export default class MessageBox extends Component {
         </div>
         <Transition name="v-modal">
           <View show={visible}>
-            <div className="v-modal" style={{ zIndex: 1006 }}></div>
+            <div className="v-modal" style={{ zIndex: 1006 }} />
           </View>
         </Transition>
       </div>
@@ -224,6 +224,8 @@ MessageBox.propTypes = {
 
 MessageBox.defaultProps = {
   title: '提示',
+  showInput: false,
   showClose: true,
+  showCancelButton: false,
   showConfirmButton: true
 }
