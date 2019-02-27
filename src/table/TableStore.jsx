@@ -46,7 +46,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     fit: PropTypes.bool,
     showHeader: PropTypes.bool,
     highlightCurrentRow: PropTypes.bool,
-    currentRowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number,]),
+    currentRowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)]),
     rowClassName: PropTypes.func,
     rowStyle: PropTypes.func,
     rowKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string,]),
