@@ -147,10 +147,12 @@ export default class Pagination extends Component {
       nextProps.pageCount != pageCount
     ) {
       let internalPageSize = this.state.internalPageSize;
-      if (
-        nextProps.layout.split(',').indexOf('sizes') > -1 &&
-        Array.isArray(nextProps.pageSizes)
-      ) {
+
+      const hasSizesLayout = nextProps.layout.split(',')
+        .map((item) => item.trim())
+        .indexOf('sizes') > -1;
+
+      if (hasSizesLayout && Array.isArray(nextProps.pageSizes)) {
         internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1
           ? nextProps.pageSize
           : nextProps.pageSizes[0];
