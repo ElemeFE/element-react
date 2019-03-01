@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Component,PropTypes} from '../../libs';
-import AnchorSmooth from './AnchorSmooth';
+import AnchorSmooth,{getScrollTop} from './AnchorSmooth';
 import './style.css';
 
 export default class GoTop extends Component {
@@ -10,11 +10,11 @@ export default class GoTop extends Component {
   constructor() {
     super(...arguments);
     this.state = {show: false};
-    this.showAnchor = this.showAnchor.bind(this);
+    this.$showAnchor = this.showAnchor.bind(this);
   }
 
   showAnchor() {
-    let scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    let scrollY = getScrollTop();
     let show = scrollY >= this.props.showheight;
     if (this.state.show !== show) {
       this.setState({
@@ -24,12 +24,12 @@ export default class GoTop extends Component {
   }
 
   componentDidMount() {
-    this.showAnchor();
-    window.addEventListener("scroll", this.showAnchor)
+    this.$showAnchor();
+    window.addEventListener("scroll", this.$showAnchor)
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.showAnchor);
+    window.removeEventListener("scroll", this.$showAnchor);
   }
 
   render() {
