@@ -3,7 +3,7 @@
 import React from 'react';
 import {Component, PropTypes} from '../../libs';
 import AnchorSmooth, {getScrollTop} from './AnchorSmooth';
-import './style.css';
+// import './style.css';
 
 export default class GoTop extends Component {
 
