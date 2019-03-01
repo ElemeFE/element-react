@@ -115,7 +115,7 @@ export default class Tree extends Component {
     this.refresh();
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const {
       options,
       renderContent,

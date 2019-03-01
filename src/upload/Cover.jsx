@@ -15,26 +15,26 @@ export default class Cover extends Component {
     };
   }
 
-  handleDragover(e: SyntheticDragEvent): void {
+  handleDragover(e: SyntheticDragEvent<any>): void {
     e.preventDefault();
     if(!this.props.disabled){
-      this.setState({ dragOver: true }); 
+      this.setState({ dragOver: true });
     }
   }
 
-  handleDragleave(e: SyntheticDragEvent): void {
+  handleDragleave(e: SyntheticDragEvent<any>): void {
     e.preventDefault();
     this.setState({ dragOver: false });
   }
 
-  onDrop(e: SyntheticDragEvent): void {
+  onDrop(e: SyntheticDragEvent<any>): void {
     if(this.props.disabled) return
     e.preventDefault();
     this.setState({ dragOver: false });
     this.props.onFile(e.dataTransfer.files);
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { dragOver } = this.state;
     return (
       <div

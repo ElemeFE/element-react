@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import throttle from 'throttle-debounce/throttle';
+import { throttle } from 'throttle-debounce';
 import { Component, PropTypes } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
@@ -95,7 +95,6 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
       layout: this
     };
   }
-
   scheduleLayout() {
     this.setState(this.caculateWidth(), () => {
       this.updateHeight();

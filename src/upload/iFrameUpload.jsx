@@ -45,13 +45,13 @@ export default class IframeUpload extends Component {
     this.setState({ disabled: false });
   }
 
-  onDrop(e: SyntheticDragEvent): void {
+  onDrop(e: SyntheticDragEvent<any>): void {
     e.preventDefault();
     this.setState({ dragOver: false });
     this.uploadFiles(e.dataTransfer.files); // TODO
   }
 
-  handleChange(e: SyntheticInputEvent): void {
+  handleChange(e: SyntheticInputEvent<any>): void {
     if (e.target instanceof HTMLInputElement) {
       const file: File = e.target.files[0];
       if (file) {
@@ -85,17 +85,17 @@ export default class IframeUpload extends Component {
     }
   }
 
-  handleDragover(e: SyntheticDragEvent): void {
+  handleDragover(e: SyntheticDragEvent<any>): void {
     e.preventDefault();
     this.setState({ onDrop: true });
   }
 
-  handleDragleave(e: SyntheticDragEvent): void {
+  handleDragleave(e: SyntheticDragEvent<any>): void {
     e.preventDefault();
     this.setState({ onDrop: false });
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { drag, action, name, accept, listType } = this.props;
     const { frameName } = this.state;
     const classes = this.classNames({

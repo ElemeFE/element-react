@@ -21,7 +21,7 @@ export default class Row extends Component {
     return style;
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return React.createElement(this.props.tag, {
       className: this.className('el-row',
         this.props.justify !== 'start' && `is-justify-${this.props.justify}`,

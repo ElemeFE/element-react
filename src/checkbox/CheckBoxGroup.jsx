@@ -50,7 +50,7 @@ export default class CheckboxGroup extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { options } = this.state;
 
     const children = React.Children.map(this.props.children, (child, index) => {
