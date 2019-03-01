@@ -12,7 +12,7 @@ export default class PickerDropdown extends Component {
     super(props);
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { color, showAlpha, onPick, onClear, showPicker } = this.props;
     const currentColor = color.value;
     return (

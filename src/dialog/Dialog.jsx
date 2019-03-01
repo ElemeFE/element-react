@@ -32,27 +32,27 @@ export default class Dialog extends Component {
 
   componentWillReceiveProps(nextProps: Object): void {
 
-      if (this.willOpen(this.props, nextProps)){
-        if (this.props.lockScroll && document.body && document.body.style) {
-          if (!this.state.bodyOverflow) {
-            this.setState({
-              bodyOverflow: document.body.style.overflow
-            });
-          }
-          document.body.style.overflow = 'hidden';
+    if (this.willOpen(this.props, nextProps)) {
+      if (this.props.lockScroll && document.body && document.body.style) {
+        if (!this.state.bodyOverflow) {
+          this.setState({
+            bodyOverflow: document.body.style.overflow
+          });
         }
+        document.body.style.overflow = 'hidden';
       }
+    }
 
-      if (this.willClose(this.props, nextProps) && this.props.lockScroll) {
-        if (this.props.modal && this.state.bodyOverflow !== 'hidden' && document.body && document.body.style) {
-          document.body.style.overflow = this.state.bodyOverflow;
-        }
+    if (this.willClose(this.props, nextProps) && this.props.lockScroll) {
+      if (this.props.modal && this.state.bodyOverflow !== 'hidden' && document.body && document.body.style) {
+        document.body.style.overflow = this.state.bodyOverflow;
       }
+    }
 
   }
 
   componentDidUpdate(prevProps: Object): void {
-    if (this.willOpen(prevProps, this.props)){
+    if (this.willOpen(prevProps, this.props)) {
       this.refs.wrap.focus();
     }
   }
@@ -63,13 +63,13 @@ export default class Dialog extends Component {
     }
   }
 
-  onKeyDown(e: SyntheticKeyboardEvent): void {
+  onKeyDown(e: SyntheticKeyboardEvent<any>): void {
     if (this.props.closeOnPressEscape && e.keyCode === 27) {
       this.close(e);
     }
   }
 
-  handleWrapperClick(e: SyntheticEvent): void {
+  handleWrapperClick(e: SyntheticEvent<HTMLDivElement>): void {
     if (e.target instanceof HTMLDivElement) {
       if (this.props.closeOnClickModal && e.target === e.currentTarget) {
         this.close(e);
@@ -77,7 +77,7 @@ export default class Dialog extends Component {
     }
   }
 
-  close(e: SyntheticEvent | SyntheticKeyboardEvent): void {
+  close(e: any): void {
     this.props.onCancel(e);
   }
 
@@ -89,45 +89,45 @@ export default class Dialog extends Component {
     return (prevProps.visible && !nextProps.visible);
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { visible, title, size, top, modal, customClass, showClose } = this.props;
 
     return (
       <div>
         <Transition name="dialog-fade">
-          <View show={ visible }>
+          <View show={visible}>
             <div
               ref="wrap"
               style={{ zIndex: 1013 }}
               className={this.classNames('el-dialog__wrapper')}
-              onClick={ e => this.handleWrapperClick(e) }
-              onKeyDown={ e => this.onKeyDown(e) }
+              onClick={e => this.handleWrapperClick(e)}
+              onKeyDown={e => this.onKeyDown(e)}
             >
               <div
                 ref="dialog"
-                style={this.style(size === 'full' ?  {} : { 'top': top })}
-                className={ this.className("el-dialog", `el-dialog--${ size }`, customClass) }
+                style={this.style(size === 'full' ? {} : { 'top': top })}
+                className={this.className("el-dialog", `el-dialog--${ size }`, customClass)}
               >
                 <div className="el-dialog__header">
-                  <span className="el-dialog__title">{ title }</span>
+                  <span className="el-dialog__title">{title}</span>
                   {
                     showClose && (
-                      <button type="button" className="el-dialog__headerbtn" onClick={ e => this.close(e)} >
-                        <i className="el-dialog__close el-icon el-icon-close"></i>
+                      <button type="button" className="el-dialog__headerbtn" onClick={e => this.close(e)}>
+                        <i className="el-dialog__close el-icon el-icon-close" />
                       </button>
                     )
                   }
                 </div>
-                { this.props.children }
+                {this.props.children}
               </div>
             </div>
           </View>
         </Transition>
         {
           modal && (
-              <View show={ visible }>
-                <div className="v-modal" style={{ zIndex: 1012 }}></div>
-              </View>
+            <View show={visible}>
+              <div className="v-modal" style={{ zIndex: 1012 }}></div>
+            </View>
           )
         }
       </div>

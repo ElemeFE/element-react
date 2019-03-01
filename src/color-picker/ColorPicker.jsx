@@ -90,7 +90,7 @@ class ColorPicker extends Component {
     this.setState({ showPicker: false });
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { showAlpha } = this.props;
     const { value, color, showPicker, showPanelColor } = this.state;
 

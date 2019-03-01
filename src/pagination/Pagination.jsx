@@ -299,7 +299,7 @@ export default class Pagination extends Component {
     }
   }
 
-  render(): ?React.Element<any> {
+  render(): ?React.DOM {
     const { internalCurrentPage, internalPageSize } = this.state;
 
     const className = this.classNames({

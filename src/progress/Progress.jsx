@@ -77,7 +77,7 @@ export default class Progress extends Component {
     return type === 'line' ? 12 + strokeWidth * 0.4 : width * 0.111111 + 2;
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const {
       type,
       percentage,
