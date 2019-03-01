@@ -45,7 +45,9 @@ module.exports = {
     'popover': 'Popover',
     'card': 'Card',
     'carousel': 'Carousel',
-    'collapse': 'Collapse'
+    'collapse': 'Collapse',
+    'anchor-smooth':'AnchorSmooth',
+    'go-top':'GoTop'
   },
   misc: {
     'guide': 'Guide',
