@@ -29,7 +29,7 @@ export function getScrollBarWidth(): ?number {
 
 export function getValueByPath(data: Object, path: ?string): any {
   if (typeof path !== 'string') return null;
-  return path.split('.').reduce((pre, cur) => (pre || {})[cur], data);
+  return path.split('.').reduce((pre: Object, cur) => (pre || {})[cur], data);
 }
 
 export function getRowIdentity(row: Object, rowKey: any): any {
@@ -140,7 +140,7 @@ const deepCompare = (obj1: any, obj2: any): boolean => {
   } else if (isObject(obj1) && isObject(obj2)) {
     for (let key in obj1) {
       if (deepCompare(obj1[key], obj2[key])) {
-        return true 
+        return true
       }
     }
     return false
@@ -151,5 +151,5 @@ const deepCompare = (obj1: any, obj2: any): boolean => {
 export {
   deepCompare,
   isObject,
-  isArray 
+  isArray
 }

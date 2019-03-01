@@ -52,7 +52,7 @@ export default class SvPanel extends Component {
     });
   }
 
-  handleDrag(event: SyntheticMouseEvent): void {
+  handleDrag(event: SyntheticMouseEvent<any>): void {
     const { color } = this.props;
     const { onChange } = this.context;
     const el = this.$el;
@@ -79,7 +79,7 @@ export default class SvPanel extends Component {
     );
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { cursorTop, cursorLeft, background } = this.state;
     return (
       <div

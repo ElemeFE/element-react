@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, PropTypes, View } from '../../libs';
 
 type Props = {
-  children: React.Element<any>,
+  children: React.DOM,
   type: 'card' | 'border-card',
   activeName: string,
   value: string,
@@ -89,7 +89,7 @@ export default class Tabs extends Component {
     onTabAdd && onTabAdd();
   }
 
-  handleTabRemove(tab: React.Element<any>, index: number, e: SyntheticEvent): void {
+  handleTabRemove(tab: React.DOM, index: number, e: SyntheticEvent<any>): void {
     const { children, currentName } = this.state;
     const { onTabRemove, onTabEdit } = this.props;
 
@@ -114,7 +114,7 @@ export default class Tabs extends Component {
     });
   }
 
-  handleTabClick(tab: React.Element<any>, e: SyntheticEvent): void | boolean {
+  handleTabClick(tab: React.DOM, e: SyntheticEvent<any>): void | boolean {
     if (tab.props.disabled) {
       return false;
     }
@@ -131,7 +131,7 @@ export default class Tabs extends Component {
   }
 
   calcBarStyle(firstRendering?: boolean): void | Object {
-    if (this.props.type || !this.tabs.length ) return {};
+    if (this.props.type || !this.tabs.length) return {};
 
     let style = {};
     let offset = 0;
@@ -252,7 +252,7 @@ export default class Tabs extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { children, currentName, barStyle, navStyle, scrollable, scrollNext, scrollPrev } = this.state;
     const { type, addable, closable, editable } = this.props;
     const tabsCls = this.classNames({
@@ -266,25 +266,28 @@ export default class Tabs extends Component {
           className="el-tabs__new-tab"
           onClick={() => this.handleTabAdd()}
         >
-          <i className="el-icon-plus"></i>
+          <i className="el-icon-plus" />
         </span>
       )
       : null;
     const scrollBtn = scrollable
-      ? [
-        (<span key="el-tabs__nav-prev"
-          className={scrollable.prev ? 'el-tabs__nav-prev' : 'el-tabs__nav-prev is-disabled'}
+      ? [(
+        <span
+          key="el-tabs__nav-prev"
+          className={scrollPrev ? 'el-tabs__nav-prev' : 'el-tabs__nav-prev is-disabled'}
           onClick={() => this.scrollPrev()}
         >
-          <i className="el-icon-arrow-left"></i>
-        </span>),
-        (<span key="el-tabs__nav-next"
-          className={scrollable.next ? 'el-tabs__nav-next' : 'el-tabs__nav-next is-disabled'}
+          <i className="el-icon-arrow-left" />
+        </span>
+      ), (
+        <span
+          key="el-tabs__nav-next"
+          className={scrollNext ? 'el-tabs__nav-next' : 'el-tabs__nav-next is-disabled'}
           onClick={() => this.scrollNext()}
         >
-          <i className="el-icon-arrow-right"></i>
-        </span>)
-      ]
+          <i className="el-icon-arrow-right" />
+        </span>
+      )]
       : null;
     this.tabs = [];
 
@@ -307,17 +310,21 @@ export default class Tabs extends Component {
                     });
 
                     return (
-                      <div key={ `el-tabs__item-${index}` } ref={ (tab) => tab && this.tabs.push(tab) } name={ name } className={ tabCls } onClick={ (e) => this.handleTabClick(item, e) }>
-                        { label }
-                        <View show={ editable || closable || item.props.closable }>
-                          <span className="el-icon-close" onClick={ (e) => this.handleTabRemove(item, index, e) }></span>
+                      <div
+                        key={`el-tabs__item-${index}`} ref={(tab) => tab && this.tabs.push(tab)}
+                        name={name}
+                        className={tabCls} onClick={(e) => this.handleTabClick(item, e)}
+                      >
+                        {label}
+                        <View show={editable || closable || item.props.closable}>
+                          <span className="el-icon-close" onClick={(e) => this.handleTabRemove(item, index, e)} />
                         </View>
                       </div>
                     )
                   })
                 }
-                <View show={ !type }>
-                  <div className="el-tabs__active-bar" style={ barStyle }></div>
+                <View show={!type}>
+                  <div className="el-tabs__active-bar" style={barStyle} />
                 </View>
               </div>
             </div>
@@ -335,8 +342,8 @@ export default class Tabs extends Component {
               // }
 
               return (
-                <View show={ name === currentName }>
-                  { item }
+                <View show={name === currentName}>
+                  {item}
                 </View>
               );
             })

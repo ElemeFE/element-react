@@ -8,7 +8,7 @@ export default class CollapseItem extends Component {
     super(props);
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { title, isActive, onClick, name } = this.props;
 
     return (
