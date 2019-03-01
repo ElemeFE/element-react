@@ -1,8 +1,8 @@
 /* @flow */
 
 import React from 'react';
-import {Component,PropTypes} from '../../libs';
-import AnchorSmooth,{getScrollTop} from './AnchorSmooth';
+import {Component, PropTypes} from '../../libs';
+import AnchorSmooth, {getScrollTop} from './AnchorSmooth';
 import './style.css';
 
 export default class GoTop extends Component {
@@ -33,7 +33,7 @@ export default class GoTop extends Component {
   }
 
   render() {
-    const {children,bottom, right, top, left, ...other} = this.props;
+    const {children, bottom, right, top, left, ...other} = this.props;
     return (
       <div className="el-anchor__top-wrapper" style={{
         bottom,
@@ -44,8 +44,7 @@ export default class GoTop extends Component {
         visibility: this.state.show ? "visible" : "hidden",
         transition: this.state.show ? "opacity 0.2s linear 0s, visibility" : ""
       }}>
-        <AnchorSmooth className='el-anchor__top'
-          {...other}>
+        <AnchorSmooth {...other} className='el-anchor__top'>
           {children || <i className="el-icon-caret-top"></i>}
         </AnchorSmooth>
       </div>
@@ -54,13 +53,13 @@ export default class GoTop extends Component {
 }
 
 GoTop.propTypes = {
-  showheight:PropTypes.number,
-  bottom:PropTypes.string,
-  top:PropTypes.string,
-  left:PropTypes.string,
-  right:PropTypes.string
+  showheight: PropTypes.number,
+  bottom: PropTypes.string,
+  top: PropTypes.string,
+  left: PropTypes.string,
+  right: PropTypes.string
 };
 
 GoTop.defaultProps = {
-  showheight:300
+  showheight: 300
 };
