@@ -151,12 +151,12 @@ const deepCompare = (obj1: any, obj2: any): boolean => {
     }
     for (let key in obj1) {
       if (deepCompare(obj1[key], obj2[key])) {
-        return true
+        return false
       }
     }
     return true
   }
-  return obj1 !== obj2
+  return !Object(obj1,obj2)
 }
 
 export {
