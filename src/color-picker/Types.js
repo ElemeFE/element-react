@@ -40,6 +40,6 @@ export type SvPanelState = {
 };
 
 export type DragOptions = {
-  drag: (event: SyntheticMouseEvent) => void,
-  end: (event: SyntheticMouseEvent) => void
+  drag: (event: SyntheticMouseEvent<any>) => void,
+  end: (event: SyntheticMouseEvent<any>) => void
 };

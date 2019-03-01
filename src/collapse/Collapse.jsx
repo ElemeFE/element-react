@@ -47,7 +47,7 @@ export default class Collapse extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const content = React.Children.map(this.props.children, (child, idx) => {
       const name = child.props.name || idx.toString();
       return React.cloneElement(child, {

@@ -172,7 +172,7 @@ class AutoComplete extends Component {
     return (isValidData || this.state.loading) && this.state.isFocus;
   }
 
-  onKeyDown(e: SyntheticKeyboardEvent): void {
+  onKeyDown(e: SyntheticKeyboardEvent<any>): void {
     const { highlightedIndex } = this.state;
 
     switch (e.keyCode) {
@@ -190,7 +190,7 @@ class AutoComplete extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { disabled, placeholder, name, size, icon, append, prepend, onIconClick, popperClass } = this.props;
     const { inputValue, suggestions } = this.state;
 

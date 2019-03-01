@@ -4,7 +4,7 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 type Props = {
-  children: React.Element<any>,
+  children: React.DOM,
   value: number | string,
   max: number,
   isDot: boolean,
@@ -13,7 +13,7 @@ type Props = {
 export default class Badge extends Component {
   props: Props;
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { children, value, max, isDot } = this.props;
     const className = this.classNames({
       'el-badge__content': true,
