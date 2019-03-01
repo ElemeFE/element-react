@@ -139,7 +139,7 @@ const deepCompare = (obj1: any, obj2: any): boolean => {
       return false
     }
     return obj1.every((value, key) => (
-      isEqual(value, obj2[key])
+      deepCompare(value, obj2[key])
     ))
   } else if (isObject(obj1) && isObject(obj2)) {
     const firstOBJ = Object.keys(obj1).length;
@@ -150,7 +150,7 @@ const deepCompare = (obj1: any, obj2: any): boolean => {
       return false
     }
     for (let key in obj1) {
-      if (isEqual(obj1[key], obj2[key])) {
+      if (deepCompare(obj1[key], obj2[key])) {
         return true
       }
     }
