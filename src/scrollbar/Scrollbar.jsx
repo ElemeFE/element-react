@@ -37,6 +37,7 @@ export class Scrollbar extends Component {
   componentDidUpdate() {
     this.resizeDom = ReactDOM.findDOMNode(this.refs.resize)
     if (!this.props.noresize){
+      this.cleanResize && this.cleanResize();
       addResizeListener(this.resizeDom, this.update)
       this.cleanResize = ()=>{
         removeResizeListener(this.resizeDom, this.update);

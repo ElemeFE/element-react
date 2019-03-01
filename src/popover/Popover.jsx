@@ -118,7 +118,7 @@ export default class Popover extends Component {
     this.popperJS.destroy();
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { transition, popperClass, width, title, content, visibleArrow } = this.props;
 
     return (
