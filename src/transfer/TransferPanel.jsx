@@ -18,7 +18,7 @@ type Props = {
   checked: Array<Object>,
   hasChecked?: boolean,
   noChecked?: boolean,
-  children: React.Element<any>
+  children: React.DOM
 };
 
 type defaultProps = {
@@ -159,7 +159,7 @@ export default class TransferPanel extends Component {
     return this.props.propsAlias.disabled;
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const {
       filterable,
       title,
