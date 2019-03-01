@@ -6,10 +6,10 @@ const ANIMATION_DURATION = 300;
 
 type Props = {
   isShow: boolean,
-  children?: React.Element<any>
+  children: ?React.DOM
 };
 
-export default class CollapseTransition extends Component {
+export default class CollapseTransition extends Component<Props, {}> {
   props: Props;
 
   selfRef: any;
@@ -28,7 +28,7 @@ export default class CollapseTransition extends Component {
     this.leave();
   }
 
-  componentWillReceiveProps(nextProps: any){
+  componentWillReceiveProps(nextProps: any) {
     if (this.props.isShow !== nextProps.isShow) this.triggerChange(nextProps.isShow);
   }
 
@@ -106,7 +106,7 @@ export default class CollapseTransition extends Component {
 
   afterLeave(): void {
     const el = this.selfRef;
-    if (!el) return ;
+    if (!el) return;
 
     el.style.display = 'none';
     el.style.height = '';
@@ -115,7 +115,7 @@ export default class CollapseTransition extends Component {
     el.style.paddingBottom = el.dataset.oldPaddingBottom;
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <div
         className="collapse-transition"

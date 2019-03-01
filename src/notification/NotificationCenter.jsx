@@ -32,16 +32,13 @@ export default function NotificationCenter(props = {}, type) {
 
   const element = React.createElement(Notification, Object.assign({}, props, {
     willUnmount(height, top) {
-      ReactDOM.unmountComponentAtNode(div);
-      document.body.removeChild(div);
-
+      setTimeout(() => document.body.removeChild(div));
       requestAnimationFrame(() => {
         const instances = document.querySelectorAll(className);
-
-        for (let i = 0, len = instances.length; i < len; i++) {
+        const len = instances.length;
+        for (let i = 0; i < len; i++) {
           const element = instances[i];
           const elementTop = parseInt(element.style.top);
-
           if (elementTop > top) {
             element.style.top = `${elementTop - height - 16}px`;
           }
@@ -55,8 +52,6 @@ export default function NotificationCenter(props = {}, type) {
 
 /* eslint-disable */
 ['success', 'warning', 'info', 'error'].forEach(type => {
-  NotificationCenter[type] = (options = {}) => {
-    return NotificationCenter(options, type);
-  };
+  NotificationCenter[type] = (options = {}) => NotificationCenter(options, type);
 });
 /* eslint-enable */

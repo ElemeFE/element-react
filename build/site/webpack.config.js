@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const basePath = path.resolve(__dirname, '../../');
 
@@ -14,8 +14,11 @@ module.exports = {
     chunkFilename: '[chunkhash:12].js',
     filename: '[chunkhash:12].js'
   },
+  optimization: {
+    minimize: true
+  },
   plugins: [
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: '[chunkhash:12].css'
     }),
     new HtmlWebpackPlugin({
@@ -24,53 +27,36 @@ module.exports = {
     })
   ].concat(process.env.TRAVIS_CI ? [] : [
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: {
-        keep_fnames: true
-      },
-      output: {
-        comments: false
-      }
-    })
+    new webpack.optimize.ModuleConcatenationPlugin()
   ]),
   resolve: {
     extensions: ['.js', '.jsx']
   },
   module: {
-    rules: [
-      {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        include: [
-          path.join(basePath, 'site'),
-          path.join(basePath, 'src'),
-          path.join(basePath, 'libs')
-        ]
-      },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader'
-        })
-      },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
-      },
-      {
-        test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
-        loader: 'file-loader?name=[hash:12].[ext]'
-      },
-      {
-        test: /\.(jpe?g|png|gif)(\?.+)?$/,
-        loader: 'url-loader?name=[hash:12].[ext]&limit=25000'
-      },
-      {
-        test: /\.md$/,
-        loader : 'raw-loader'
-      }
-    ]
-  }
+    rules: [{
+      test: /\.jsx?$/,
+      loader: 'babel-loader',
+      include: [
+        path.join(basePath, 'site'),
+        path.join(basePath, 'src'),
+        path.join(basePath, 'libs')
+      ]
+    }, {
+      test: /\.css$/,
+      use: [MiniCssExtractPlugin.loader, "css-loader"]
+    }, {
+      test: /\.scss$/,
+      use: ['style-loader', 'css-loader', 'sass-loader']
+    }, {
+      test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
+      loader: 'file-loader?name=[hash:12].[ext]'
+    }, {
+      test: /\.(jpe?g|png|gif)(\?.+)?$/,
+      loader: 'url-loader?name=[hash:12].[ext]&limit=25000'
+    }, {
+      test: /\.md$/,
+      loader: 'raw-loader'
+    }]
+  },
+  mode: 'production'
 };

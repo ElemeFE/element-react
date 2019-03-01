@@ -82,7 +82,7 @@ export default class Slider extends Component {
 
       if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && Array.isArray(oldValue) && this.props.value.every((item, index) => item === oldValue[index])) {
         return;
-      }else if(!this.props.range && typeof props.value === 'number' && !isNaN(props.value)){
+      } else if (!this.props.range && typeof props.value === 'number' && !isNaN(props.value)) {
         this.setState({
           firstValue: props.value
         })
@@ -153,7 +153,8 @@ export default class Slider extends Component {
     const targetValue = min + percent * (max - min) / 100;
 
     if (!range) {
-      this.refs.button1.setPosition(percent); return;
+      this.refs.button1.setPosition(percent);
+      return;
     }
 
     let button;
@@ -167,7 +168,7 @@ export default class Slider extends Component {
     this.refs[button].setPosition(percent);
   }
 
-  onSliderClick(event: SyntheticMouseEvent): void {
+  onSliderClick(event: SyntheticMouseEvent<HTMLDivElement>): void {
     if (this.props.disabled || this.state.dragging) return;
 
     if (this.props.vertical) {
@@ -255,12 +256,12 @@ export default class Slider extends Component {
 
   barStyle(): Object {
     return this.props.vertical ? {
-        height: this.barSize(),
-        bottom: this.barStart()
-      } : {
-        width: this.barSize(),
-        left: this.barStart()
-      };
+      height: this.barSize(),
+      bottom: this.barStart()
+    } : {
+      width: this.barSize(),
+      left: this.barStart()
+    };
   }
 
   barSize(): string {
@@ -275,7 +276,7 @@ export default class Slider extends Component {
       : '0%';
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { vertical, showInput, showStops, showInputControls, range, step, disabled, min, max } = this.props;
     const { inputValue, firstValue, secondValue } = this.state;
 
@@ -301,24 +302,41 @@ export default class Slider extends Component {
             />
           )
         }
-        <div ref="slider" style={this.runwayStyle()} className={this.classNames('el-slider__runway', {
-          'show-input': showInput,
-          'disabled': disabled
-        })} onClick={this.onSliderClick.bind(this)}>
+        <div
+          ref="slider"
+          style={this.runwayStyle()}
+          className={this.classNames('el-slider__runway', {
+            'show-input': showInput,
+            'disabled': disabled
+          })}
+          onClick={this.onSliderClick.bind(this)}
+        >
           <div
             className="el-slider__bar"
             style={this.barStyle()}>
           </div>
-          <SliderButton ref="button1" vertical={vertical} value={firstValue} onChange={this.onFirstValueChange.bind(this)} />
+          <SliderButton
+            ref="button1"
+            vertical={vertical} value={firstValue}
+            onChange={this.onFirstValueChange.bind(this)}
+          />
           {
-            range && <SliderButton ref="button2" vertical={vertical} value={secondValue} onChange={this.onSecondValueChange.bind(this)} />
+            range && (
+              <SliderButton
+                ref="button2"
+                vertical={vertical} value={secondValue}
+                onChange={this.onSecondValueChange.bind(this)}
+              />
+            )
           }
           {
-            showStops && this.stops().map((item, index) => {
-              return (
-                <div key={index} className="el-slider__stop" style={vertical ? { 'bottom': item + '%' } : { 'left': item + '%' }}></div>
-              )
-            })
+            showStops && this.stops().map((item, index) => (
+              <div
+                key={index}
+                className="el-slider__stop"
+                style={vertical ? { 'bottom': item + '%' } : { 'left': item + '%' }}
+              />
+            ))
           }
         </div>
       </div>

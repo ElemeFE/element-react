@@ -73,7 +73,7 @@ export default class Tooltip extends Component {
     this.popperJS.destroy();
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { effect, content, disabled, transition, visibleArrow } = this.props;
 
     return (

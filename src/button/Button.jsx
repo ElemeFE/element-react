@@ -4,13 +4,13 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 export default class Button extends Component {
-  onClick(e: SyntheticEvent): void {
+  onClick(e: SyntheticEvent<any>): void {
     if (!this.props.loading) {
       this.props.onClick && this.props.onClick(e);
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <button style={this.style()} className={this.className('el-button', this.props.type && `el-button--${this.props.type}`, this.props.size && `el-button--${this.props.size}`, {
           'is-disabled': this.props.disabled,

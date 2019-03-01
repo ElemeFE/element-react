@@ -255,7 +255,7 @@ export default class Rate extends Component {
     });
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { showText, textColor, disabled, max } = this.props;
     const { hoverIndex } = this.state;
     return (
