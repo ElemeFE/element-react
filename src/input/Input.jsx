@@ -55,7 +55,7 @@ export default class Input extends Component {
     return value;
   }
 
-  handleChange(e: SyntheticInputEvent): void {
+  handleChange(e: SyntheticInputEvent<any>): void {
     const { onChange } = this.props;
 
     if (onChange) {
@@ -64,12 +64,12 @@ export default class Input extends Component {
     this.resizeTextarea();
   }
 
-  handleFocus(e: SyntheticEvent): void {
+  handleFocus(e: SyntheticEvent<any>): void {
     const { onFocus } = this.props;
     if (onFocus) onFocus(e)
   }
 
-  handleBlur(e: SyntheticEvent): void {
+  handleBlur(e: SyntheticEvent<any>): void {
     const { onBlur } = this.props
     if (this.props.trim) this.handleTrim()
     if (onBlur) onBlur(e)
@@ -83,7 +83,7 @@ export default class Input extends Component {
     }
   }
 
-  handleIconClick(e: SyntheticEvent): void {
+  handleIconClick(e: SyntheticEvent<any>): void {
     if (this.props.onIconClick) {
       this.props.onIconClick(e)
     }
@@ -105,7 +105,7 @@ export default class Input extends Component {
     });
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { type, size, prepend, append, icon, autoComplete, validating, rows, onMouseEnter, onMouseLeave, trim,
       ...otherProps
     } = this.props;

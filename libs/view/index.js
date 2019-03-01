@@ -11,7 +11,7 @@ export default class View extends Component {
     if (className) classNames.push(className);
     mixed.className = classNames.join(' ');
 
-    return React.cloneElement(React.Children.only(this.props.children), mixed);
+    return React.cloneElement(React.Children.only(children), mixed);
   }
 }
 

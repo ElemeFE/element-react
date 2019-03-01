@@ -1,6 +1,6 @@
 //@flow
 import React from 'react';
-import debounce from 'throttle-debounce/debounce';
+import { debounce } from 'throttle-debounce';
 
 import { PropTypes, Component } from '../../../libs';
 import { getRangeHours } from '../utils';

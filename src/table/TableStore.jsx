@@ -49,7 +49,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     currentRowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)]),
     rowClassName: PropTypes.func,
     rowStyle: PropTypes.func,
-    rowKey: PropTypes.func,
+    rowKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string,]),
     emptyText: PropTypes.string,
     defaultExpandAll: PropTypes.bool,
     expandRowKeys:PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
@@ -148,7 +148,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
 
     return selectedRows && selectedRows.length === selectableData.length;
   }
-  
+
   // shouldComponentUpdate(nextProps) {
   //   const propsKeys = Object.keys(this.props);
   //   const nextPropsKeys = Object.keys(nextProps);
@@ -164,7 +164,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   //   return false;
   // }
 
-  updateColumns(columns: Array<Column>) {
+  updateColumns(columns: Array<Column | Object>) {
     let _columns = normalizeColumns(columns, tableIDSeed++);
 
     const fixedColumns = _columns.filter(column => column.fixed === true || column.fixed === 'left');
@@ -402,9 +402,9 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       }
     }
     let sortSet = () => {
-      shouldDispatchEvent && this.dispatchEvent('onSortChange', 
-          column && order ? 
-          { column, prop: column.property, order } : 
+      shouldDispatchEvent && this.dispatchEvent('onSortChange',
+          column && order ?
+          { column, prop: column.property, order } :
           { column: null, prop: null, order: null }
         )
     }

@@ -51,7 +51,7 @@ export default class DropdownMenu extends Component {
     return `bottom-${this.parent().props.menuAlign}`;
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <Transition name="el-zoom-in-top" onEnter={this.onEnter.bind(this)} onAfterLeave={this.onAfterLeave.bind(this)}>
         <View show={this.state.showPopper}>

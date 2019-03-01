@@ -147,7 +147,7 @@ export default class Menu extends Component {
     });
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <ul
         style={this.style()}
