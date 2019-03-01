@@ -15,7 +15,7 @@ export default class Col extends Component {
     return style;
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     let classList = [];
 
     ['span', 'offset', 'pull', 'push'].forEach(prop => {

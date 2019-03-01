@@ -42,7 +42,7 @@ export default class Checkbox extends Component {
     });
   }
 
-  onChange(e: SyntheticEvent): void {
+  onChange(e: SyntheticEvent<any>): void {
     if (e.target instanceof HTMLInputElement) {
       const { label } = this.state;
       const { trueLabel, falseLabel} = this.props;
@@ -87,7 +87,7 @@ export default class Checkbox extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <label style={this.style()} className={this.className('el-checkbox')}>
         <span className={this.classNames('el-checkbox__input', {

@@ -31,7 +31,7 @@ export default class HueSlider extends Component {
     this.update();
   }
 
-  handleClick(event: SyntheticMouseEvent): void {
+  handleClick(event: SyntheticMouseEvent<any>): void {
     const thumb = this.refs.thumb;
     const target = event.target;
     if (target !== thumb) {
@@ -39,7 +39,7 @@ export default class HueSlider extends Component {
     }
   }
 
-  handleDrag(event: SyntheticMouseEvent): void {
+  handleDrag(event: SyntheticMouseEvent<any>): void {
     const rect = this.$el.getBoundingClientRect();
     const { thumb } = this.refs;
     const { vertical, color } = this.props;
@@ -94,7 +94,7 @@ export default class HueSlider extends Component {
     });
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { vertical } = this.props;
     const { thumbLeft, thumbTop } = this.state;
     return (

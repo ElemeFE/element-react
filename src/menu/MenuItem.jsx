@@ -30,7 +30,7 @@ export default class MenuItem extends MixinComponent {
     return this.props.index === this.rootMenu().state.activeIndex;
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <li
         style={this.style()}

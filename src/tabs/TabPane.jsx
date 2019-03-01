@@ -4,8 +4,8 @@ import React from 'react';
 import { Component, PropTypes } from '../../libs';
 
 type Props = {
-  children: React.Element<any>,
-  label: string | React.Element<any>,
+  children: React.DOM,
+  label: string | React.DOM,
   name: string,
   disabled: boolean,
   closable: boolean,
@@ -14,7 +14,7 @@ type Props = {
 export default class TabPane extends Component {
   props: Props;
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <div style={this.style()} className={this.className('el-tab-pane')}>
         { this.props.children }
