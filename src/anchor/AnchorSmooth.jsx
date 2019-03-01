@@ -40,7 +40,7 @@ function goTarget(targetTop, time = 300, callback) {
 
 export default class AnchorSmooth extends Component {
 
-  onClick(e: SyntheticEvent) {
+  onClick(e){
     e.preventDefault();
     let targetDom = document.getElementById(this.props.targetId);
     if (targetDom && targetDom.scrollIntoView) {
