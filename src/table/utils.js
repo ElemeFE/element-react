@@ -127,29 +127,39 @@ export function convertToRows(columns: Array<_Column>): Array<Array<_Column>> {
 const isObject = (obj: Object): boolean => {
   return Object.prototype.toString.call(obj) === '[object Object]'
 }
-const isArray = (arr: number): boolean => {
-  return Object.prototype.toString.call(arr) === '[object Array]'
-}
 const deepCompare = (obj1: any, obj2: any): boolean => {
   if (obj1 && obj2 && obj1.length !== obj2.length) {
     return true
-  } else if (isArray(obj1) && isArray(obj2)) {
-    return obj1.some((value,key) => (
-      deepCompare(value, obj2[key])
+  } else if (Array.isArray(obj1) && Array.isArray(obj2)) {
+    const firstOBJ = obj1.length;
+    const sectionOBJ = obj2.length;
+    if (firstOBJ !== sectionOBJ) {
+      return true
+    } else if (firstOBJ === 0 && sectionOBJ === 0) {
+      return false
+    }
+    return obj1.every((value, key) => (
+      isEqual(value, obj2[key])
     ))
   } else if (isObject(obj1) && isObject(obj2)) {
+    const firstOBJ = Object.keys(obj1).length;
+    const sectionOBJ = Object.keys(obj2).length;
+    if (firstOBJ !== sectionOBJ) {
+      return true
+    } else if (firstOBJ === 0 && sectionOBJ === 0) {
+      return false
+    }
     for (let key in obj1) {
-      if (deepCompare(obj1[key], obj2[key])) {
+      if (isEqual(obj1[key], obj2[key])) {
         return true
       }
     }
-    return false
+    return true
   }
   return obj1 !== obj2
 }
 
 export {
   deepCompare,
-  isObject,
-  isArray
+  isObject
 }
