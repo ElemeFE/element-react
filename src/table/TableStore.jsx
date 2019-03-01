@@ -199,7 +199,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     let { hoverRow, currentRow, selectedRows, expandingRows } = this.state;
     hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
     currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
-    if (this._isMounted && data !== this.props.data && !columns[0].reserveSelection) {
+    if (this._isMounted && data !== this.props.data && columns[0] && !columns[0].reserveSelection) {
       selectedRows = [];
     } else {
       selectedRows = selectedRows && selectedRows.filter(row => data.includes(row)) || [];
