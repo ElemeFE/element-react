@@ -29,7 +29,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  onKeyDown(e: SyntheticKeyboardEvent): void {
+  onKeyDown(e: SyntheticKeyboardEvent<any>): void {
     switch (e.keyCode) {
       case 38: // KeyUp
         e.preventDefault();
@@ -137,7 +137,7 @@ export default class InputNumber extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { controls, disabled, size } = this.props;
     const { value, inputActive } = this.state;
 

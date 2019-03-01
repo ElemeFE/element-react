@@ -19,7 +19,7 @@ export default class AjaxUpload extends Component {
     return str.indexOf('image') !== -1;
   }
 
-  handleChange(e: SyntheticEvent): void {
+  handleChange(e: SyntheticEvent<any>): void {
     if (e.target instanceof HTMLInputElement) {
       const files = e.target.files;
       if (!files) {
@@ -88,7 +88,7 @@ export default class AjaxUpload extends Component {
       onSuccess,
       onError
     } = this.props;
-    const {httpRequest = ajax} = this.props 
+    const {httpRequest = ajax} = this.props
     const req = httpRequest({
       headers,
       withCredentials,
@@ -111,7 +111,7 @@ export default class AjaxUpload extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { drag, multiple, accept, listType, disabled } = this.props;
     return (
       <div

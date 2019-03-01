@@ -30,25 +30,25 @@ export default class TableBody extends Component<TableBodyProps> {
     this.context.store.setHoverRow(null);
   }
 
-  handleCellMouseEnter(row: Object, column: _Column, event: SyntheticEvent) {
+  handleCellMouseEnter(row: Object, column: _Column, event: SyntheticEvent<HTMLTableCellElement>) {
     this.dispatchEvent('onCellMouseEnter', row, column, event.currentTarget, event)
   }
 
-  handleCellMouseLeave(row: Object, column: _Column, event: SyntheticEvent) {
+  handleCellMouseLeave(row: Object, column: _Column, event: SyntheticEvent<HTMLTableCellElement>) {
     this.dispatchEvent('onCellMouseLeave', row, column, event.currentTarget, event)
   }
 
-  handleCellClick(row: Object, column: _Column, event: SyntheticEvent) {
+  handleCellClick(row: Object, column: _Column, event: SyntheticEvent<HTMLTableCellElement>) {
     this.dispatchEvent('onCellClick', row, column, event.currentTarget, event)
     this.dispatchEvent('onRowClick', row, event, column);
   }
 
-  handleCellDbClick(row: Object, column: _Column, event: SyntheticEvent) {
+  handleCellDbClick(row: Object, column: _Column, event: SyntheticEvent<HTMLTableCellElement>) {
     this.dispatchEvent('onCellDbClick', row, column, event.currentTarget, event)
     this.dispatchEvent('onRowDbClick', row, column)
   }
 
-  handleRowContextMenu(row: Object, event: SyntheticEvent) {
+  handleRowContextMenu(row: Object, event: SyntheticEvent<HTMLTableRowElement>) {
     this.dispatchEvent('onRowContextMenu', row, event)
   }
 
@@ -111,7 +111,7 @@ export default class TableBody extends Component<TableBodyProps> {
     this.context.store.setCurrentRow(row);
   }
 
-  renderCell(row: Object, column: _Column, index: number, rowKey: string | number): React.Element<any> {
+  renderCell(row: Object, column: _Column, index: number, rowKey: string | number): React.DOM {
     const { type, selectable } = column;
     if (type === 'expand') {
       return (

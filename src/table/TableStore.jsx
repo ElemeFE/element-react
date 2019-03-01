@@ -10,6 +10,10 @@ import type {
   Column,
   _Column
 } from './Types';
+import {
+  deepCompare
+} from './utils'
+
 import normalizeColumns from './normalizeColumns';
 import { getLeafColumns, getValueByPath, getColumns, convertToRows, getRowIdentity } from "./utils";
 
@@ -42,10 +46,10 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     fit: PropTypes.bool,
     showHeader: PropTypes.bool,
     highlightCurrentRow: PropTypes.bool,
-    currentRowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number,]),
+    currentRowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)]),
     rowClassName: PropTypes.func,
     rowStyle: PropTypes.func,
-    rowKey: PropTypes.func,
+    rowKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string,]),
     emptyText: PropTypes.string,
     defaultExpandAll: PropTypes.bool,
     expandRowKeys:PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
@@ -124,8 +128,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (getColumns(this.props) !== nextColumns) {
       this.updateColumns(nextColumns);
     }
-    
-    if (JSON.stringify(data) !== JSON.stringify(nextProps.data)) {
+    if (deepCompare(data,nextProps.data)){
       this.updateData(nextProps);
     }
   }
@@ -161,7 +164,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   //   return false;
   // }
 
-  updateColumns(columns: Array<Column>) {
+  updateColumns(columns: Array<Column | Object>) {
     let _columns = normalizeColumns(columns, tableIDSeed++);
 
     const fixedColumns = _columns.filter(column => column.fixed === true || column.fixed === 'left');
@@ -196,7 +199,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     let { hoverRow, currentRow, selectedRows, expandingRows } = this.state;
     hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
     currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
-
     if (this._isMounted && data !== this.props.data && columns[0] && !columns[0].reserveSelection) {
       selectedRows = [];
     } else {
@@ -370,7 +372,6 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (Array.isArray(currentRowKey)) {
       return currentRowKey.includes(rowKey);
     }
-
     return selectedRows.includes(row);
   }
 
@@ -401,9 +402,9 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       }
     }
     let sortSet = () => {
-      shouldDispatchEvent && this.dispatchEvent('onSortChange', 
-          column && order ? 
-          { column, prop: column.property, order } : 
+      shouldDispatchEvent && this.dispatchEvent('onSortChange',
+          column && order ?
+          { column, prop: column.property, order } :
           { column: null, prop: null, order: null }
         )
     }

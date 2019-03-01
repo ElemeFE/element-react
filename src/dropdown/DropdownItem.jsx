@@ -8,7 +8,7 @@ export default class DropdownItem extends Component {
     this.context.component.handleMenuItemClick(this.props.command, this);
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { disabled, divided } = this.props;
 
     return (

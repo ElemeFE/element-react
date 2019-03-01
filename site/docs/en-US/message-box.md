@@ -132,6 +132,7 @@ The corresponding methods are: `MessageBox`, `MessageBox.alert`, `MessageBox.con
 | callback | MessageBox closing callback if you don't prefer Promise | function(action), where action can be 'confirm' or 'cancel', and `instance` is the MessageBox instance. You can access to that instance's attributes and methods | — | — |
 | beforeClose | callback before MessageBox closes, and it will prevent MessageBox from closing | function(action, instance, done), where `action` can be 'confirm' or 'cancel'; `instance` is the MessageBox instance, and you can access to that instance's attributes and methods; `done` is for closing the instance | — | — |
 | lockScroll | whether to lock body scroll when MessageBox prompts | boolean | — | true |
+| showClose | whether to show a close button | boolean | — | true |
 | showCancelButton | whether to show a cancel button | boolean | — | false (true when called with confirm and prompt) |
 | showConfirmButton | whether to show a confirm button | boolean | — | true |
 | cancelButtonText | text content of cancel button | string | — | Cancel |

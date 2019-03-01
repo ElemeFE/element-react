@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
-import debounce from 'throttle-debounce/debounce';
+import { debounce } from 'throttle-debounce';
 import Popper from 'popper.js';
 import StyleSheet from '../../libs/utils/style';
 import { Component, PropTypes, Transition, View } from '../../libs';
@@ -44,7 +44,7 @@ type State = {
   dropdownUl?: HTMLElement
 };
 
-const sizeMap: {[size: string]: number} = {
+const sizeMap: { [size: string]: number } = {
   'large': 42,
   'small': 30,
   'mini': 22
@@ -181,12 +181,12 @@ class Select extends Component {
       });
     } else {
       const selected = options.filter(option => {
-         return option.props.value === value
-       })[0];
+        return option.props.value === value
+      })[0];
 
-       if (selected) {
-         this.state.selectedLabel = selected.props.label || selected.props.value;
-       }
+      if (selected) {
+        this.state.selectedLabel = selected.props.label || selected.props.value;
+      }
     }
   }
 
@@ -443,7 +443,7 @@ class Select extends Component {
     return criteria;
   }
 
-  emptyText(): mixed {
+  emptyText() {
     const { loading, filterable } = this.props;
     const { voidRemoteQuery, options, filteredOptionsCount } = this.state;
 
@@ -614,8 +614,8 @@ class Select extends Component {
         }
 
         if (options[hoverIndex].props.disabled === true ||
-            options[hoverIndex].props.groupDisabled === true ||
-           !options[hoverIndex].state.visible ) {
+          options[hoverIndex].props.groupDisabled === true ||
+          !options[hoverIndex].state.visible) {
           skip = 'next';
         }
       }
@@ -628,8 +628,8 @@ class Select extends Component {
         }
 
         if (options[hoverIndex].props.disabled === true ||
-            options[hoverIndex].props.groupDisabled === true ||
-           !options[hoverIndex].state.visible ) {
+          options[hoverIndex].props.groupDisabled === true ||
+          !options[hoverIndex].state.visible) {
           skip = 'prev';
         }
       }
@@ -849,19 +849,23 @@ class Select extends Component {
 
                       switch (e.keyCode) {
                         case 27:
-                          this.setState({ visible: false }); e.preventDefault();
+                          this.setState({ visible: false });
+                          e.preventDefault();
                           break;
                         case 8:
                           this.deletePrevTag(e);
                           break;
                         case 13:
-                          this.selectOption(); e.preventDefault();
+                          this.selectOption();
+                          e.preventDefault();
                           break;
                         case 38:
-                          this.navigateOptions('prev'); e.preventDefault();
+                          this.navigateOptions('prev');
+                          e.preventDefault();
                           break;
                         case 40:
-                          this.navigateOptions('next'); e.preventDefault();
+                          this.navigateOptions('next');
+                          e.preventDefault();
                           break;
                         default:
                           break;
@@ -904,16 +908,20 @@ class Select extends Component {
             switch (e.keyCode) {
               case 9:
               case 27:
-                this.setState({ visible: false }); e.preventDefault();
+                this.setState({ visible: false });
+                e.preventDefault();
                 break;
               case 13:
-                this.selectOption(); e.preventDefault();
+                this.selectOption();
+                e.preventDefault();
                 break;
               case 38:
-                this.navigateOptions('prev'); e.preventDefault();
+                this.navigateOptions('prev');
+                e.preventDefault();
                 break;
               case 40:
-                this.navigateOptions('next'); e.preventDefault();
+                this.navigateOptions('next');
+                e.preventDefault();
                 break;
               default:
                 break;
@@ -922,11 +930,11 @@ class Select extends Component {
         />
         <Transition name="el-zoom-in-top" onEnter={this.onEnter.bind(this)} onAfterLeave={this.onAfterLeave.bind(this)}>
           <View show={visible && this.emptyText() !== false}>
-            <div ref="popper" className={this.classNames('el-select-dropdown', {
-                'is-multiple': multiple
-            })} style={{
-              minWidth: inputWidth,
-            }}>
+            <div
+              ref="popper"
+              className={this.classNames('el-select-dropdown', { 'is-multiple': multiple })}
+              style={{ minWidth: inputWidth }}
+            >
               <View show={options.length > 0 && filteredOptionsCount > 0 && !loading}>
                 <Scrollbar
                   viewComponent="ul"
@@ -936,7 +944,7 @@ class Select extends Component {
                   {this.props.children}
                 </Scrollbar>
               </View>
-              { this.emptyText() && <p className="el-select-dropdown__empty">{this.emptyText()}</p> }
+              {this.emptyText() && <p className="el-select-dropdown__empty">{this.emptyText()}</p>}
             </div>
           </View>
         </Transition>

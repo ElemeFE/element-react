@@ -80,7 +80,7 @@ export default class Form extends Component {
     field.validate('', cb);
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     return (
       <form style={this.style()} className={this.className('el-form', this.props.labelPosition && `el-form--label-${this.props.labelPosition}`, {
         'el-form--inline': this.props.inline

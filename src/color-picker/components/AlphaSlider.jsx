@@ -32,7 +32,7 @@ export default class AlphaSlider extends Component {
     this.update();
   }
 
-  handleClick(event: SyntheticMouseEvent): void {
+  handleClick(event: SyntheticMouseEvent<any>): void {
     const thumb = this.refs.thumb;
     const target = event.target;
     if (target !== thumb) {
@@ -40,7 +40,7 @@ export default class AlphaSlider extends Component {
     }
   }
 
-  handleDrag(event: SyntheticMouseEvent): void {
+  handleDrag(event: SyntheticMouseEvent<any>): void {
     const { vertical, color } = this.props;
     const { onChange } = this.context;
     const rect = this.$el.getBoundingClientRect();
@@ -111,7 +111,7 @@ export default class AlphaSlider extends Component {
     });
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { vertical } = this.props;
     const { thumbLeft, thumbTop, background } = this.state;
     return (

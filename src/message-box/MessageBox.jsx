@@ -121,7 +121,7 @@ export default class MessageBox extends Component {
     });
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { willUnmount, title, showClose, message, showInput, inputPlaceholder, showCancelButton, cancelButtonClass, showConfirmButton, confirmButtonClass, customClass, inputType } = this.props;
     const { visible, editorErrorMessage } = this.state;
 
@@ -152,7 +152,7 @@ export default class MessageBox extends Component {
                   {
                     message && (
                       <div className="el-message-box__content">
-                        <div className={this.classNames('el-message-box__status', this.typeClass())}></div>
+                        <div className={this.classNames('el-message-box__status', this.typeClass())} />
                         <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
                           <div>{message}</div>
                         </div>
@@ -190,7 +190,7 @@ export default class MessageBox extends Component {
         </div>
         <Transition name="v-modal">
           <View show={visible}>
-            <div className="v-modal" style={{ zIndex: 1006 }}></div>
+            <div className="v-modal" style={{ zIndex: 1006 }} />
           </View>
         </Transition>
       </div>
@@ -224,6 +224,8 @@ MessageBox.propTypes = {
 
 MessageBox.defaultProps = {
   title: '提示',
+  showInput: false,
   showClose: true,
+  showCancelButton: false,
   showConfirmButton: true
 }
