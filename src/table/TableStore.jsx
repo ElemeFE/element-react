@@ -10,9 +10,6 @@ import type {
   Column,
   _Column
 } from './Types';
-import {
-  deepCompare
-} from './utils'
 
 import normalizeColumns from './normalizeColumns';
 import { getLeafColumns, getValueByPath, getColumns, convertToRows, getRowIdentity } from "./utils";
@@ -128,7 +125,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     if (getColumns(this.props) !== nextColumns) {
       this.updateColumns(nextColumns);
     }
-    if (deepCompare(data,nextProps.data)){
+    if (data !== nextProps.data) {
       this.updateData(nextProps);
     }
   }

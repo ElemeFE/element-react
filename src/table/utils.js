@@ -124,42 +124,26 @@ export function convertToRows(columns: Array<_Column>): Array<Array<_Column>> {
   return rows;
 }
 
-const isObject = (obj: Object): boolean => {
-  return Object.prototype.toString.call(obj) === '[object Object]'
-}
+const checkType = (data: any): string => Object.prototype.toString.call(data).toLowerCase().slice(8, -1);
 const deepCompare = (obj1: any, obj2: any): boolean => {
-  if (obj1 && obj2 && obj1.length !== obj2.length) {
-    return true
-  } else if (Array.isArray(obj1) && Array.isArray(obj2)) {
-    const firstOBJ = obj1.length;
-    const sectionOBJ = obj2.length;
-    if (firstOBJ !== sectionOBJ) {
-      return true
-    } else if (firstOBJ === 0 && sectionOBJ === 0) {
-      return false
-    }
-    return obj1.every((value, key) => (
-      deepCompare(value, obj2[key])
-    ))
-  } else if (isObject(obj1) && isObject(obj2)) {
-    const firstOBJ = Object.keys(obj1).length;
-    const sectionOBJ = Object.keys(obj2).length;
-    if (firstOBJ !== sectionOBJ) {
-      return true
-    } else if (firstOBJ === 0 && sectionOBJ === 0) {
-      return false
-    }
-    for (let key in obj1) {
-      if (deepCompare(obj1[key], obj2[key])) {
+    const obj1Type = checkType(obj1);
+    const obj2Type = checkType(obj2);
+    if (obj1Type !== obj2Type ) {
         return false
-      }
+    } else if (obj1Type === 'array' && obj1.length === obj2.length) {
+        return obj1.every((value, key) => (
+            deepCompare(value, obj2[key])
+        ))
+    } else if (obj1Type === 'object') {
+        for (let key in obj1) {
+            if (!Object.keys(obj2).includes(key)) return false;
+            return deepCompare(obj1[key], obj2[key])
+        }
+        return false
     }
-    return true
-  }
-  return !Object(obj1,obj2)
+    return Object.is(obj1,obj2);
 }
-
 export {
   deepCompare,
-  isObject
+  checkType,
 }
