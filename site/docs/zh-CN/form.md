@@ -381,7 +381,7 @@ constructor(props) {
           } else {
             callback();
           }
-        } }
+        } , trigger: 'blur'}
       ],
       age: [
         { required: true, message: '请填写年龄', trigger: 'blur' },

@@ -75,9 +75,10 @@ export default class FormItem extends Component {
 
       return;
     }
-
+    
     setTimeout(() => {
       this.validate('change');
+      
     });
   }
 
@@ -152,8 +153,13 @@ export default class FormItem extends Component {
     const rules = this.getRules();
 
     return rules.filter(rule => {
-      return !rule.trigger || rule.trigger.indexOf(trigger) !== -1;
-    });
+      if (!rule.trigger || trigger === '') return true;
+      if (Array.isArray(rule.trigger)) {
+        return rule.trigger.indexOf(trigger) > -1;
+      } else {
+        return rule.trigger === trigger;
+      }
+    }).map(rule => Object.assign({}, rule));
   }
 
   labelStyle(): { width?: number | string } {
