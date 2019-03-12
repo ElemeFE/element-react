@@ -383,7 +383,7 @@ constructor(props) {
           } else {
             callback();
           }
-        } }
+        } , trigger: 'blur'}
       ],
       age: [
         { required: true, message: 'Please input the age', trigger: 'blur' },
