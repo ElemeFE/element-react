@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Component, PropTypes, Transition, View } from '../../libs';
+import { cleanScrollBar } from '../table/utils';
 import Button from '../button';
 import Input from '../input';
 import i18n from '../locale';
@@ -32,9 +33,8 @@ export default class MessageBox extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      visible: true
-    })
+    cleanScrollBar()
+    this.setState({ visible: true });
     document.activeElement && document.activeElement.blur()
   }
 
@@ -130,7 +130,9 @@ export default class MessageBox extends Component {
         <div style={{ position: 'absolute', zIndex: 2001 }}>
           <Transition
             name="msgbox-fade"
-            onAfterLeave={() => { willUnmount && willUnmount() }}
+            onAfterLeave={() => {
+              willUnmount && willUnmount()
+            }}
           >
             <View show={visible}>
               <div className={this.classNames('el-message-box__wrapper', customClass)}>
@@ -141,7 +143,8 @@ export default class MessageBox extends Component {
                         <div className="el-message-box__title">{title}</div>
                         {
                           showClose && (
-                            <button type="button" className="el-message-box__headerbtn" aria-label="Close" onClick={this.handleAction.bind(this, 'cancel')}>
+                            <button type="button" className="el-message-box__headerbtn" aria-label="Close"
+                                    onClick={this.handleAction.bind(this, 'cancel')}>
                               <i className="el-message-box__close el-icon-close" />
                             </button>
                           )
@@ -153,7 +156,8 @@ export default class MessageBox extends Component {
                     message && (
                       <div className="el-message-box__content">
                         <div className={this.classNames('el-message-box__status', this.typeClass())} />
-                        <div className="el-message-box__message" style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
+                        <div className="el-message-box__message"
+                             style={{ marginLeft: this.typeClass() ? '50px' : '0' }}>
                           <div>{message}</div>
                         </div>
                         <View show={showInput}>
@@ -177,10 +181,12 @@ export default class MessageBox extends Component {
                   }
                   <div className="el-message-box__btns">
                     <View show={showCancelButton}>
-                      <Button className={cancelButtonClass} onClick={this.handleAction.bind(this, 'cancel')}>{this.cancelButtonText()}</Button>
+                      <Button className={cancelButtonClass}
+                              onClick={this.handleAction.bind(this, 'cancel')}>{this.cancelButtonText()}</Button>
                     </View>
                     <View show={showConfirmButton}>
-                      <Button className={this.classNames('el-button--primary', confirmButtonClass)} onClick={this.handleAction.bind(this, 'confirm')}>{this.confirmButtonText()}</Button>
+                      <Button className={this.classNames('el-button--primary', confirmButtonClass)}
+                              onClick={this.handleAction.bind(this, 'confirm')}>{this.confirmButtonText()}</Button>
                     </View>
                   </div>
                 </div>

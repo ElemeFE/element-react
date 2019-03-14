@@ -6,6 +6,15 @@ const _document = (document: any);
 
 let scrollBarWidth: ?number;
 
+export const cleanScrollBar = () => {
+  document.querySelectorAll('.el-table__body-wrapper').forEach(el => {
+    setTimeout(() => {
+      el.style.overflow = 'hidden';
+      setTimeout(() => el.style.overflow = 'auto');
+    });
+  });
+};
+
 export function getScrollBarWidth(): ?number {
   if (scrollBarWidth !== undefined) return scrollBarWidth;
   const dom = _document.createElement('div');
@@ -134,7 +143,7 @@ const deepCompare = (obj1: any, obj2: any): boolean => {
   if (obj1 && obj2 && obj1.length !== obj2.length) {
     return true
   } else if (isArray(obj1) && isArray(obj2)) {
-    return obj1.some((value,key) => (
+    return obj1.some((value, key) => (
       deepCompare(value, obj2[key])
     ))
   } else if (isObject(obj1) && isObject(obj2)) {
