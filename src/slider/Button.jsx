@@ -74,27 +74,28 @@ export default class SliderButton extends Component {
   }
 
   onDragging(event: SyntheticMouseEvent<any>) {
-    if (this.state.dragging) {
-      this.state.currentX = event.clientX;
-      this.state.currentY = event.clientY;
-
-      let diff;
-
-      if (this.props.vertical) {
-        diff = (this.state.startY - this.state.currentY) / this.parent().sliderSize() * 100;
-      } else {
-        diff = (this.state.currentX - this.state.startX) / this.parent().sliderSize() * 100;
-      }
-
-      this.state.newPosition = this.state.startPosition + diff;
-
-      this.setPosition(this.state.newPosition);
-      this.forceUpdate();
+    const { dragging, startY, currentY, currentX, startX, startPosition, newPosition } = this.state;
+    const { vertical } = this.props;
+    if (dragging) {
+      this.setState({
+        currentX: event.clientX,
+        currentY: event.clientY,
+      }, () => {
+        let diff;
+        if (vertical) {
+          diff = (startY - currentY) / this.parent().sliderSize() * 100;
+        } else {
+          diff = (currentX - startX) / this.parent().sliderSize() * 100;
+        }
+        this.state.newPosition = startPosition + diff;
+        this.setPosition(newPosition);
+      });
     }
   }
 
   onDragEnd() {
-    if (this.state.dragging) {
+    const { dragging, newPosition } = this.state;
+    if (dragging) {
       /*
        * 防止在 mouseup 后立即触发 click，导致滑块有几率产生一小段位移
        * 不使用 preventDefault 是因为 mouseup 和 click 没有注册在同一个 DOM 上
@@ -103,7 +104,7 @@ export default class SliderButton extends Component {
         this.setState({
           dragging: false
         }, () => {
-          this.setPosition(this.state.newPosition);
+          this.setPosition(newPosition);
         });
       }, 0);
 
@@ -160,7 +161,7 @@ export default class SliderButton extends Component {
   }
 
   currentPosition(): string {
-    return `${ (this.props.value - this.min()) / (this.max() - this.min()) * 100 }%`;
+    return `${(this.props.value - this.min()) / (this.max() - this.min()) * 100}%`;
   }
 
   wrapperStyle(): Object {
@@ -172,7 +173,6 @@ export default class SliderButton extends Component {
 
     return (
       <div
-        ref="button"
         className={this.classNames('el-slider__button-wrapper', {
           'hover': hovering,
           'dragging': dragging
@@ -181,12 +181,17 @@ export default class SliderButton extends Component {
         onMouseEnter={this.handleMouseEnter.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
         onMouseDown={this.onButtonDown.bind(this)}>
-        <Tooltip ref="tooltip" placement="top" content={<span>{this.formatValue()}</span>}
-                 disabled={!this.parent().props.showTooltip}>
-          <div className={this.classNames('el-slider__button', {
-            'hover': this.state.hovering,
-            'dragging': this.state.dragging
-          })}></div>
+        <Tooltip
+          placement="top"
+          content={<span>{this.formatValue()}</span>}
+          disabled={!this.parent().props.showTooltip}
+        >
+          <div
+            className={this.classNames('el-slider__button', {
+              'hover': hovering,
+              'dragging': dragging
+            })}
+          />
         </Tooltip>
       </div>
     )
