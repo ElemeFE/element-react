@@ -23,7 +23,7 @@ export default class YearTable extends Component {
     return style;
   }
 
-  handleYearTableClick(event: SyntheticMouseEvent) {
+  handleYearTableClick(event: SyntheticMouseEvent<any>) {
     const target: any = event.target;
     if (target.tagName === 'A') {
       if (hasClass(target.parentNode, 'disabled')) return;

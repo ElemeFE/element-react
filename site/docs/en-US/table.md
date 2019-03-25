@@ -925,17 +925,36 @@ constructor(props) {
   }
 }
 
+toggleSelection(rows) {
+  if (rows) {
+    rows.forEach(row => {
+      this.refs.multipleTable.toggleRowSelection(row);
+    });
+  } else {
+    this.refs.multipleTable.clearSelection();
+  }
+}
+
 render() {
+  const { columns, data } = this.state;
+
   return (
-    <Table
-      style={{width: '100%'}}
-      columns={this.state.columns}
-      data={this.state.data}
-      border={true}
-      height={250}
-      onSelectChange={(selection) => { console.log(selection) }}
-      onSelectAll={(selection) => { console.log(selection) }}
-    />
+    <div>
+      <Table
+        ref="multipleTable"
+        style={{width: '100%'}}
+        columns={columns}
+        data={data}
+        border={true}
+        height={250}
+        onSelectChange={(selection) => { console.log(selection) }}
+        onSelectAll={(selection) => { console.log(selection) }}
+      />
+      <div style={{marginTop: '20px'}}>
+        <Button onClick={() => this.toggleSelection([ data[1], data[2] ])}>Toggle selection status of second and third rows</Button>
+        <Button onClick={() => this.toggleSelection()}>Clear selection</Button>
+      </div>
+    </div>
   )
 }
 ```

@@ -1,11 +1,11 @@
 /* @flow */
 
-import React from 'react';
-import { Component, PropTypes } from '../../libs'
+import React from "react";
+import { Component, PropTypes } from "../../libs";
 
 type State = {
-  options: Array<string>,
-}
+  options: Array<string | number>
+};
 
 export default class CheckboxGroup extends Component {
   state: State;
@@ -32,7 +32,7 @@ export default class CheckboxGroup extends Component {
     };
   }
 
-  onChange(value: string, checked: boolean): void {
+  onChange(value: string | number, checked: boolean): void {
     const index = this.state.options.indexOf(value);
 
     if (checked) {
@@ -50,7 +50,7 @@ export default class CheckboxGroup extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { options } = this.state;
 
     const children = React.Children.map(this.props.children, (child, index) => {
@@ -60,7 +60,7 @@ export default class CheckboxGroup extends Component {
 
       const { elementType } = child.type;
       // 过滤非Checkbox和CheckboxButton的子组件
-      if (elementType !== 'Checkbox' && elementType !== 'CheckboxButton') {
+      if (elementType !== "Checkbox" && elementType !== "CheckboxButton") {
         return null;
       }
 
@@ -68,17 +68,27 @@ export default class CheckboxGroup extends Component {
         child,
         Object.assign({}, child.props, {
           key: index,
-          checked: child.props.checked || options.indexOf(child.props.value) >= 0 || options.indexOf(child.props.label) >= 0 ,
-          onChange: this.onChange.bind(this, child.props.value || child.props.label),
-        }),
+          checked:
+            child.props.checked ||
+            options.indexOf(child.props.value) >= 0 ||
+            options.indexOf(child.props.label) >= 0,
+          onChange: this.onChange.bind(
+            this,
+            child.props.value
+              ? child.props.value
+              : child.props.value === 0
+              ? 0
+              : child.props.label
+          )
+        })
       );
     });
 
     return (
-      <div style={this.style()} className={this.className('el-checkbox-group')}>
+      <div style={this.style()} className={this.className("el-checkbox-group")}>
         {children}
       </div>
-    )
+    );
   }
 }
 
@@ -93,5 +103,5 @@ CheckboxGroup.propTypes = {
   fill: PropTypes.string,
   textColor: PropTypes.string,
   value: PropTypes.any,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func
 };

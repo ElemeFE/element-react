@@ -93,7 +93,7 @@ class Dropdown extends Component {
     }
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { splitButton, type, size, menu } = this.props;
 
     return (

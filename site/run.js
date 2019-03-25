@@ -54,7 +54,8 @@ new WebpackDevServer(webpack({
         loader : 'raw-loader'
       }
     ]
-  }
+  },
+  mode: 'development'
 }), {
   publicPath: '/',
   hot: true,

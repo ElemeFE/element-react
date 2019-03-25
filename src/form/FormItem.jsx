@@ -197,7 +197,7 @@ export default class FormItem extends Component {
     return temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
   }
 
-  render(): React.Element<any> {
+  render(): React.DOM {
     const { error, validating } = this.state;
     const { label, required } = this.props;
 
@@ -210,7 +210,11 @@ export default class FormItem extends Component {
         {
           label && (
             <label className="el-form-item__label" style={this.labelStyle()}>
-              {label + this.parent().props.labelSuffix}
+              {
+                typeof(label) === 'string'? 
+                label + this.parent().props.labelSuffix :
+                label
+              }
             </label>
           )
         }
@@ -234,7 +238,7 @@ FormItem.childContextTypes = {
 };
 
 FormItem.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   prop: PropTypes.string,
   required: PropTypes.bool,
