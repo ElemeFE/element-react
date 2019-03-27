@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Component, View, Transition, PropTypes } from '../../libs';
+import { cleanScrollBar } from '../table/utils';
 
 type State = {
   bodyOverflow: string,
@@ -24,17 +25,19 @@ export default class Dialog extends Component {
 
   constructor(props: Object) {
     super(props);
-
+    this.wrap = React.createRef();
     this.state = {
       bodyOverflow: ''
     }
   }
 
   componentWillReceiveProps(nextProps: Object): void {
-
+    const { bodyOverflow } = this.state;
+    const { lockScroll, modal } = this.props;
     if (this.willOpen(this.props, nextProps)) {
-      if (this.props.lockScroll && document.body && document.body.style) {
-        if (!this.state.bodyOverflow) {
+      cleanScrollBar();
+      if (lockScroll && document.body && document.body.style) {
+        if (!bodyOverflow) {
           this.setState({
             bodyOverflow: document.body.style.overflow
           });
@@ -43,9 +46,9 @@ export default class Dialog extends Component {
       }
     }
 
-    if (this.willClose(this.props, nextProps) && this.props.lockScroll) {
-      if (this.props.modal && this.state.bodyOverflow !== 'hidden' && document.body && document.body.style) {
-        document.body.style.overflow = this.state.bodyOverflow;
+    if (this.willClose(this.props, nextProps) && lockScroll) {
+      if (modal && bodyOverflow !== 'hidden' && document.body && document.body.style) {
+        document.body.style.overflow = bodyOverflow;
       }
     }
 
@@ -53,25 +56,28 @@ export default class Dialog extends Component {
 
   componentDidUpdate(prevProps: Object): void {
     if (this.willOpen(prevProps, this.props)) {
-      this.refs.wrap.focus();
+      this.wrap.current.focus();
     }
   }
 
   componentWillUnmount(): void {
-    if (this.props.lockScroll && document.body && document.body.style) {
+    const { lockScroll } = this.props;
+    if (lockScroll && document.body && document.body.style) {
       document.body.style.removeProperty('overflow');
     }
   }
 
   onKeyDown(e: SyntheticKeyboardEvent<any>): void {
-    if (this.props.closeOnPressEscape && e.keyCode === 27) {
+    const { closeOnPressEscape } = this.props;
+    if (closeOnPressEscape && e.keyCode === 27) {
       this.close(e);
     }
   }
 
   handleWrapperClick(e: SyntheticEvent<HTMLDivElement>): void {
+    const { closeOnClickModal } = this.props;
     if (e.target instanceof HTMLDivElement) {
-      if (this.props.closeOnClickModal && e.target === e.currentTarget) {
+      if (closeOnClickModal && e.target === e.currentTarget) {
         this.close(e);
       }
     }
@@ -90,14 +96,14 @@ export default class Dialog extends Component {
   }
 
   render(): React.DOM {
-    const { visible, title, size, top, modal, customClass, showClose } = this.props;
+    const { visible, title, size, top, modal, customClass, showClose, children } = this.props;
 
     return (
       <div>
         <Transition name="dialog-fade">
           <View show={visible}>
             <div
-              ref="wrap"
+              ref={this.wrap}
               style={{ zIndex: 1013 }}
               className={this.classNames('el-dialog__wrapper')}
               onClick={e => this.handleWrapperClick(e)}
@@ -118,7 +124,7 @@ export default class Dialog extends Component {
                     )
                   }
                 </div>
-                {this.props.children}
+                {children}
               </div>
             </div>
           </View>
@@ -126,7 +132,7 @@ export default class Dialog extends Component {
         {
           modal && (
             <View show={visible}>
-              <div className="v-modal" style={{ zIndex: 1012 }}></div>
+              <div className="v-modal" style={{ zIndex: 1012 }} />
             </View>
           )
         }
