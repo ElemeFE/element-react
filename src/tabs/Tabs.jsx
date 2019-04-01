@@ -370,5 +370,5 @@ Tabs.propTypes = {
 Tabs.defaultProps = {
   closable: false,
   addable: false,
-  edidable: false,
+  editable: false,
 }
