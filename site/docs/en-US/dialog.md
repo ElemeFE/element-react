@@ -27,6 +27,10 @@ render() {
         visible={ this.state.dialogVisible }
         onCancel={ () => this.setState({ dialogVisible: false }) }
         lockScroll={ false }
+        onOpen={() => console.log('onOpen')}
+        onOpened={() => console.log('onOpened')}
+        onClose={() => console.log('onClose')}
+        onClosed={() => console.log('onClosed')}
       >
         <Dialog.Body>
           <span>This is a message</span>
@@ -168,3 +172,5 @@ render() {
 |---------- |-------- |---------- |
 | onOpen | triggers when the Dialog opens | — |
 | onClose | triggers when the Dialog closes | — |
+| onOpened  | triggers when the Dialog opened | — |
+| onClosed  | triggers when the Dialog closed | — |

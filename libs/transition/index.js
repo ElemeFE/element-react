@@ -17,6 +17,8 @@ export default class Transition extends Component {
       children: children && this.enhanceChildren(children)
     }
 
+    this.startEnter = this.startEnter.bind(this);
+    this.startLeave = this.startLeave.bind(this);
     this.didEnter = this.didEnter.bind(this);
     this.didLeave = this.didLeave.bind(this);
   }
@@ -112,6 +114,27 @@ export default class Transition extends Component {
     element.classList.remove(action, active);
   }
 
+  // Hook: Enter animation actually started
+  // For: ensure childDOM has real height
+  startEnter(e) {
+    const childDOM = ReactDOM.findDOMNode(this.el);
+
+    if (!e || e.target !== childDOM) return;
+
+    const { onStartEnter } = this.props;
+    onStartEnter && onStartEnter();
+  }
+
+  // Hook: Leave animation actually started
+  startLeave(e) {
+    const childDOM = ReactDOM.findDOMNode(this.el);
+
+    if (!e || e.target !== childDOM) return;
+
+    const { onStartLeave } = this.props;
+    onStartLeave && onStartLeave();
+  }
+
   didEnter(e) {
     const childDOM = ReactDOM.findDOMNode(this.el);
 
@@ -150,7 +173,7 @@ export default class Transition extends Component {
         this.setState({ children: null }, resolve);
       }
     }).then(() => {
-      onAfterLeave && onAfterLeave()
+      onAfterLeave && onAfterLeave();
     })
   }
 
@@ -159,8 +182,12 @@ export default class Transition extends Component {
     const { enter, enterActive, enterTo, leaveActive, leaveTo } = this.transitionClass;
     const childDOM = ReactDOM.findDOMNode(this.el);
 
+    childDOM.addEventListener('transitionstart', this.startEnter);
+    childDOM.addEventListener('animationstart', this.startEnter);
     childDOM.addEventListener('transitionend', this.didEnter);
     childDOM.addEventListener('animationend', this.didEnter);
+    childDOM.removeEventListener('transitionstart', this.startLeave);
+    childDOM.removeEventListener('animationstart', this.startLeave);
 
     // this.animateElement(childDOM, enter, enterActive, this.didEnter);
 
@@ -181,8 +208,8 @@ export default class Transition extends Component {
       requestAnimationFrame(() => {
         childDOM.classList.remove(enter);
         childDOM.classList.add(enterTo);
-      })
-    })
+      });
+    });
   }
 
   toggleHidden() {
@@ -190,8 +217,12 @@ export default class Transition extends Component {
     const { leave, leaveActive, leaveTo, enterActive, enterTo } = this.transitionClass;
     const childDOM = ReactDOM.findDOMNode(this.el);
 
+    childDOM.addEventListener('transitionstart', this.startLeave);
+    childDOM.addEventListener('animationstart', this.startLeave);
     childDOM.addEventListener('transitionend', this.didLeave);
     childDOM.addEventListener('animationend', this.didLeave);
+    childDOM.removeEventListener('transitionstart', this.startEnter);
+    childDOM.removeEventListener('animationstart', this.startEnter);
 
     // this.animateElement(childDOM, leave, leaveActive, this.didLeave);
 
@@ -211,8 +242,8 @@ export default class Transition extends Component {
       requestAnimationFrame(() => {
         childDOM.classList.remove(leave);
         childDOM.classList.add(leaveTo);
-      })
-    })
+      });
+    });
   }
 
   render() {
@@ -223,7 +254,9 @@ export default class Transition extends Component {
 Transition.propTypes = {
   name: PropTypes.string,
   onEnter: PropTypes.func, // triggered when enter transition start
+  onStartEnter: PropTypes.func, // triggered once when enter transition started but not stop
   onAfterEnter: PropTypes.func, // triggered when enter transition end
   onLeave: PropTypes.func, // triggered when leave transition start
-  onAfterLeave: PropTypes.func // tiggered when leave transition end
+  onAfterLeave: PropTypes.func, // tiggered when leave transition end
+  onStartLeave: PropTypes.func // triggered once when leave transition started but not stop
 };

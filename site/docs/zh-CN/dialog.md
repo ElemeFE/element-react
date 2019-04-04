@@ -26,6 +26,10 @@ render() {
         visible={ this.state.dialogVisible }
         onCancel={ () => this.setState({ dialogVisible: false }) }
         lockScroll={ false }
+        onOpen={() => console.log('onOpen')}
+        onOpened={() => console.log('onOpened')}
+        onClose={() => console.log('onClose')}
+        onClosed={() => console.log('onClosed')}
       >
         <Dialog.Body>
           <span>这是一段信息</span>
@@ -161,5 +165,7 @@ render() {
 ### Events
 | 事件名称      | 说明    | 回调参数      |
 |---------- |-------- |---------- |
-| onClose  | Dialog 关闭的回调 | — |
 | onOpen  | Dialog 打开的回调 | — |
+| onClose  | Dialog 关闭的回调 | — |
+| onOpened  | Dialog 打开后的回调 | — |
+| onClosed  | Dialog 关闭后的回调 | — |

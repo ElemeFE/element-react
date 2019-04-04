@@ -6,6 +6,7 @@ import { cleanScrollBar } from '../table/utils';
 
 type State = {
   bodyOverflow: string,
+  isRenderChildren: boolean
 }
 
 export default class Dialog extends Component {
@@ -27,7 +28,8 @@ export default class Dialog extends Component {
     super(props);
     this.wrap = React.createRef();
     this.state = {
-      bodyOverflow: ''
+      bodyOverflow: '',
+      isRenderChildren: false
     }
   }
 
@@ -84,7 +86,8 @@ export default class Dialog extends Component {
   }
 
   close(e: any): void {
-    this.props.onCancel(e);
+    const { onCancel } = this.props;
+    onCancel && onCancel(e);
   }
 
   willOpen(prevProps: Object, nextProps: Object): boolean {
@@ -95,12 +98,47 @@ export default class Dialog extends Component {
     return (prevProps.visible && !nextProps.visible);
   }
 
+  toggleRenderChildren(isRenderChildren: boolean) {
+    this.setState({ isRenderChildren });
+  }
+
+  onOpen(e: any): void {
+    const { onOpen } = this.props;
+
+    onOpen && onOpen(e);
+    this.toggleRenderChildren(true);
+  }
+
+  onClose(e: any): void {
+    const { onClose } = this.props;
+    onClose && onClose(e);
+  }
+
+  onOpened(e: any): void {
+    const { onOpened } = this.props;
+    onOpened && onOpened(e);
+  }
+
+  onClosed(e: any): void {
+    const { onClosed } = this.props;
+
+    onClosed && onClosed(e);
+    this.toggleRenderChildren(false);
+  }
+
   render(): React.DOM {
     const { visible, title, size, top, modal, customClass, showClose, children } = this.props;
+    const { isRenderChildren } = this.state;
 
     return (
       <div>
-        <Transition name="dialog-fade">
+        <Transition
+          name="dialog-fade"
+          onStartEnter={this.onOpen.bind(this)}
+          onStartLeave={this.onClose.bind(this)}
+          onAfterEnter={this.onOpened.bind(this)}
+          onAfterLeave={this.onClosed.bind(this)}
+        >
           <View show={visible}>
             <div
               ref={this.wrap}
@@ -124,7 +162,7 @@ export default class Dialog extends Component {
                     )
                   }
                 </div>
-                {children}
+                {isRenderChildren && children}
               </div>
             </div>
           </View>
@@ -143,7 +181,7 @@ export default class Dialog extends Component {
 
 Dialog.propTypes = {
   // 控制对话框是否可见
-  visible: PropTypes.bool.isRequired,
+  visible: PropTypes.bool,
   // 标题
   title: PropTypes.string,
   // 大小 (tiny/small/large/full)
@@ -162,5 +200,9 @@ Dialog.propTypes = {
   closeOnPressEscape: PropTypes.bool,
   // 点击遮罩层或右上角叉或取消按钮的回调
   onCancel: PropTypes.func.isRequired,
-  showClose: PropTypes.bool
+  showClose: PropTypes.bool,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func,
+  onOpened: PropTypes.func,
+  onClosed: PropTypes.func
 };
