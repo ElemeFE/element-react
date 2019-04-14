@@ -14,7 +14,7 @@ import type {
 
 export default class Table extends Component<TableProps, TableState> {
   static contextTypes = {
-    store: PropTypes.any,
+    tableStore: PropTypes.any,
     layout: PropTypes.any,
   };
 
@@ -105,7 +105,7 @@ export default class Table extends Component<TableProps, TableState> {
   }
 
   render() {
-    const { store, layout, ...props } = this.props;
+    const { tableStoreState, layout, ...props } = this.props;
     const { isHidden } = this.state;
 
     return (
@@ -120,8 +120,8 @@ export default class Table extends Component<TableProps, TableState> {
           'el-table--border': props.border,
           'el-table--hidden': isHidden,
           'el-table--fluid-height': props.maxHeight,
-          'el-table--enable-row-hover': !store.isComplex,
-          'el-table--enable-row-transition': (store.data || []).length && (store.data || []).length < 100
+          'el-table--enable-row-hover': !tableStoreState.isComplex,
+          'el-table--enable-row-transition': (tableStoreState.data || []).length && (tableStoreState.data || []).length < 100
         })}
         ref={this.bindRef('el')}
       >
@@ -164,7 +164,7 @@ export default class Table extends Component<TableProps, TableState> {
             />
           </div>
         )}
-        {!!store.fixedColumns.length && (
+        {!!tableStoreState.fixedColumns.length && (
           <div
             style={Object.assign({}, this.fixedHeight, {
               width: layout.fixedWidth || ''
@@ -205,7 +205,7 @@ export default class Table extends Component<TableProps, TableState> {
             )}
           </div>
         )}
-        {!!store.rightFixedColumns.length && (
+        {!!tableStoreState.rightFixedColumns.length && (
           <div
             className="el-table__fixed-right"
             ref={this.bindRef('rightFixedWrapper')}
@@ -251,7 +251,7 @@ export default class Table extends Component<TableProps, TableState> {
             )}
           </div>
         )}
-        {!!store.rightFixedColumns.length && (
+        {!!tableStoreState.rightFixedColumns.length && (
           <div
             className="el-table__fixed-right-patch"
             style={{ width: layout.scrollY ? layout.gutterWidth : '0', height: layout.headerHeight }}

@@ -34,7 +34,7 @@ function inChina() {
     fetch('//restapi.amap.com/v3/ip?output=JSON&key=53a87f7c6a6d173be31d4123958ad5c2')
       .then(res => res.json())
       .then(({ city }) => {
-        if (city || typeof city === 'string') {
+        if (city && typeof city === 'string') {
           inChinaConfirm();
         }
       })

@@ -73,12 +73,12 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
   };
 
   static childContextTypes = {
-    store: PropTypes.any,
+    tableStore: PropTypes.any,
   };
 
   getChildContext(): Object {
     return {
-      store: this,
+      tableStore: this,
     }
   }
 
@@ -448,7 +448,7 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       <TableLayout
         {...this.props}
         renderExpanded={renderExpanded}
-        store={this.state}
+        tableStoreState={this.state}
       />
     )
   }
