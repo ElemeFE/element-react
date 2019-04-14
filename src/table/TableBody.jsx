@@ -203,7 +203,7 @@ export default class TableBody extends Component<TableBodyProps> {
             ), this.context.tableStore.isRowExpanding(row, rowKey) && (
               <tr key={`${rowKey}Expanded`}>
                 <td
-                  colSpan={store.columns.length}
+                  colSpan={tableStoreState.columns.length}
                   className="el-table__expanded-cell"
                 >
                   {typeof props.renderExpanded === 'function' && props.renderExpanded(row, rowIndex)}
