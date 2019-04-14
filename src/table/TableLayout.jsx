@@ -104,7 +104,7 @@ export default class TableLayout extends Component<TableLayoutProps, TableLayout
 
   // horizontal direction layout
   caculateWidth(): Object {
-    const { store: { columns, fixedColumns, rightFixedColumns }, fit } = this.props;
+    const { tableStoreState: { columns, fixedColumns, rightFixedColumns }, fit } = this.props;
     const { gutterWidth } = this.state;
     const bodyMinWidth = columns.reduce((pre, col) => pre + (col.width || col.minWidth), 0);
 

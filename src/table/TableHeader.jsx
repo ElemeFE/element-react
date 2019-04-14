@@ -14,7 +14,7 @@ const _document = (document: any);
 
 export default class TableHeader extends Component<TableHeaderProps> {
   static contextTypes = {
-    store: PropTypes.any,
+    tableStore: PropTypes.any,
     layout: PropTypes.any,
     table: PropTypes.any,
   };
@@ -28,15 +28,15 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   get columnsCount(): number {
-    return this.props.store.columns.length;
+    return this.props.tableStoreState.columns.length;
   }
 
   get leftFixedCount(): number {
-    return this.props.store.fixedColumns.length;
+    return this.props.tableStoreState.fixedColumns.length;
   }
 
   get rightFixedCount(): number {
-    return this.props.store.rightFixedColumns.length;
+    return this.props.tableStoreState.rightFixedColumns.length;
   }
 
   handleMouseMove(column: _Column, event: SyntheticMouseEvent<HTMLTableCellElement>) {
@@ -152,7 +152,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
     if (givenOrder) {
       order = givenOrder;
     } else {
-      const { sortColumn, sortOrder } = this.props.store;
+      const { sortColumn, sortOrder } = this.props.tableStoreState;
       if (column === sortColumn) {
         if (!sortOrder) {
           order = 'ascending';
@@ -163,7 +163,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
         order = 'ascending';
       }
     }
-    this.context.store.changeSortCondition(column, order);
+    this.context.tableStore.changeSortCondition(column, order);
 
     this.dispatchEvent('onHeaderClick', column, event)
   }
@@ -174,7 +174,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
       event.nativeEvent.stopImmediatePropagation();
     }
 
-    this.context.store.toggleFilterOpened(column);
+    this.context.tableStore.toggleFilterOpened(column);
 
     event && this.dispatchEvent('onHeaderClick', column, event)
   }
@@ -185,7 +185,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   changeFilteredValue(column: _Column, value: any) {
-    this.context.store.changeFilteredValue(column, value);
+    this.context.tableStore.changeFilteredValue(column, value);
   }
 
   isCellHidden(index: number, columns: Array<_Column>): boolean {
@@ -216,8 +216,8 @@ export default class TableHeader extends Component<TableHeaderProps> {
     if (type === 'selection') {
       return (
         <Checkbox
-          checked={this.context.store.isAllSelected}
-          onChange={this.context.store.toggleAllSelection}
+          checked={this.context.tableStore.isAllSelected}
+          onChange={this.context.tableStore.toggleAllSelection}
         />
       );
     }
@@ -226,7 +226,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
   }
 
   render() {
-    const { store, layout, fixed } = this.props;
+    const { tableStoreState, layout, fixed } = this.props;
 
     return (
       <table
@@ -239,7 +239,7 @@ export default class TableHeader extends Component<TableHeaderProps> {
         })}
       >
         <colgroup>
-          {store.columns.map((column, index) => (
+          {tableStoreState.columns.map((column, index) => (
             <col width={column.realWidth} style={{ width: column.realWidth }} key={index} />
           ))}
           {!fixed && (
@@ -247,14 +247,14 @@ export default class TableHeader extends Component<TableHeaderProps> {
           )}
         </colgroup>
         <thead>
-          {store.columnRows.map((columns, rowIndex) => (
+          {tableStoreState.columnRows.map((columns, rowIndex) => (
             <tr key={rowIndex}>
               {columns.map((column, cellIndex) => (
                 <th
                   colSpan={column.colSpan}
                   rowSpan={column.rowSpan}
                   className={this.className(
-                    store.sortColumn === column && store.sortOrder,
+                    tableStoreState.sortColumn === column && tableStoreState.sortOrder,
                     column.headerAlign,
                     column.className,
                     column.labelClassName,

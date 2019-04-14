@@ -6,7 +6,6 @@ import Checkbox from '../checkbox';
 import Tag from '../tag';
 
 import type { TableFooterProps, _Column } from "./Types";
-// import {toDate} from "../date-picker/utils/index";
 
 export default class TableFooter extends Component<TableFooterProps> {
   isCellHidden(index: number, columns: Array<_Column>): boolean {
@@ -25,24 +24,24 @@ export default class TableFooter extends Component<TableFooterProps> {
   }
 
   get columnsCount(): number {
-    return this.props.store.columns.length;
+    return this.props.tableStoreState.columns.length;
   }
 
   get leftFixedCount(): number {
-    return this.props.store.fixedColumns.length;
+    return this.props.tableStoreState.fixedColumns.length;
   }
 
   get rightFixedCount(): number {
-    return this.props.store.rightFixedColumns.length;
+    return this.props.tableStoreState.rightFixedColumns.length;
   }
 
   render() {
-    const { store, layout, fixed, summaryMethod, sumText } = this.props;
-    const sums = summaryMethod ? summaryMethod(store.columns, store.data) : store.columns.map((column, index) => {
+    const { tableStoreState, layout, fixed, summaryMethod, sumText } = this.props;
+    const sums = summaryMethod ? summaryMethod(tableStoreState.columns, tableStoreState.data) : tableStoreState.columns.map((column, index) => {
       if (index === 0) {
         return sumText;
       }
-      const result = store.data.reduce((pre, data) => pre + parseFloat(getValueByPath(data, column.property)), 0);
+      const result = tableStoreState.data.reduce((pre, data) => pre + parseFloat(getValueByPath(data, column.property)), 0);
       return isNaN(result) ? '' : result;
     });
 
@@ -57,7 +56,7 @@ export default class TableFooter extends Component<TableFooterProps> {
         })}
       >
         <colgroup>
-          {store.columns.map((column, index) => (
+          {tableStoreState.columns.map((column, index) => (
             <col width={column.realWidth} style={{ width: column.realWidth }} key={index} />
           ))}
           {!fixed && (
@@ -66,7 +65,7 @@ export default class TableFooter extends Component<TableFooterProps> {
         </colgroup>
         <tbody>
           <tr>
-            {store.columns.map((column, index) => (
+            {tableStoreState.columns.map((column, index) => (
               <td
                 key={index}
                 colSpan={column.colSpan}
@@ -77,7 +76,7 @@ export default class TableFooter extends Component<TableFooterProps> {
                   column.labelClassName,
                   column.columnKey,
                   {
-                    'is-hidden': this.isCellHidden(index, store.columns),
+                    'is-hidden': this.isCellHidden(index, tableStoreState.columns),
                     'is-leaf': !column.subColumns
                   }
                 )}

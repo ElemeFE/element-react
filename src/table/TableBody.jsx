@@ -11,7 +11,7 @@ import type {_Column, TableBodyProps} from "./Types";
 
 export default class TableBody extends Component<TableBodyProps> {
   static contextTypes = {
-    store: PropTypes.any,
+    tableStore: PropTypes.any,
     layout: PropTypes.any,
   };
 
@@ -23,11 +23,11 @@ export default class TableBody extends Component<TableBodyProps> {
   }
 
   handleMouseEnter(index: number) {
-    this.context.store.setHoverRow(index);
+    this.context.tableStore.setHoverRow(index);
   }
 
   handleMouseLeave() {
-    this.context.store.setHoverRow(null);
+    this.context.tableStore.setHoverRow(null);
   }
 
   handleCellMouseEnter(row: Object, column: _Column, event: SyntheticEvent<HTMLTableCellElement>) {
@@ -58,7 +58,7 @@ export default class TableBody extends Component<TableBodyProps> {
   }
 
   isColumnHidden(index: number): boolean {
-    const { store, layout, ...props } = this.props;
+    const { tableStoreState, layout, ...props } = this.props;
     if (props.fixed === true || props.fixed === 'left') {
       return index >= this.leftFixedCount;
     } else if (props.fixed === 'right') {
@@ -92,23 +92,23 @@ export default class TableBody extends Component<TableBodyProps> {
   // }
 
   get columnsCount(): number {
-    return this.props.store.columns.length;
+    return this.props.tableStoreState.columns.length;
   }
 
   get leftFixedCount(): number {
-    return this.props.store.fixedColumns.length;
+    return this.props.tableStoreState.fixedColumns.length;
   }
 
   get rightFixedCount(): number {
-    return this.props.store.rightFixedColumns.length;
+    return this.props.tableStoreState.rightFixedColumns.length;
   }
 
   handleExpandClick(row: Object, rowKey: string | number) {
-    this.context.store.toggleRowExpanded(row, rowKey);
+    this.context.tableStore.toggleRowExpanded(row, rowKey);
   }
 
   handleClick(row: Object) {
-    this.context.store.setCurrentRow(row);
+    this.context.tableStore.setCurrentRow(row);
   }
 
   renderCell(row: Object, column: _Column, index: number, rowKey: string | number): React.DOM {
@@ -117,7 +117,7 @@ export default class TableBody extends Component<TableBodyProps> {
       return (
         <div
           className={this.classNames('el-table__expand-icon ', {
-            'el-table__expand-icon--expanded': this.context.store.isRowExpanding(row, rowKey)
+            'el-table__expand-icon--expanded': this.context.tableStore.isRowExpanding(row, rowKey)
           })}
           onClick={this.handleExpandClick.bind(this, row, rowKey)}
         >
@@ -131,12 +131,12 @@ export default class TableBody extends Component<TableBodyProps> {
     }
 
     if (type === 'selection') {
-      const isSelected = this.context.store.isRowSelected(row, rowKey);
+      const isSelected = this.context.tableStore.isRowSelected(row, rowKey);
       return (
         <Checkbox
           checked={isSelected}
           disabled={selectable && !selectable(row, index)}
-          onChange={() => { this.context.store.toggleRowSelection(row, !isSelected); }}
+          onChange={() => { this.context.tableStore.toggleRowSelection(row, !isSelected); }}
         />
       )
     }
@@ -145,8 +145,8 @@ export default class TableBody extends Component<TableBodyProps> {
   }
 
   render() {
-    const { store, layout, ...props } = this.props;
-    const columnsHidden = store.columns.map((column, index) => this.isColumnHidden(index));
+    const { tableStoreState, layout, ...props } = this.props;
+    const columnsHidden = tableStoreState.columns.map((column, index) => this.isColumnHidden(index));
     return (
       <table
         className="el-table__body"
@@ -158,12 +158,12 @@ export default class TableBody extends Component<TableBodyProps> {
         })}
       >
         <colgroup>
-          {store.columns.map((column, index) => (
+          {tableStoreState.columns.map((column, index) => (
             <col width={column.realWidth} style={{ width: column.realWidth }} key={index} />
           ))}
         </colgroup>
         <tbody>
-          {store.data.map((row, rowIndex) => {
+          {tableStoreState.data.map((row, rowIndex) => {
             const rowKey = this.getKeyOfRow(row, rowIndex);
             return [(
               <tr
@@ -171,8 +171,8 @@ export default class TableBody extends Component<TableBodyProps> {
                 style={this.getRowStyle(row, rowIndex)}
                 className={this.className('el-table__row', {
                   'el-table__row--striped': props.stripe && rowIndex % 2 === 1,
-                  'hover-row': store.hoverRow === rowIndex,
-                  'current-row': props.highlightCurrentRow && (props.currentRowKey === rowKey || store.currentRow === row)
+                  'hover-row': tableStoreState.hoverRow === rowIndex,
+                  'current-row': props.highlightCurrentRow && (props.currentRowKey === rowKey || tableStoreState.currentRow === row)
                 }, typeof props.rowClassName === 'string'
                   ? props.rowClassName
                   : typeof props.rowClassName === 'function'
@@ -182,7 +182,7 @@ export default class TableBody extends Component<TableBodyProps> {
                 onClick={this.handleClick.bind(this, row)}
                 onContextMenu={this.handleRowContextMenu.bind(this, row)}
               >
-                {store.columns.map((column, cellIndex) => (
+                {tableStoreState.columns.map((column, cellIndex) => (
                   <td
                     key={cellIndex}
                     className={this.classNames(column.className, column.align, column.columnKey, {
@@ -200,7 +200,7 @@ export default class TableBody extends Component<TableBodyProps> {
                   <td className="gutter" />
                 )}
               </tr>
-            ), this.context.store.isRowExpanding(row, rowKey) && (
+            ), this.context.tableStore.isRowExpanding(row, rowKey) && (
               <tr key={`${rowKey}Expanded`}>
                 <td
                   colSpan={store.columns.length}
