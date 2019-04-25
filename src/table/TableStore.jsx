@@ -196,7 +196,8 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
     let { hoverRow, currentRow, selectedRows, expandingRows } = this.state;
     hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
     currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
-    if (this._isMounted && data !== this.props.data && columns[0] && !columns[0].reserveSelection) {
+    const [firstColumn = {}] = columns;
+    if (this._isMounted && data !== this.props.data && !firstColumn.reserveSelection) {
       selectedRows = [];
     } else {
       selectedRows = selectedRows && selectedRows.filter(row => data.includes(row)) || [];
@@ -304,24 +305,24 @@ export default class TableStore extends Component<TableStoreProps, TableStoreSta
       return;
     }
 
-    const selectedRows = this.state.selectedRows.slice();
-    const rowIndex = selectedRows.indexOf(row);
+    this.setState(state => {
+      const selectedRows = state.selectedRows.slice();
+      const rowIndex = selectedRows.indexOf(row);
 
-    if (isSelected !== undefined) {
-      if (isSelected) {
-        rowIndex === -1 && selectedRows.push(row);
+      if (isSelected !== undefined) {
+        if (isSelected) {
+          rowIndex === -1 && selectedRows.push(row);
+        } else {
+          rowIndex !== -1 && selectedRows.splice(rowIndex, 1);
+        }
       } else {
-        rowIndex !== -1 && selectedRows.splice(rowIndex, 1);
+        rowIndex === -1 ? selectedRows.push(row) : selectedRows.splice(rowIndex, 1)
       }
-    } else {
-      rowIndex === -1 ? selectedRows.push(row) : selectedRows.splice(rowIndex, 1)
-    }
 
-    this.setState({
-      selectedRows
+      return { selectedRows };
     }, () => {
-      this.dispatchEvent('onSelect', selectedRows, row);
-      this.dispatchEvent('onSelectChange', selectedRows);
+      this.dispatchEvent('onSelect', this.state.selectedRows, row);
+      this.dispatchEvent('onSelectChange', this.state.selectedRows);
     });
   }
 

@@ -20,7 +20,9 @@ export default class Slider extends Component {
 
   constructor(props: Object) {
     super(props);
-
+    this.slider = React.createRef();
+    this.button1 = React.createRef();
+    this.button2 = React.createRef();
     this.state = {
       firstValue: 0,
       secondValue: 0,
@@ -35,6 +37,17 @@ export default class Slider extends Component {
     return {
       component: this
     };
+  }
+
+  get initValue() {
+    const { value, min, max } = this.props;
+    let initValue = value;
+    if (typeof value !== 'number' || isNaN(value)) {
+      initValue = min;
+    } else {
+      initValue = Math.min(max, Math.max(min, value));
+    }
+    return initValue;
   }
 
   componentWillMount(): void {
@@ -52,12 +65,7 @@ export default class Slider extends Component {
 
       oldValue = [firstValue, secondValue];
     } else {
-      if (typeof value !== 'number' || isNaN(value)) {
-        firstValue = min;
-      } else {
-        firstValue = Math.min(max, Math.max(min, value));
-      }
-
+      firstValue = this.initValue;
       oldValue = firstValue;
     }
 
@@ -72,22 +80,21 @@ export default class Slider extends Component {
     this.setState({ firstValue, secondValue, oldValue, inputValue, precision });
   }
 
-  componentWillUpdate(props: Object, state: State): void {
-    if (props.min != this.props.min || props.max != this.props.max) {
+  componentWillUpdate(props: Object): void {
+    const { min, max, value, range } = this.props;
+    const { dragging } = this.state;
+    if (props.min != min || props.max != max) {
       this.setValues();
     }
 
-    if (props.value != this.props.value) {
+    if (props.value != value) {
       const { oldValue } = this.state;
 
-      if (this.state.dragging || Array.isArray(this.props.value) && Array.isArray(props.value) && Array.isArray(oldValue) && this.props.value.every((item, index) => item === oldValue[index])) {
+      if (dragging || Array.isArray(value) && Array.isArray(props.value) && Array.isArray(oldValue) && value.every((item, index) => item === oldValue[index])) {
         return;
-      } else if (!this.props.range && typeof props.value === 'number' && !isNaN(props.value)) {
-        this.setState({
-          firstValue: props.value
-        })
+      } else if (!range && typeof props.value === 'number' && !isNaN(props.value)) {
+        this.setState({ firstValue: props.value })
       }
-
       this.setValues();
     }
   }
@@ -95,13 +102,14 @@ export default class Slider extends Component {
   valueChanged(): boolean {
     const { range } = this.props;
     const { firstValue, oldValue } = this.state;
-
     if (range && Array.isArray(oldValue)) {
       return ![this.minValue(), this.maxValue()].every((item, index) => item === oldValue[index]);
     } else {
       return firstValue !== oldValue;
     }
   }
+
+
 
   setValues(): void {
     const { range, value, min, max } = this.props;
@@ -127,9 +135,9 @@ export default class Slider extends Component {
         }
       }
     } else if (!range && typeof value === 'number' && !isNaN(value)) {
-      if (value < min) {
+      if (this.initValue < min) {
         inputValue = min;
-      } else if (value > max) {
+      } else if (this.initValue > max) {
         inputValue = max;
       } else {
         inputValue = firstValue;
@@ -153,7 +161,7 @@ export default class Slider extends Component {
     const targetValue = min + percent * (max - min) / 100;
 
     if (!range) {
-      this.refs.button1.setPosition(percent);
+      this.button1.current.setPosition(percent);
       return;
     }
 
@@ -165,17 +173,18 @@ export default class Slider extends Component {
       button = firstValue > secondValue ? 'button1' : 'button2';
     }
 
-    this.refs[button].setPosition(percent);
+    this[button].current.setPosition(percent);
   }
 
   onSliderClick(event: SyntheticMouseEvent<HTMLDivElement>): void {
-    if (this.props.disabled || this.state.dragging) return;
+    const { disabled, dragging, vertical } = this.props;
+    if (disabled || dragging) return;
 
-    if (this.props.vertical) {
-      const sliderOffsetBottom = this.refs.slider.getBoundingClientRect().bottom;
+    if (vertical) {
+      const sliderOffsetBottom = this.slider.current.getBoundingClientRect().bottom;
       this.setPosition((sliderOffsetBottom - event.clientY) / this.sliderSize() * 100);
     } else {
-      const sliderOffsetLeft = this.refs.slider.getBoundingClientRect().left;
+      const sliderOffsetLeft = this.slider.current.getBoundingClientRect().left;
       this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderSize() * 100);
     }
 
@@ -184,9 +193,8 @@ export default class Slider extends Component {
 
   /* Watched Methods */
   onValueChanged(val: number | Array<number>): void {
-    if (this.props.onChange) {
-      this.props.onChange(val);
-    }
+    const { onChange } = this.props;
+    if (onChange) onChange(val);
   }
 
   onInputValueChanged(e: number): void {
@@ -198,26 +206,25 @@ export default class Slider extends Component {
     });
   }
 
-  onFirstValueChange(e: number): void {
-    if (this.state.firstValue != e) {
-      this.state.firstValue = e;
-      this.forceUpdate();
-      this.setValues();
+  onFirstValueChange(value: number): void {
+    const { firstValue } = this.state;
+    if (firstValue !== value) {
+      this.setState({ firstValue: value }, () => this.setValues());
     }
   }
 
-  onSecondValueChange(e: number): void {
-    if (this.state.secondValue != e) {
-      this.state.secondValue = e;
-      this.forceUpdate();
-      this.setValues();
+  onSecondValueChange(value: number): void {
+    const { secondValue } = this.state;
+    if (secondValue !== value) {
+      this.setState({ secondValue: value }, () => this.setValues());
     }
   }
 
   /* Computed Methods */
 
   sliderSize(): number {
-    return parseInt(this.props.vertical ? this.refs.slider.offsetHeight : this.refs.slider.offsetWidth, 10);
+    const {vertical} = this.props;
+    return parseInt(vertical ? this.slider.current.offsetHeight : this.slider.current.offsetWidth, 10);
   }
 
   stops(): Array<number> {
@@ -243,36 +250,45 @@ export default class Slider extends Component {
   }
 
   minValue(): number {
-    return Math.min(this.state.firstValue, this.state.secondValue);
+    const { firstValue, secondValue } = this.state;
+    return Math.min(firstValue, secondValue);
   }
 
   maxValue(): number {
-    return Math.max(this.state.firstValue, this.state.secondValue);
+    const { firstValue, secondValue } = this.state;
+    return Math.max(firstValue, secondValue);
   }
 
   runwayStyle(): Object {
-    return this.props.vertical ? { height: this.props.height } : {};
+    const { vertical, height } = this.props;
+    return vertical ? { height } : {};
   }
 
   barStyle(): Object {
-    return this.props.vertical ? {
-      height: this.barSize(),
-      bottom: this.barStart()
-    } : {
-      width: this.barSize(),
-      left: this.barStart()
-    };
+    const { vertical } = this.props;
+    return vertical
+      ? {
+        height: this.barSize(),
+        bottom: this.barStart()
+      }
+      : {
+        width: this.barSize(),
+        left: this.barStart()
+      };
   }
 
   barSize(): string {
-    return this.props.range
-      ? `${ 100 * (this.maxValue() - this.minValue()) / (this.props.max - this.props.min) }%`
-      : `${ 100 * (this.state.firstValue - this.props.min) / (this.props.max - this.props.min) }%`;
+    const { firstValue } = this.state;
+    const { range, max, min } = this.props;
+    return range
+      ? `${100 * (this.maxValue() - this.minValue()) / (max - min)}%`
+      : `${100 * (firstValue - min) / (max - min)}%`;
   }
 
   barStart(): string {
-    return this.props.range
-      ? `${ 100 * (this.minValue() - this.props.min) / (this.props.max - this.props.min) }%`
+    const { range, max, min } = this.props;
+    return range
+      ? `${100 * (this.minValue() - min) / (max - min)}%`
       : '0%';
   }
 
@@ -303,7 +319,7 @@ export default class Slider extends Component {
           )
         }
         <div
-          ref="slider"
+          ref={this.slider}
           style={this.runwayStyle()}
           className={this.classNames('el-slider__runway', {
             'show-input': showInput,
@@ -316,14 +332,14 @@ export default class Slider extends Component {
             style={this.barStyle()}>
           </div>
           <SliderButton
-            ref="button1"
+            ref={this.button1}
             vertical={vertical} value={firstValue}
             onChange={this.onFirstValueChange.bind(this)}
           />
           {
             range && (
               <SliderButton
-                ref="button2"
+                ref={this.button2}
                 vertical={vertical} value={secondValue}
                 onChange={this.onSecondValueChange.bind(this)}
               />
