@@ -168,15 +168,24 @@ class Select extends Component {
   }
 
   handleValueChange() {
-    const { multiple } = this.props;
-    const { value, options } = this.state;
+    const { multiple, remote } = this.props;
+    const { value, options, selected: oldSelected } = this.state;
 
     if (multiple && Array.isArray(value)) {
-      this.setState({
-        selected: options.reduce((prev, curr) => {
-          return value.indexOf(curr.props.value) > -1 ? prev.concat(curr) : prev;
-        }, [])
-      }, () => {
+      const currentSelected = value.reduce((selecteds, selectedValue) => {
+        const currOption = options.find(option => option.props.value === selectedValue);
+        return currOption ? [...selecteds, currOption] : selecteds;
+      }, []);
+
+      const otherSelected = oldSelected.filter((item) => {
+        const isDuplicateSelected = !!currentSelected.find(selected => item.props.value === selected.props.value);
+        const isDeletedSelected = !value.find(selectedValue => item.props.value === selectedValue);
+        return !isDuplicateSelected && !isDeletedSelected;
+      });
+
+      const selected = !remote ? currentSelected : [...otherSelected, ...currentSelected];
+
+      this.setState({ selected }, () => {
         this.onSelectedChange(this.state.selected, false);
       });
     } else {
