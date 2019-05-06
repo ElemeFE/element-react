@@ -162,6 +162,8 @@ class Cascader extends Component {
   }
 
   handlePick(value: [], close: boolean = true) {
+    const { form } = this.context;
+
     this.setState({
       currentValue: value
     });
@@ -173,6 +175,8 @@ class Cascader extends Component {
     if (this.props.onChange) {
       this.props.onChange(value);
     }
+
+    form && form.onFieldChange();
   }
 
   handleInputChange(value: any) {
@@ -225,7 +229,7 @@ class Cascader extends Component {
 
   highlightKeyword(label: string, keyword: string): any {
     return label.split(keyword).map((node, index) => index === 0 ? node : [
-      (<span className="el-cascader-menu__item__keyword">{keyword}</span>),
+      (<span key={index} className="el-cascader-menu__item__keyword">{keyword}</span>),
       node
     ]);
   }
@@ -367,6 +371,10 @@ class Cascader extends Component {
 
 Cascader.childContextTypes = {
   component: PropTypes.any
+};
+
+Cascader.contextTypes = {
+  form: PropTypes.any
 };
 
 Cascader.propTypes = {
