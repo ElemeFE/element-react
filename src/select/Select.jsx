@@ -168,7 +168,7 @@ class Select extends Component {
   }
 
   handleValueChange() {
-    const { multiple } = this.props;
+    const { multiple, filterMethod } = this.props;
     const { value, options } = this.state;
 
     if (multiple && Array.isArray(value)) {
@@ -184,7 +184,7 @@ class Select extends Component {
         return option.props.value === value
       })[0];
 
-      if (selected) {
+      if (selected && !filterMethod) {
         this.state.selectedLabel = selected.props.label || selected.props.value;
       }
     }
