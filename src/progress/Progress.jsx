@@ -52,15 +52,19 @@ export default class Progress extends Component {
 
   stroke(): string {
     let ret;
-    switch (this.props.status) {
-      case 'success':
-        ret = '#13ce66';
-        break;
-      case 'exception':
-        ret = '#ff4949';
-        break;
-      default:
-        ret = '#20a0ff';
+    if(this.props.color){
+      ret = this.props.color
+    }else{
+      switch (this.props.status) {
+        case 'success':
+          ret = '#13ce66';
+          break;
+        case 'exception':
+          ret = '#ff4949';
+          break;
+        default:
+          ret = '#20a0ff';
+      }
     }
     return ret;
   }
@@ -97,7 +101,7 @@ export default class Progress extends Component {
           >
             <div
               className="el-progress-bar__inner"
-              style={{ width: `${percentage}%` }}
+              style={{ width: `${percentage}%`, backgroundColor: this.props.color }}
             >
               {showText &&
                 textInside &&
@@ -167,5 +171,6 @@ Progress.propTypes = {
   strokeWidth: PropTypes.number,
   width: PropTypes.number,
   textInside: PropTypes.bool,
-  showText: PropTypes.bool
+  showText: PropTypes.bool,
+  color: PropTypes.string,
 };
