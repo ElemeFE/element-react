@@ -78,7 +78,10 @@ export default class Tabs extends Component {
     if (nextProps.children !== this.props.children) {
       this.setState({
         children: React.Children.toArray(nextProps.children),
-      }, () => this.update());
+      }, () => {
+        this.update()
+        this.calcBarStyle()
+      });
     }
   }
 
