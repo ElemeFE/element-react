@@ -2,13 +2,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 
-import { PropTypes, Component } from '../../libs';
+import { PropTypes, PureComponent } from '../../libs';
 import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
 import { getScrollBarWidth } from './scrollbar-width';
 import { Bar } from './Bar'
 
-export class Scrollbar extends Component {
+export class Scrollbar extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -61,7 +61,7 @@ export class Scrollbar extends Component {
 
   _update() {
     let heightPercentage, widthPercentage;
-    const wrap = this.wrap;
+    const { wrap, state } = this;
     if (!wrap) return;
 
     heightPercentage = (wrap.clientHeight * 100 / wrap.scrollHeight);
@@ -70,7 +70,9 @@ export class Scrollbar extends Component {
     let sizeHeight = (heightPercentage < 100) ? (heightPercentage + '%') : '';
     let sizeWidth = (widthPercentage < 100) ? (widthPercentage + '%') : '';
 
-    this.setState({sizeHeight, sizeWidth})
+    if (state.sizeHeight !== sizeHeight || state.sizeWidth !== sizeWidth) {
+      this.setState({sizeHeight, sizeWidth})
+    }
   }
 
   render() {
