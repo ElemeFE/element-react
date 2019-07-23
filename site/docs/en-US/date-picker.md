@@ -219,10 +219,10 @@ render() {
 :::
 
 ### Common Props
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
+| Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | placeholder | - | string | — | — |
-| format | - | string | 年 `yyyy`，月 `MM`，日 `dd`，小时 `HH`，分 `mm`，秒 `ss` | yyyy-MM-dd |
+| format | - | string | year `yyyy`, month `MM`, day `dd`, hour `HH`, minute `mm`, second `ss` | yyyy-MM-dd |
 | align | - | string | left, center, right | left |
 | isShowTrigger | whether to show trigger icon | boolean | - | true |
 | isReadOnly | - | boolean | - | false |
