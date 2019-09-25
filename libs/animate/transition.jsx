@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Transition as ReactTransition } from 'react-transition-group';
-import { View } from '../';
+import View from '../view';
 
 const noneFun = () => undefined;
 
