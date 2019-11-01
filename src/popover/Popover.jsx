@@ -44,7 +44,7 @@ export default class Popover extends Component {
       });
 
       document.addEventListener('click', (e: Event): void => {
-        if (!this.element || this.element.contains(e.target) ||
+        if (!this.state.showPopper || !this.element || this.element.contains(e.target) ||
             !this.reference || this.reference.contains(e.target) ||
             !popper || popper.contains(e.target)) return;
 
@@ -128,7 +128,7 @@ export default class Popover extends Component {
             <div ref="popper" className={this.className('el-popover', popperClass)} style={this.style({ width: Number(width) })}>
               { title && <div className="el-popover__title">{title}</div> }
               { content }
-              { visibleArrow && <div ref="arrow" className="popper__arrow"/>}
+              { visibleArrow && <div ref="arrow" className="popper__arrow" />}
             </div>
           </View>
         </Transition>
