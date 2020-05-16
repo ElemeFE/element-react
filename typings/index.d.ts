@@ -869,7 +869,7 @@ declare namespace ElementReact {
     indicatorPosition?: 'outside' | 'none'
     indicator?: boolean
     arrow?: 'always' | 'hover' | 'never'
-    type?: 'card'
+    type?: 'card' | 'flatcard'
     onChange?(current?: number, prev?: number): void
   }
   interface CarouselItemProps extends ElementReactLibs.ComponentProps<{}> {
