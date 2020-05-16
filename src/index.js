@@ -1,6 +1,7 @@
 export { default as i18n } from './locale';
 
 export { default as Alert } from './alert';
+export { AnchorSmooth, GoTop} from './anchor';
 export { default as Button } from './button';
 export { default as Card } from './card';
 export { default as Layout } from './layout';

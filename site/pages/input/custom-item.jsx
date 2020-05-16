@@ -16,4 +16,4 @@ CustomItem.propTypes = {
   item: PropTypes.object
 };
 
-module.exports = CustomItem;
+export default CustomItem;

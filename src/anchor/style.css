@@ -1,0 +1,28 @@
+.el-anchor__top-wrapper {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  z-index: 99;
+  transition: opacity 0.2s linear 0s, visibility 0s linear 0.2s;
+}
+
+.el-anchor__top {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: #58b7ff;
+  display: block;
+  text-align: center;
+  line-height: 50px;
+  opacity: 0.4;
+  transition: opacity 0.3s linear 0s;
+}
+
+.el-anchor__top:hover {
+  opacity: 1;
+}
+
+.el-anchor__top i {
+  color: #ffffff;
+  font-size: 22px;
+}
