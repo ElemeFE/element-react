@@ -29,11 +29,17 @@ constructor(props) {
     }],
     value: ''
   };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 render() {
   return (
-    <Select value={this.state.value}>
+    <Select value={this.state.value} onChange={this.handleInput}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -73,11 +79,17 @@ constructor(props) {
     }],
     value: ''
   };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 render() {
   return (
-    <Select value={this.state.value}>
+    <Select value={this.state.value} onChange={this.handleInput}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} disabled={el.disabled} />
@@ -117,11 +129,17 @@ constructor(props) {
     }],
     value: ''
   };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 render() {
   return (
-    <Select value={this.state.value} disabled={true}>
+    <Select value={this.state.value} disabled={true} onChange={this.handleInput}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -161,11 +179,17 @@ constructor(props) {
     }],
     value: ''
   };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 render() {
   return (
-    <Select value={this.state.value} clearable={true}>
+    <Select value={this.state.value} clearable={true} onChange={this.handleInput}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -205,11 +229,17 @@ constructor(props) {
     }],
     value: []
   };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 render() {
   return (
-    <Select value={this.state.value} multiple={true}>
+    <Select value={this.state.value} multiple={true} onChange={this.handleInput}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -253,11 +283,17 @@ constructor(props) {
     }],
     value: []
   };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 render() {
   return (
-    <Select value={this.state.value}>
+    <Select value={this.state.value} onChange={this.handleInput}>
       {
         this.state.cities.map(el => {
           return (
@@ -312,11 +348,17 @@ constructor(props) {
     }],
     value: ''
   };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 render() {
   return (
-    <Select value={this.state.value}>
+    <Select value={this.state.value} onChange={this.handleInput}>
       {
         this.state.options.map(group => {
           return (
@@ -369,11 +411,17 @@ constructor(props) {
     }],
     value: []
   };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 render() {
   return (
-    <Select value={this.state.value} filterable={true}>
+    <Select value={this.state.value} filterable={true} onChange={this.handleInput}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
@@ -396,10 +444,17 @@ constructor(props) {
   super(props);
 
   this.state = {
+    value: [],
     options: [],
     states: ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",   "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas",
     "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
-  }
+  };
+  this.handleInput = this.handleInput.bind(this);
+}
+
+handleInput(value) {
+  this.setState({ value });
+  console.log(value);
 }
 
 onSearch(query) {
@@ -427,7 +482,7 @@ onSearch(query) {
 
 render() {
   return (
-    <Select value={this.state.value} multiple={true} filterable={true} remote={true} remoteMethod={this.onSearch.bind(this)} loading={this.state.loading}>
+    <Select value={this.state.value} multiple={true} filterable={true} remote={true} remoteMethod={this.onSearch.bind(this)} loading={this.state.loading} onChange={this.handleInput}>
       {
         this.state.options.map(el => {
           return <Select.Option key={el.value} label={el.label} value={el.value} />
