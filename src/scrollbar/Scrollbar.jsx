@@ -34,17 +34,17 @@ export class Scrollbar extends PureComponent {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    const { noresize } = this.props;
+
     this.resizeDom = ReactDOM.findDOMNode(this.refs.resize)
-    if (!this.props.noresize){
+
+    if (!noresize && prevProps.noresize !== noresize) {
       this.cleanResize && this.cleanResize();
       addResizeListener(this.resizeDom, this.update)
-      this.cleanResize = ()=>{
-        removeResizeListener(this.resizeDom, this.update);
-      }
+      this.cleanResize = () => removeResizeListener(this.resizeDom, this.update);
     }
   }
-  
 
   componentWillUnmount(){
     this.cleanRAF();
