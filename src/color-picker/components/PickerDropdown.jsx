@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react';
+import Button from '../../button';
 import SvPanel from './SvPanel';
 import HueSlider from './HueSlider';
 import AlphaSlider from './AlphaSlider';
@@ -35,19 +36,19 @@ export default class PickerDropdown extends Component {
             {showAlpha && <AlphaSlider ref="alpha" color={color} />}
             <div className="el-color-dropdown__btns">
               <span className="el-color-dropdown__value">{currentColor}</span>
-              <a
-                href="JavaScript:"
-                className="el-color-dropdown__link-btn"
+              <Button
+                type="text"
+                size="small"
                 onClick={() => onClear()}
               >
                 {Locale.t('el.colorpicker.clear')}
-              </a>
-              <button
-                className="el-color-dropdown__btn"
+              </Button>
+              <Button
+                size="small"
                 onClick={() => onPick()}
               >
                 {Locale.t('el.colorpicker.confirm')}
-              </button>
+              </Button>
             </div>
           </div>
         </View>
