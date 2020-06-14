@@ -121,12 +121,16 @@ constructor(props) {
   this.state = {
     value: [4, 8]
   }
+
+  this.onChange = (value) => {
+    this.setState({ value });
+  };
 }
 
 render() {
   return (
     <div className="block">
-      <Slider value={this.state.value} max={10} range={true} showStops={true} />
+      <Slider value={this.state.value} onChange={this.onChange} max={10} range showStops />
     </div>
   )
 }
@@ -165,7 +169,9 @@ render() {
 | showInput | 是否显示输入框，仅在非范围选择时有效 | boolean | — | false |
 | showInputControls | 在显示输入框的情况下，是否显示输入框的控制按钮 | boolean | — | true|
 | showStops | 是否显示间断点 | boolean | — | false |
+| showTooltip | 是否显示值提示 | boolean | — | true |
 | range | 是否为范围选择 | boolean | — | false |
+| triggerOnDragging | 是否在拖动过程中触发 `onChange` | boolean | — | false |
 
 ### Events
 | 事件名称      | 说明    | 回调参数      |
