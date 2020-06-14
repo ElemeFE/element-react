@@ -10,8 +10,6 @@ type State = {
   dragging: boolean,
   startX: number,
   startY: number,
-  currentX: number,
-  currentY: number,
   startPosition: number,
   newPosition: number
 }
@@ -31,8 +29,6 @@ export default class SliderButton extends Component {
       dragging: false,
       startX: 0,
       startY: 0,
-      currentX: 0,
-      currentY: 0,
       startPosition: 0,
       newPosition: 0
     }
@@ -42,58 +38,59 @@ export default class SliderButton extends Component {
     return this.context.component;
   }
 
-  handleMouseEnter(): void {
+  handleMouseEnter = (): void => {
     this.setState({
       hovering: true
     });
   }
 
-  handleMouseLeave(): void {
+  handleMouseLeave = (): void => {
     this.setState({
       hovering: false
     });
   }
 
-  onButtonDown(event: SyntheticMouseEvent<any>) {
+  onDragStart = (event: SyntheticMouseEvent<any>) => {
     if (this.disabled()) return;
 
-    this.onDragStart(event);
+    const position = parseInt(this.currentPosition(), 10);
 
-    window.addEventListener('mousemove', this.onDragging.bind(this));
-    window.addEventListener('mouseup', this.onDragEnd.bind(this));
-    window.addEventListener('contextmenu', this.onDragEnd.bind(this));
-  }
-
-  onDragStart(event: SyntheticMouseEvent<any>) {
     this.setState({
       dragging: true,
       startX: event.clientX,
       startY: event.clientY,
-      startPosition: parseInt(this.currentPosition(), 10)
+      startPosition: position,
+      newPosition: position
     });
-  }
 
-  onDragging(event: SyntheticMouseEvent<any>) {
-    const { dragging, startY, currentY, currentX, startX, startPosition, newPosition } = this.state;
+    window.addEventListener('mousemove', this.onDragging);
+    window.addEventListener('mouseup', this.onDragEnd);
+    window.addEventListener('contextmenu', this.onDragEnd);
+  };
+
+  onDragging = (event: SyntheticMouseEvent<any>) => {
+    const { dragging, startY, startX, startPosition } = this.state;
     const { vertical } = this.props;
-    if (dragging) {
-      this.setState({
-        currentX: event.clientX,
-        currentY: event.clientY,
-      }, () => {
-        let diff;
-        if (vertical) {
-          diff = (startY - currentY) / this.parent().sliderSize() * 100;
-        } else {
-          diff = (currentX - startX) / this.parent().sliderSize() * 100;
-        }
-        this.state.newPosition = startPosition + diff;
-        this.setPosition(newPosition);
-      });
+    if (!dragging) {
+      return;
     }
-  }
+    const diff = vertical
+      ? (startY - event.clientY)
+      : (event.clientX - startX);
 
-  onDragEnd() {
+    if (!diff) {
+      return;
+    }
+
+    const newPosition = startPosition + diff / this.parent().sliderSize() * 100;
+    this.setState({
+      newPosition
+    });
+
+    this.setPosition(newPosition);
+  };
+
+  onDragEnd = () => {
     const { dragging, newPosition } = this.state;
     if (dragging) {
       /*
@@ -108,13 +105,14 @@ export default class SliderButton extends Component {
         });
       }, 0);
 
-      window.removeEventListener('mousemove', this.onDragging.bind(this));
-      window.removeEventListener('mouseup', this.onDragEnd.bind(this));
-      window.removeEventListener('contextmenu', this.onDragEnd.bind(this));
+      window.removeEventListener('mousemove', this.onDragging);
+      window.removeEventListener('mouseup', this.onDragEnd);
+      window.removeEventListener('contextmenu', this.onDragEnd);
     }
-  }
+  };
 
   setPosition(newPosition: number) {
+    const { onChange } = this.props;
     if (newPosition < 0) {
       newPosition = 0;
     } else if (newPosition > 100) {
@@ -125,7 +123,7 @@ export default class SliderButton extends Component {
     const steps = Math.round(newPosition / lengthPerStep);
     const value = steps * lengthPerStep * (this.max() - this.min()) * 0.01 + this.min();
 
-    this.props.onChange(parseFloat(value.toFixed(this.precision())));
+    onChange(parseFloat(value.toFixed(this.precision())));
   }
 
   /* Computed Methods */
@@ -178,9 +176,9 @@ export default class SliderButton extends Component {
           'dragging': dragging
         })}
         style={this.wrapperStyle()}
-        onMouseEnter={this.handleMouseEnter.bind(this)}
-        onMouseLeave={this.handleMouseLeave.bind(this)}
-        onMouseDown={this.onButtonDown.bind(this)}>
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+        onMouseDown={this.onDragStart}>
         <Tooltip
           placement="top"
           content={<span>{this.formatValue()}</span>}
