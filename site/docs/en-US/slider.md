@@ -121,15 +121,15 @@ Selecting a range of values is supported.
 constructor(props) {
   super(props);
 
-  this.state = {
-    value: [4, 8]
-  }
+  this.onChange = (value) => {
+    this.setState({ value });
+  };
 }
 
 render() {
   return (
     <div className="block">
-      <Slider value={this.state.value} max={10} range={true} showStops={true} />
+      <Slider value={this.state.value} onChange={this.onChange} max={10} range showStops />
     </div>
   )
 }
@@ -165,11 +165,12 @@ render() {
 | max | maximum value | number | — | 100 |
 | disabled | whether Slider is disabled | boolean | — | false |
 | step | step size | number | — | 1 |
-| show-input | whether to display an input box, works when `range` is false | boolean | — | false |
-| show-input-controls | whether to display control buttons when `show-input` is true | boolean | — | true |
-| show-stops | whether to display breakpoints | boolean | — | false |
-| show-tooltip | whether to display tooltip value | boolean | — | true |
+| showInput | whether to display an input box, works when `range` is false | boolean | — | false |
+| showInputControls | whether to display control buttons when `show-input` is true | boolean | — | true |
+| showStops | whether to display breakpoints | boolean | — | false |
+| showTooltip | whether to display tooltip value | boolean | — | true |
 | range | whether to select a range | boolean | — | false |
+| triggerOnDragging | trigger `onChange` when mouse dragging | boolean | — | false |
 
 ## Events
 | Event Name | Description | Parameters |

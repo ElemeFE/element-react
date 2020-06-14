@@ -169,6 +169,7 @@ render() {
 | showInput | 是否显示输入框，仅在非范围选择时有效 | boolean | — | false |
 | showInputControls | 在显示输入框的情况下，是否显示输入框的控制按钮 | boolean | — | true|
 | showStops | 是否显示间断点 | boolean | — | false |
+| showTooltip | 是否显示值提示 | boolean | — | true |
 | range | 是否为范围选择 | boolean | — | false |
 | triggerOnDragging | 是否在拖动过程中触发 `onChange` | boolean | — | false |
 
