@@ -603,7 +603,7 @@ declare namespace ElementReact {
   export class Slider extends ElementReactLibs.Component<SliderProps, {}> { }
 
   // Table
-  interface TableColumn {
+  interface TableColumn<RowType> {
     label?: string
     prop?: string
     property?: string
@@ -619,11 +619,11 @@ declare namespace ElementReact {
     fixed?: boolean | string
     filterMethod?: () => void
     filters?: Object[]
-    render?: (data? :Object, column? :Object, index? :number) => void
+    render?: (data? :RowType, column? :Object, index? :number) => void
   }
-  interface TableProps extends ElementReactLibs.ComponentProps<{}> {
-    columns?: TableColumn[]
-    data?: Object[]
+  interface TableProps<RowType> extends ElementReactLibs.ComponentProps<{}> {
+    columns?: TableColumn<RowType>[]
+    data?: RowType[]
     height?: number
     stripe?: boolean
     border?: boolean
@@ -635,7 +635,7 @@ declare namespace ElementReact {
     onSelectAll?(): void
     onSelectChange?(): void
   }
-  export class Table extends ElementReactLibs.Component<TableProps, {}> { }
+  export class Table<RowType extends Object = Object> extends ElementReactLibs.Component<TableProps<RowType>, {}> { }
 
   // Switch
   interface SwitchProps extends ElementReactLibs.ComponentProps<{}> {
