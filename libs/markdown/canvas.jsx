@@ -24,6 +24,10 @@ export default class Canvas extends React.Component {
     this.renderSource(this.source[2])
   }
 
+  componentDidUpdate(){
+    this.renderSource(this.source[2])
+  }
+  
   blockControl() {
     this.setState({
       showBlock: !this.state.showBlock
