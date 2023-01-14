@@ -1,23 +1,28 @@
 /* eslint import/no-extraneous-dependencies: ["off"] */
 
 const path = require('path');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-new WebpackDevServer(webpack({
+module.exports = {
   devtool: 'eval',
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
-    'react-hot-loader/patch',
     './index'
   ],
+  devServer: {
+    port: 3000,
+    hot: 'only',
+    historyApiFallback: true,
+  },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: "/"
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      favicon: path.join(__dirname, '/assets/favicon.ico')
+    })
   ],
   resolve: {
     extensions: ['.js', '.jsx']
@@ -27,11 +32,16 @@ new WebpackDevServer(webpack({
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',
+        exclude: /node_modules/,
         include: [
           path.join(__dirname, '../site'),
           path.join(__dirname, '../src'),
           path.join(__dirname, '../libs')
-        ]
+        ],
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-flow'],
+          plugins: ["@babel/plugin-transform-runtime", "@babel/plugin-transform-react-jsx"]
+        }
       },
       {
         test: /\.css$/,
@@ -42,27 +52,18 @@ new WebpackDevServer(webpack({
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)(\?.+)?$/,
-        loader : 'file-loader'
+        test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
+        use: [{ loader: 'file-loader' }]
       },
       {
         test: /\.(jpe?g|png|gif)(\?.+)?$/,
-        loader : 'url-loader'
+        use: [{ loader: 'url-loader' }]
       },
       {
         test: /\.md$/,
-        loader : 'raw-loader'
+        use: [{ loader: 'raw-loader' }]
       }
     ]
   },
   mode: 'development'
-}), {
-  publicPath: '/',
-  hot: true,
-  historyApiFallback: true,
-  stats: { colors: true }
-}).listen(3000, 'localhost', error => {
-  if (error) {
-    throw error;
-  }
-});
+};

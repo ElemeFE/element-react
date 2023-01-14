@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class CustomItem extends React.Component {
+export default class CustomItem extends React.Component {
   render() {
     return (
       <div>
@@ -16,4 +16,4 @@ CustomItem.propTypes = {
   item: PropTypes.object
 };
 
-module.exports = CustomItem;
+
