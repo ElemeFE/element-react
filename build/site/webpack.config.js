@@ -36,11 +36,13 @@ module.exports = {
     rules: [{
       test: /\.jsx?$/,
       loader: 'babel-loader',
+      exclude: /node_modules/,
       include: [
         path.join(basePath, 'site'),
         path.join(basePath, 'src'),
         path.join(basePath, 'libs')
-      ]
+      ],
+      options: { presets: ['@babel/preset-env','@babel/preset-react', '@babel/preset-flow'], plugins: ["@babel/plugin-transform-react-jsx"] }
     }, {
       test: /\.css$/,
       use: [MiniCssExtractPlugin.loader, "css-loader"]
@@ -49,13 +51,13 @@ module.exports = {
       use: ['style-loader', 'css-loader', 'sass-loader']
     }, {
       test: /\.(ttf|eot|svg|woff|woff2)(\?.+)?$/,
-      loader: 'file-loader?name=[hash:12].[ext]'
+      use: [{ loader: 'file-loader', options: { name:"[hash:12].[ext]" } }]
     }, {
       test: /\.(jpe?g|png|gif)(\?.+)?$/,
-      loader: 'url-loader?name=[hash:12].[ext]&limit=25000'
+      use: [{ loader: 'url-loader', options: { name: "[hash:12].[ext]", limit: 25000 } }]
     }, {
       test: /\.md$/,
-      loader: 'raw-loader'
+      use: [{ loader: 'raw-loader' }]
     }]
   },
   mode: 'production'
